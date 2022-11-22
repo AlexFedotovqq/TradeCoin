@@ -143,8 +143,8 @@ export default function Example() {
         </Transition.Root>
 
 
-        <div className="flex flex-1 flex-col lg:pl-64">
-          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
+        <div className="flex flex-1 flex-col bg-orange-400 lg:pl-64">
+          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-orange-400 lg:border-none">
             <button
               type="button"
               className="border-r border-gray-200 px-4 text-black-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 lg:hidden"
@@ -160,14 +160,14 @@ export default function Example() {
                   <label htmlFor="search-field" className="sr-only">
                     Search
                   </label>
-                  <div className="relative w-full text-black-400 focus-within:text-gray-600">
+                  <div className="relative w-full text-black focus-within:text-gray-600">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
                       <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
                     </div>
                     <input
                       id="search-field"
                       name="search-field"
-                      className="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                      className="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-black bg-orange-400 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
                       placeholder="Search transactions"
                       type="search"
                     />
@@ -182,9 +182,9 @@ export default function Example() {
           </div>
           <main className="flex-1 pb-8">
             {/* Page header */}
-            <div className="bg-white shadow">
+            <div className="bg-orange-400 shadow">
               <div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
-                <div className="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
+                <div className="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-black">
                   <div className="min-w-0 flex-1">
                     {/* Profile */}
                     <div className="flex items-center">
@@ -193,7 +193,7 @@ export default function Example() {
                         <div className="flex items-center">
                          
                           <h1 className="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
-                            Good morning
+                            Good morning,Anton
                           </h1>
                         </div>
                         
@@ -215,11 +215,11 @@ export default function Example() {
                       <div className="p-5">
                         <div className="flex items-center">
                           <div className="flex-shrink-0">
-                            <card.icon className="h-6 w-6 text-gray-400" aria-hidden="true" />
+                            <card.icon className="h-6 w-6 text-black" aria-hidden="true" />
                           </div>
                           <div className="ml-5 w-0 flex-1">
                             <dl>
-                              <dt className="truncate text-sm font-medium text-gray-500">{card.name}</dt>
+                              <dt className="truncate text-sm font-medium text-black">{card.name}</dt>
                               <dd>
                                 <div className="text-lg font-medium text-gray-900">{card.amount}</div>
                               </dd>
@@ -310,10 +310,10 @@ export default function Example() {
                                 <div className="flex">
                                   <a href={transaction.href} className="group inline-flex space-x-2 truncate text-sm">
                                     <BanknotesIcon
-                                      className="h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                                      className="h-5 w-5 flex-shrink-0 text-black group-hover:text-gray-500"
                                       aria-hidden="true"
                                     />
-                                    <p className="truncate text-gray-500 group-hover:text-gray-900">
+                                    <p className="truncate text-black group-hover:text-gray-900">
                                       {transaction.name}
                                     </p>
                                   </a>

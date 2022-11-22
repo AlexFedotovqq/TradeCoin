@@ -89,7 +89,7 @@ export default function Example() {
                   <select
                     id="country"
                     name="country"
-                    className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-8 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-3 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
                   >
                     <option>ETH</option>
                     <option>BNB</option>
@@ -118,7 +118,7 @@ export default function Example() {
                   <select
                     id="country"
                     name="country"
-                    className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-8 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
+                    className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-3 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
                   >
                     <option>ETH</option>
                     <option>BNB</option>
