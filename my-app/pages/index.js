@@ -1,15 +1,12 @@
-import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-
 
 export default function Example() {
   return (
-    <div className="relative overflow-hidden bg-orange-400">
+    <div className="relative overflow-hidden bg-orange-400 h-screen">
       <div className="mx-auto max-w-7xl">
         <div className="relative z-10 bg-orange-400 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
           <svg
-            className="absolute inset-y-0 right-0 hidden h-full w-48 translate-x-1/2 transform text-white lg:block"
+            className="absolute inset-y-0 right-0 hidden h-screen w-48 translate-x-1/2 transform text-white lg:block"
             fill="currentColor"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
@@ -21,8 +18,7 @@ export default function Example() {
           <Popover>
             <div className="relative px-4 pt-6 sm:px-6 lg:px-8">
               <nav className="relative flex items-center justify-between sm:h-12 lg:justify-start" aria-label="Global">
-               
-               
+   
               </nav>
             </div>
 

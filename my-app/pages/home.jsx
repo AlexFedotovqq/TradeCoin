@@ -2,23 +2,11 @@ import { Fragment, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   Bars3CenterLeftIcon,
-  BellIcon,
-  ClockIcon,
-  CogIcon,
-  CreditCardIcon,
-  DocumentChartBarIcon,
-  HomeIcon,
-  QuestionMarkCircleIcon,
   ScaleIcon,
-  ShieldCheckIcon,
-  UserGroupIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import {
   BanknotesIcon,
-  BuildingOfficeIcon,
-  CheckCircleIcon,
-  ChevronDownIcon,
   ChevronRightIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/20/solid'
@@ -57,8 +45,7 @@ export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <>
-      <div className="min-h-full">
+      <div className="relative overflow-hidden bg-orange-400 h-screen">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-40 lg:hidden" onClose={setSidebarOpen}>
             <Transition.Child
@@ -141,9 +128,7 @@ export default function Example() {
             </div>
           </Dialog>
         </Transition.Root>
-
-
-        <div className="flex flex-1 flex-col bg-orange-400 lg:pl-64">
+        <div className="flex flex-1 flex-col  lg:pl-64">
           <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-orange-400 lg:border-none">
             <button
               type="button"
@@ -350,6 +335,5 @@ export default function Example() {
           </main>
         </div>
       </div>
-    </>
   )
                                   }
