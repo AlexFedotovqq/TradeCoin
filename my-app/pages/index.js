@@ -36,17 +36,17 @@ export default function Index() {
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">
-                  <Link href="/home">
-                    <a className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg">
+                  <Link href="/home" className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg">
+                    
                       Home
-                    </a>
+                    
                   </Link>
                 </div>
                 <div className="mt-3 sm:mt-0 sm:ml-3">
-                  <Link href="/exchange">
-                    <a className="flex w-full items-center justify-center rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-indigo-700 hover:bg-gray-200 md:py-4 md:px-10 md:text-lg">
+                  <Link href="/exchange" className="flex w-full items-center justify-center rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-indigo-700 hover:bg-gray-200 md:py-4 md:px-10 md:text-lg">
+                   
                       Exchange
-                    </a>
+                    
                   </Link>
                 </div>
               </div>
