@@ -166,7 +166,7 @@ export default function Example() {
                   </a>
                 </li>
                 <li>
-                  <a className="text-indigo-200 hover:text-indigo-100" href="#">
+                  <a className="text-indigo-200 hover:text-indigo-100" href="https://twitter.com/XrcSwap">
                     <span className="sr-only">Twitter</span>
                     <svg
                       width={24}
