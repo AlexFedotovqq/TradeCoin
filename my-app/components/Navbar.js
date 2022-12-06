@@ -7,6 +7,7 @@ const navigation = [
   { name: "XRC-Swap", href: "/" },
   { name: "Home", href: "/home" },
   { name: "Exchange", href: "/exchange" },
+  { name: "Pool", href: "/pool" },
   { name: "Contact us", href: "/contact" },
 ];
 
@@ -19,7 +20,7 @@ const Navbar = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
-
+  
   return (
     mounted && (
       <Disclosure as="nav" className="bg-gray-800">
@@ -65,7 +66,6 @@ const Navbar = () => {
                     ))}
                   </div>
                 </div>
-
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <div className="dropdown relative">
@@ -75,7 +75,6 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-
             <Disclosure.Panel className="md:hidden">
               <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
                 {navigation.map((item) => (

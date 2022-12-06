@@ -206,13 +206,17 @@ export default function Example() {
                             <dl>
                               <dt className="truncate text-sm font-medium text-black">{card.name}</dt>
                               <dd>
+                                
                                 <div className="text-lg font-medium text-gray-900">{card.amount}</div>
                               </dd>
+                              
                             </dl>
                           </div>
                         </div>
+                        
                       </div>
                     </div>
+                    
                   ))}
                 </div>
               </div>

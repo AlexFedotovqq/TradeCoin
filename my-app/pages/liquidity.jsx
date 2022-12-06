@@ -11,7 +11,6 @@ import {
   MagnifyingGlassIcon,
 } from '@heroicons/react/20/solid'
 
-
 const transactions = [
   {
     id: 1,
@@ -112,12 +111,12 @@ export default function Example() {
             <rect width={404} height={404} fill="url(#85737c0e-0916-41d7-917f-596dc7edfa27)" />
           </svg>
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">Exchange</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">Add Liquidity</h2>
             <p className="mt-4 text-lg leading-6 text-black-500">
-            Here you can exchange currency
+            Here you can Add Liquidity
             </p>
+
           </div>
-         
               <div className="sm:col-span-2">
                 <label htmlFor="number" className="block text-sm font-medium text-black-700">
                 Coin 1
@@ -127,15 +126,16 @@ export default function Example() {
                     <label htmlFor="country" className="sr-only">
                     Coin  1
                     </label>
-                 
                     <select
                       id="country"
                       name="country"
                       className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-3 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
                     >
+                        
                       <option>ETH</option>
                       <option>BNB</option>
                       <option>DOT</option>
+                      
                     </select>
                   </div>
                   <input
@@ -146,7 +146,6 @@ export default function Example() {
                     className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
                     placeholder="0,232323232"
                   />
-                
                 </div>
               </div>
               <div className="sm:col-span-2">
@@ -211,6 +210,7 @@ export default function Example() {
                   <span className="flex flex-col truncate text-sm text-gray-500">
                     <span className="truncate">{transaction.name}</span>
                     <span>
+                        
                       <span className="font-medium text-gray-900">{transaction.amount}</span>{' '}
                       {transaction.currency}
                     </span>
