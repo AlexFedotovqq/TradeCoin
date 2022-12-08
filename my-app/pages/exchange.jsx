@@ -190,11 +190,8 @@ export default function Example() {
                 </button>
               </div>
               <div className="relative overflow-hidden bg-orange-400 h-screen">
-
 <div className="flex flex-1 flex-col  lg:pl-68">
-
 <main className="flex-1 pb-8">
-  
 
   <div className="mt-8">
     
@@ -234,6 +231,7 @@ export default function Example() {
     </div>
 
     {/* Activity table (small breakpoint and up) */}
+    
     <div className="hidden sm:block">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-1">
         <div className="mt-2 flex flex-col">
@@ -305,6 +303,7 @@ export default function Example() {
               </tbody>
             </table>
             {/* Pagination */}
+            
             
           </div>
         </div>

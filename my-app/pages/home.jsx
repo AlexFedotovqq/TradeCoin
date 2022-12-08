@@ -213,10 +213,9 @@ export default function Example() {
                             </dl>
                           </div>
                         </div>
-                        
+  
                       </div>
-                    </div>
-                    
+                    </div>                  
                   ))}
                 </div>
               </div>
