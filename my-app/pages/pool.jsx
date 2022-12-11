@@ -1,66 +1,15 @@
-import { PlusIcon as PlusIconMini } from '@heroicons/react/20/solid'
-import { PlusIcon as PlusIconOutline } from '@heroicons/react/24/outline'
-import { Fragment, useState } from 'react'
-import { Dialog, Disclosure, Popover, RadioGroup, Tab, Transition } from '@headlessui/react'
-import {
-  Bars3Icon,
-  HeartIcon,
-  MagnifyingGlassIcon,
+import { Disclosure } from '@headlessui/react'
+import { 
   MinusIcon,
   PlusIcon,
-  ShoppingBagIcon,
-  UserIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { StarIcon } from '@heroicons/react/20/solid'
 
-const product = {
-    details: [
-      {
-        name: 'Add new token',
-        items: [
-          <div className="sm:col-span-2">
-          <label htmlFor="number" className="block text-sm font-medium text-black-700">
-          Cryptocurrency
-          </label>
-          <div className="relative mt-1 rounded-md shadow-sm">
-            <div className="absolute inset-y-0 left-0 flex items-center">
-              <label htmlFor="country" className="sr-only">
-              Cryptocurrency
-              </label>
-           
-              <select
-                id="country"
-                name="country"
-                className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-3 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
-              >
-                <option>ETH</option>
-                <option>BNB</option>
-                <option>DOT</option>
-              </select>
-            </div>
-            <input
-              type="text"
-              name="number"
-              id="number"
-              autoComplete="tel"
-              className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="0,232323232"
-            />
-          
-          </div>
-        </div>
-        ],
-      },
-      // More sections...
-    ],
-  }
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
   
   export default function Example() {
-    const [open, setOpen] = useState(false)
+    
    
     return (
 <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
@@ -114,16 +63,14 @@ const product = {
           </div>
           <div className="bg-orange-400">
       <div className="mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:flex lg:items-center lg:justify-between lg:py-3 lg:px-1">
-        
-        <div className="ml-3 inline-flex rounded-md shadow"></div>
-        
+        <div className="ml-3 inline-flex rounded-md shadow">
+        </div>
         <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
         <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-          
 
           <div className="inline-flex rounded-md shadow">
             <a
-              href="/liquidity"
+              href="#"
               className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
             >
               Add Liquidity
@@ -147,8 +94,8 @@ const product = {
     </div>
     <section aria-labelledby="details-heading" className="mt-3">
         <div className="divide-y divide-gray-200 border-t lg:border-black">
-                  {product.details.map((detail) => (
-                    <Disclosure as="div" key={detail.name}>
+                  
+                    <Disclosure as="div" key={'Add new token' }>
                       {({ open }) => (
                         <>
                           <h3>
@@ -159,7 +106,7 @@ const product = {
                                   'text-sm font-medium'
                                 )}
                               >
-                                {detail.name}
+                                {'Add new token'}
                               </span>
                               <span className="ml-6 flex items-center">
                                 {open ? (
@@ -177,16 +124,44 @@ const product = {
                             </Disclosure.Button>
                           </h3>
                           <Disclosure.Panel as="div" className="prose prose-sm pb-6">
-                            <ul role="list">
-                              {detail.items.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))}
-                            </ul>
+                            
+                            <div className="sm:col-span-2">
+          <label htmlFor="number" className="block text-sm font-medium text-black-700">
+          Cryptocurrency
+          </label>
+          <div className="relative mt-1 rounded-md shadow-sm">
+            <div className="absolute inset-y-0 left-0 flex items-center">
+              <label htmlFor="country" className="sr-only">
+              Cryptocurrency
+              </label>
+           
+              <select
+                id="country"
+                name="country"
+                className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-3 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
+              >
+                <option>ETH</option>
+                <option>BNB</option>
+                <option>DOT</option>
+              </select>
+            </div>
+            <input
+              type="text"
+              name="number"
+              id="number"
+              autoComplete="tel"
+              className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="0,232323232"
+            />
+          
+          </div>
+        </div>
+                            
                           </Disclosure.Panel>
                         </>
                       )}
                     </Disclosure>
-                  ))}
+                  
                 </div>
                 </section>
                 </div>

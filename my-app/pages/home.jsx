@@ -1,9 +1,8 @@
 import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react'
 import {
   Bars3CenterLeftIcon,
   ScaleIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import {
   BanknotesIcon,
@@ -80,24 +79,9 @@ export default function Example() {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <div className="absolute top-0 right-0 -mr-12 pt-2">
-                      <button
-                        type="button"
-                        className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                        onClick={() => setSidebarOpen(false)}
-                      >
-                        <span className="sr-only">Close sidebar</span>
-                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
-                      </button>
-                    </div>
+                   
                   </Transition.Child>
-                  <div className="flex flex-shrink-0 items-center px-4">
-                    <img
-                      className="h-8 w-auto"
-                      src=""
-                      alt="logo"
-                    />
-                  </div>
+                 
                   <nav
                     className="mt-5 h-full flex-shrink-0 divide-y divide-cyan-800 overflow-y-auto"
                     aria-label="Sidebar"
