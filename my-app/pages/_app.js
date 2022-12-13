@@ -5,12 +5,41 @@ import { Layout } from "../components/Layout";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+
+const XDC = {
+  id: 50,
+  name: "XDC",
+  network: "XDC",
+  rpcUrls: {
+    default: "https://rpc.xinfin.network",
+  },
+  testnet: false,
+};
+
+const XDCt = {
+  id: 51,
+  name: "XDC testnet",
+  network: "XDC",
+  rpcUrls: {
+    default: "https://rpc.apothem.network/",
+  },
+  testnet: true,
+};
 
 const { chains, provider } = configureChains(
-  [mainnet, polygon, optimism, arbitrum],
-  [publicProvider()]
+  [XDC, XDCt],
+  [
+    publicProvider(),
+    jsonRpcProvider({
+      rpc: (chain) => {
+        if (chain.id === XDC.id || chain.id === XDCt.id)
+          return { http: chain.rpcUrls.default };
+        return null;
+      },
+    }),
+  ]
 );
 
 const { connectors } = getDefaultWallets({
