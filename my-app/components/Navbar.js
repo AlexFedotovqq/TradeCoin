@@ -2,6 +2,7 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const navigation = [
   { name: "XRC-Swap", href: "/" },
@@ -20,7 +21,7 @@ const Navbar = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
-  
+
   return (
     mounted && (
       <Disclosure as="nav" className="bg-gray-800">
@@ -47,7 +48,7 @@ const Navbar = () => {
                     </Disclosure.Button>
                   </div>
                   <div className="flex flex-shrink-0 items-center"></div>
-              
+
                   <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                     {navigation.map((item) => (
                       <a
@@ -68,19 +69,12 @@ const Navbar = () => {
                 </div>
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="dropdown relative">
-
-                    </div>
+                    <div className="dropdown relative"></div>
                   </div>
                 </div>
                 <div className="flex items-center md:ml-12">
-            <a
-              href="#"
-              className="ml-8 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-            >
-              Connect wallet
-            </a>
-          </div>
+                  <ConnectButton />;
+                </div>
               </div>
             </div>
             <Disclosure.Panel className="md:hidden">
