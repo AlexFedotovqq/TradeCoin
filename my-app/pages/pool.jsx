@@ -30,6 +30,64 @@ export default function Example() {
     );
   }
 
+  const people = [
+    {
+      name: 'Jane Cooper',
+      title: 'Regional Paradigm Technician',
+      role: 'Admin',
+      email: 'janecooper@example.com',
+      telephone: '+1-202-555-0170',
+      imageUrl:
+        'https://www.xdc.dev/images/NVKcNg3Z6K9RgLNYAQz3K9YRoFNW8P-X-Mwg7Yi00co/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/LzM4M2d1eHNqZDRr/ajZnbWt2NW1mLnBu/Zw',
+    },
+    {
+      name: 'Jane Cooper',
+      title: 'Regional Paradigm Technician',
+      role: 'User',
+      email: 'janecooper@example.com',
+      telephone: '+1-202-555-0170',
+      imageUrl:
+        'https://www.xdc.dev/images/Rx1f32oAUzobBpRKxT62Vw6etj8I3dE7fYYwmQmufkg/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L2hob3p6eDJuMThr/ZmZjNTdodmNjLnBu/Zw',
+    },
+    {
+      name: 'Jane Cooper',
+      title: 'Regional Paradigm Technician',
+      role: 'User',
+      email: 'janecooper@example.com',
+      telephone: '+1-202-555-0170',
+      imageUrl:
+        'https://www.xdc.dev/images/xLrwiWxMnxQ1KFiSpM53zw6iuNuVRY_YVgXiHOnfZ4E/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L3NqcTV2c3g0eGFs/YmtjMHZrbzhnLnBu/Zw',
+    },
+    {
+      name: 'Jane Cooper',
+      title: 'Regional Paradigm Technician',
+      role: 'Admin',
+      email: 'janecooper@example.com',
+      telephone: '+1-202-555-0170',
+      imageUrl:
+        'https://www.xdc.dev/images/NVKcNg3Z6K9RgLNYAQz3K9YRoFNW8P-X-Mwg7Yi00co/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/LzM4M2d1eHNqZDRr/ajZnbWt2NW1mLnBu/Zw',
+    },
+    {
+      name: 'Jane Cooper',
+      title: 'Regional Paradigm Technician',
+      role: 'User',
+      email: 'janecooper@example.com',
+      telephone: '+1-202-555-0170',
+      imageUrl:
+        'https://www.xdc.dev/images/Rx1f32oAUzobBpRKxT62Vw6etj8I3dE7fYYwmQmufkg/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L2hob3p6eDJuMThr/ZmZjNTdodmNjLnBu/Zw',
+    },
+    {
+      name: 'Jane Cooper',
+      title: 'Regional Paradigm Technician',
+      role: 'User',
+      email: 'janecooper@example.com',
+      telephone: '+1-202-555-0170',
+      imageUrl:
+        'https://www.xdc.dev/images/xLrwiWxMnxQ1KFiSpM53zw6iuNuVRY_YVgXiHOnfZ4E/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L3NqcTV2c3g0eGFs/YmtjMHZrbzhnLnBu/Zw',
+    },
+    // More people...
+  ]
+
   return (
     <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
       <div className="relative mx-auto max-w-xl">
@@ -130,7 +188,48 @@ export default function Example() {
           </div>
         </div>
         <div className="overflow-hidden rounded-lg bg-white shadow">
-          <div className="p-28"></div>
+          
+        <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {people.map((person) => (
+        <li key={person.email} className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
+          <div className="flex w-full items-center justify-between space-x-6 p-6">
+            <div className="flex-1 truncate">
+              <div className="flex items-center space-x-3">
+                <h3 className="truncate text-sm font-medium text-gray-900">{person.name}</h3>
+                <span className="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                  {person.role}
+                </span>
+              </div>
+              <p className="mt-2 truncate text-sm text-gray-500">{person.title}</p>
+            </div>
+            <img className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300" src={person.imageUrl} alt="" />
+          </div>
+          <div>
+            <div className="-mt-px flex divide-x divide-gray-200">
+              <div className="flex w-0 flex-1">
+                <a
+                  href={`mailto:${person.email}`}
+                  className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
+                >
+                  
+                  <span className="ml-3">Email</span>
+                </a>
+              </div>
+              <div className="-ml-px flex w-0 flex-1">
+                <a
+                  href={`tel:${person.telephone}`}
+                  className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
+                >
+                  
+                  <span className="ml-3">Call</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+          <div className="p-13"></div>
         </div>
         <section aria-labelledby="details-heading" className="mt-4">
           <Disclosure as="div" key="Add new pair">
@@ -218,6 +317,7 @@ export default function Example() {
                       </a>
                     </div>
                   </div>
+      
                 </Disclosure.Panel>
               </>
             )}
