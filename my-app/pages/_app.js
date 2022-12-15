@@ -12,6 +12,9 @@ const XDC = {
   id: 50,
   name: "XDC",
   network: "XDC",
+  nativeCurrency: {
+    symbol: "XDC",
+  },
   rpcUrls: {
     default: "https://rpc.xinfin.network",
   },
@@ -21,7 +24,10 @@ const XDC = {
 const XDCt = {
   id: 51,
   name: "XDC testnet",
-  network: "XDC",
+  network: "XDCt",
+  nativeCurrency: {
+    symbol: "XDCt",
+  },
   rpcUrls: {
     default: "https://rpc.apothem.network/",
   },
