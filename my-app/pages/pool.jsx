@@ -108,8 +108,8 @@ export default function Example() {
         <div className="overflow-hidden rounded-lg bg-white shadow">
           <div className="p-28"></div>
         </div>
-        <section aria-labelledby="details-heading" className="mt-3">
-          <div className="divide-y divide-gray-200 border-t lg:border-black">
+        <section aria-labelledby="details-heading" className="mt-4">
+          
             <Disclosure as="div" key="Add new pair">
               {({ open }) => (
                 <>
@@ -142,7 +142,7 @@ export default function Example() {
                     <div className="sm:col-span-2">
                       <label
                         htmlFor="number"
-                        className="block text-sm font-medium text-black-700"
+                        className="block text-center font-medium text-black-900"
                       >
                         Cryptocurrency
                       </label>
@@ -157,7 +157,7 @@ export default function Example() {
                           name="number"
                           id="number"
                           autoComplete="tel"
-                          className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
                           placeholder="0x..."
                         />
                       </div>
@@ -165,7 +165,7 @@ export default function Example() {
                     <div className="sm:col-span-2">
                       <label
                         htmlFor="number"
-                        className="block text-sm font-medium text-black-700"
+                        className="block text-center font-medium text-black-900"
                       >
                         Cryptocurrency
                       </label>
@@ -180,7 +180,7 @@ export default function Example() {
                           name="number"
                           id="number"
                           autoComplete="tel"
-                          className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
                           placeholder="0x..."
                         />
                       </div>
@@ -199,7 +199,7 @@ export default function Example() {
                 </>
               )}
             </Disclosure>
-          </div>
+          
         </section>
       </div>
     </div>
