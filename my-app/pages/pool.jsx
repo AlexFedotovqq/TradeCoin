@@ -3,19 +3,31 @@ import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 
+import { ethers } from "ethers";
+import { getContractInfo } from "../utils/contracts";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
-  //const { address } = useAccount();
-  //const { chain } = useNetwork();
+  // const { address } = useAccount();
+  const { chain } = useNetwork();
+  const { data: signer, isError, isLoading } = useSigner();
+
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
 
-  function startUpload() {
+  async function startUpload() {
+    console.log(chain.id);
+    const { address, abi } = getContractInfo(chain.id);
+    const contract = new ethers.Contract(address, abi, signer);
     console.log(tokenA);
     console.log(tokenB);
+    await contract.createPair(tokenA, tokenB);
+    console.log(
+      ethers.BigNumber.from(await contract.allPairsLength()).toNumber()
+    );
   }
 
   return (

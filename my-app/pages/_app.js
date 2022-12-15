@@ -34,13 +34,30 @@ const XDCt = {
   testnet: true,
 };
 
+const mumbai = {
+  id: 80001,
+  name: "Mumbai",
+  network: "MATIC",
+  nativeCurrency: {
+    symbol: "MATIC",
+  },
+  rpcUrls: {
+    default: "https://rpc-mumbai.maticvigil.com",
+  },
+  testnet: true,
+};
+
 const { chains, provider } = configureChains(
-  [XDC, XDCt],
+  [XDC, XDCt, mumbai],
   [
     publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => {
-        if (chain.id === XDC.id || chain.id === XDCt.id)
+        if (
+          chain.id === XDC.id ||
+          chain.id === XDCt.id ||
+          chain.id === mumbai.id
+        )
           return { http: chain.rpcUrls.default };
         return null;
       },
