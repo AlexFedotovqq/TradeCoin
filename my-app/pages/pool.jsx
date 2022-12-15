@@ -1,11 +1,23 @@
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
+import React, { useState } from "react";
+import { useAccount, useSigner, useNetwork } from "wagmi";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
+  const { address } = useAccount();
+  const { chain } = useNetwork();
+  const [tokenA, setTokenA] = useState("");
+  const [tokenB, setTokenB] = useState("");
+
+  function startUpload() {
+    console.log(tokenA);
+    console.log(tokenB);
+  }
+
   return (
     <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
       <div className="relative mx-auto max-w-xl">
@@ -98,7 +110,7 @@ export default function Example() {
                     href="#"
                     className="inline-flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-base font-medium text-indigo-600 hover:bg-indigo-50"
                   >
-                    Delete Liquidity
+                    Remove Liquidity
                   </a>
                 </div>
               </div>
@@ -156,7 +168,7 @@ export default function Example() {
                           type="text"
                           name="number"
                           id="number"
-                          autoComplete="tel"
+                          onChange={(e) => setTokenA(e.target.value)}
                           className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
                           placeholder="0x..."
                         />
@@ -179,7 +191,7 @@ export default function Example() {
                           type="text"
                           name="number"
                           id="number"
-                          autoComplete="tel"
+                          onChange={(e) => setTokenB(e.target.value)}
                           className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
                           placeholder="0x..."
                         />
@@ -188,10 +200,10 @@ export default function Example() {
                     <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
                       <div className="inline-flex rounded-md shadow">
                         <a
-                          href="#"
+                          onClick={() => startUpload()}
                           className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
                         >
-                          Send
+                          Add
                         </a>
                       </div>
                     </div>

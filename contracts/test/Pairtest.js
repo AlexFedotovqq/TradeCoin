@@ -48,14 +48,15 @@ describe("features", function () {
   });
 
   it("Should mint ", async function () {
-    const token0Amount = expandTo18Decimals(40);
-    const token1Amount = expandTo18Decimals(10);
+    const token0Amount = expandTo18Decimals(2);
+    const token1Amount = expandTo18Decimals(18);
     await token0.transfer(pair.address, token0Amount);
     await token1.transfer(pair.address, token1Amount);
 
     await pair.mint(deployer.address);
 
-    const expectedLiquidity = expandTo18Decimals(20);
+    // sqrt( t1 * t2 )
+    const expectedLiquidity = expandTo18Decimals(6);
     expect(await pair.totalSupply()).to.eq(expectedLiquidity);
 
     expect(await token0.balanceOf(pair.address)).to.eq(token0Amount);
@@ -75,13 +76,11 @@ describe("features", function () {
 
     await pair.mint(deployer.address);
 
-    /*     expect(await token0.balanceOf(pair.address)).to.eq(token0Amount);
-    expect(await token1.balanceOf(pair.address)).to.eq(token1Amount);
+    // we need math
+    // Y * X = Ynew * Xnew
+    // 50/6 = 8.(3) = Ynew
 
-    const reserves = await pair.getReserves();
-
-    expect(reserves[0]).to.eq(token0Amount);
-    expect(reserves[1]).to.eq(token1Amount); */
+    // the outY = Y - Ynew = 1.(6)
 
     const swapAmount = expandTo18Decimals(1);
     const expectedOutputAmount = ethers.BigNumber.from("1662497915624478906");
