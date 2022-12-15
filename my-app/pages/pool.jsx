@@ -8,8 +8,8 @@ function classNames(...classes) {
 }
 
 export default function Example() {
-  const { address } = useAccount();
-  const { chain } = useNetwork();
+  //const { address } = useAccount();
+  //const { chain } = useNetwork();
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
 
@@ -167,6 +167,7 @@ export default function Example() {
                         type="text"
                         name="number"
                         id="number"
+                        onChange={(event) => setTokenA(event.target.value)}
                         className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
                         placeholder="0x..."
                       />
@@ -189,7 +190,7 @@ export default function Example() {
                         type="text"
                         name="number"
                         id="number"
-                        autoComplete="tel"
+                        onChange={(event) => setTokenB(event.target.value)}
                         className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
                         placeholder="0x..."
                       />
