@@ -1,5 +1,6 @@
 import { Popover } from "@headlessui/react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Index() {
   return (
@@ -57,10 +58,13 @@ export default function Index() {
         </div>
       </div>
       <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <img
+        <Image
           className="h-56 w-full object-cover sm:h-72 md:h-96 lg:h-full lg:w-full"
           src="https://www.interactivebrokers.com/images/web/cryptocurrency-hero.jpg"
           alt=""
+          width="600"
+          height="600"
+          quality="100"
         />
       </div>
     </div>
