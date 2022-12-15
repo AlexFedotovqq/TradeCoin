@@ -6,7 +6,6 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const navigation = [
   { name: "XRC-Swap", href: "/" },
-  { name: "Home", href: "/home" },
   { name: "Exchange", href: "/exchange" },
   { name: "Pool", href: "/pool" },
   { name: "Contact us", href: "/contact" },
