@@ -2,6 +2,10 @@ import { Popover } from "@headlessui/react";
 import Link from "next/link";
 import Image from "next/image";
 
+const myLoader = ({ src, width, quality }) => {
+  return `https://www.interactivebrokers.com/images/web/${src}?w=${width}&q=${100}`;
+};
+
 export default function Index() {
   return (
     <div className="relative overflow-hidden bg-orange-400 h-screen">
@@ -60,11 +64,11 @@ export default function Index() {
       <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
         <Image
           className="h-56 w-full object-cover sm:h-72 md:h-96 lg:h-full lg:w-full"
-          src="https://www.interactivebrokers.com/images/web/cryptocurrency-hero.jpg"
+          src="cryptocurrency-hero.jpg"
           alt=""
           width="600"
           height="600"
-          quality="100"
+          loader={myLoader}
         />
       </div>
     </div>
