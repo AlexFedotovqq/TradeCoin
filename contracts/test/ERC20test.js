@@ -6,9 +6,8 @@ function expandTo18Decimals(n) {
 }
 
 const TOTAL_SUPPLY = expandTo18Decimals(10000);
-const TEST_AMOUNT = expandTo18Decimals(10);
 
-describe("", function () {
+describe("erc 20", function () {
   let token;
   let deployer;
   let jane;
@@ -19,11 +18,11 @@ describe("", function () {
     await token.deployed();
   });
 
-  it("Should set the right ", async function () {
+  it("Should set the right details for erc 20", async function () {
     const name = await token.name();
 
-    expect(name).to.eq("Uniswap V2");
-    expect(await token.symbol()).to.eq("UNI-V2");
+    expect(name).to.eq("XRC Swap");
+    expect(await token.symbol()).to.eq("XRC-SW");
     expect(await token.decimals()).to.eq(18);
     expect(await token.totalSupply()).to.eq(TOTAL_SUPPLY);
     expect(await token.balanceOf(deployer.address)).to.eq(TOTAL_SUPPLY);
