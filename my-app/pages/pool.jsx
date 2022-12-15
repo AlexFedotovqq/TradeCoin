@@ -28,6 +28,25 @@ export default function Example() {
       imageUrl:
         'https://www.xdc.dev/images/NVKcNg3Z6K9RgLNYAQz3K9YRoFNW8P-X-Mwg7Yi00co/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/LzM4M2d1eHNqZDRr/ajZnbWt2NW1mLnBu/Zw',
     },
+    {
+      name: 'Jane Cooper',
+      title: 'Regional Paradigm Technician',
+      role: 'User',
+      email: 'janecooper@example.com',
+      telephone: '+1-202-555-0170',
+      imageUrl:
+        'https://www.xdc.dev/images/Rx1f32oAUzobBpRKxT62Vw6etj8I3dE7fYYwmQmufkg/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L2hob3p6eDJuMThr/ZmZjNTdodmNjLnBu/Zw',
+    },
+    {
+      name: 'Jane Cooper',
+      title: 'Regional Paradigm Technician',
+      role: 'User',
+      email: 'janecooper@example.com',
+      telephone: '+1-202-555-0170',
+      imageUrl:
+        'https://www.xdc.dev/images/xLrwiWxMnxQ1KFiSpM53zw6iuNuVRY_YVgXiHOnfZ4E/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L3NqcTV2c3g0eGFs/YmtjMHZrbzhnLnBu/Zw',
+    },
+    
     // More people...
   ]
 
