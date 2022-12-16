@@ -264,18 +264,19 @@ export default function Example() {
             </div>
           </div>
         </div>
-        <div className="overflow-hidden rounded-lg bg-gray-200 shadow">
-        <div className="mt-4">
+        <div className="overflow-hidden rounded-lg bg-gray-200 shadow xl:p-6">
+        
+        <div className="mt-0">
           <ul
             role="list"
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
           >
             {people.map((person) => (
               <li
                 key={person.email}
-                className="col-span-1  rounded-lg bg-white shadow"
+                className="col-span-1 rounded-lg bg-white shadow"
               >
-                <div className="flex w-full items-center justify-between space-x-6 p-5">
+                <div className="flex w-full items-center justify-between space-x-6 p-5 ">
                   <div className="flex-1 truncate">
                     <div className="flex items-center space-x-3">
                       <h3 className="truncate text-sm font-medium text-gray-900">
@@ -310,7 +311,7 @@ export default function Example() {
                                   >
                                     Add
                                   </span>
-                                  <span className="ml-6 flex items-center">
+                                  <span className="ml-5 flex items-center">
                                     {open ? (
                                       <MinusIcon
                                         className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
@@ -365,14 +366,7 @@ export default function Example() {
                                     
                                   </label>
                                   <div className="relative mt-1 rounded-md shadow-sm">
-                                    <div className="absolute inset-y-0 left-0 flex items-center">
-                                      <label
-                                        htmlFor="country"
-                                        className="sr-only"
-                                      >
-                                        
-                                      </label>
-                                    </div>
+                                    
                                     <input
                                       type="text"
                                       name="number"
@@ -419,7 +413,7 @@ export default function Example() {
                                   >
                                     Remove
                                   </span>
-                                  <span className="ml-1 flex items-center">
+                                  <span className="ml-0 flex items-center">
                                     {open ? (
                                       <MinusIcon
                                         className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
