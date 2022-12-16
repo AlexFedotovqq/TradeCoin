@@ -21,19 +21,6 @@ const XDC = {
   testnet: false,
 };
 
-const XDCt = {
-  id: 51,
-  name: "XDC testnet",
-  network: "XDCt",
-  nativeCurrency: {
-    symbol: "XDCt",
-  },
-  rpcUrls: {
-    default: "https://rpc.apothem.network/",
-  },
-  testnet: true,
-};
-
 const mumbai = {
   id: 80001,
   name: "Mumbai",
@@ -48,16 +35,12 @@ const mumbai = {
 };
 
 const { chains, provider } = configureChains(
-  [XDC, XDCt, mumbai],
+  [XDC, mumbai],
   [
     publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => {
-        if (
-          chain.id === XDC.id ||
-          chain.id === XDCt.id ||
-          chain.id === mumbai.id
-        )
+        if (chain.id === XDC.id || chain.id === mumbai.id)
           return { http: chain.rpcUrls.default };
         return null;
       },
