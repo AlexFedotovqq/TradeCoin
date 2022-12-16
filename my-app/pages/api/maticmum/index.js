@@ -1,7 +1,7 @@
-import { getContractInfo } from "../../utils/contracts";
+import { getContractInfo } from "../../../utils/contracts";
 import { ethers } from "ethers";
-import UniswapV2Pair from "../../utils/contracts/UniswapV2Pair.json";
-import ERC20 from "../../utils/contracts/ERC20.json";
+import UniswapV2Pair from "../../../utils/contracts/UniswapV2Pair.json";
+import ERC20 from "../../../utils/contracts/ERC20.json";
 
 export default async function handler(req, res) {
   try {
