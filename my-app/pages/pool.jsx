@@ -160,13 +160,13 @@ export default function Example() {
           <div className="mx-auto flex justify-center py-2 px-4 sm:px-6">
             <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
               <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-                <div className="inline-flex rounded-md shadow">
+                
                   <section aria-labelledby="details-heading" className="mt-4">
                     <Disclosure as="div" key="Add new pair">
                       {({ open }) => (
                         <>
                           <h3>
-                            <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                            <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-10 py-2 text-base font-medium text-white hover:bg-indigo-700">
                               <span
                                 className={classNames(
                                   open ? "text-indigo-200" : "text-white",
@@ -259,12 +259,12 @@ export default function Example() {
                       )}
                     </Disclosure>
                   </section>
-                </div>
+                
               </div>
             </div>
           </div>
         </div>
-        <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="overflow-hidden rounded-lg bg-gray-200 shadow">
           <ul
             role="list"
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -272,9 +272,9 @@ export default function Example() {
             {people.map((person) => (
               <li
                 key={person.email}
-                className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
+                className="col-span-1  rounded-lg bg-white shadow"
               >
-                <div className="flex w-full items-center justify-between space-x-6 p-6">
+                <div className="flex w-full items-center justify-between space-x-6 p-5">
                   <div className="flex-1 truncate">
                     <div className="flex items-center space-x-3">
                       <h3 className="truncate text-sm font-medium text-gray-900">
@@ -289,7 +289,7 @@ export default function Example() {
                   </div>
                 </div>
                 <div>
-                  <div className="-mt-px flex divide-x divide-gray-200">
+                  <div className="-mt-px flex divide-x divide-gray-300">
                     <div className="flex w-0 flex-1">
                       <section
                         aria-labelledby="details-heading"
@@ -299,11 +299,11 @@ export default function Example() {
                           {({ open }) => (
                             <>
                               <h3>
-                                <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                                <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600  px-1 py-2 text-base font-medium text-white hover:bg-green-700 ">
                                   <span
                                     className={classNames(
-                                      open ? "text-indigo-200" : "text-white",
-                                      "text-sm font-medium"
+                                      open ? "text-green-200" : "text-white",
+                                      "text-sm font-medium font-bold"
                                     )}
                                   >
                                     Add
@@ -412,7 +412,7 @@ export default function Example() {
                                   <span
                                     className={classNames(
                                       open ? "text-indigo-200" : "text-white",
-                                      "text-sm font-medium"
+                                      "text-sm font-medium font-bold"
                                     )}
                                   >
                                     Remove
