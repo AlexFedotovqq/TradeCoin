@@ -265,6 +265,7 @@ export default function Example() {
           </div>
         </div>
         <div className="overflow-hidden rounded-lg bg-gray-200 shadow">
+        <div className="mt-4">
           <ul
             role="list"
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -288,6 +289,7 @@ export default function Example() {
                     </div>
                   </div>
                 </div>
+                
                 <div>
                   <div className="-mt-px flex divide-x divide-gray-300">
                     <div className="flex w-0 flex-1">
@@ -332,7 +334,7 @@ export default function Example() {
                                     htmlFor="number"
                                     className="block text-center font-medium text-black-900"
                                   >
-                                    Cryptocurrency
+                                    
                                   </label>
                                   <div className="relative mt-1 rounded-md shadow-sm">
                                     <div className="absolute inset-y-0 left-0 flex items-center">
@@ -340,7 +342,7 @@ export default function Example() {
                                         htmlFor="country"
                                         className="sr-only"
                                       >
-                                        Cryptocurrency
+                                        
                                       </label>
                                     </div>
                                     <input
@@ -360,7 +362,7 @@ export default function Example() {
                                     htmlFor="number"
                                     className="block text-center font-medium text-black-900"
                                   >
-                                    Cryptocurrency
+                                    
                                   </label>
                                   <div className="relative mt-1 rounded-md shadow-sm">
                                     <div className="absolute inset-y-0 left-0 flex items-center">
@@ -368,7 +370,7 @@ export default function Example() {
                                         htmlFor="country"
                                         className="sr-only"
                                       >
-                                        Cryptocurrency
+                                        
                                       </label>
                                     </div>
                                     <input
@@ -441,7 +443,7 @@ export default function Example() {
                                     htmlFor="number"
                                     className="block text-center font-medium text-black-900"
                                   >
-                                    Cryptocurrency
+                                    
                                   </label>
                                   <div className="relative mt-1 rounded-md shadow-sm">
                                     <div className="absolute inset-y-0 left-0 flex items-center">
@@ -449,7 +451,7 @@ export default function Example() {
                                         htmlFor="country"
                                         className="sr-only"
                                       >
-                                        Cryptocurrency
+                                        
                                       </label>
                                     </div>
                                     <input
@@ -469,7 +471,7 @@ export default function Example() {
                                     htmlFor="number"
                                     className="block text-center font-medium text-black-900"
                                   >
-                                    Cryptocurrency
+                                    
                                   </label>
                                   <div className="relative mt-1 rounded-md shadow-sm">
                                     <div className="absolute inset-y-0 left-0 flex items-center">
@@ -477,7 +479,7 @@ export default function Example() {
                                         htmlFor="country"
                                         className="sr-only"
                                       >
-                                        Cryptocurrency
+                                        
                                       </label>
                                     </div>
                                     <input
@@ -514,6 +516,7 @@ export default function Example() {
             ))}
           </ul>
         </div>
+      </div>
       </div>
     </div>
   );
