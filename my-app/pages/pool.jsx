@@ -156,7 +156,7 @@ export default function Example() {
           </h2>
         </div>
         <div className="bg-orange-400">
-          <div className="mx-auto flex justify-center py-12 px-4 sm:px-6">
+          <div className="mx-auto flex justify-center py-2 px-4 sm:px-6">
             <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
               <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
                 <div className="inline-flex rounded-md shadow">
@@ -296,12 +296,106 @@ export default function Example() {
                 <div>
                   <div className="-mt-px flex divide-x divide-gray-200">
                     <div className="flex w-0 flex-1">
-                      <a
-                        href={`mailto:${person.email}`}
-                        className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
-                      >
-                        <span className="ml-3">Add</span>
-                      </a>
+                      
+                    <section aria-labelledby="details-heading" className="mt-4">
+                    <Disclosure as="div" key="Add new pair">
+                      {({ open }) => (
+                        <>
+                          <h3>
+                            <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                              <span
+                                className={classNames(
+                                  open ? "text-indigo-200" : "text-white",
+                                  "text-sm font-medium"
+                                )}
+                              >
+                                Add new pair
+                              </span>
+                              <span className="ml-6 flex items-center">
+                                {open ? (
+                                  <MinusIcon
+                                    className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                    aria-hidden="true"
+                                  />
+                                ) : (
+                                  <PlusIcon
+                                    className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                                    aria-hidden="true"
+                                  />
+                                )}
+                              </span>
+                            </Disclosure.Button>
+                          </h3>
+                          <Disclosure.Panel
+                            as="div"
+                            className="prose prose-sm pb-6"
+                          >
+                            <div className="sm:col-span-2">
+                              <label
+                                htmlFor="number"
+                                className="block text-center font-medium text-black-900"
+                              >
+                                Cryptocurrency
+                              </label>
+                              <div className="relative mt-1 rounded-md shadow-sm">
+                                <div className="absolute inset-y-0 left-0 flex items-center">
+                                  <label htmlFor="country" className="sr-only">
+                                    Cryptocurrency
+                                  </label>
+                                </div>
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setTokenA(event.target.value)
+                                  }
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  placeholder="0x..."
+                                />
+                              </div>
+                            </div>
+                            <div className="sm:col-span-2">
+                              <label
+                                htmlFor="number"
+                                className="block text-center font-medium text-black-900"
+                              >
+                                Cryptocurrency
+                              </label>
+                              <div className="relative mt-1 rounded-md shadow-sm">
+                                <div className="absolute inset-y-0 left-0 flex items-center">
+                                  <label htmlFor="country" className="sr-only">
+                                    Cryptocurrency
+                                  </label>
+                                </div>
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setTokenB(event.target.value)
+                                  }
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  placeholder="0x..."
+                                />
+                              </div>
+                            </div>
+                            <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
+                              <div className="inline-flex rounded-md shadow">
+                                <a
+                                  onClick={() => startUpload()}
+                                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                                >
+                                  Add
+                                </a>
+                              </div>
+                            </div>
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+                  </section>
+                      
                     </div>
                     <div className="-ml-px flex w-0 flex-1">
                       <a
