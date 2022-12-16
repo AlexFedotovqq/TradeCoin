@@ -218,7 +218,7 @@ export default function Example() {
                         href={`mailto:${person.email}`}
                         className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                       >
-                        <span className="ml-3">Email</span>
+                        <span className="ml-3">Add</span>
                       </a>
                     </div>
                     <div className="-ml-px flex w-0 flex-1">
@@ -226,7 +226,7 @@ export default function Example() {
                         href={`tel:${person.telephone}`}
                         className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500"
                       >
-                        <span className="ml-3">Call</span>
+                        <span className="ml-3">Remove</span>
                       </a>
                     </div>
                   </div>
