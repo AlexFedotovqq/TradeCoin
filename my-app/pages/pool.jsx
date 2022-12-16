@@ -309,7 +309,7 @@ export default function Example() {
                                   "text-sm font-medium"
                                 )}
                               >
-                                Add new pair
+                                Add
                               </span>
                               <span className="ml-6 flex items-center">
                                 {open ? (
@@ -410,7 +410,7 @@ export default function Example() {
                                   "text-sm font-medium"
                                 )}
                               >
-                                Add new pair
+                                Remove
                               </span>
                               <span className="ml-6 flex items-center">
                                 {open ? (
