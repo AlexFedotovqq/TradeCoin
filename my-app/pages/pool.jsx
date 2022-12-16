@@ -53,7 +53,8 @@ export default function Example() {
         "https://www.xdc.dev/images/xLrwiWxMnxQ1KFiSpM53zw6iuNuVRY_YVgXiHOnfZ4E/w:880/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L3NqcTV2c3g0eGFs/YmtjMHZrbzhnLnBu/Zw",
     },
     {
-      name: "Jane Cooper",
+      name: "Token 1",
+      name2: "",
       title: "Regional Paradigm Technician",
       role: "Admin",
       email: "janecooper@example.com",
@@ -280,6 +281,11 @@ export default function Example() {
                         {person.name}
                       </h3>
                     </div>
+                    <div className="flex items-center space-x-3">
+                      <h3 className="truncate text-sm font-medium text-gray-900">
+                        {person.name2}
+                      </h3>
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -287,13 +293,13 @@ export default function Example() {
                     <div className="flex w-0 flex-1">
                       <section
                         aria-labelledby="details-heading"
-                        className="mt-4"
+                        className="mt-0"
                       >
                         <Disclosure as="div" key="Add new pair">
                           {({ open }) => (
                             <>
                               <h3>
-                                <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                                <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
                                   <span
                                     className={classNames(
                                       open ? "text-indigo-200" : "text-white",
@@ -396,13 +402,13 @@ export default function Example() {
                     <div className="-ml-px flex w-0 flex-1">
                       <section
                         aria-labelledby="details-heading"
-                        className="mt-4"
+                        className="mt-"
                       >
                         <Disclosure as="div" key="Add new pair">
                           {({ open }) => (
                             <>
                               <h3>
-                                <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                                <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
                                   <span
                                     className={classNames(
                                       open ? "text-indigo-200" : "text-white",
@@ -411,7 +417,7 @@ export default function Example() {
                                   >
                                     Remove
                                   </span>
-                                  <span className="ml-6 flex items-center">
+                                  <span className="ml-1 flex items-center">
                                     {open ? (
                                       <MinusIcon
                                         className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
