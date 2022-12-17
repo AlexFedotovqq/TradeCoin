@@ -1,4 +1,7 @@
 import { BanknotesIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import React, { useState } from "react";
+import { useAccount, useSigner, useNetwork } from "wagmi";
+import { ethers } from "ethers";
 
 const transactions = [
   {
@@ -44,6 +47,14 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const [tokenA, setTokenA] = useState("");
+  const [tokenB, setTokenB] = useState("");
+  const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
+
+  async function swap() {
+    console.log(124);
+  }
+
   return (
     <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
       <div className="relative mx-auto max-w-xl">
@@ -118,7 +129,7 @@ export default function Example() {
             Exchange
           </h2>
           <p className="mt-4 text-lg leading-6 text-black-500">
-            Here you can exchange currency
+            Here you can exchange cryptocurrency
           </p>
         </div>
 
@@ -127,71 +138,50 @@ export default function Example() {
             htmlFor="number"
             className="block text-sm font-medium text-black-700"
           >
-            Coin 1
+            Exchange cryptocurrency
           </label>
           <div className="relative mt-1 rounded-md shadow-sm">
-            <div className="absolute inset-y-0 left-0 flex items-center">
-              <label htmlFor="country" className="sr-only">
-                Coin 1
-              </label>
-
-              <select
-                id="country"
-                name="country"
-                className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-3 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
-              >
-                <option>ETH</option>
-                <option>BNB</option>
-                <option>DOT</option>
-              </select>
-            </div>
             <input
               type="text"
               name="number"
               id="number"
               autoComplete="tel"
+              onChange={(event) => setTokenA(event.target.value)}
               className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="0,232323232"
+              placeholder="0x..."
             />
-          </div>
-        </div>
-        <div className="sm:col-span-2">
-          <label
-            htmlFor="number"
-            className="block text-sm font-medium text-black-700"
-          >
-            Coin 2
-          </label>
-          <div className="relative mt-1 rounded-md shadow-sm">
-            <div className="absolute inset-y-0 left-0 flex items-center">
-              <label htmlFor="country" className="sr-only">
-                Coin
-              </label>
-              <select
-                id="country"
-                name="country"
-                className="h-full rounded-md border-transparent bg-transparent py-0 pl-4 pr-3 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500"
-              >
-                <option>ETH</option>
-                <option>BNB</option>
-                <option>DOT</option>
-              </select>
-            </div>
+
+            <input
+              type="text"
+              name="number"
+              id="number"
+              onChange={(event) => setQuantity(event.target.value)}
+              className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="1"
+            />
+
+            <label
+              htmlFor="number"
+              className="block text-sm font-medium text-black-700"
+            >
+              for cryptocurrency
+            </label>
+
             <input
               type="text"
               name="number"
               id="number"
               autoComplete="tel"
+              onChange={(event) => setTokenB(event.target.value)}
               className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="0,22222112"
+              placeholder="0x..."
             />
           </div>
-        </div>
 
-        <div className="sm:col-span-2">
           <button
             type="submit"
-            className=" relative mt-5 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2"
+            onClick={() => swap()}
+            className="relative mt-5 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2"
           >
             Exchange
           </button>
@@ -323,7 +313,6 @@ export default function Example() {
                             ))}
                           </tbody>
                         </table>
-                        {/* Pagination */}
                       </div>
                     </div>
                   </div>

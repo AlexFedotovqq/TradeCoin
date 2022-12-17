@@ -12,6 +12,8 @@ const XDC = {
   id: 50,
   name: "XDC",
   network: "XDC",
+  iconUrl:
+    "https://imgs.search.brave.com/0UQVup3GSu26EZXQ_LrVuwJV3D-7ORH43soEoDJjL-4/rs:fit:40:40:1/g:ce/aHR0cHM6Ly9hc3Nl/dHMuY29pbmdlY2tv/LmNvbS9jb2lucy9p/bWFnZXMvMjkxMi9s/YXJnZS94ZGMtaWNv/bi5wbmc_MTYzMzcw/MDg5MA",
   nativeCurrency: {
     symbol: "XDC",
   },
