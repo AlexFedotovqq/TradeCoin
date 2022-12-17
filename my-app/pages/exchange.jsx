@@ -3,6 +3,12 @@ import React, { useState } from "react";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 
+import { getContractInfo, getERC20, getPair } from "../utils/contracts";
+
+function expandTo18Decimals(n) {
+  return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
+}
+
 const transactions = [
   {
     id: 1,
@@ -49,7 +55,7 @@ function classNames(...classes) {
 export default function Example() {
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
-  const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   async function swap() {
     console.log(124);
