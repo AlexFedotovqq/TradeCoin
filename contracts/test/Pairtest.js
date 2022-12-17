@@ -8,6 +8,7 @@ function expandTo18Decimals(n) {
 }
 
 const TOTAL_SUPPLY = expandTo18Decimals(10000);
+const MINIMUM_LIQUIDITY = ethers.BigNumber.from(10).pow(3);
 
 describe("features", function () {
   let factory, pair, token0, token1;
@@ -63,41 +64,6 @@ describe("features", function () {
     expect(await token1.balanceOf(pair.address)).to.eq(token1Amount);
   });
 
-  it("Should mint to another account", async function () {
-    const token0Amount = expandTo18Decimals(2000);
-    const token1Amount = expandTo18Decimals(2000);
-
-    await token0.transfer(jane.address, token0Amount, {
-      gasLimit: 60000,
-    });
-
-    await token1.transfer(jane.address, token1Amount, {
-      gasLimit: 60000,
-    });
-
-    expect(await token0.balanceOf(jane.address)).to.eq(token0Amount);
-    expect(await token1.balanceOf(jane.address)).to.eq(token1Amount);
-
-    await token0.connect(jane).transfer(pair.address, token0Amount, {
-      gasLimit: 60000,
-    });
-
-    await token1.connect(jane).transfer(pair.address, token1Amount, {
-      gasLimit: 60000,
-    });
-
-    await pair.mint(jane.address, {
-      gasLimit: 200000,
-    });
-
-    // sqrt( t1 * t2 )
-    const expectedLiquidity = expandTo18Decimals(2000);
-    expect(await pair.totalSupply()).to.eq(expectedLiquidity);
-
-    expect(await token0.balanceOf(pair.address)).to.eq(token0Amount);
-    expect(await token1.balanceOf(pair.address)).to.eq(token1Amount);
-  });
-
   it("Should swap", async function () {
     const token0Amount = expandTo18Decimals(5);
     const token1Amount = expandTo18Decimals(10);
@@ -145,5 +111,83 @@ describe("features", function () {
     expect(await token1.balanceOf(deployer.address)).to.eq(
       totalSupplyToken1.sub(token1Amount).add(expectedOutputAmount)
     );
+  });
+
+  it("burn", async () => {
+    const token0Amount = expandTo18Decimals(3);
+    const token1Amount = expandTo18Decimals(3);
+
+    await token0.transfer(pair.address, token0Amount, {
+      gasLimit: 60000,
+    });
+    await token1.transfer(pair.address, token1Amount, {
+      gasLimit: 60000,
+    });
+
+    await pair.mint(deployer.address, {
+      gasLimit: 200000,
+    });
+
+    const expectedLiquidity = expandTo18Decimals(3);
+
+    await pair.transfer(
+      pair.address,
+      expectedLiquidity.sub(MINIMUM_LIQUIDITY),
+      {
+        gasLimit: 60000,
+      }
+    );
+
+    await pair.burn(deployer.address, {
+      gasLimit: 200000,
+    });
+
+    expect(await pair.balanceOf(deployer.address)).to.eq(0);
+    expect(await pair.totalSupply()).to.eq(MINIMUM_LIQUIDITY);
+    expect(await token0.balanceOf(pair.address)).to.eq(1000);
+    expect(await token1.balanceOf(pair.address)).to.eq(1000);
+    const totalSupplyToken0 = await token0.totalSupply();
+    const totalSupplyToken1 = await token1.totalSupply();
+    expect(await token0.balanceOf(deployer.address)).to.eq(
+      totalSupplyToken0.sub(1000)
+    );
+    expect(await token1.balanceOf(deployer.address)).to.eq(
+      totalSupplyToken1.sub(1000)
+    );
+  });
+
+  it("Should mint to another account", async function () {
+    const token0Amount = expandTo18Decimals(2000);
+    const token1Amount = expandTo18Decimals(2000);
+
+    await token0.transfer(jane.address, token0Amount, {
+      gasLimit: 60000,
+    });
+
+    await token1.transfer(jane.address, token1Amount, {
+      gasLimit: 60000,
+    });
+
+    expect(await token0.balanceOf(jane.address)).to.eq(token0Amount);
+    expect(await token1.balanceOf(jane.address)).to.eq(token1Amount);
+
+    await token0.connect(jane).transfer(pair.address, token0Amount, {
+      gasLimit: 60000,
+    });
+
+    await token1.connect(jane).transfer(pair.address, token1Amount, {
+      gasLimit: 60000,
+    });
+
+    await pair.mint(jane.address, {
+      gasLimit: 200000,
+    });
+
+    // sqrt( t1 * t2 )
+    const expectedLiquidity = expandTo18Decimals(2000);
+    expect(await pair.totalSupply()).to.eq(expectedLiquidity);
+
+    expect(await token0.balanceOf(pair.address)).to.eq(token0Amount);
+    expect(await token1.balanceOf(pair.address)).to.eq(token1Amount);
   });
 });

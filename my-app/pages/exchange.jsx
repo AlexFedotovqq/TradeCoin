@@ -242,11 +242,6 @@ export default function Example() {
                       </li>
                     ))}
                   </ul>
-
-                  <nav
-                    className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3"
-                    aria-label="Pagination"
-                  ></nav>
                 </div>
 
                 {/* Activity table (small breakpoint and up) */}

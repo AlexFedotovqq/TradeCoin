@@ -55,6 +55,8 @@ export default function Example({ pools }) {
     });
   }
 
+  async function removeLiquidity() {}
+
   return (
     <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
       <div className="relative mx-auto max-w-xl">
@@ -374,15 +376,12 @@ export default function Example({ pools }) {
                                     setWithdrawalQuantity(event.target.value)
                                   }
                                   className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                  placeholder="0"
+                                  placeholder="1"
                                 />
                               </div>
                               <div className="ml-2 mt-2 lg:flex-shrink-0 inline-flex rounded-md shadow">
                                 <a
-                                  onClick={
-                                    () => console.log(124)
-                                    //withdrawLiquidity()
-                                  }
+                                  onClick={() => removeLiquidity()}
                                   className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
                                 >
                                   Add
@@ -404,9 +403,9 @@ export default function Example({ pools }) {
 }
 
 export async function getStaticProps() {
-  //const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
-  const pools = await queryContract();
-  //const pools = await res.json();
+  const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
+  //const pools = await queryContract();
+  const pools = await res.json();
 
   return {
     props: {
