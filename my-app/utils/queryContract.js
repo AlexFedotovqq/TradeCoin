@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
-import { getContractInfo } from "../../../utils/contracts";
-import UniswapV2Pair from "../../../utils/contracts/UniswapV2Pair.json";
-import ERC20 from "../../../utils/contracts/ERC20.json";
+import { getContractInfo } from "../utils/contracts";
+import UniswapV2Pair from "../utils/contracts/UniswapV2Pair.json";
+import ERC20 from "../utils/contracts/ERC20.json";
 
-export default async function handler(req, res) {
+export async function queryContract() {
   try {
     const { address, abi } = getContractInfo(80001);
 
@@ -60,8 +60,8 @@ export default async function handler(req, res) {
       });
     }
 
-    res.status(200).json(items);
+    return items;
   } catch (err) {
-    res.status(500).send({ error: "failed to fetch data" + err });
+    return { error: "failed to fetch data" + err };
   }
 }
