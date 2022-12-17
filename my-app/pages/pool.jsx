@@ -55,7 +55,18 @@ export default function Example({ pools }) {
     });
   }
 
-  async function removeLiquidity() {}
+  async function removeLiquidity(pairAddress) {
+    const { abiPair } = getPair();
+    const pair = new ethers.Contract(pairAddress, abiPair, signer);
+
+    await pair.transfer(pair.address, expandTo18Decimals(withdrawalQuantity), {
+      gasLimit: 60000,
+    });
+
+    await pair.burn(address, {
+      gasLimit: 200000,
+    });
+  }
 
   return (
     <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
@@ -381,7 +392,9 @@ export default function Example({ pools }) {
                               </div>
                               <div className="ml-2 mt-2 lg:flex-shrink-0 inline-flex rounded-md shadow">
                                 <a
-                                  onClick={() => removeLiquidity()}
+                                  onClick={() =>
+                                    removeLiquidity(pool.pairAddress)
+                                  }
                                   className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
                                 >
                                   Add
