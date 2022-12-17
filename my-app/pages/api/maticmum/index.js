@@ -36,6 +36,10 @@ export default async function handler(req, res) {
       const name0 = await Token0.name();
       const name1 = await Token1.name();
 
+      const reserves = await Pair.getReserves();
+      const reserves0 = ethers.BigNumber.from(reserves._reserve0).toNumber();
+      const reserves1 = ethers.BigNumber.from(reserves._reserve1).toNumber();
+
       const supply = ethers.BigNumber.from(await Pair.totalSupply()).toNumber();
 
       items.push({
@@ -43,6 +47,8 @@ export default async function handler(req, res) {
         token1Address: token1,
         token0Name: name0,
         token1Name: name1,
+        token0Reserves: reserves0,
+        token1Reserves: reserves1,
         totalSupply: supply,
         pairAddress: pairAddress,
       });
