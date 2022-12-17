@@ -182,13 +182,9 @@ export default function Example() {
               type="text"
               name="number"
               id="number"
-<<<<<<< HEAD
-              onChange={(event) => setQuantity(event.target.value)}
-              className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-=======
               onChange={(event) => setSwapAmount(event.target.value)}
-              className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
->>>>>>> b841717cdc85b8f04c15500ddd740dc3978e9ac4
+              className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+
               placeholder="1"
             />
 
