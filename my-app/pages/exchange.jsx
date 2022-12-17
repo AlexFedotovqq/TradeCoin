@@ -53,12 +53,33 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const { chain } = useNetwork();
+  const { data: signer } = useSigner();
+  const { address } = useAccount();
+
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [swapAmount, setSwapAmount] = useState("");
 
   async function swap() {
-    console.log(124);
+    const { address, abi } = getContractInfo(chain.id);
+    const { abiPair } = getPair();
+    const { abiERC20 } = getERC20();
+
+    const contract = new ethers.Contract(address, abi, signer);
+    const pairAddress = await contract.getPair(tokenA, tokenB);
+    console.log(pairAddress);
+    const pair = new ethers.Contract(pairAddress, abiPair, signer);
+
+    const token0 = new ethers.Contract(tokenA, abiERC20, signer);
+
+    /*     await token0.transfer(pair.address, expandTo18Decimals(swapAmount), {
+      gasLimit: 60000,
+    });
+
+    await pair.swap(0, expectedOutputAmount, deployer.address, "0x", {
+      gasLimit: 200000,
+    }); */
   }
 
   return (
@@ -161,8 +182,13 @@ export default function Example() {
               type="text"
               name="number"
               id="number"
+<<<<<<< HEAD
               onChange={(event) => setQuantity(event.target.value)}
               className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+=======
+              onChange={(event) => setSwapAmount(event.target.value)}
+              className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
+>>>>>>> b841717cdc85b8f04c15500ddd740dc3978e9ac4
               placeholder="1"
             />
 

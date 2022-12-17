@@ -12,7 +12,7 @@ export function getContractInfo(chain) {
 
 export function getERC20() {
   return {
-    abi: ERC20.abi,
+    abiERC20: ERC20.abi,
   };
 }
 

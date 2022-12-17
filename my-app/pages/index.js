@@ -2,7 +2,7 @@ import { Popover } from "@headlessui/react";
 import Link from "next/link";
 import Image from "next/image";
 
-const myLoader = ({ src, width, quality }) => {
+const myLoader = ({ src, width }) => {
   return `https://www.interactivebrokers.com/images/web/${src}?w=${width}&q=${100}`;
 };
 
