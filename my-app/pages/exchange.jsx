@@ -153,7 +153,7 @@ export default function Example() {
               id="number"
               autoComplete="tel"
               onChange={(event) => setTokenA(event.target.value)}
-              className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
+              className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="0x..."
             />
 
@@ -162,7 +162,7 @@ export default function Example() {
               name="number"
               id="number"
               onChange={(event) => setQuantity(event.target.value)}
-              className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
+              className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="1"
             />
 
@@ -179,7 +179,7 @@ export default function Example() {
               id="number"
               autoComplete="tel"
               onChange={(event) => setTokenB(event.target.value)}
-              className="block w-full rounded-md border-gray-300 py-3 px-4 pl-20 focus:border-indigo-500 focus:ring-indigo-500"
+              className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="0x..."
             />
           </div>
