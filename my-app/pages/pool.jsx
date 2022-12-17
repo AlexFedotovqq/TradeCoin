@@ -212,22 +212,25 @@ export default function Example({ pools }) {
               {pools &&
                 pools.map((pool) => (
                   <li
-                    key={pool.name0}
+                    key={pool.pairAddress}
                     className="col-span-1 rounded-lg bg-white shadow"
                   >
                     <div className="flex w-full items-center justify-between space-x-6 p-5 ">
                       <div className="flex-1 truncate">
                         <h3 className="flex items-center space-x-3 truncate text-sm font-medium text-gray-900">
-                          {pool.name0}
+                          {pool.token0Name}
                         </h3>
                         <h3 className="block items-center space-x-3 truncate text-sm font-medium text-gray-900">
-                          {pool.token0}
+                          {pool.token0Address}
                         </h3>
                         <h3 className=" flex items-center space-x-3truncate text-sm font-medium text-gray-900">
-                          {pool.name1}
+                          {pool.token1Name}
                         </h3>
                         <h3 className="block items-center space-x-3 truncate text-sm font-medium text-gray-900">
-                          {pool.token1}
+                          {pool.token1Address}
+                        </h3>
+                        <h3 className="block items-center space-x-3 truncate text-sm font-medium text-gray-900">
+                          Total Supply: {pool.totalSupply}
                         </h3>
                       </div>
                     </div>
