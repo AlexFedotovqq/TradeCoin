@@ -14,6 +14,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+pools = [];
+
 export default function Example({ pools }) {
   const { chain } = useNetwork();
   const { data: signer } = useSigner();
@@ -402,7 +404,7 @@ export default function Example({ pools }) {
   );
 }
 
-export async function getStaticProps() {
+/* export async function getStaticProps() {
   const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
   const pools = await res.json();
 
@@ -413,3 +415,4 @@ export async function getStaticProps() {
     revalidate: 10,
   };
 }
+ */
