@@ -116,7 +116,7 @@ export default function Example() {
                 </dt>
                 <dd className="flex text-base text-indigo-50">
                   <PhoneIcon className="h-6 w-6 flex-shrink-0 text-indigo-200" aria-hidden="true" />
-                  <span className="ml-3">+1 (111) 111-1111</span>
+                  <span className="ml-3">+34 (674) 849-326</span>
                 </dd>
                 <dt>
                   <span className="sr-only">Email</span>
