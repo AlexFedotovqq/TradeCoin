@@ -78,12 +78,6 @@ describe("features", function () {
       gasLimit: 200000,
     });
 
-    // we need math
-    // Y * X = Ynew * Xnew
-    // 50/6 = 8.(3) = Ynew
-
-    // the outY = Y - Ynew = 1.(6)
-
     const swapAmount = expandTo18Decimals(1);
     const expectedOutputAmount = ethers.BigNumber.from("1662497915624478906");
     await token0.transfer(pair.address, swapAmount, {
