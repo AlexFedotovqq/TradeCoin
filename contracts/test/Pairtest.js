@@ -61,46 +61,55 @@ describe("features", function () {
 
     expect(await token0.balanceOf(pair.address)).to.eq(token0Amount);
     expect(await token1.balanceOf(pair.address)).to.eq(token1Amount);
-
-    //const reserves = await pair.getReserves();
-
-    //expect(reserves[0]).to.eq(token0Amount);
-    //expect(reserves[1]).to.eq(token1Amount);
   });
 
   it("Should mint to another account", async function () {
-    const token0Amount = expandTo18Decimals(2);
-    const token1Amount = expandTo18Decimals(18);
-    await token0.transfer(pair.address, token0Amount);
-    await token1.transfer(pair.address, token1Amount);
+    const token0Amount = expandTo18Decimals(2000);
+    const token1Amount = expandTo18Decimals(2000);
 
-    await pair.mint(jane.address);
+    await token0.transfer(jane.address, token0Amount, {
+      gasLimit: 60000,
+    });
+
+    await token1.transfer(jane.address, token1Amount, {
+      gasLimit: 60000,
+    });
+
+    expect(await token0.balanceOf(jane.address)).to.eq(token0Amount);
+    expect(await token1.balanceOf(jane.address)).to.eq(token1Amount);
+
+    await token0.connect(jane).transfer(pair.address, token0Amount, {
+      gasLimit: 60000,
+    });
+
+    await token1.connect(jane).transfer(pair.address, token1Amount, {
+      gasLimit: 60000,
+    });
+
+    await pair.mint(jane.address, {
+      gasLimit: 200000,
+    });
 
     // sqrt( t1 * t2 )
-    const expectedLiquidity = expandTo18Decimals(6);
+    const expectedLiquidity = expandTo18Decimals(2000);
     expect(await pair.totalSupply()).to.eq(expectedLiquidity);
 
     expect(await token0.balanceOf(pair.address)).to.eq(token0Amount);
     expect(await token1.balanceOf(pair.address)).to.eq(token1Amount);
-
-    //const reserves = await pair.getReserves();
-
-    //expect(reserves[0]).to.eq(token0Amount);
-    //expect(reserves[1]).to.eq(token1Amount);
   });
 
   it("Should swap", async function () {
     const token0Amount = expandTo18Decimals(5);
     const token1Amount = expandTo18Decimals(10);
     await token0.transfer(pair.address, token0Amount, {
-      gasLimit: 80000,
+      gasLimit: 60000,
     });
     await token1.transfer(pair.address, token1Amount, {
-      gasLimit: 80000,
+      gasLimit: 60000,
     });
 
     await pair.mint(deployer.address, {
-      gasLimit: 500000,
+      gasLimit: 200000,
     });
 
     // we need math
@@ -112,11 +121,11 @@ describe("features", function () {
     const swapAmount = expandTo18Decimals(1);
     const expectedOutputAmount = ethers.BigNumber.from("1662497915624478906");
     await token0.transfer(pair.address, swapAmount, {
-      gasLimit: 100000,
+      gasLimit: 60000,
     });
 
     await pair.swap(0, expectedOutputAmount, deployer.address, "0x", {
-      gasLimit: 100000,
+      gasLimit: 200000,
     });
 
     const reserves = await pair.getReserves();

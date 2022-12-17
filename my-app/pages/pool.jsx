@@ -40,10 +40,6 @@ export default function Example({ pools }) {
     const token0 = new ethers.Contract(address0, abi, signer);
     const token1 = new ethers.Contract(address1, abi, signer);
     const pair = new ethers.Contract(pairAddress, abiPair, signer);
-    console.log(
-      ethers.BigNumber.from(await pair.MINIMUM_LIQUIDITY()).toNumber()
-    );
-    console.log(await pair.approve(address, expandTo18Decimals(10000)));
 
     await token0.transfer(pairAddress, expandTo18Decimals(tokenAQuantity), {
       gasLimit: 100000,
@@ -54,7 +50,7 @@ export default function Example({ pools }) {
     });
 
     await pair.mint(address, {
-      gasLimit: 100000,
+      gasLimit: 200000,
     });
   }
 

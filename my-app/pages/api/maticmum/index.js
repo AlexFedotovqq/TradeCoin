@@ -37,10 +37,16 @@ export default async function handler(req, res) {
       const name1 = await Token1.name();
 
       const reserves = await Pair.getReserves();
-      const reserves0 = ethers.BigNumber.from(reserves._reserve0).toNumber();
-      const reserves1 = ethers.BigNumber.from(reserves._reserve1).toNumber();
+      const reserves0 = ethers.utils.formatEther(
+        ethers.BigNumber.from(reserves[0]).toString()
+      );
+      const reserves1 = ethers.utils.formatEther(
+        ethers.BigNumber.from(reserves[1]).toString()
+      );
 
-      const supply = ethers.BigNumber.from(await Pair.totalSupply()).toNumber();
+      const supply = ethers.utils.formatEther(
+        ethers.BigNumber.from(await Pair.totalSupply()).toString()
+      );
 
       items.push({
         token0Address: token0,
