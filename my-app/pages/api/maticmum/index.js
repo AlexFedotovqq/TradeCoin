@@ -28,7 +28,7 @@ export default async function handler(req, res) {
       );
 
       const token0 = await Pair.token0();
-      const token1 = await Pair.token0();
+      const token1 = await Pair.token1();
 
       const Token0 = new ethers.Contract(token0, ERC20.abi, customHttpProvider);
       const Token1 = new ethers.Contract(token0, ERC20.abi, customHttpProvider);
@@ -39,11 +39,12 @@ export default async function handler(req, res) {
       const supply = ethers.BigNumber.from(await Pair.totalSupply()).toNumber();
 
       items.push({
-        token0: token0,
-        token1: token1,
-        supply: supply,
-        name0: name0,
-        name1: name1,
+        token0Address: token0,
+        token1Address: token1,
+        token0Name: name0,
+        token1Name: name1,
+        totalSupply: supply,
+        pairAddress: pairAddress,
       });
     }
 
