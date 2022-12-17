@@ -234,104 +234,22 @@ export default function Example({ pools }) {
                     </div>
                   </div>
 
-                  <div>
-                    <div className="-mt-px flex divide-x divide-gray-300">
-                      <div className="flex w-0 flex-1">
-                        <section
-                          aria-labelledby="details-heading"
-                          className="mt-0"
-                        >
-                          <Disclosure as="div" key="Add new pair">
-                            {({ open }) => (
-                              <>
-                                <h3>
-                                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600  px-1 py-2 text-base font-medium text-white hover:bg-green-700 ">
-                                    <span
-                                      className={classNames(
-                                        open ? "text-green-200" : "text-white",
-                                        "text-sm font-bold"
-                                      )}
-                                    >
-                                      Add
-                                    </span>
-                                    <span className="ml-5 flex items-center">
-                                      {open ? (
-                                        <MinusIcon
-                                          className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <PlusIcon
-                                          className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                    </span>
-                                  </Disclosure.Button>
-                                </h3>
-                                <Disclosure.Panel
-                                  as="div"
-                                  className="prose prose-sm pb-6"
-                                >
-                                  <div className="sm:col-span-2">
-                                    <div className="relative mt-1 rounded-md shadow-sm">
-                                      <div className="absolute inset-y-0 left-0 flex items-center"></div>
-                                      <input
-                                        type="text"
-                                        name="number"
-                                        id="number"
-                                        onChange={(event) =>
-                                          setTokenA(event.target.value)
-                                        }
-                                        className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                        placeholder="0x..."
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="sm:col-span-2">
-                                    <div className="relative mt-1 rounded-md shadow-sm">
-                                      <input
-                                        type="text"
-                                        name="number"
-                                        id="number"
-                                        onChange={(event) =>
-                                          setTokenB(event.target.value)
-                                        }
-                                        className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                        placeholder="0x..."
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
-                                    <div className="inline-flex rounded-md shadow">
-                                      <a
-                                        onClick={() => startUpload()}
-                                        className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
-                                      >
-                                        Add
-                                      </a>
-                                    </div>
-                                  </div>
-                                </Disclosure.Panel>
-                              </>
-                            )}
-                          </Disclosure>
-                        </section>
-                      </div>
-                      <div className="-ml-px flex w-0 flex-1">
-                        <Disclosure as="div" key="Add new pair">
-                          {({ open }) => (
-                            <>
-                              <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                  <div className="-mt-px flex divide-x divide-gray-300">
+                    <div className="flex w-0 flex-1">
+                      <Disclosure as="div" key="Add new pair">
+                        {({ open }) => (
+                          <>
+                            <h3>
+                              <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600  px-1 py-2 text-base font-medium text-white hover:bg-green-700 ">
                                 <span
                                   className={classNames(
-                                    open ? "text-indigo-200" : "text-white",
+                                    open ? "text-green-200" : "text-white",
                                     "text-sm font-bold"
                                   )}
                                 >
-                                  Remove
+                                  Add
                                 </span>
-                                <span className="ml-0 flex items-center">
+                                <span className="ml-5 flex items-center">
                                   {open ? (
                                     <MinusIcon
                                       className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
@@ -345,54 +263,115 @@ export default function Example({ pools }) {
                                   )}
                                 </span>
                               </Disclosure.Button>
+                            </h3>
+                            <Disclosure.Panel
+                              as="div"
+                              className="prose prose-sm pb-6"
+                            >
+                              <div className="relative mt-1 ml-1 mr-1 rounded-md shadow-sm sm:col-span-2">
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setTokenA(event.target.value)
+                                  }
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  placeholder="0x..."
+                                />
 
-                              <Disclosure.Panel
-                                as="div"
-                                className="prose prose-sm pb-6"
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setTokenB(event.target.value)
+                                  }
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  placeholder="0x..."
+                                />
+                              </div>
+
+                              <div className="ml-2 mt-2 inline-flex rounded-md shadow lg:flex-shrink-0">
+                                <a
+                                  onClick={() => startUpload()}
+                                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                                >
+                                  Add
+                                </a>
+                              </div>
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
+                    </div>
+                    <div className="-ml-px flex w-0 flex-1">
+                      <Disclosure as="div" key="Add new pair">
+                        {({ open }) => (
+                          <>
+                            <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                              <span
+                                className={classNames(
+                                  open ? "text-indigo-200" : "text-white",
+                                  "text-sm font-bold"
+                                )}
                               >
-                                <div className="sm:col-span-2">
-                                  <div className="relative mt-1 rounded-md shadow-sm">
-                                    <input
-                                      type="text"
-                                      name="number"
-                                      id="number"
-                                      onChange={(event) =>
-                                        setTokenA(event.target.value)
-                                      }
-                                      className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                      placeholder="0x..."
-                                    />
-                                  </div>
-                                </div>
-                                <div className="sm:col-span-2">
-                                  <div className="relative mt-1 rounded-md shadow-sm">
-                                    <input
-                                      type="text"
-                                      name="number"
-                                      id="number"
-                                      onChange={(event) =>
-                                        setTokenB(event.target.value)
-                                      }
-                                      className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                      placeholder="0x..."
-                                    />
-                                  </div>
-                                </div>
-                                <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
-                                  <div className="inline-flex rounded-md shadow">
-                                    <a
-                                      onClick={() => startUpload()}
-                                      className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
-                                    >
-                                      Add
-                                    </a>
-                                  </div>
-                                </div>
-                              </Disclosure.Panel>
-                            </>
-                          )}
-                        </Disclosure>
-                      </div>
+                                Remove
+                              </span>
+                              <span className="ml-0 flex items-center">
+                                {open ? (
+                                  <MinusIcon
+                                    className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                    aria-hidden="true"
+                                  />
+                                ) : (
+                                  <PlusIcon
+                                    className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                                    aria-hidden="true"
+                                  />
+                                )}
+                              </span>
+                            </Disclosure.Button>
+
+                            <Disclosure.Panel
+                              as="div"
+                              className="prose prose-sm pb-6"
+                            >
+                              <div className="relative mt-1 ml-1 mr-1 rounded-md shadow-sm sm:col-span-2">
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setTokenA(event.target.value)
+                                  }
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  placeholder="0x..."
+                                />
+
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setTokenB(event.target.value)
+                                  }
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  placeholder="0x..."
+                                />
+                              </div>
+                              <div className="ml-2 mt-2 lg:flex-shrink-0 inline-flex rounded-md shadow">
+                                <a
+                                  onClick={() => startUpload()}
+                                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                                >
+                                  Add
+                                </a>
+                              </div>
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
                     </div>
                   </div>
                 </li>
@@ -405,13 +384,9 @@ export default function Example({ pools }) {
 }
 
 export async function getStaticProps() {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
   const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
   const pools = await res.json();
 
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
   return {
     props: {
       pools,
