@@ -1,10 +1,14 @@
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-import { useSigner, useNetwork } from "wagmi";
+import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 
-import { getContractInfo } from "../utils/contracts";
+import { getContractInfo, getERC20, getPair } from "../utils/contracts";
+
+function expandTo18Decimals(n) {
+  return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
+}
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -13,14 +17,45 @@ function classNames(...classes) {
 export default function Example({ pools }) {
   const { chain } = useNetwork();
   const { data: signer } = useSigner();
+  const { address } = useAccount();
 
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
+
+  const [tokenAQuantity, setTokenAQuantity] = useState("");
+  const [tokenBQuantity, setTokenBQuantity] = useState("");
+
+  const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
 
   async function startUpload() {
     const { address, abi } = getContractInfo(chain.id);
     const contract = new ethers.Contract(address, abi, signer);
     await contract.createPair(tokenA, tokenB);
+  }
+
+  async function addLiquidity(address0, address1, pairAddress) {
+    const { abi } = getERC20();
+    const { abiPair } = getPair();
+
+    const token0 = new ethers.Contract(address0, abi, signer);
+    const token1 = new ethers.Contract(address1, abi, signer);
+    const pair = new ethers.Contract(pairAddress, abiPair, signer);
+    console.log(
+      ethers.BigNumber.from(await pair.MINIMUM_LIQUIDITY()).toNumber()
+    );
+    console.log(await pair.approve(address, expandTo18Decimals(10000)));
+
+    await token0.transfer(pairAddress, expandTo18Decimals(tokenAQuantity), {
+      gasLimit: 100000,
+    });
+
+    await token1.transfer(pairAddress, expandTo18Decimals(tokenBQuantity), {
+      gasLimit: 100000,
+    });
+
+    await pair.mint(address, {
+      gasLimit: 100000,
+    });
   }
 
   return (
@@ -97,112 +132,102 @@ export default function Example({ pools }) {
             Pools
           </h2>
         </div>
-        <div className="bg-orange-400">
-          <div className="mx-auto flex justify-center py-2 px-4 sm:px-6">
+        <div className="mx-auto flex justify-center py-2 px-4 sm:px-6">
+          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
             <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-              <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-                <section aria-labelledby="details-heading" className="mt-4">
-                  <Disclosure as="div" key="Add new pair">
-                    {({ open }) => (
-                      <>
-                        <h3>
-                          <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-10 py-2 text-base font-medium text-white hover:bg-indigo-700">
-                            <span
-                              className={classNames(
-                                open ? "text-indigo-200" : "text-white",
-                                "text-sm font-medium"
-                              )}
-                            >
-                              Add new pair
-                            </span>
-                            <span className="ml-6 flex items-center">
-                              {open ? (
-                                <MinusIcon
-                                  className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <PlusIcon
-                                  className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </span>
-                          </Disclosure.Button>
-                        </h3>
-                        <Disclosure.Panel
-                          as="div"
-                          className="prose prose-sm pb-6"
+              <Disclosure as="div" key="Add new pair">
+                {({ open }) => (
+                  <>
+                    <h3>
+                      <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-10 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                        <span
+                          className={classNames(
+                            open ? "text-indigo-200" : "text-white",
+                            "text-sm font-medium"
+                          )}
                         >
-                          <div className="sm:col-span-2">
-                            <label
-                              htmlFor="number"
-                              className="block text-center font-medium text-black-900"
-                            >
+                          Add new pair
+                        </span>
+                        <span className="ml-6 flex items-center">
+                          {open ? (
+                            <MinusIcon
+                              className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            <PlusIcon
+                              className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                              aria-hidden="true"
+                            />
+                          )}
+                        </span>
+                      </Disclosure.Button>
+                    </h3>
+                    <Disclosure.Panel as="div" className="prose prose-sm pb-6">
+                      <div className="sm:col-span-2">
+                        <label
+                          htmlFor="number"
+                          className="block text-center font-medium text-black-900"
+                        >
+                          Cryptocurrency
+                        </label>
+                        <div className="relative mt-1 rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 flex items-center">
+                            <label htmlFor="country" className="sr-only">
                               Cryptocurrency
                             </label>
-                            <div className="relative mt-1 rounded-md shadow-sm">
-                              <div className="absolute inset-y-0 left-0 flex items-center">
-                                <label htmlFor="country" className="sr-only">
-                                  Cryptocurrency
-                                </label>
-                              </div>
-                              <input
-                                type="text"
-                                name="number"
-                                id="number"
-                                onChange={(event) =>
-                                  setTokenA(event.target.value)
-                                }
-                                className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                placeholder="0x..."
-                              />
-                            </div>
                           </div>
-                          <div className="sm:col-span-2">
-                            <label
-                              htmlFor="number"
-                              className="block text-center font-medium text-black-900"
-                            >
+                          <input
+                            type="text"
+                            name="number"
+                            id="number"
+                            onChange={(event) => setTokenA(event.target.value)}
+                            className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                            placeholder="0x..."
+                          />
+                        </div>
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label
+                          htmlFor="number"
+                          className="block text-center font-medium text-black-900"
+                        >
+                          Cryptocurrency
+                        </label>
+                        <div className="relative mt-1 rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 flex items-center">
+                            <label htmlFor="country" className="sr-only">
                               Cryptocurrency
                             </label>
-                            <div className="relative mt-1 rounded-md shadow-sm">
-                              <div className="absolute inset-y-0 left-0 flex items-center">
-                                <label htmlFor="country" className="sr-only">
-                                  Cryptocurrency
-                                </label>
-                              </div>
-                              <input
-                                type="text"
-                                name="number"
-                                id="number"
-                                onChange={(event) =>
-                                  setTokenB(event.target.value)
-                                }
-                                className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                placeholder="0x..."
-                              />
-                            </div>
                           </div>
-                          <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
-                            <div className="inline-flex rounded-md shadow">
-                              <a
-                                onClick={() => startUpload()}
-                                className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
-                              >
-                                Add
-                              </a>
-                            </div>
-                          </div>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                </section>
-              </div>
+                          <input
+                            type="text"
+                            name="number"
+                            id="number"
+                            onChange={(event) => setTokenB(event.target.value)}
+                            className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                            placeholder="0x..."
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
+                        <div className="inline-flex rounded-md shadow">
+                          <a
+                            onClick={() => startUpload()}
+                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                          >
+                            Add
+                          </a>
+                        </div>
+                      </div>
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
             </div>
           </div>
         </div>
+
         <div className="overflow-hidden rounded-lg bg-gray-200 shadow xl:p-6">
           <ul
             role="list"
@@ -274,10 +299,10 @@ export default function Example({ pools }) {
                                   name="number"
                                   id="number"
                                   onChange={(event) =>
-                                    setTokenA(event.target.value)
+                                    setTokenAQuantity(event.target.value)
                                   }
                                   className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                  placeholder="0x..."
+                                  placeholder="1"
                                 />
 
                                 <input
@@ -285,16 +310,22 @@ export default function Example({ pools }) {
                                   name="number"
                                   id="number"
                                   onChange={(event) =>
-                                    setTokenB(event.target.value)
+                                    setTokenBQuantity(event.target.value)
                                   }
                                   className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                  placeholder="0x..."
+                                  placeholder="1"
                                 />
                               </div>
 
                               <div className="ml-2 mt-2 inline-flex rounded-md shadow lg:flex-shrink-0">
                                 <a
-                                  onClick={() => startUpload()}
+                                  onClick={() =>
+                                    addLiquidity(
+                                      pool.token0Address,
+                                      pool.token1Address,
+                                      pool.pairAddress
+                                    )
+                                  }
                                   className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
                                 >
                                   Add
@@ -306,7 +337,7 @@ export default function Example({ pools }) {
                       </Disclosure>
                     </div>
                     <div className="-ml-px flex w-0 flex-1">
-                      <Disclosure as="div" key="Add new pair">
+                      <Disclosure as="div">
                         {({ open }) => (
                           <>
                             <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
@@ -343,26 +374,18 @@ export default function Example({ pools }) {
                                   name="number"
                                   id="number"
                                   onChange={(event) =>
-                                    setTokenA(event.target.value)
+                                    setWithdrawalQuantity(event.target.value)
                                   }
                                   className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                  placeholder="0x..."
-                                />
-
-                                <input
-                                  type="text"
-                                  name="number"
-                                  id="number"
-                                  onChange={(event) =>
-                                    setTokenB(event.target.value)
-                                  }
-                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                                  placeholder="0x..."
+                                  placeholder="0"
                                 />
                               </div>
                               <div className="ml-2 mt-2 lg:flex-shrink-0 inline-flex rounded-md shadow">
                                 <a
-                                  onClick={() => startUpload()}
+                                  onClick={
+                                    () => console.log(124)
+                                    //withdrawLiquidity()
+                                  }
                                   className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
                                 >
                                   Add

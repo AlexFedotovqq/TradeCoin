@@ -4,7 +4,7 @@ function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
 }
 
-const TOTAL_SUPPLY = expandTo18Decimals(10000);
+const TOTAL_SUPPLY = expandTo18Decimals(1000000000);
 
 async function main() {
   const [deployer] = await ethers.getSigners();
