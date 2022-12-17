@@ -214,7 +214,7 @@ export default function Example() {
             Exchange
           </button>
         </div>
-        <div className="relative overflow-hidden bg-orange-400 h-screen">
+        <div className="relative overflow-hidden h-screen">
           <div className="flex flex-1 flex-col  lg:pl-68">
             <main className="flex-1 pb-8">
               <div className="mt-8">
