@@ -3,47 +3,14 @@ import React, { useState } from "react";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 
+import { queryPrices } from "../utils/queryContract";
 import { getContractInfo, getERC20, getPair } from "../utils/contracts";
 
 function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
 }
 
-const transactions = [
-  {
-    id: 1,
-    name: "ETH",
-    href: "https://coinmarketcap.com/currencies/ethereum/",
-    amount: "1 288,57 $",
-    currency: "USD",
-    status: "success",
-    date: "December 3, 2022",
-    datetime: "2022-12-3",
-  },
-  {
-    id: 2,
-    name: "BNB",
-    href: "https://coinmarketcap.com/currencies/bnb/",
-    amount: "291,92 $",
-    currency: "USD",
-    status: "success",
-    date: "December 3, 2022",
-    datetime: "2022-12-3",
-  },
-  {
-    id: 3,
-    name: "DOT",
-    href: "https://coinmarketcap.com/dexscan/bsc/0xdd5bad8f8b360d76d12fda230f8baf42fe00",
-    amount: "5,64 $",
-    currency: "USD",
-    status: "success",
-    date: "December 3, 2022",
-    datetime: "2022-12-3",
-  },
-  // More transactions...
-];
-
-export default function Example() {
+export default function Example({ transactions }) {
   const { chain } = useNetwork();
   const { data: signer } = useSigner();
   const { address } = useAccount();
@@ -229,7 +196,7 @@ export default function Example() {
                     {transactions.map((transaction) => (
                       <li key={transaction.id}>
                         <a
-                          href={transaction.href}
+                          href={`https://mumbai.polygonscan.com/address/${transaction.pairAddress}`}
                           className="block bg-white px-4 py-4 hover:bg-gray-50"
                         >
                           <span className="flex items-center space-x-4">
@@ -240,17 +207,15 @@ export default function Example() {
                               />
                               <span className="flex flex-col truncate text-sm text-gray-500">
                                 <span className="truncate">
-                                  {transaction.name}
+                                  {transaction.token0Name} /{" "}
+                                  {transaction.token1Name}
                                 </span>
                                 <span>
                                   <span className="font-medium text-gray-900">
-                                    {transaction.amount}
-                                  </span>{" "}
-                                  {transaction.currency}
+                                    {transaction.reserveRatio}
+                                  </span>
                                 </span>
-                                <time dateTime={transaction.datetime}>
-                                  {transaction.date}
-                                </time>
+                                Price: {" " + transaction.price0}
                               </span>
                             </span>
                             <ChevronRightIcon
@@ -277,20 +242,20 @@ export default function Example() {
                                 className="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
                                 scope="col"
                               >
-                                Cryptocurrency
+                                Cryptocurrency Pair
                               </th>
                               <th
                                 className="bg-gray-50 px-12 py-3 text-right text-sm font-semibold text-gray-900"
                                 scope="col"
                               >
-                                Cost
+                                Reserve Ratio
                               </th>
 
                               <th
                                 className="bg-gray-50 px-10 py-3 text-right text-sm font-semibold text-gray-900"
                                 scope="col"
                               >
-                                Update date
+                                Price
                               </th>
                             </tr>
                           </thead>
@@ -300,30 +265,30 @@ export default function Example() {
                                 <td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                                   <div className="flex">
                                     <a
-                                      href={transaction.href}
+                                      href={`https://mumbai.polygonscan.com/address/${transaction.pairAddress}`}
                                       className="group inline-flex space-x-2 truncate text-sm"
                                     >
                                       <BanknotesIcon
                                         className="h-5 w-5 flex-shrink-0 text-black group-hover:text-gray-500"
                                         aria-hidden="true"
                                       />
-                                      <p className="truncate text-black group-hover:text-gray-900">
-                                        {transaction.name}
+                                      <p className="text-black group-hover:text-gray-900">
+                                        {transaction.token0Symbol} /{" "}
+                                        {transaction.token1Symbol}
                                       </p>
                                     </a>
                                   </div>
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
-                                  <span className="font-medium text-gray-900">
-                                    {transaction.amount}
+                                  <span className="truncate font-medium text-gray-900">
+                                    {transaction.reserveRatio}
                                   </span>
-                                  {transaction.currency}
                                 </td>
 
                                 <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
-                                  <time dateTime={transaction.datetime}>
-                                    {transaction.date}
-                                  </time>
+                                  <span className="truncate font-medium text-gray-900">
+                                    {transaction.price0}
+                                  </span>
                                 </td>
                               </tr>
                             ))}
@@ -342,16 +307,15 @@ export default function Example() {
   );
 }
 
-/* export async function getStaticProps() {
+export async function getStaticProps() {
   //const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
-  const pools = await queryContract();
-  //const pools = await res.json();
+  const transactions = await queryPrices();
+  //const transactions = await res.json();
 
   return {
     props: {
-      pools,
+      transactions,
     },
     revalidate: 10,
   };
 }
- */

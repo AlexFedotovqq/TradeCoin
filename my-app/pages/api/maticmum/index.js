@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   try {
     const { addressFactory, abiFactory } = getContractInfo(80001);
 
-    var customHttpProvider = new ethers.providers.JsonRpcProvider(
+    const customHttpProvider = new ethers.providers.JsonRpcProvider(
       "https://rpc-mumbai.maticvigil.com"
     );
 
