@@ -23,8 +23,8 @@ export default function Example({ pools }) {
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
 
-  const [tokenAQuantity, setTokenAQuantity] = useState("");
-  const [tokenBQuantity, setTokenBQuantity] = useState("");
+  const [tokenAQuantity, setTokenAQuantity] = useState(1);
+  const [tokenBQuantity, setTokenBQuantity] = useState(1);
 
   const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
 
@@ -69,7 +69,7 @@ export default function Example({ pools }) {
   }
 
   return (
-    <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
+    <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 h-screen">
       <div className="relative mx-auto max-w-4xl">
         <svg
           className="absolute left-full translate-x-1/2 transform"
@@ -138,107 +138,105 @@ export default function Example({ pools }) {
           />
         </svg>
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">
+          <h2 className="text-4xl font-bold tracking-tight text-black-900 sm:text-4xl">
             Pools
           </h2>
         </div>
-        <div className="mx-auto flex justify-center py-2 px-4 sm:px-6">
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-              <Disclosure as="div" key="Add new pair">
-                {({ open }) => (
-                  <>
-                    <h3>
-                      <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-10 py-2 text-base font-medium text-white hover:bg-indigo-700">
-                        <span
-                          className={classNames(
-                            open ? "text-indigo-200" : "text-white",
-                            "text-sm font-medium"
-                          )}
-                        >
-                          Add new pair
-                        </span>
-                        <span className="ml-6 flex items-center">
-                          {open ? (
-                            <MinusIcon
-                              className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                              aria-hidden="true"
-                            />
-                          ) : (
-                            <PlusIcon
-                              className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                              aria-hidden="true"
-                            />
-                          )}
-                        </span>
-                      </Disclosure.Button>
-                    </h3>
-                    <Disclosure.Panel as="div" className="prose prose-sm pb-6">
-                      <div className="sm:col-span-2">
-                        <label
-                          htmlFor="number"
-                          className="block text-center font-medium text-black-900"
-                        >
-                          Cryptocurrency
-                        </label>
-                        <div className="relative mt-1 rounded-md shadow-sm">
-                          <div className="absolute inset-y-0 left-0 flex items-center">
-                            <label htmlFor="country" className="sr-only">
-                              Cryptocurrency
-                            </label>
-                          </div>
-                          <input
-                            type="text"
-                            name="number"
-                            id="number"
-                            onChange={(event) => setTokenA(event.target.value)}
-                            className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="0x..."
+        <div className="mx-auto flex items-center justify-center py-2 px-4">
+          <div className="mt-2 flex sm:mt-5 sm:flex-shrink-0">
+            <Disclosure as="div" key="Add new pair">
+              {({ open }) => (
+                <>
+                  <h3 className="flex items-center justify-center">
+                    <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                      <span
+                        className={classNames(
+                          open ? "text-indigo-200" : "text-white",
+                          "text-sm font-medium"
+                        )}
+                      >
+                        Add new pair
+                      </span>
+                      <span className="ml-6 flex items-center justify-center">
+                        {open ? (
+                          <MinusIcon
+                            className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                            aria-hidden="true"
                           />
-                        </div>
-                      </div>
-                      <div className="sm:col-span-2">
-                        <label
-                          htmlFor="number"
-                          className="block text-center font-medium text-black-900"
-                        >
-                          Cryptocurrency
-                        </label>
-                        <div className="relative mt-1 rounded-md shadow-sm">
-                          <div className="absolute inset-y-0 left-0 flex items-center">
-                            <label htmlFor="country" className="sr-only">
-                              Cryptocurrency
-                            </label>
-                          </div>
-                          <input
-                            type="text"
-                            name="number"
-                            id="number"
-                            onChange={(event) => setTokenB(event.target.value)}
-                            className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="0x..."
+                        ) : (
+                          <PlusIcon
+                            className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                            aria-hidden="true"
                           />
+                        )}
+                      </span>
+                    </Disclosure.Button>
+                  </h3>
+                  <Disclosure.Panel as="div" className="prose prose-sm pb-6">
+                    <div className="sm:col-span-2">
+                      <label
+                        htmlFor="number"
+                        className="block text-center font-medium text-black-900"
+                      >
+                        Cryptocurrency
+                      </label>
+                      <div className="relative mt-1 rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 flex items-center">
+                          <label htmlFor="country" className="sr-only">
+                            Cryptocurrency
+                          </label>
                         </div>
+                        <input
+                          type="text"
+                          name="number"
+                          id="number"
+                          onChange={(event) => setTokenA(event.target.value)}
+                          className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                          placeholder="0x..."
+                        />
                       </div>
-                      <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
-                        <div className="inline-flex rounded-md shadow">
-                          <a
-                            onClick={() => startUpload()}
-                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
-                          >
-                            Add
-                          </a>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label
+                        htmlFor="number"
+                        className="block text-center font-medium text-black-900"
+                      >
+                        Cryptocurrency
+                      </label>
+                      <div className="relative mt-1 rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 flex items-center">
+                          <label htmlFor="country" className="sr-only">
+                            Cryptocurrency
+                          </label>
                         </div>
+                        <input
+                          type="text"
+                          name="number"
+                          id="number"
+                          onChange={(event) => setTokenB(event.target.value)}
+                          className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                          placeholder="0x..."
+                        />
                       </div>
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-            </div>
+                    </div>
+                    <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
+                      <div className="inline-flex rounded-md shadow">
+                        <a
+                          onClick={() => startUpload()}
+                          className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                        >
+                          Add
+                        </a>
+                      </div>
+                    </div>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-lg bg-gray-200 shadow xl:p-6">
+        <div className="overflow-hidden rounded-lg bg-gray-200 shadow p-6">
           <ul
             role="list"
             className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2"
@@ -270,12 +268,12 @@ export default function Example({ pools }) {
                   </div>
 
                   <div className="-mt-px flex divide-x divide-gray-300">
-                    <div className="flex w-0 flex-1">
+                    <div className="flex flex-1 justify-center">
                       <Disclosure as="div" key="Add new pair">
                         {({ open }) => (
                           <>
-                            <h3>
-                              <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600  px-1 py-2 text-base font-medium text-white hover:bg-green-700 sm:ml-14">
+                            <div className="flex items-center justify-center">
+                              <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-1 py-2 text-base font-medium text-white hover:bg-green-700">
                                 <span
                                   className={classNames(
                                     open ? "text-green-200" : "text-white",
@@ -298,7 +296,8 @@ export default function Example({ pools }) {
                                   )}
                                 </span>
                               </Disclosure.Button>
-                            </h3>
+                            </div>
+
                             <Disclosure.Panel
                               as="div"
                               className="prose prose-sm pb-6"
@@ -346,34 +345,35 @@ export default function Example({ pools }) {
                         )}
                       </Disclosure>
                     </div>
-                    <div className="-ml-px flex w-0 flex-1">
+                    <div className="-ml-px flex w-0 flex-1 justify-center">
                       <Disclosure as="div">
                         {({ open }) => (
                           <>
-                            <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700 sm:ml-14">
-                              <span
-                                className={classNames(
-                                  open ? "text-indigo-200" : "text-white",
-                                  "text-sm font-bold"
-                                )}
-                              >
-                                Remove
-                              </span>
-                              <span className="ml-0 flex items-center">
-                                {open ? (
-                                  <MinusIcon
-                                    className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <PlusIcon
-                                    className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </span>
-                            </Disclosure.Button>
-
+                            <div className="flex items-center justify-center">
+                              <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                                <span
+                                  className={classNames(
+                                    open ? "text-indigo-200" : "text-white",
+                                    "text-sm font-bold"
+                                  )}
+                                >
+                                  Remove
+                                </span>
+                                <span className="ml-0 flex items-center">
+                                  {open ? (
+                                    <MinusIcon
+                                      className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <PlusIcon
+                                      className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                </span>
+                              </Disclosure.Button>
+                            </div>
                             <Disclosure.Panel
                               as="div"
                               className="prose prose-sm pb-6"
@@ -416,9 +416,9 @@ export default function Example({ pools }) {
 }
 
 export async function getStaticProps() {
-  //const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
-  const pools = await queryContract();
-  //const pools = await res.json();
+  const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
+  //const pools = await queryContract();
+  const pools = await res.json();
 
   return {
     props: {
