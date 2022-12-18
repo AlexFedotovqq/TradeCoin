@@ -31,7 +31,10 @@ export default function Example({ pools }) {
   async function startUpload() {
     const { addressFactory, abiFactory } = getContractInfo(chain.id);
     const contract = new ethers.Contract(addressFactory, abiFactory, signer);
-    await contract.createPair(tokenA, tokenB);
+    await contract.createPair(tokenA, tokenB),
+      {
+        gasLimit: 100000,
+      };
   }
 
   async function addLiquidity(address0, address1, pairAddress) {
@@ -413,9 +416,9 @@ export default function Example({ pools }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
-  //const pools = await queryContract();
-  const pools = await res.json();
+  // const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
+  const pools = await queryContract();
+  //const pools = await res.json();
 
   return {
     props: {

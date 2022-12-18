@@ -5,10 +5,11 @@ import ERC20 from "../utils/contracts/ERC20.json";
 
 export async function queryContract() {
   try {
-    const { addressFactory, abiFactory } = getContractInfo(80001);
+    const { addressFactory, abiFactory } = getContractInfo();
 
     var customHttpProvider = new ethers.providers.JsonRpcProvider(
-      "https://rpc-mumbai.maticvigil.com"
+      //"https://rpc-mumbai.maticvigil.com"
+      "https://rpc.xinfin.network"
     );
 
     const contract = new ethers.Contract(
@@ -72,10 +73,10 @@ export async function queryContract() {
 
 export async function queryPrices() {
   try {
-    const { addressFactory, abiFactory } = getContractInfo(80001);
+    const { addressFactory, abiFactory } = getContractInfo();
 
     const customHttpProvider = new ethers.providers.JsonRpcProvider(
-      "https://rpc-mumbai.maticvigil.com"
+      "https://rpc.xinfin.network"
     );
 
     const contract = new ethers.Contract(
