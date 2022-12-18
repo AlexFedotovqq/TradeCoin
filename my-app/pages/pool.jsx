@@ -237,10 +237,7 @@ export default function Example({ pools }) {
         </div>
 
         <div className="overflow-hidden rounded-lg bg-gray-200 shadow p-6">
-          <ul
-            role="list"
-            className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-2"
-          >
+          <ul role="list" className="grid grid-cols-1 gap-3 lg:grid-cols-2">
             {pools &&
               pools.map((pool) => (
                 <li
@@ -248,20 +245,20 @@ export default function Example({ pools }) {
                   className="col-span-1 rounded-lg bg-white shadow"
                 >
                   <div className="flex w-full items-center justify-between space-x-6 p-5 ">
-                    <div className="flex-1 ">
-                      <h3 className="flex items-center space-x-3  text-sm font-medium  text-gray-900">
+                    <div className="flex-1">
+                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium  text-gray-900">
                         {pool.token0Name}
                       </h3>
-                      <h3 className="block items-center space-x-3  text-sm font-medium text-gray-500">
+                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
                         {pool.token0Address}
                       </h3>
-                      <h3 className=" flex items-center space-x-3  text-sm font-medium text-gray-900">
+                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                         {pool.token1Name}
                       </h3>
-                      <h3 className="block items-center space-x-3  text-sm font-medium text-gray-500">
+                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
                         {pool.token1Address}
                       </h3>
-                      <h3 className="block items-center space-x-3  text-sm font-medium text-gray-900">
+                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                         Total Supply: {pool.totalSupply}
                       </h3>
                     </div>
