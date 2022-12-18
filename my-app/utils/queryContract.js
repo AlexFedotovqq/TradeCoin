@@ -7,8 +7,7 @@ export async function queryContract() {
   try {
     const { addressFactory, abiFactory } = getContractInfo();
 
-    var customHttpProvider = new ethers.providers.JsonRpcProvider(
-      //"https://rpc-mumbai.maticvigil.com"
+    const customHttpProvider = new ethers.providers.JsonRpcProvider(
       "https://rpc.xinfin.network"
     );
 
