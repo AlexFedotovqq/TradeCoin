@@ -5,7 +5,7 @@ import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 
 import { getContractInfo, getERC20, getPair } from "../utils/contracts";
-// import { queryContract } from "../utils/queryContract";
+import { queryContract } from "../utils/queryContract";
 
 function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
@@ -416,9 +416,9 @@ export default function Example({ pools }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
-  //const pools = await queryContract();
-  const pools = await res.json();
+  //const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
+  const pools = await queryContract();
+  //const pools = await res.json();
 
   return {
     props: {

@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
-import { getContractInfo } from "../utils/contracts";
-import UniswapV2Pair from "../utils/contracts/UniswapV2Pair.json";
-import ERC20 from "../utils/contracts/ERC20.json";
+import { getContractInfo } from "../../../utils/contracts";
+import UniswapV2Pair from "../../../utils/contracts/UniswapV2Pair.json";
+import ERC20 from "../../../utils/contracts/ERC20.json";
 
-export async function queryContract() {
+export default async function handler(req, res) {
   try {
     const { addressFactory, abiFactory } = getContractInfo(80001);
 
@@ -34,6 +34,16 @@ export async function queryContract() {
       const token0 = await Pair.token0();
       const token1 = await Pair.token1();
 
+      const price0 = ethers.utils.formatEther(
+        ethers.BigNumber.from(await Pair.price0CumulativeLast()).toString()
+      );
+      console.log(price0);
+
+      const price1 = ethers.utils.formatEther(
+        ethers.BigNumber.from(await Pair.price1CumulativeLast()).toString()
+      );
+      console.log(price1);
+
       const Token0 = new ethers.Contract(token0, ERC20.abi, customHttpProvider);
       const Token1 = new ethers.Contract(token1, ERC20.abi, customHttpProvider);
 
@@ -53,8 +63,8 @@ export async function queryContract() {
       );
 
       items.push({
-        token0Address: token0,
-        token1Address: token1,
+        //token0Address: token0,
+        //token1Address: token1,
         token0Name: name0,
         token1Name: name1,
         token0Reserves: reserves0,
@@ -64,8 +74,8 @@ export async function queryContract() {
       });
     }
 
-    return items;
+    res.status(200).json(items);
   } catch (err) {
-    return { error: "failed to fetch data" + err };
+    res.status(500).send({ error: "failed to fetch data" + err });
   }
 }

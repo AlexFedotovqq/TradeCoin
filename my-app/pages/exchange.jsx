@@ -341,3 +341,17 @@ export default function Example() {
     </div>
   );
 }
+
+/* export async function getStaticProps() {
+  //const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
+  const pools = await queryContract();
+  //const pools = await res.json();
+
+  return {
+    props: {
+      pools,
+    },
+    revalidate: 10,
+  };
+}
+ */
