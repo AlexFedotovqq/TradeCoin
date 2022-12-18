@@ -42,15 +42,6 @@ const transactions = [
   },
   // More transactions...
 ];
-const statusStyles = {
-  success: "bg-green-100 text-green-800",
-  processing: "bg-yellow-100 text-yellow-800",
-  failed: "bg-gray-100 text-gray-800",
-};
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function Example() {
   const { chain } = useNetwork();
@@ -59,27 +50,39 @@ export default function Example() {
 
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
-  const [swapAmount, setSwapAmount] = useState("");
+  const [swapAmount, setSwapAmount] = useState(0);
 
   async function swap() {
-    const { address, abi } = getContractInfo(chain.id);
+    const { addressFactory, abiFactory } = getContractInfo(chain.id);
     const { abiPair } = getPair();
     const { abiERC20 } = getERC20();
 
-    const contract = new ethers.Contract(address, abi, signer);
+    const contract = new ethers.Contract(addressFactory, abiFactory, signer);
     const pairAddress = await contract.getPair(tokenA, tokenB);
-    console.log(pairAddress);
     const pair = new ethers.Contract(pairAddress, abiPair, signer);
 
-    const token0 = new ethers.Contract(tokenA, abiERC20, signer);
+    const orderIn = (await pair.token0()) === tokenA ? 0 : 1;
+    const orderOut = (await pair.token1()) === tokenB ? 1 : 0;
 
-    /*     await token0.transfer(pair.address, expandTo18Decimals(swapAmount), {
+    const token = new ethers.Contract(tokenA, abiERC20, signer);
+
+    await token.transfer(pairAddress, expandTo18Decimals(swapAmount), {
       gasLimit: 60000,
     });
 
-    await pair.swap(0, expectedOutputAmount, deployer.address, "0x", {
+    const Preserves = await pair.getReserves();
+
+    var amountInWithFee = expandTo18Decimals(swapAmount).mul(996);
+
+    var numerator = amountInWithFee.mul(Preserves[orderOut]);
+    var denominator = Preserves[orderIn].mul(1000).add(amountInWithFee);
+    var amountOut = numerator / denominator;
+
+    const expectedOutputAmount = ethers.BigNumber.from(String(amountOut));
+
+    await pair.swap(0, expectedOutputAmount, address, "0x", {
       gasLimit: 200000,
-    }); */
+    });
   }
 
   return (
@@ -184,7 +187,6 @@ export default function Example() {
               id="number"
               onChange={(event) => setSwapAmount(event.target.value)}
               className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-
               placeholder="1"
             />
 
@@ -283,12 +285,7 @@ export default function Example() {
                               >
                                 Cost
                               </th>
-                              <th
-                                className="hidden bg-gray-50 px-8 py-3 text-left text-sm font-semibold text-gray-900 md:block"
-                                scope="col"
-                              >
-                                Status
-                              </th>
+
                               <th
                                 className="bg-gray-50 px-10 py-3 text-right text-sm font-semibold text-gray-900"
                                 scope="col"
@@ -322,16 +319,7 @@ export default function Example() {
                                   </span>
                                   {transaction.currency}
                                 </td>
-                                <td className="hidden whitespace-nowrap px-6 py-4 text-sm text-gray-500 md:block">
-                                  <span
-                                    className={classNames(
-                                      statusStyles[transaction.status],
-                                      "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize"
-                                    )}
-                                  >
-                                    {transaction.status}
-                                  </span>
-                                </td>
+
                                 <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
                                   <time dateTime={transaction.datetime}>
                                     {transaction.date}

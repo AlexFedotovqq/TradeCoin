@@ -29,17 +29,17 @@ export default function Example({ pools }) {
   const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
 
   async function startUpload() {
-    const { address, abi } = getContractInfo(chain.id);
-    const contract = new ethers.Contract(address, abi, signer);
+    const { addressFactory, abiFactory } = getContractInfo(chain.id);
+    const contract = new ethers.Contract(addressFactory, abiFactory, signer);
     await contract.createPair(tokenA, tokenB);
   }
 
   async function addLiquidity(address0, address1, pairAddress) {
-    const { abi } = getERC20();
+    const { abiERC20 } = getERC20();
     const { abiPair } = getPair();
 
-    const token0 = new ethers.Contract(address0, abi, signer);
-    const token1 = new ethers.Contract(address1, abi, signer);
+    const token0 = new ethers.Contract(address0, abiERC20, signer);
+    const token1 = new ethers.Contract(address1, abiERC20, signer);
     const pair = new ethers.Contract(pairAddress, abiPair, signer);
 
     await token0.transfer(pairAddress, expandTo18Decimals(tokenAQuantity), {

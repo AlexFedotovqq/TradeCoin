@@ -79,7 +79,18 @@ describe("features", function () {
     });
 
     const swapAmount = expandTo18Decimals(1);
-    const expectedOutputAmount = ethers.BigNumber.from("1662497915624478906");
+
+    const Preserves = await pair.getReserves();
+
+    var amountInWithFee = swapAmount.mul(996);
+
+    var numerator = amountInWithFee.mul(Preserves[1]);
+    var denominator = Preserves[0].mul(1000).add(amountInWithFee);
+    var amountOut = numerator / denominator;
+
+    //const expectedOutputAmount = ethers.BigNumber.from("1662497915624478906");
+    const expectedOutputAmount = ethers.BigNumber.from(String(amountOut));
+
     await token0.transfer(pair.address, swapAmount, {
       gasLimit: 60000,
     });
