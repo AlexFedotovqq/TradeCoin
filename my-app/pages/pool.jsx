@@ -416,9 +416,9 @@ export default function Example({ pools }) {
 }
 
 export async function getStaticProps() {
-  // const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/");
-  const pools = await queryContract();
-  //const pools = await res.json();
+  const res = await fetch("https://xrc-swap.vercel.app/api/xdc/");
+  //const pools = await queryContract();
+  const pools = await res.json();
 
   return {
     props: {

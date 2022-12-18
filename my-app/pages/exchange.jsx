@@ -196,7 +196,7 @@ export default function Example({ transactions }) {
                     {transactions.map((transaction) => (
                       <li key={transaction.id}>
                         <a
-                          href={`https://mumbai.polygonscan.com/address/${transaction.pairAddress}`}
+                          href={`https://explorer.xinfin.network/address/${transaction.pairAddress}`}
                           className="block bg-white px-4 py-4 hover:bg-gray-50"
                         >
                           <span className="flex items-center space-x-4">
@@ -265,7 +265,7 @@ export default function Example({ transactions }) {
                                 <td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                                   <div className="flex">
                                     <a
-                                      href={`https://mumbai.polygonscan.com/address/${transaction.pairAddress}`}
+                                      href={`https://explorer.xinfin.network/address/${transaction.pairAddress}`}
                                       className="group inline-flex space-x-2 truncate text-sm"
                                     >
                                       <BanknotesIcon
@@ -308,7 +308,7 @@ export default function Example({ transactions }) {
 }
 
 export async function getStaticProps() {
-  //const res = await fetch("https://xrc-swap.vercel.app/api/maticmum/txs");
+  //const res = await fetch("https://xrc-swap.vercel.app/api/xdc/txs");
   const transactions = await queryPrices();
   //const transactions = await res.json();
 
