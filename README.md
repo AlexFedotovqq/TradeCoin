@@ -1,6 +1,5 @@
 # XRC-Swap
 
-# Inspiration
 XRC Swap is a decentralized protocol for automated token exchange on XDC. It allows users to easily swap between XRC20 tokens, as well as providing liquidity to other projects and protocols.
 
 # What it does
@@ -23,9 +22,18 @@ We plan to continue to improve the protocol and make it more secure and reliable
 
 # Built With
 
-javascript
-nextjs
-react
-solidity
-vercel
-xdc
+1. **javascript**
+2. **nextjs**
+3. **react**
+4. **solidity**
+5. **vercel**
+6. **xdc**
+
+# Important Links 
+1. [Twitter](https://twitter.com/XrcSwap)
+2. [xrc-swap.vercel.app](https://xrc-swap.vercel.app/)
+3. [Forum](https://www.xdc.dev/alexfedotovqq )
+
+# Video Review 
+https://youtu.be/kDQ0fN4s-Jc
+
