@@ -1,3 +1,4 @@
+![](https://www.xdc.dev/images/mz-qCbLXGV8Ks--wRNpxDtLlNj3Lz44aAc8ynlUHD3w/s:1000:420/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L3VhbDYzYXdzeDAy/M3BuY2EzNHd0LnBu/Zw) 
 # XRC-Swap
 
 XRC Swap is a decentralized protocol for automated token exchange on XDC. It allows users to easily swap between XRC20 tokens, as well as providing liquidity to other projects and protocols.
@@ -35,5 +36,5 @@ We plan to continue to improve the protocol and make it more secure and reliable
 3. [Forum](https://www.xdc.dev/alexfedotovqq )
 
 # Video Review 
-https://youtu.be/kDQ0fN4s-Jc
+[YouTube video](https://youtu.be/kDQ0fN4s-Jc) 
 
