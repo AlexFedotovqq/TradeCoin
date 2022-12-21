@@ -5,7 +5,7 @@ import ERC20 from "../../../utils/contracts/ERC20.json";
 
 export default async function handler(req, res) {
   try {
-    const { addressFactory, abiFactory } = getContractInfo(80001);
+    const { addressFactory, abiFactory } = getContractInfo();
 
     const customHttpProvider = new ethers.providers.JsonRpcProvider(
       "https://rpc.xinfin.network"
