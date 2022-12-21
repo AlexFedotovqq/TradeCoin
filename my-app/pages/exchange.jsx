@@ -308,9 +308,9 @@ export default function Example({ transactions }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch("https://xrc-swap.vercel.app/api/xdc/txs");
-  //const transactions = await queryPrices();
-  const transactions = await res.json();
+  //const res = await fetch("https://xrc-swap.vercel.app/api/xdc/txs");
+  const transactions = await queryPrices();
+  //const transactions = await res.json();
 
   return {
     props: {
