@@ -32,7 +32,7 @@ We plan to continue to improve the protocol and make it more secure and reliable
 
 # Important Links 
 1. [Twitter](https://twitter.com/XrcSwap)
-2. [xrc-swap.vercel.app](https://xrc-swap.vercel.app/)
+2. [Website](http://xrcswap.com/)
 3. [Forum](https://www.xdc.dev/alexfedotovqq )
 
 # Video Review 
