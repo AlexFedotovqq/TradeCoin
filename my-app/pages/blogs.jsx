@@ -18,39 +18,39 @@ const posts = [
       },
     },
     {
-      title: 'How to use search engine optimization to drive sales',
-      href: '#',
-      category: { name: 'Video', href: '#' },
+      title: 'XRC Swap: Unlocking Liquidity with a Decentralized Token Exchange Protocol',
+      href: '/blogs/unlocking',
+      category: { name: 'Article', href: '#' },
       description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit facilis asperiores porro quaerat doloribus, eveniet dolore. Adipisci tempora aut inventore optio animi., tempore temporibus quo laudantium.',
-      date: 'Mar 10, 2020',
-      datetime: '2020-03-10',
+        'The rise of decentralized finance (DeFi) has revolutionized the financial world, allowing anyone to access a variety of financial services and investments without relying on a centralized entity.',
+      date: 'Jan 12, 2022',
+      datetime: '2022-01-12',
       imageUrl:
-        'https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
-      readingTime: '4 min',
+        'https://dspyt.com/_next/image?url=%2Fimages%2Fposts%2Fxrcswap%2Fimage.webp&w=640&q=75',
+      readingTime: '6 min',
       author: {
-        name: 'Brenna Goyette',
-        href: '#',
+        name: 'Our Twitter',
+        href: 'https://twitter.com/XrcSwap',
         imageUrl:
-          'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+          'https://pbs.twimg.com/profile_images/1599419783618904064/1spC1U1G_400x400.jpg',
       },
     },
     {
-      title: 'Improve your customer experience',
-      href: '#',
-      category: { name: 'Case Study', href: '#' },
+      title: 'XRC Swap: Unlocking Liquidity with a Decentralized Token Exchange Protocol',
+      href: '/blogs/unlocking',
+      category: { name: 'Article', href: '#' },
       description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint harum rerum voluptatem quo recusandae magni placeat saepe molestiae, sed excepturi cumque corporis perferendis hic.',
-      date: 'Feb 12, 2020',
-      datetime: '2020-02-12',
+        'The rise of decentralized finance (DeFi) has revolutionized the financial world, allowing anyone to access a variety of financial services and investments without relying on a centralized entity.',
+      date: 'Jan 12, 2022',
+      datetime: '2022-01-12',
       imageUrl:
-        'https://images.unsplash.com/photo-1492724441997-5dc865305da7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
-      readingTime: '11 min',
+        'https://dspyt.com/_next/image?url=%2Fimages%2Fposts%2Fxrcswap%2Fimage.webp&w=640&q=75',
+      readingTime: '6 min',
       author: {
-        name: 'Daniela Metz',
-        href: '#',
+        name: 'Our Twitter',
+        href: 'https://twitter.com/XrcSwap',
         imageUrl:
-          'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+          'https://pbs.twimg.com/profile_images/1599419783618904064/1spC1U1G_400x400.jpg',
       },
     },
   ]
