@@ -123,7 +123,7 @@ export default function Index() {
                 <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
                 We have a Blog tab on our site.
                 </p>
-                <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
+                <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
                 On this tab you can read something interesting from the field of crypto and so on.
                 </p>
                 <div className="mt-3"></div>
@@ -152,7 +152,7 @@ export default function Index() {
                 <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
                 We have a Exchange tab on our site.
                 </p>
-                <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
+                <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
                 On this tab you can exchange cryptocurrency
                 </p>
                 <div className="mt-3"></div>
