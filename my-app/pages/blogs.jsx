@@ -1,3 +1,4 @@
+import Link from 'next/link'
 const posts = [
     {
       title: 'XRC Swap: Unlocking Liquidity with a Decentralized Token Exchange Protocol',
@@ -95,9 +96,9 @@ const posts = [
                     </div>
                     <div className="ml-3">
                       <p className="text-sm font-medium text-gray-900">
-                        <a href={post.author.href} className="hover:underline">
+                        <Link href={post.author.href} className="hover:underline">
                           {post.author.name}
-                        </a>
+                        </Link>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
                         <time dateTime={post.datetime}>{post.date}</time>

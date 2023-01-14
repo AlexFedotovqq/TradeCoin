@@ -1,3 +1,4 @@
+import Link from 'next/link'
 export default function Example() {
     return (
       <div className="overflow-hidden bg-gray-50 py-16">
@@ -49,12 +50,13 @@ export default function Example() {
               </div>
               <div className="mx-auto mt-10 flex max-w-prose text-base lg:max-w-none">
                 <div className="rounded-md shadow">
-                  <a
-                    href="/blogs"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
-                  >
-                    Back to the blog
-                  </a>
+                <Link href="/blogs"
+                                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
+
+>
+Back to the blog         
+                        </Link>
+                
                 </div>
                 
               </div>

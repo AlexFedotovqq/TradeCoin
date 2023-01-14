@@ -93,15 +93,15 @@ export default function Index() {
                 XRC-Swap provides DeFi tools for token holders & businesses to buy, trade, create, and secure crypto assets with confidence.
                 </p>
                 <div className="mt-8 flex gap-x-4 sm:justify-center">
-                  <a
-                    href="/exchange"
-                    className="inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700"
-                  >
-                    Exchange{' '}
+                <Link href="/exchange" className="inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700">
+                Exchange{' '}
                     <span className="text-indigo-200" aria-hidden="true">
                       &rarr;
                     </span>
-                  </a>
+                        </Link>
+                  
+                    
+                  
                   <a
                     href="https://www.youtube.com/watch?v=kDQ0fN4s-Jc&ab_channel=Dspyt"
                     className="inline-block rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/20"
@@ -118,10 +118,10 @@ export default function Index() {
                 
               <div className="mt-8">
                 <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                About "Blog"
+                Blog
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                We have a "Blog" tab on our site.
+                We have a Blog tab on our site.
                 </p>
                 <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
                 On this tab you can read something interesting from the field of crypto and so on.
@@ -135,10 +135,9 @@ export default function Index() {
                 <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                   <span className="text-gray-600">
                   Here are the most interesting posts{' '}
-                    <a href="/blogs" className="font-semibold text-indigo-600">
-                      <span className="absolute inset-0" aria-hidden="true" />
-                      View our blog <span aria-hidden="true">&rarr;</span>
-                    </a>
+                  <Link href="/blogs" className="font-semibold text-indigo-600">
+                  View our blog
+                        </Link>
                   </span>
                 </div>
                 </div>
@@ -148,10 +147,10 @@ export default function Index() {
               <div>
               <div className="mt-8">
                 <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                About "Exchange"
+                Exchange
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                We have a "Exchange" tab on our site.
+                We have a Exchange tab on our site.
                 </p>
                 <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
                 On this tab you can exchange cryptocurrency
@@ -165,10 +164,12 @@ export default function Index() {
                 <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                   <span className="text-gray-600">
                   Here are the most interesting exchange{' '}
-                    <a href="/exchange" className="font-semibold text-indigo-600">
-                      <span className="absolute inset-0" aria-hidden="true" />
-                      View our Exchange <span aria-hidden="true">&rarr;</span>
-                    </a>
+                  <Link href="/exchange" className="font-semibold text-indigo-600">
+                  View our Exchange 
+                        </Link>
+                    
+                    
+                    
                   </span>
                 </div>
                 </div>
@@ -178,10 +179,10 @@ export default function Index() {
               <div>
               <div className="mt-8">
                 <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                About "Pool"
+                Pool
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                We have a "Pool" tab on our site.
+                We have a Pool tab on our site.
                 </p>
                 <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
                 -----------------------------something-----------------------------------------
@@ -195,10 +196,11 @@ export default function Index() {
                 <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                   <span className="text-gray-600">
                   Here are the most interesting pool{' '}
-                    <a href="/pool" className="font-semibold text-indigo-600">
-                      <span className="absolute inset-0" aria-hidden="true" />
-                      View our pool <span aria-hidden="true">&rarr;</span>
-                    </a>
+                  <Link href="/pool" className="font-semibold text-indigo-600">
+                  View our pool
+                        </Link>
+                    
+                      
                   </span>
                 </div>
                 </div>
@@ -208,10 +210,10 @@ export default function Index() {
               <div>
               <div className="mt-8">
                 <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                About "Contact us"
+                Contact us
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                We have a "Contact us" tab on our site.
+                We have a Contact us tab on our site.
                 </p>
                 <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
                 Here you can contact us
@@ -224,11 +226,12 @@ export default function Index() {
                 <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                 <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                   <span className="text-gray-600">
-                  Here are the most interesting pool{' '}
-                    <a href="/pool" className="font-semibold text-indigo-600">
-                      <span className="absolute inset-0" aria-hidden="true" />
-                      Contact us <span aria-hidden="true">&rarr;</span>
-                    </a>
+                  {' '}
+                  <Link href="/contact" className="font-semibold text-indigo-600">
+                  Contact us
+                        </Link>
+                    
+                    
                   </span>
                 </div>
                 </div>
