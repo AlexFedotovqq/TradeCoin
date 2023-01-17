@@ -134,7 +134,7 @@ export default function Index() {
                         height="445"
                         className="justify-center flex items-center"
                         allowFullScreen
-                      ></iframe>
+                      />
                     </div>
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
@@ -176,7 +176,7 @@ export default function Index() {
                         height="459"
                         className="justify-center flex items-center"
                         allowFullScreen
-                      ></iframe>
+                      />
                     </div>
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
@@ -203,9 +203,6 @@ export default function Index() {
                     <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
                       We have a Pool tab on our site.
                     </p>
-                    <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
-                      -----------------------------something-----------------------------------------
-                    </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
                       <iframe
@@ -214,7 +211,7 @@ export default function Index() {
                         height="390"
                         className="justify-center flex items-center"
                         allowFullScreen
-                      ></iframe>
+                      />
                     </div>
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
@@ -252,7 +249,7 @@ export default function Index() {
                         height="400"
                         className="justify-center flex items-center"
                         allowFullScreen
-                      ></iframe>
+                      />
                     </div>
                     <div className="mt-8 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">

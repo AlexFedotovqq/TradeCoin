@@ -76,7 +76,7 @@ export default function Example() {
                   leave="ease-in-out duration-300"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
-                ></Transition.Child>
+                />
 
                 <nav
                   className="mt-5 h-full flex-shrink-0 divide-y divide-cyan-800 overflow-y-auto"
@@ -169,7 +169,6 @@ export default function Example() {
               </div>
             </div>
           </div>
-          
 
           <div className="mt-8">
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
