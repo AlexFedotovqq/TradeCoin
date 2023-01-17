@@ -13,7 +13,7 @@ export default function Index() {
       <div className="mx-auto max-w-7xl">
         <div className="relative z-10 bg-orange-400 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
           <svg
-            className="absolute inset-y-0 right-0 hidden h-screen w-48 translate-x-1/2 transform text-white lg:block"
+            className="absolute inset-y-0 right-0 hidden h-screen w-48 translate-x-1/2 transform text-orange-400 lg:block"
             fill="currentColor"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
@@ -120,11 +120,15 @@ export default function Index() {
                 <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
                 Blog
                 </h1>
-                <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                We have a Blog tab on our site.
+                <p className="mt-4 text-lg leading-8 text-black sm:text-center">
+                Interested in reading something new?
                 </p>
                 <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
-                On this tab you can read something interesting from the field of crypto and so on.
+                You can read on our website Blog.
+                </p>
+                <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
+               
+                There you will find a lot of interesting and informative.
                 </p>
                 <div className="mt-3"></div>
                 <div className="relative overflow-hidden  flex items-center justify-center">
@@ -149,11 +153,14 @@ export default function Index() {
                 <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
                 Exchange
                 </h1>
-                <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                We have a Exchange tab on our site.
+                <p className="mt-6 text-lg leading-8 text-black sm:text-center">
+                Do you want to exchange cryptocurrency?
                 </p>
                 <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
-                On this tab you can exchange cryptocurrency
+                Go to the Exchange tab, then start exchanging.
+                </p>
+                <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
+                Don't know how to start exchanging? All information is below.
                 </p>
                 <div className="mt-3"></div>
                 <div className="relative overflow-hidden  flex items-center justify-center">
@@ -212,11 +219,11 @@ export default function Index() {
                 <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
                 Contact us
                 </h1>
-                <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                We have a Contact us tab on our site.
+                <p className="mt-6 text-lg leading-8 text-black sm:text-center">
+                Do you want to contact us?
                 </p>
                 <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
-                Here you can contact us
+                Go to the tab and write to us, we will be very happy
                 </p>
                 <div className="mt-3"></div>
                 <div className="relative overflow-hidden  flex items-center justify-center">
@@ -237,7 +244,26 @@ export default function Index() {
                 </div>
               </div>
               </div>
+              <div className="mt-8">
+                <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
+                Application instruction
+                </h1>
+                <p className="mt-6 text-lg leading-8 text-black sm:text-center">
+                Faced with the fact that you do not know how to use the application?
+                </p>
+                <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
+                Then you can watch the video below. It clearly shows you how to use it.
+                </p>
+                <p className="mt-5 text-lg leading-3 text-gray-600 sm:text-center">
+                How to use XDC-Swap: Unlock liquidity with XRC-Swap - empowering decentralized finance
+                </p>
+                <div className="mt-3"></div>
+                <div className="relative overflow-hidden  flex items-center justify-center">
+      <iframe src="https://www.youtube.com/watch?v=OlRdaxTm9N0&ab_channel=Dspyt" width="580" height="445"  className='justify-center flex items-center' allowFullScreen></iframe>
+    </div>
               </div>
+              </div>
+              
               <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
                 <svg
                   className="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"

@@ -19,16 +19,16 @@ const posts = [
       },
     },
     {
-      title: 'XRC Swap: Unlocking Liquidity with a Decentralized Token Exchange Protocol',
-      href: '/blogs/unlocking',
+      title: 'HOW TO ACCESS YOUR XDC NETWORK (XDC) ACCOUNT VIA METAMASK',
+      href: '/blogs/access',
       category: { name: 'Article', href: '#' },
       description:
-        'The rise of decentralized finance (DeFi) has revolutionized the financial world, allowing anyone to access a variety of financial services and investments without relying on a centralized entity.',
-      date: 'Jan 12, 2022',
-      datetime: '2022-01-12',
+        'Download MetaMask wallet from the App Store or Google Play.',
+      date: 'Jan 16, 2022',
+      datetime: '2022-01-16',
       imageUrl:
-        'https://dspyt.com/_next/image?url=%2Fimages%2Fposts%2Fxrcswap%2Fimage.webp&w=640&q=75',
-      readingTime: '6 min',
+        'https://www.xdc.dev/images/sforPIcEaZSQqArN0fsKq1AXsnkGlnTkKa0xT-bsyeQ/s:1000:420/mb:500000/ar:1/aHR0cHM6Ly93d3cu/eGRjLmRldi91cGxv/YWRzL2FydGljbGVz/L3ZlNmUzZDl0aW56/ZTdma2p5aWZlLnBu/Zw',
+      readingTime: '3 min',
       author: {
         name: 'Our Twitter',
         href: 'https://twitter.com/XrcSwap',

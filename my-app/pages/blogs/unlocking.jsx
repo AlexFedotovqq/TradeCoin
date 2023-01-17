@@ -4,8 +4,8 @@ export default function Example() {
       <div className="overflow-hidden bg-gray-50 py-16">
         <div className="mx-auto max-w-7xl space-y-8 px-6 lg:px-8">
           <div className="mx-auto max-w-prose text-base lg:max-w-none">
-            <h2 className="text-lg font-semibold text-indigo-600">Transactions</h2>
-            <p className="mt-2 text-3xl font-bold leading-8 tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-lg font-semibold text-indigo-600">XRC-Swap</h2>
+            <p className="mt-2  text-3xl font-bold leading-8 tracking-tight text-gray-900 sm:text-4xl">
             XRC Swap: Unlocking Liquidity with a Decentralized Token Exchange Protocol
             </p>
           </div>
