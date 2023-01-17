@@ -200,8 +200,11 @@ export default function Index() {
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
                       Pool
                     </h1>
-                    <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                      We have a Pool tab on our site.
+                    <p className="mt-6 text-lg leading-8 text-black sm:text-center">
+                    What Is an Automated Market Maker?
+                    </p>
+                    <p className="mt-4 text-lg leading-6 text-gray-600 sm:text-center">
+                    Automated market makers incentivize users to become liquidity providers in exchange for a share of transaction fees and free tokens.
                     </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
