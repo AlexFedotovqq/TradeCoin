@@ -27,7 +27,7 @@ export default function Index() {
                 <nav
                   className="relative flex items-center justify-between sm:h-12 lg:justify-start"
                   aria-label="Global"
-                ></nav>
+                />
               </div>
             </Popover>
 
@@ -105,10 +105,9 @@ export default function Index() {
                         &rarr;
                       </span>
                     </Link>
-
                     <a
                       href="https://www.youtube.com/watch?v=kDQ0fN4s-Jc&ab_channel=Dspyt"
-                      className="inline-block bg-pink-500 rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-gray-900 ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
+                      className="inline-block bg-pink-500 rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-white ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
                     >
                       Live demo video{" "}
                       <span className="text-gray-900" aria-hidden="true">
@@ -125,102 +124,6 @@ export default function Index() {
                     height="340"
                     className="justify-center flex items-center"
                   />
-                </div>
-                <div>
-                  <div className="mt-1">
-                    <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
-                      Blog
-                    </h1>
-                    <p className="mt-4 text-lg leading-8 text-black sm:text-center">
-                      <strong>Interested in reading </strong>
-                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
-                        something new?
-                      </span>
-                    </p>
-                    <p className="mt-4 text-lg leading-3 text-gray-900 sm:text-center">
-                      <strong>You can read on our website Blog.</strong>
-                    </p>
-                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                      <strong>
-                        There you will find a lot of interesting and
-                        informative.
-                      </strong>
-                    </p>
-
-                    <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
-                      <Image
-                        alt=""
-                        src="/photo6.jpg"
-                        width="350"
-                        height="350"
-                        className="justify-center flex items-center"
-                      />
-                    </div>
-                    <div className="mt-3 flex gap-x-4 sm:justify-center">
-                      <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                        <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                          <span className="text-gray-900">
-                            Here are the most interesting posts{" "}
-                            <Link
-                              href="/blogs"
-                              className="font-semibold text-indigo-600"
-                            >
-                              View our blog
-                            </Link>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="mt-8">
-                    <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                      Exchange
-                    </h1>
-                    <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                      <strong>Do you want to</strong>
-                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
-                        {" "}
-                        exchange cryptocurrency?
-                      </span>
-                    </p>
-                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                      <strong>
-                        Go to the Exchange tab, then start exchanging.
-                      </strong>
-                    </p>
-                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                      <strong>Don&apos;t know how to start exchanging?</strong>
-                    </p>
-                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                      <strong>All information is below.</strong>
-                    </p>
-                    <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
-                      <Image
-                        src="/photo3.jpg"
-                        width="340"
-                        height="350"
-                        className="justify-center flex items-center"
-                        alt=""
-                      />
-                    </div>
-                    <div className="mt-3 flex gap-x-4 sm:justify-center">
-                      <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                        <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                          <span className="text-gray-900">
-                            Here are the most interesting exchange{" "}
-                            <Link
-                              href="/exchange"
-                              className="font-semibold text-indigo-600"
-                            >
-                              View our Exchange
-                            </Link>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
                 <div>
                   <div className="mt-8">
@@ -256,7 +159,6 @@ export default function Index() {
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                           <span className="text-gray-900">
-                            Here are the most interesting pool{" "}
                             <Link
                               href="/pool"
                               className="font-semibold text-indigo-600"
@@ -272,46 +174,43 @@ export default function Index() {
                 <div>
                   <div className="mt-8">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                      Contact us
+                      Token Exchange
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
                       <strong>Do you want to</strong>
                       <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                         {" "}
-                        contact us?
+                        exchange cryptocurrency?
                       </span>
-                    </p>
-                    <p className="mt-3 text-lg leading-5 text-gray-900 sm:text-center">
-                      <strong>
-                        Go to the tab and write to us, we will be very happy
-                      </strong>
                     </p>
 
                     <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
                       <Image
                         alt=""
-                        src="/photo4.jpg"
-                        width="350"
+                        src="/photo3.jpg"
+                        width="340"
                         height="350"
                         className="justify-center flex items-center"
                       />
                     </div>
-                    <div className="mt-8 flex gap-x-4 sm:justify-center">
+                    <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                          <span className="text-gray-600">
-                            {" "}
+                          <span className="text-gray-900">
                             <Link
-                              href="/contact"
+                              href="/exchange"
                               className="font-semibold text-indigo-600"
                             >
-                              Contact us
+                              View our Exchange
                             </Link>
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
+
+                <div>
                   <div className="mt-8">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
                       <strong>Application instruction</strong>
@@ -331,12 +230,6 @@ export default function Index() {
                         how to use it.
                       </strong>
                     </p>
-                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                      <strong>
-                        How to use XDC-Swap: Unlock liquidity with XRC-Swap -
-                        empowering decentralized finance
-                      </strong>
-                    </p>
 
                     <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
                       <div className="flex justify-center">
@@ -349,35 +242,94 @@ export default function Index() {
                         />
                       </div>
                     </div>
+                    <p className="mt-4 mb-9 text-lg leading-5 text-gray-900 sm:text-center">
+                      <strong>
+                        How to use XDC-Swap: Unlock liquidity with XRC-Swap -
+                        empowering decentralized finance
+                      </strong>
+                    </p>
                   </div>
                 </div>
 
-                <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-                  <svg
-                    className="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+36rem)] sm:h-[42.375rem]"
-                    viewBox="0 0 1155 678"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill="url(#ecb5b0c9-546c-4772-8c71-4d3f06d544bc)"
-                      fillOpacity=".3"
-                      d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z"
+                <div>
+                  <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
+                    Blog
+                  </h1>
+                  <p className="mt-4 text-lg leading-8 text-black sm:text-center">
+                    <strong>Interested in reading about </strong>
+                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      automated market makers and XRC-Swap.
+                    </span>
+                  </p>
+                  <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
+                    <Image
+                      alt=""
+                      src="/photo6.jpg"
+                      width="350"
+                      height="350"
+                      className="justify-center flex items-center"
                     />
-                    <defs>
-                      <linearGradient
-                        id="ecb5b0c9-546c-4772-8c71-4d3f06d544bc"
-                        x1="1155.49"
-                        x2="-78.208"
-                        y1=".177"
-                        y2="474.645"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop stopColor="#9089FC" />
-                        <stop offset={1} stopColor="#FF80B5" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
+                  </div>
+
+                  <div
+                    className="mt-5
+                     flex gap-x-4 sm:justify-center"
+                  >
+                    <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+                      <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                        <span className="text-gray-900">
+                          <Link
+                            href="/blogs"
+                            className="font-semibold text-indigo-600"
+                          >
+                            View our blog
+                          </Link>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-8">
+                  <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
+                    Contact us
+                  </h1>
+                  <p className="mt-6 text-lg leading-8 text-black sm:text-center">
+                    <strong>Do you want to</strong>
+                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      {" "}
+                      contact us?
+                    </span>
+                  </p>
+                  <p className="mt-3 text-lg leading-5 text-gray-900 sm:text-center">
+                    <strong>
+                      Go to the tab and write to us, we will be very happy
+                    </strong>
+                  </p>
+
+                  <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
+                    <Image
+                      alt=""
+                      src="/photo4.jpg"
+                      width="350"
+                      height="350"
+                      className="justify-center flex items-center"
+                    />
+                  </div>
+                  <div className="mt-8 flex gap-x-4 sm:justify-center">
+                    <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+                      <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                        <span className="text-gray-600">
+                          {" "}
+                          <Link
+                            href="/contact"
+                            className="font-semibold text-indigo-600"
+                          >
+                            Contact us
+                          </Link>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
