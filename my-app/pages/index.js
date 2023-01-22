@@ -9,11 +9,11 @@ const myLoader = ({ src, width }) => {
 export default function Index() {
   return (
     <div>
-      <div className="relative overflow-hidden bg-orange-400 h-screen">
+      <div className="relative overflow-hidden bg-white ">
         <div className="mx-auto max-w-7xl">
-          <div className="relative z-10 bg-orange-400 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
+          <div className="relative z-10 bg-white pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
             <svg
-              className="absolute inset-y-0 right-0 hidden h-screen w-48 translate-x-1/2 transform text-orange-400 lg:block"
+              className="absolute inset-y-0 right-0 hidden h-screen w-48 translate-x-1/2 transform text-white lg:block"
               fill="currentColor"
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
@@ -45,7 +45,7 @@ export default function Index() {
                   <div className="rounded-md shadow">
                     <Link
                       href="/pool"
-                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
                     >
                       Pool
                     </Link>
@@ -53,7 +53,7 @@ export default function Index() {
                   <div className="mt-3 sm:mt-0 sm:ml-3">
                     <Link
                       href="/exchange"
-                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-indigo-700 hover:bg-gray-200 md:py-4 md:px-10 md:text-lg"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-pink-500 px-8 py-3 text-base font-medium text-white hover:bg-pink-700 md:py-4 md:px-10 md:text-lg"
                     >
                       Exchange
                     </Link>
@@ -98,7 +98,7 @@ export default function Index() {
                   <div className="mt-8 flex gap-x-4 sm:justify-center">
                     <Link
                       href="/exchange"
-                      className="inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700"
+                      className="inline-block rounded-lg bg-indigo-500 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-500 hover:bg-indigo-700 hover:ring-indigo-700"
                     >
                       Exchange{" "}
                       <span className="text-indigo-200" aria-hidden="true">
@@ -108,18 +108,27 @@ export default function Index() {
 
                     <a
                       href="https://www.youtube.com/watch?v=kDQ0fN4s-Jc&ab_channel=Dspyt"
-                      className="inline-block rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+                      className="inline-block bg-pink-500 rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-gray-900 ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
                     >
                       Live demo video{" "}
-                      <span className="text-gray-400" aria-hidden="true">
+                      <span className="text-gray-900" aria-hidden="true">
                         &rarr;
                       </span>
                     </a>
                   </div>
                 </div>
-
+                <div className="mt-1"></div>
+                <div className="relative overflow-hidden  flex items-center justify-center">
+                      <iframe
+                        src="/photo1.jpg"
+                        width="340"
+                        height="340"
+                        className="justify-center flex items-center"
+                        allowFullScreen
+                      />
+                    </div>
                 <div>
-                  <div className="mt-8">
+                  <div className="mt-1">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
                       Blog
                     </h1>
@@ -141,9 +150,9 @@ export default function Index() {
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
                       <iframe
-                        src="/tenor (4).gif"
-                        width="580"
-                        height="445"
+                        src="/photo6.jpg"
+                        width="350"
+                        height="350"
                         className="justify-center flex items-center"
                         allowFullScreen
                       />
@@ -191,9 +200,9 @@ export default function Index() {
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
                       <iframe
-                        src="/tenor.gif"
-                        width="480"
-                        height="459"
+                        src="/photo3.jpg"
+                        width="340"
+                        height="350"
                         className="justify-center flex items-center"
                         allowFullScreen
                       />
@@ -237,9 +246,9 @@ export default function Index() {
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
                       <iframe
-                        src="/tenor (3).gif"
-                        width="580"
-                        height="390"
+                        src="/photo5.jpg"
+                        width="350"
+                        height="350"
                         className="justify-center flex items-center"
                         allowFullScreen
                       />
@@ -281,9 +290,9 @@ export default function Index() {
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
                       <iframe
-                        src="/tenor (2).gif"
-                        width="510"
-                        height="400"
+                        src="/photo4.jpg"
+                        width="350"
+                        height="350"
                         className="justify-center flex items-center"
                         allowFullScreen
                       />
