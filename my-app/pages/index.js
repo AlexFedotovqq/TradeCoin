@@ -81,15 +81,18 @@ export default function Index() {
             <div className="mx-auto max-w-3xl pt-20 pb-32  sm:pb-40">
               <div>
                 <div>
-                  
-                  <h1 className="text-4xl  font-bold tracking-tight sm:text-center sm:text-6xl">
-                  How does it <span class="text-4xl font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center sm:text-6xl">Work?</span>
+                  <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
+                    How does it{" "}
+                    <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 ">
+                      Work?
+                    </span>
                   </h1>
-                  
+
                   <p className="mt-6 text-lg leading-8 text-gray-900 sm:text-center">
-                    <strong>XRC-Swap provides DeFi tools for token holders & businesses
-                    to buy, trade, create, and secure crypto assets with
-                    confidence.
+                    <strong>
+                      XRC-Swap provides DeFi tools for token holders &
+                      businesses to buy, trade, create, and secure crypto assets
+                      with confidence.
                     </strong>
                   </p>
                   <div className="mt-8 flex gap-x-4 sm:justify-center">
@@ -117,22 +120,22 @@ export default function Index() {
 
                 <div>
                   <div className="mt-8">
-                  <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
+                    <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
                       Blog
                     </h1>
                     <p className="mt-4 text-lg leading-8 text-black sm:text-center">
-                    <strong>Interested in reading </strong>
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">something new?</span>
-                  
+                      <strong>Interested in reading </strong>
+                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                        something new?
+                      </span>
                     </p>
                     <p className="mt-4 text-lg leading-3 text-gray-900 sm:text-center">
-                    <strong>
-                    You can read on our website Blog.
-                    </strong>
+                      <strong>You can read on our website Blog.</strong>
                     </p>
                     <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
                       <strong>
-                        There you will find a lot of interesting and informative.
+                        There you will find a lot of interesting and
+                        informative.
                       </strong>
                     </p>
                     <div className="mt-3"></div>
@@ -168,19 +171,22 @@ export default function Index() {
                       Exchange
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                    <strong>Do you want to</strong>
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"> exchange cryptocurrency?</span>
-
+                      <strong>Do you want to</strong>
+                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                        {" "}
+                        exchange cryptocurrency?
+                      </span>
                     </p>
                     <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                    <strong>Go to the Exchange tab, then start exchanging.</strong>
+                      <strong>
+                        Go to the Exchange tab, then start exchanging.
+                      </strong>
                     </p>
                     <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                    <strong>Don&apos;t know how to start exchanging?</strong>
+                      <strong>Don&apos;t know how to start exchanging?</strong>
                     </p>
                     <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                    <strong>All information
-                      is below.</strong>
+                      <strong>All information is below.</strong>
                     </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
@@ -212,17 +218,21 @@ export default function Index() {
                 <div>
                   <div className="mt-8">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                    <strong>Pool</strong>
+                      <strong>Pool</strong>
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                    <strong>What Is an</strong>
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"> Automated Market Maker?</span>
-
-                    
+                      <strong>What Is an</strong>
+                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                        {" "}
+                        Automated Market Maker?
+                      </span>
                     </p>
                     <p className="mt-4 text-lg leading-6 text-gray-900 sm:text-center">
-                    <strong>Automated market makers incentivize users to become liquidity providers in exchange for a share of transaction fees and free tokens.
-                    </strong>
+                      <strong>
+                        Automated market makers incentivize users to become
+                        liquidity providers in exchange for a share of
+                        transaction fees and free tokens.
+                      </strong>
                     </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
@@ -257,13 +267,16 @@ export default function Index() {
                       Contact us
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                    <strong>Do you want to</strong>
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"> contact us?</span>
-
-                      
+                      <strong>Do you want to</strong>
+                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                        {" "}
+                        contact us?
+                      </span>
                     </p>
                     <p className="mt-3 text-lg leading-5 text-gray-900 sm:text-center">
-                    <strong>Go to the tab and write to us, we will be very happy</strong>
+                      <strong>
+                        Go to the tab and write to us, we will be very happy
+                      </strong>
                     </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
@@ -293,21 +306,28 @@ export default function Index() {
                   </div>
                   <div className="mt-8">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                    <strong>Application instruction</strong>
+                      <strong>Application instruction</strong>
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                    <strong>Faced with the fact that you do not know how to</strong>
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"> use the application?</span>
-
-                      
+                      <strong>
+                        Faced with the fact that you do not know how to
+                      </strong>
+                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                        {" "}
+                        use the application?
+                      </span>
                     </p>
                     <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                    <strong>Then you can watch the video below. It clearly shows you
-                      how to use it.</strong>
+                      <strong>
+                        Then you can watch the video below. It clearly shows you
+                        how to use it.
+                      </strong>
                     </p>
                     <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
-                    <strong>How to use XDC-Swap: Unlock liquidity with XRC-Swap -
-                      empowering decentralized finance</strong>
+                      <strong>
+                        How to use XDC-Swap: Unlock liquidity with XRC-Swap -
+                        empowering decentralized finance
+                      </strong>
                     </p>
 
                     <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
