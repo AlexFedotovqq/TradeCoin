@@ -117,16 +117,15 @@ export default function Index() {
                     </a>
                   </div>
                 </div>
-                <div className="mt-1"></div>
-                <div className="relative overflow-hidden  flex items-center justify-center">
-                      <iframe
-                        src="/photo1.jpg"
-                        width="340"
-                        height="340"
-                        className="justify-center flex items-center"
-                        allowFullScreen
-                      />
-                    </div>
+                <div className="mt-1 relative overflow-hidden  flex items-center justify-center">
+                  <Image
+                    alt=""
+                    src="/photo1.jpg"
+                    width="340"
+                    height="340"
+                    className="justify-center flex items-center"
+                  />
+                </div>
                 <div>
                   <div className="mt-1">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
@@ -147,14 +146,14 @@ export default function Index() {
                         informative.
                       </strong>
                     </p>
-                    <div className="mt-3"></div>
-                    <div className="relative overflow-hidden  flex items-center justify-center">
-                      <iframe
+
+                    <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
+                      <Image
+                        alt=""
                         src="/photo6.jpg"
                         width="350"
                         height="350"
                         className="justify-center flex items-center"
-                        allowFullScreen
                       />
                     </div>
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
@@ -197,14 +196,13 @@ export default function Index() {
                     <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
                       <strong>All information is below.</strong>
                     </p>
-                    <div className="mt-3"></div>
-                    <div className="relative overflow-hidden  flex items-center justify-center">
-                      <iframe
+                    <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
+                      <Image
                         src="/photo3.jpg"
                         width="340"
                         height="350"
                         className="justify-center flex items-center"
-                        allowFullScreen
+                        alt=""
                       />
                     </div>
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
@@ -243,9 +241,10 @@ export default function Index() {
                         transaction fees and free tokens.
                       </strong>
                     </p>
-                    <div className="mt-3"></div>
-                    <div className="relative overflow-hidden  flex items-center justify-center">
-                      <iframe
+
+                    <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
+                      <Image
+                        alt=""
                         src="/photo5.jpg"
                         width="350"
                         height="350"
@@ -287,14 +286,14 @@ export default function Index() {
                         Go to the tab and write to us, we will be very happy
                       </strong>
                     </p>
-                    <div className="mt-3"></div>
-                    <div className="relative overflow-hidden  flex items-center justify-center">
-                      <iframe
+
+                    <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
+                      <Image
+                        alt=""
                         src="/photo4.jpg"
                         width="350"
                         height="350"
                         className="justify-center flex items-center"
-                        allowFullScreen
                       />
                     </div>
                     <div className="mt-8 flex gap-x-4 sm:justify-center">
