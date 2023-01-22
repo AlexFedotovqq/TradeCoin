@@ -81,13 +81,16 @@ export default function Index() {
             <div className="mx-auto max-w-3xl pt-20 pb-32  sm:pb-40">
               <div>
                 <div>
-                  <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
-                    XRC-Swap
+                  
+                  <h1 className="text-4xl  font-bold tracking-tight sm:text-center sm:text-6xl">
+                  How does it <span class="text-4xl font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center sm:text-6xl">Work?</span>
                   </h1>
-                  <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                    XRC-Swap provides DeFi tools for token holders & businesses
+                  
+                  <p className="mt-6 text-lg leading-8 text-gray-900 sm:text-center">
+                    <strong>XRC-Swap provides DeFi tools for token holders & businesses
                     to buy, trade, create, and secure crypto assets with
                     confidence.
+                    </strong>
                   </p>
                   <div className="mt-8 flex gap-x-4 sm:justify-center">
                     <Link
@@ -114,17 +117,23 @@ export default function Index() {
 
                 <div>
                   <div className="mt-8">
-                    <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
+                  <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
                       Blog
                     </h1>
                     <p className="mt-4 text-lg leading-8 text-black sm:text-center">
-                      Interested in reading something new?
+                    <strong>Interested in reading </strong>
+                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">something new?</span>
+                  
                     </p>
-                    <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
-                      You can read on our website Blog.
+                    <p className="mt-4 text-lg leading-3 text-gray-900 sm:text-center">
+                    <strong>
+                    You can read on our website Blog.
+                    </strong>
                     </p>
-                    <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
-                      There you will find a lot of interesting and informative.
+                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
+                      <strong>
+                        There you will find a lot of interesting and informative.
+                      </strong>
                     </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
@@ -139,7 +148,7 @@ export default function Index() {
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                          <span className="text-gray-600">
+                          <span className="text-gray-900">
                             Here are the most interesting posts{" "}
                             <Link
                               href="/blogs"
@@ -159,14 +168,19 @@ export default function Index() {
                       Exchange
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                      Do you want to exchange cryptocurrency?
+                    <strong>Do you want to</strong>
+                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"> exchange cryptocurrency?</span>
+
                     </p>
-                    <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
-                      Go to the Exchange tab, then start exchanging.
+                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
+                    <strong>Go to the Exchange tab, then start exchanging.</strong>
                     </p>
-                    <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
-                      Don&apos;t know how to start exchanging? All information
-                      is below.
+                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
+                    <strong>Don&apos;t know how to start exchanging?</strong>
+                    </p>
+                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
+                    <strong>All information
+                      is below.</strong>
                     </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
@@ -181,7 +195,7 @@ export default function Index() {
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                          <span className="text-gray-600">
+                          <span className="text-gray-900">
                             Here are the most interesting exchange{" "}
                             <Link
                               href="/exchange"
@@ -198,13 +212,17 @@ export default function Index() {
                 <div>
                   <div className="mt-8">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                      Pool
+                    <strong>Pool</strong>
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                    What Is an Automated Market Maker?
+                    <strong>What Is an</strong>
+                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"> Automated Market Maker?</span>
+
+                    
                     </p>
-                    <p className="mt-4 text-lg leading-6 text-gray-600 sm:text-center">
-                    Automated market makers incentivize users to become liquidity providers in exchange for a share of transaction fees and free tokens.
+                    <p className="mt-4 text-lg leading-6 text-gray-900 sm:text-center">
+                    <strong>Automated market makers incentivize users to become liquidity providers in exchange for a share of transaction fees and free tokens.
+                    </strong>
                     </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
@@ -219,7 +237,7 @@ export default function Index() {
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                          <span className="text-gray-600">
+                          <span className="text-gray-900">
                             Here are the most interesting pool{" "}
                             <Link
                               href="/pool"
@@ -239,10 +257,13 @@ export default function Index() {
                       Contact us
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                      Do you want to contact us?
+                    <strong>Do you want to</strong>
+                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"> contact us?</span>
+
+                      
                     </p>
-                    <p className="mt-3 text-lg leading-3 text-gray-600 sm:text-center">
-                      Go to the tab and write to us, we will be very happy
+                    <p className="mt-3 text-lg leading-5 text-gray-900 sm:text-center">
+                    <strong>Go to the tab and write to us, we will be very happy</strong>
                     </p>
                     <div className="mt-3"></div>
                     <div className="relative overflow-hidden  flex items-center justify-center">
@@ -272,22 +293,24 @@ export default function Index() {
                   </div>
                   <div className="mt-8">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
-                      Application instruction
+                    <strong>Application instruction</strong>
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-                      Faced with the fact that you do not know how to use the
-                      application?
+                    <strong>Faced with the fact that you do not know how to</strong>
+                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"> use the application?</span>
+
+                      
                     </p>
-                    <p className="mt-4 text-lg leading-3 text-gray-600 sm:text-center">
-                      Then you can watch the video below. It clearly shows you
-                      how to use it.
+                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
+                    <strong>Then you can watch the video below. It clearly shows you
+                      how to use it.</strong>
                     </p>
-                    <p className="mt-5 text-lg leading-3 text-gray-600 sm:text-center">
-                      How to use XDC-Swap: Unlock liquidity with XRC-Swap -
-                      empowering decentralized finance
+                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
+                    <strong>How to use XDC-Swap: Unlock liquidity with XRC-Swap -
+                      empowering decentralized finance</strong>
                     </p>
 
-                    <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
+                    <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
                       <div className="flex justify-center">
                         <iframe
                           width="600"
