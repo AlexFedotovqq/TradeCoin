@@ -192,7 +192,7 @@ export default function Example({ pools }) {
                           name="number"
                           id="number"
                           onChange={(event) => setTokenA(event.target.value)}
-                          className="block w-full rounded-md border-violet-500 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="block w-full bg-pink-50 rounded-md py-3 px-4 pl-25"
                           placeholder="0x..."
                         />
                       </div>
@@ -213,7 +213,7 @@ export default function Example({ pools }) {
                           name="number"
                           id="number"
                           onChange={(event) => setTokenB(event.target.value)}
-                          className="block w-full rounded-md border-violet-500 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="block w-full rounded-md bg-pink-50 py-3 px-4 pl-25"
                           placeholder="0x..."
                         />
                       </div>
@@ -306,7 +306,7 @@ export default function Example({ pools }) {
                                   onChange={(event) =>
                                     setTokenAQuantity(event.target.value)
                                   }
-                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-pink-50"
                                   placeholder="1"
                                 />
 
@@ -317,12 +317,12 @@ export default function Example({ pools }) {
                                   onChange={(event) =>
                                     setTokenBQuantity(event.target.value)
                                   }
-                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-pink-50"
                                   placeholder="1"
                                 />
                               </div>
 
-                              <div className="ml-2 mt-2 inline-flex justify-center rounded-md  shadow lg:flex-shrink-0">
+                              <div className="ml-2 mt-2 inline-flex justify-center rounded-md shadow lg:flex-shrink-0">
                                 <a
                                   onClick={() =>
                                     addLiquidity(
@@ -382,7 +382,7 @@ export default function Example({ pools }) {
                                   onChange={(event) =>
                                     setWithdrawalQuantity(event.target.value)
                                   }
-                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                                  className="block w-full rounded-md bg-pink-50 py-3 px-4 pl-25"
                                   placeholder="1"
                                 />
                               </div>
