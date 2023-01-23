@@ -72,7 +72,7 @@ export default function Example({ pools }) {
   }
 
   return (
-    <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 h-screen">
+    <div className="overflow-hidden bg-white  py-16 px-4 sm:px-6 h-screen">
       <div className="relative mx-auto max-w-4xl">
         <svg
           className="absolute left-full translate-x-1/2 transform"
@@ -151,10 +151,10 @@ export default function Example({ pools }) {
               {({ open }) => (
                 <>
                   <h3 className="flex items-center justify-center">
-                    <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                    <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-pink-500 px-4 py-2 text-base font-medium text-white hover:bg-pink-700">
                       <span
                         className={classNames(
-                          open ? "text-indigo-200" : "text-white",
+                          open ? "text-white-200" : "text-white",
                           "text-sm font-medium"
                         )}
                       >
@@ -163,7 +163,7 @@ export default function Example({ pools }) {
                       <span className="ml-6 flex items-center justify-center">
                         {open ? (
                           <MinusIcon
-                            className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                            className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
                             aria-hidden="true"
                           />
                         ) : (
@@ -258,7 +258,7 @@ export default function Example({ pools }) {
                       <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                         {pool.token1Name}
                       </h3>
-                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
+                      <h3 className="flex  items-center space-x-3 justify-center text-sm font-medium text-gray-500 ">
                         {pool.token1Address}
                       </h3>
                       <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
@@ -326,7 +326,7 @@ export default function Example({ pools }) {
                                 />
                               </div>
 
-                              <div className="ml-2 mt-2 inline-flex justify-center rounded-md shadow lg:flex-shrink-0">
+                              <div className="ml-2 mt-2 inline-flex justify-center rounded-md  shadow lg:flex-shrink-0">
                                 <a
                                   onClick={() =>
                                     addLiquidity(

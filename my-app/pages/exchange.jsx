@@ -53,7 +53,7 @@ export default function Example({ transactions }) {
   }
 
   return (
-    <div className="overflow-hidden bg-orange-400 py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
+    <div className="overflow-hidden bg-white  py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
       <div className="relative mx-auto max-w-xl">
         <svg
           className="absolute left-full translate-x-1/2 transform"
@@ -125,7 +125,7 @@ export default function Example({ transactions }) {
           <h2 className="text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">
             Exchange
           </h2>
-          <p className="mt-4 text-lg leading-6 text-black-500">
+          <p className="mt-4 text-lg leading-6 text-black-900">
             Here you can exchange cryptocurrency
           </p>
         </div>
@@ -137,14 +137,14 @@ export default function Example({ transactions }) {
           >
             Exchange cryptocurrency
           </label>
-          <div className="relative mt-1 rounded-md shadow-sm">
+          <div className="relative  mt-1 rounded-md shadow-sm">
             <input
               type="text"
               name="number"
               id="number"
               autoComplete="tel"
               onChange={(event) => setTokenA(event.target.value)}
-              className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+              className="block w-full rounded-md  border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="0x..."
             />
 

@@ -37,8 +37,8 @@ export default function Index() {
                   <span className="block xl:inline">XRC-Swap</span>{" "}
                 </h1>
                 <p className="mt-3 text-base text-black sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
-                  XRC-Swap provides DeFi tools for token holders & businesses to
-                  buy, trade, create, and secure crypto assets with confidence.
+                  <strong>XRC-Swap provides DeFi tools for token holders & businesses to
+                  buy, trade, create, and secure crypto assets with confidence.</strong>
                 </p>
 
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
