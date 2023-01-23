@@ -176,7 +176,7 @@ export default function Example({ pools }) {
                     </Disclosure.Button>
                   </h3>
                   <Disclosure.Panel as="div" className="prose prose-sm pb-6">
-                    <div className="sm:col-span-2">
+                    <div className="mt-4 sm:col-span-2">
                       <label
                         htmlFor="number"
                         className="block text-center font-medium text-black-900"
@@ -185,21 +185,19 @@ export default function Example({ pools }) {
                       </label>
                       <div className="relative mt-1 rounded-md shadow-sm">
                         <div className="absolute inset-y-0 left-0 flex items-center">
-                          <label htmlFor="country" className="sr-only">
-                            Cryptocurrency
-                          </label>
+                          <label className="sr-only">Cryptocurrency</label>
                         </div>
                         <input
                           type="text"
                           name="number"
                           id="number"
                           onChange={(event) => setTokenA(event.target.value)}
-                          className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="block w-full rounded-md border-violet-500 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
                           placeholder="0x..."
                         />
                       </div>
                     </div>
-                    <div className="sm:col-span-2">
+                    <div className="mt-4 sm:col-span-2">
                       <label
                         htmlFor="number"
                         className="block text-center font-medium text-black-900"
@@ -208,16 +206,14 @@ export default function Example({ pools }) {
                       </label>
                       <div className="relative mt-1 rounded-md shadow-sm">
                         <div className="absolute inset-y-0 left-0 flex items-center">
-                          <label htmlFor="country" className="sr-only">
-                            Cryptocurrency
-                          </label>
+                          <label className="sr-only">Cryptocurrency</label>
                         </div>
                         <input
                           type="text"
                           name="number"
                           id="number"
                           onChange={(event) => setTokenB(event.target.value)}
-                          className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="block w-full rounded-md border-violet-500 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
                           placeholder="0x..."
                         />
                       </div>
@@ -247,21 +243,21 @@ export default function Example({ pools }) {
                   key={pool.pairAddress}
                   className="col-span-1 rounded-lg bg-white shadow"
                 >
-                  <div className="flex w-full items-center justify-between space-x-6 p-5 ">
+                  <div className="flex w-full items-center justify-between space-x-6 sm:p-5 ">
                     <div className="flex-1">
-                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium  text-gray-900">
+                      <h3 className="mt-2 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                         {pool.token0Name}
                       </h3>
-                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
+                      <h3 className="text-ellipsis flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
                         {pool.token0Address}
                       </h3>
                       <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                         {pool.token1Name}
                       </h3>
-                      <h3 className="flex  items-center space-x-3 justify-center text-sm font-medium text-gray-500 ">
+                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-500 ">
                         {pool.token1Address}
                       </h3>
-                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
+                      <h3 className="mt-3 mb-6 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                         Total Supply: {pool.totalSupply}
                       </h3>
                     </div>
