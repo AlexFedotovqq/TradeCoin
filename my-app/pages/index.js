@@ -12,6 +12,7 @@ export default function Index() {
       <div className="relative overflow-hidden bg-white ">
         <div className="mx-auto max-w-7xl">
           <div className="relative z-10 bg-white pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
+            
             <svg
               className="absolute inset-y-0 right-0 hidden h-screen w-48 translate-x-1/2 transform text-white lg:block"
               fill="currentColor"
@@ -78,7 +79,9 @@ export default function Index() {
       <div className="isolate bg-white">
         <main>
           <div className="relative px-6 lg:px-8">
+            
             <div className="mx-auto max-w-3xl pt-20 pb-32  sm:pb-40">
+              
               <div>
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
@@ -137,7 +140,7 @@ export default function Index() {
                         Automated Market Maker?
                       </span>
                     </p>
-                    <p className="mt-4 text-lg leading-6 text-gray-900 sm:text-center">
+                    <p className="mt-4 text-lg leading-8 text-gray-900 sm:text-center">
                       <strong>
                         Automated market makers incentivize users to become
                         liquidity providers in exchange for a share of
@@ -171,6 +174,7 @@ export default function Index() {
                     </div>
                   </div>
                 </div>
+                
                 <div>
                   <div className="mt-8">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
@@ -224,7 +228,7 @@ export default function Index() {
                         use the application?
                       </span>
                     </p>
-                    <p className="mt-4 text-lg leading-5 text-gray-900 sm:text-center">
+                    <p className="mt-4 text-lg leading-8 text-gray-900 sm:text-center">
                       <strong>
                         Then you can watch the video below. It clearly shows you
                         how to use it.
@@ -242,7 +246,7 @@ export default function Index() {
                         />
                       </div>
                     </div>
-                    <p className="mt-4 mb-9 text-lg leading-5 text-gray-900 sm:text-center">
+                    <p className="mt-4 mb-9 text-lg leading-8 text-gray-900 sm:text-center">
                       <strong>
                         How to use XDC-Swap: Unlock liquidity with XRC-Swap -
                         empowering decentralized finance
@@ -300,7 +304,7 @@ export default function Index() {
                       contact us?
                     </span>
                   </p>
-                  <p className="mt-3 text-lg leading-5 text-gray-900 sm:text-center">
+                  <p className="mt-3 text-lg leading-8 text-gray-900 sm:text-center">
                     <strong>
                       Go to the tab and write to us, we will be very happy
                     </strong>
