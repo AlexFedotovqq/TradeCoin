@@ -281,7 +281,7 @@ export default function Example({ pools }) {
                                 <span className="ml-5 flex items-center">
                                   {open ? (
                                     <MinusIcon
-                                      className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                      className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
                                       aria-hidden="true"
                                     />
                                   ) : (
@@ -358,7 +358,7 @@ export default function Example({ pools }) {
                                 <span className="ml-0 flex items-center">
                                   {open ? (
                                     <MinusIcon
-                                      className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                      className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
                                       aria-hidden="true"
                                     />
                                   ) : (

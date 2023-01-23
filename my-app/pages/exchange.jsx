@@ -125,15 +125,15 @@ export default function Example({ transactions }) {
           <h2 className="text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">
             Exchange
           </h2>
-          <p className="mt-4 text-lg leading-6 text-black-900">
-            Here you can exchange cryptocurrency
+          <p className="mt-4 text-lg leading-8 text-gray-900">
+            <strong>Here you can exchange cryptocurrency</strong>
           </p>
         </div>
 
         <div className="sm:col-span-2">
           <label
             htmlFor="number"
-            className="block text-sm font-medium text-black-700"
+            className="block text-sm mt-4 font-medium text-black-700"
           >
             Exchange cryptocurrency
           </label>
@@ -144,7 +144,7 @@ export default function Example({ transactions }) {
               id="number"
               autoComplete="tel"
               onChange={(event) => setTokenA(event.target.value)}
-              className="block w-full rounded-md  border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+              className="block w-full rounded-md bg-indigo-100 border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="0x..."
             />
 
@@ -153,7 +153,7 @@ export default function Example({ transactions }) {
               name="number"
               id="number"
               onChange={(event) => setSwapAmount(event.target.value)}
-              className="block w-full my-2 rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+              className="block w-full my-2 bg-indigo-100 rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="1"
             />
 
@@ -170,7 +170,7 @@ export default function Example({ transactions }) {
               id="number"
               autoComplete="tel"
               onChange={(event) => setTokenB(event.target.value)}
-              className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
+              className="block w-full rounded-md border-gray-300 bg-indigo-100 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="0x..."
             />
           </div>
