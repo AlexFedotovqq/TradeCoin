@@ -95,13 +95,13 @@ export default function Example() {
             <li>10. Your XDC account will now</li>
           </ul>
           
-          <p className="mt-8 text-xl leading-8 text-gray-500">
+          <p className="mt-8 text-xl leading-8 text-gray-900">
 
           </p>
           <p className="mt-2 text-3xl font-bold leading-8 tracking-tight text-gray-900 sm:text-4xl">
           Сonclusion
             </p>
-            <p className="mt-8 text-xl leading-8 text-gray-500">
+            <p className="mt-8 text-xl leading-8 text-gray-900">
             In conclusion, XDC is a revolutionary new way of exchanging value that has the potential to revolutionize the way we conduct business. XDC is a secure and reliable platform that provides users with a low-fee, high-speed way to transfer and store value. Additionally, XDC provides a marketplace for developers to create and build innovative decentralized applications and products. With its permissionless and open-source blockchain protocol, XDC is sure to be a game-changer in the world of digital currency.            
           </p>
         
@@ -109,7 +109,7 @@ export default function Example() {
         <div className="mx-auto mt-10 flex max-w-prose text-base lg:max-w-none">
                 <div className="rounded-md shadow">
                 <Link href="/blogs"
-                                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
+                                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
 
 >
 Back to the blog         

@@ -77,13 +77,13 @@ export default function Example() {
             XRC Swap: Unlocking Liquidity with a Decentralized Token Exchange Protocol
             </span>
           </h1>
-          <p className="mt-8 text-xl leading-8 text-gray-500">
+          <p className="mt-8 text-xl leading-8 text-gray-900">
           The rise of decentralized finance (DeFi) has revolutionized the financial world, allowing anyone to access a variety of financial services and investments without relying on a centralized entity. One of the most important aspects of DeFi is the ability to access liquidity and trade tokens in a secure and private manner. This is where XRC SWAPcomes in.
           </p>
           <p className="mt-2 text-3xl font-bold leading-8 tracking-tight text-gray-900 sm:text-4xl">
               Secure and Reliable: Building XRC-Swap Protocol for Automated Token Exchange
             </p>
-            <p className="mt-8 text-xl leading-8 text-gray-500">
+            <p className="mt-8 text-xl leading-8 text-gray-900">
             XRC Swap is a decentralized protocol for automated token exchange on XDC. It provides a trustless and permissionless system for users to easily swap between XRC20 tokens, as well as providing liquidity to other projects and protocols. The protocol was built using a combination of Solidity smart contracts and a React Framework Nextjs. The smart contracts handle the exchange of tokens, while Nextjs provides serves an decentralised application to an end user.
 
 The primary challenge faced while building XRC Swap was ensuring that the protocol was secure and reliable. The team had to ensure that the smart contracts were written in a way that would protect users from potential exploits and would handle unexpected errors gracefully. They also had to ensure that Nextjs was written in a way that would provide a secure and user-friendly interface for users to interact with the protocol.
@@ -91,13 +91,13 @@ The primary challenge faced while building XRC Swap was ensuring that the protoc
           <p className="mt-2 text-3xl font-bold leading-8 tracking-tight text-gray-900 sm:text-4xl">
           Continuously Improving: XRC Swap Protocol Offering Secure and Reliable Liquidity Solution
             </p>
-            <p className="mt-8 text-xl leading-8 text-gray-500">
+            <p className="mt-8 text-xl leading-8 text-gray-900">
             The team is proud of having built a secure, reliable, and user-friendly protocol for token exchange. They also provided liquidity to other projects and protocols, allowing them to access the necessary resources to grow and scale. Moving forward, the team plans to continue to improve the protocol and make it more secure and reliable. They plan to introduce new features that will enable users to access more liquidity, as well as providing additional security and transparency. They also plan to expand their platform to support more tokens and protocols, allowing users to access a greater variety of liquidity options.
           </p>
           <p className="mt-2 text-3xl font-bold leading-8 tracking-tight text-gray-900 sm:text-4xl">
           Unlocking Liquidity with XRC-Swap: Revolutionizing Token Exchange with DeFi
             </p>
-            <p className="mt-8 text-xl leading-8 text-gray-500">
+            <p className="mt-8 text-xl leading-8 text-gray-900">
             XRC Swap is an example of how DeFi can revolutionize the way we access liquidity and trade tokens. By providing a trustless, secure, and user-friendly platform, XRC Swap is allowing users to unlock liquidity with ease and confidence.
 
 The team behind XRC-Swap is dedicated to ensuring that their protocol is secure and reliable. They are constantly monitoring the security of their system and updating it to ensure that users are protected from potential exploits. They are also working on additional features and updates, such as introducing additional tokens and protocols that can be used on the platform.
@@ -110,7 +110,7 @@ Ultimately, the goal of XRC-Swap is to provide a secure and reliable platform th
         <div className="mx-auto mt-10 flex max-w-prose text-base lg:max-w-none">
                 <div className="rounded-md shadow">
                 <Link href="/blogs"
-                                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
+                                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
 
 >
 Back to the blog         

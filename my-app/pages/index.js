@@ -160,11 +160,11 @@ export default function Index() {
                     </div>
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                        <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                          <span className="text-gray-900">
+                        <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                          <span className="text-gray-900 ">
                             <Link
                               href="/pool"
-                              className="font-semibold text-indigo-600"
+                              className="font-semibold  text-white"
                             >
                               View our pool
                             </Link>
@@ -199,11 +199,11 @@ export default function Index() {
                     </div>
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                        <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                      <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                           <span className="text-gray-900">
                             <Link
                               href="/exchange"
-                              className="font-semibold text-indigo-600"
+                              className="font-semibold text-white"
                             >
                               View our Exchange
                             </Link>
@@ -280,11 +280,11 @@ export default function Index() {
                      flex gap-x-4 sm:justify-center"
                   >
                     <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                      <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                    <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                         <span className="text-gray-900">
                           <Link
                             href="/blogs"
-                            className="font-semibold text-indigo-600"
+                            className="font-semibold text-white"
                           >
                             View our blog
                           </Link>
@@ -321,12 +321,12 @@ export default function Index() {
                   </div>
                   <div className="mt-8 flex gap-x-4 sm:justify-center">
                     <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                      <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                    <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                         <span className="text-gray-600">
                           {" "}
                           <Link
                             href="/contact"
-                            className="font-semibold text-indigo-600"
+                            className="font-semibold text-white"
                           >
                             Contact us
                           </Link>
