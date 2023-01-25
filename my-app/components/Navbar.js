@@ -3,7 +3,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const navigation = [
-  { name: "XRC-Swap", href: "/" },
+  { name: "TradeCoin", href: "/" },
   { name: "Exchange", href: "/exchange" },
   { name: "Pool", href: "/pool" },
   { name: "Contact us", href: "/contact" },
