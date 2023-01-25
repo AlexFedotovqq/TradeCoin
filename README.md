@@ -1,4 +1,5 @@
-![](https://ibb.co/0q5gjsM) 
+![cover slide](https://user-images.githubusercontent.com/88692544/214703621-4037afb7-7d16-4a25-9edb-f3aed0fa7d06.png)
+ 
 # TradeCoin
 
 TradeCoin is a decentralized protocol for automated token exchange on XDC. It allows users to easily swap between XRC20 tokens, as well as providing liquidity to other projects and protocols.
