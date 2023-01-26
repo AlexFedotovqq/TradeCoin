@@ -15,7 +15,7 @@ const posts = [
         name: 'Our Twitter',
         href: 'https://twitter.com/XrcSwap',
         imageUrl:
-          'https://pbs.twimg.com/profile_images/1599419783618904064/1spC1U1G_400x400.jpg',
+          '/twitter.jpg',
       },
     },
     {
@@ -33,7 +33,7 @@ const posts = [
         name: 'Our Twitter',
         href: 'https://twitter.com/XrcSwap',
         imageUrl:
-          'https://pbs.twimg.com/profile_images/1599419783618904064/1spC1U1G_400x400.jpg',
+          '/twitter.jpg',
       },
     },
     {
@@ -51,7 +51,7 @@ const posts = [
         name: 'Our Twitter',
         href: 'https://twitter.com/XrcSwap',
         imageUrl:
-          'https://pbs.twimg.com/profile_images/1599419783618904064/1spC1U1G_400x400.jpg',
+          '/twitter.jpg',
       },
     },
   ]
