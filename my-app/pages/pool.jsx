@@ -306,7 +306,7 @@ export default function Example({ pools }) {
                                   onChange={(event) =>
                                     setTokenAQuantity(event.target.value)
                                   }
-                                  className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-pink-50"
+                                  className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-green-50"
                                   placeholder="1"
                                 />
 
@@ -317,7 +317,7 @@ export default function Example({ pools }) {
                                   onChange={(event) =>
                                     setTokenBQuantity(event.target.value)
                                   }
-                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-pink-50"
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-green-50"
                                   placeholder="1"
                                 />
                               </div>
@@ -382,7 +382,7 @@ export default function Example({ pools }) {
                                   onChange={(event) =>
                                     setWithdrawalQuantity(event.target.value)
                                   }
-                                  className="block w-full rounded-md bg-pink-50 py-3 px-4 pl-25"
+                                  className="block w-full rounded-md bg-indigo-50 py-3 px-4 pl-25"
                                   placeholder="1"
                                 />
                               </div>
