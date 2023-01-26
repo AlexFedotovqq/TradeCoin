@@ -32,7 +32,7 @@ We plan to continue to improve the protocol and make it more secure and reliable
 6. **Trust EVM**
 
 # Important Links 
-1. [Twitter](https://twitter.com/XrcSwap)
+1. [Twitter](https://twitter.com/_TradeCoin_)
 2. [Website](https://trade-coin-xi.vercel.app/)
 
 # Video Review 
