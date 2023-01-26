@@ -13,7 +13,7 @@ const posts = [
       readingTime: '6 min',
       author: {
         name: 'Our Twitter',
-        href: 'https://twitter.com/XrcSwap',
+        href: 'https://twitter.com/_TradeCoin_',
         imageUrl:
           '/twitter.jpg',
       },
@@ -31,7 +31,7 @@ const posts = [
       readingTime: '3 min',
       author: {
         name: 'Our Twitter',
-        href: 'https://twitter.com/XrcSwap',
+        href: 'https://twitter.com/_TradeCoin_',
         imageUrl:
           '/twitter.jpg',
       },
@@ -49,7 +49,7 @@ const posts = [
       readingTime: '6 min',
       author: {
         name: 'Our Twitter',
-        href: 'https://twitter.com/XrcSwap',
+        href: 'https://twitter.com/_TradeCoin_',
         imageUrl:
           '/twitter.jpg',
       },
