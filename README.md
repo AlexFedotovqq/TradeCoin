@@ -1,5 +1,4 @@
-![photo_2023-01-25_18-31-28](https://user-images.githubusercontent.com/88692544/215288313-67f57856-4049-40a5-a863-6b28ff64d8ec.jpg)
-
+![photo_2023-01-28_21-56-55](https://user-images.githubusercontent.com/88692544/215295626-88a3456a-5543-4c6e-af70-a6b4ea65dc5b.jpg)
  
 # TradeCoin
 
