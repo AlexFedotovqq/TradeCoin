@@ -9,37 +9,20 @@ const myLoader = ({ src, width }) => {
 export default function Index() {
   return (
     <div>
-      <div className="relative overflow-hidden bg-white ">
-        <div className="mx-auto max-w-7xl">
-          <div className="relative z-10 bg-white pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
-            
-            <svg
-              className="absolute inset-y-0 right-0 hidden h-screen w-48 translate-x-1/2 transform text-white lg:block"
-              fill="currentColor"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <polygon points="50,0 100,0 50,100 0,100" />
-            </svg>
-
-            <Popover>
-              <div className="relative px-4 pt-6 sm:px-6 lg:px-8">
-                <nav
-                  className="relative flex items-center justify-between sm:h-12 lg:justify-start"
-                  aria-label="Global"
-                />
-              </div>
-            </Popover>
-
+      <div className="relative overflow-hidden bg-gradient-to-r from-violet-500 to-fuchsia-500">
+        <div className="mx-auto max-w-7xl ">
+          <div className="relative z-10  pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
               <div className="sm:text-center lg:text-left">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
                   <span className="block xl:inline">XRC-Swap</span>{" "}
                 </h1>
                 <p className="mt-3 text-base text-black sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
-                  <strong>XRC-Swap provides DeFi tools for token holders & businesses to
-                  buy, trade, create, and secure crypto assets with confidence.</strong>
+                  <strong>
+                    XRC-Swap provides DeFi tools for token holders & businesses
+                    to buy, trade, create, and secure crypto assets with
+                    confidence.
+                  </strong>
                 </p>
 
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
@@ -65,23 +48,19 @@ export default function Index() {
           </div>
         </div>
 
-        <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-          <Image
-            className="h-56 w-full object-cover sm:h-72 md:h-96 lg:h-full lg:w-full"
-            src="cryptocurrency-hero.jpg"
-            alt=""
-            width="600"
-            height="600"
-            loader={myLoader}
-          />
-        </div>
+        <Image
+          className="h-56 w-full object-cover sm:h-72 md:h-96 lg:h-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2"
+          src="cryptocurrency-hero.jpg"
+          alt=""
+          width="600"
+          height="600"
+          loader={myLoader}
+        />
       </div>
-      <div className="isolate bg-white">
+      <div className="isolate bg-gradient-to-tl">
         <main>
           <div className="relative px-6 lg:px-8">
-            
             <div className="mx-auto max-w-3xl pt-20 pb-32  sm:pb-40">
-              
               <div>
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
@@ -174,7 +153,7 @@ export default function Index() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <div className="mt-8">
                     <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
@@ -199,7 +178,7 @@ export default function Index() {
                     </div>
                     <div className="mt-3 flex gap-x-4 sm:justify-center">
                       <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                      <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                        <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                           <span className="text-gray-900">
                             <Link
                               href="/exchange"
@@ -261,7 +240,7 @@ export default function Index() {
                   </h1>
                   <p className="mt-4 text-lg leading-8 text-black sm:text-center">
                     <strong>Interested in reading about </strong>
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                    <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                       automated market makers and XRC-Swap.
                     </span>
                   </p>
@@ -280,7 +259,7 @@ export default function Index() {
                      flex gap-x-4 sm:justify-center"
                   >
                     <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                    <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                      <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                         <span className="text-gray-900">
                           <Link
                             href="/blogs"
@@ -321,7 +300,7 @@ export default function Index() {
                   </div>
                   <div className="mt-8 flex gap-x-4 sm:justify-center">
                     <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-                    <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                      <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                         <span className="text-gray-600">
                           {" "}
                           <Link
