@@ -16,12 +16,16 @@ function classNames(...classes) {
 
 const Navbar = () => {
   return (
+    
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            
             <div className="flex h-16 justify-between">
+              
               <div className="flex">
+             
                 <div className="-ml-2 mr-2 flex items-center md:hidden">
                   {/* Mobile menu button */}
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -33,6 +37,7 @@ const Navbar = () => {
                     )}
                   </Disclosure.Button>
                 </div>
+                
                 <div className="flex flex-shrink-0 items-center"></div>
 
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
@@ -52,6 +57,7 @@ const Navbar = () => {
                     </a>
                   ))}
                 </div>
+                
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -63,6 +69,7 @@ const Navbar = () => {
               </div>
             </div>
           </div>
+          
           <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
               {navigation.map((item) => (

@@ -9,6 +9,7 @@ const myLoader = ({ src, width }) => {
 export default function Index() {
   return (
     <div>
+      
       <div className="relative overflow-hidden bg-white ">
         <div className="mx-auto max-w-7xl">
           <div className="relative z-10 bg-white pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
@@ -34,6 +35,7 @@ export default function Index() {
 
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
               <div className="sm:text-center lg:text-left">
+                
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
                   <span className="block xl:inline">TradeCoin</span>{" "}
                 </h1>
@@ -79,9 +81,7 @@ export default function Index() {
       <div className="isolate bg-white">
         <main>
           <div className="relative px-6 lg:px-8">
-            
             <div className="mx-auto max-w-3xl pt-20 pb-32  sm:pb-40">
-              
               <div>
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
@@ -93,7 +93,7 @@ export default function Index() {
 
                   <p className="mt-6 text-lg leading-8 text-gray-900 sm:text-center">
                     <strong>
-                    TradeCoin provides DeFi tools for token holders &
+                      TradeCoin provides DeFi tools for token holders &
                       businesses to buy, trade, create, and secure crypto assets
                       with confidence.
                     </strong>
