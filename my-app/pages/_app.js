@@ -23,6 +23,22 @@ const XDC = {
   testnet: false,
 };
 
+const Trust = {
+  id: 15555,
+  name: "Trust",
+  network: "Trust",
+  iconUrl:
+    "https://pbs.twimg.com/profile_images/1516253506667114497/B258ek7a_400x400.jpg",
+  nativeCurrency: {
+    symbol: "Trust",
+  },
+  rpcUrls: {
+    default: "https://api.testnet-dev.trust.one",
+  },
+  testnet: true,
+};
+
+
 const mumbai = {
   id: 80001,
   name: "Mumbai",
@@ -37,12 +53,12 @@ const mumbai = {
 };
 
 const { chains, provider } = configureChains(
-  [XDC, mumbai],
+  [XDC, mumbai, Trust],
   [
     publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => {
-        if (chain.id === XDC.id || chain.id === mumbai.id)
+        if (chain.id === XDC.id || chain.id === mumbai.id || chain.id === Trust.id)
           return { http: chain.rpcUrls.default };
         return null;
       },
