@@ -24,7 +24,7 @@ const XDC = {
 };
 
 const Trust = {
-  id: 15555,
+  id: 15556,
   name: "Trust",
   network: "Trust",
   iconUrl:
@@ -33,7 +33,7 @@ const Trust = {
     symbol: "Trust",
   },
   rpcUrls: {
-    default: "https://api.testnet-dev.trust.one",
+    default: "https://api2-testnet.trust.one",
   },
   testnet: true,
 };
