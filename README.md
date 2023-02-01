@@ -2,7 +2,7 @@
  
 # TradeCoin
 
-TradeCoin is a decentralized protocol for automated token exchange on XDC. It allows users to easily swap between XRC20 tokens, as well as providing liquidity to other projects and protocols.
+TradeCoin is a decentralized protocol for automated token exchange on EVM compatible blockchains
 
 # What it does
 The inspiration for TradeCoin was to create an automated, trustless, and permissionless system that allows users to exchange tokens in a secure and transparent manner. We wanted to create a system that would make it easier for users to access liquidity and trade in a secure and private environment.
