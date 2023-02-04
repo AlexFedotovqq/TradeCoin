@@ -93,7 +93,7 @@ export default function Index() {
                       </span>
                     </Link>
                     <a
-                      href="https://www.youtube.com/watch?v=kDQ0fN4s-Jc&ab_channel=Dspyt"
+                      href="https://youtu.be/4Ft4wfPhjNw"
                       className="inline-block bg-pink-500 rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-white ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
                     >
                       Live demo video{" "}
