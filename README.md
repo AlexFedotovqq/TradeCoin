@@ -36,5 +36,5 @@ We plan to continue to improve the protocol and make it more secure and reliable
 2. [Website](https://trade-coin-xi.vercel.app/)
 
 # Video Review 
-[YouTube video]() 
+[YouTube video](https://youtu.be/4Ft4wfPhjNw) 
 
