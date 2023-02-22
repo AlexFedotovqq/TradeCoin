@@ -1,6 +1,6 @@
-import "../styles/globals.css";
+import "@/styles/globals.css";
 
-import { Layout } from "../components/Layout";
+import { Layout } from "@/components/Layout";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";

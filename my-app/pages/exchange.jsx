@@ -2,16 +2,32 @@ import { BanknotesIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
+import { useQuery } from "@tanstack/react-query";
 
-import { queryPrices } from "../utils/queryContract";
-import { getContractInfo, getERC20, getPair } from "../utils/contracts";
+import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
 function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
 }
 
-export default function Example({ transactions }) {
+export default function Example() {
+  const fetchTxs = async (name) => {
+    const res = await fetch(`/api/${name}/txs`);
+    return res.json();
+  };
+
+  var initialChain = "xdc";
+
   const { chain } = useNetwork();
+
+  if (chain?.id && (chain.id === 80001 || chain.id === 5001)) {
+    initialChain = chain.network;
+  }
+
+  const { data: transactions, status } = useQuery(["txs"], () =>
+    fetchTxs(initialChain)
+  );
+
   const { data: signer } = useSigner();
   const { address } = useAccount();
 
@@ -193,7 +209,7 @@ export default function Example({ transactions }) {
                     role="list"
                     className="mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden"
                   >
-                    {transactions.map((transaction) => (
+                    {transactions?.map((transaction) => (
                       <li key={transaction.id}>
                         <a
                           href={`https://explorer.xinfin.network/address/${transaction.pairAddress}`}
@@ -260,7 +276,7 @@ export default function Example({ transactions }) {
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-200 bg-white">
-                            {transactions.map((transaction) => (
+                            {transactions?.map((transaction) => (
                               <tr key={transaction.id} className="bg-white">
                                 <td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                                   <div className="flex">
@@ -305,17 +321,4 @@ export default function Example({ transactions }) {
       </div>
     </div>
   );
-}
-
-export async function getStaticProps() {
-  const res = await fetch("https://xrc-swap.vercel.app/api/xdc/txs");
-  // const transactions = await queryPrices();
-  const transactions = await res.json();
-
-  return {
-    props: {
-      transactions,
-    },
-    revalidate: 10,
-  };
 }

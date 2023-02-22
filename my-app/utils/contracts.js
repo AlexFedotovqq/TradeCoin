@@ -1,6 +1,6 @@
-import UniswapV2Factory from "../utils/contracts/UniswapV2Factory.json";
-import ERC20 from "../utils/contracts/ERC20.json";
-import UniswapV2Pair from "../utils/contracts/UniswapV2Pair.json";
+import UniswapV2Factory from "@/utils/contracts/UniswapV2Factory.json";
+import ERC20 from "@/utils/contracts/ERC20.json";
+import UniswapV2Pair from "@/utils/contracts/UniswapV2Pair.json";
 
 export function getContractInfo(chain) {
   if (chain === 80001) {

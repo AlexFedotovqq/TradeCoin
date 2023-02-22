@@ -5,7 +5,7 @@ import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 
-import { getContractInfo, getERC20, getPair } from "../utils/contracts";
+import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
 function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
@@ -15,21 +15,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const fetchUsers = async (name) => {
-  const res = await fetch("http://xrc-swap.vercel.app/api/xdc/", {
-    mode: "cors",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-  });
-
-  return res.json();
-};
-
 export default function Example() {
+  const fetchPools = async (name) => {
+    const res = await fetch(`/api/${name}`);
+    return res.json();
+  };
+
   var initialChain = "xdc";
 
   const { chain } = useNetwork();
@@ -38,11 +29,9 @@ export default function Example() {
     initialChain = chain.network;
   }
 
-  const { data, status } = useQuery(["users"], fetchUsers("xdc"));
+  const { data, status } = useQuery(["pools"], () => fetchPools(initialChain));
 
-  console.log(data);
-
-  const { data: signer } = useSigner();
+  const { signer } = useSigner();
   const { address } = useAccount();
 
   const [tokenA, setTokenA] = useState("");
