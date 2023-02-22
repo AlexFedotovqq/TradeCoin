@@ -7,6 +7,12 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { useState } from "react";
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
 const XDC = {
   id: 50,
@@ -23,26 +29,24 @@ const XDC = {
   testnet: false,
 };
 
-const Trust = {
-  id: 15556,
-  name: "Trust",
-  network: "Trust",
-  iconUrl:
-    "https://pbs.twimg.com/profile_images/1516253506667114497/B258ek7a_400x400.jpg",
+const Mantle = {
+  id: 5001,
+  name: "Mantle",
+  network: "Mantle",
+  iconUrl: "https://www.mantle.xyz/logo-lockup.svg",
   nativeCurrency: {
-    symbol: "Trust",
+    symbol: "BIT",
   },
   rpcUrls: {
-    default: "https://api2-testnet.trust.one",
+    default: "https://rpc.testnet.mantle.xyz/",
   },
   testnet: true,
 };
 
-
-const mumbai = {
+const Mumbai = {
   id: 80001,
   name: "Mumbai",
-  network: "MATIC",
+  network: "maticmum",
   nativeCurrency: {
     symbol: "MATIC",
   },
@@ -53,12 +57,16 @@ const mumbai = {
 };
 
 const { chains, provider } = configureChains(
-  [XDC, mumbai, Trust],
+  [XDC, Mumbai, Mantle],
   [
     publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => {
-        if (chain.id === XDC.id || chain.id === mumbai.id || chain.id === Trust.id)
+        if (
+          chain.id === XDC.id ||
+          chain.id === Mumbai.id ||
+          chain.id === Mantle.id
+        )
           return { http: chain.rpcUrls.default };
         return null;
       },
@@ -78,14 +86,19 @@ const wagmiClient = createClient({
 });
 
 function MyApp({ Component, pageProps }) {
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState} />
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </QueryClientProvider>
   );
 }
 

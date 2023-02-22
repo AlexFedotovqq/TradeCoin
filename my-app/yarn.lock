@@ -712,6 +712,11 @@
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.19.1.tgz#2e92d9e8a50884eb231c5beb4386e131ebe34306"
   integrity sha512-Zp0aIose5C8skBzqbVFGk9HJsPtUhRVDVNWIqVzFbGQQgYSeLZMd3Sdb4+EnA5wl1J7X+bre2PJGnQg9x/zHOA==
 
+"@tanstack/query-core@4.24.10":
+  version "4.24.10"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.24.10.tgz#758e1f5b2d7faf7316d299facd272a9f64c26299"
+  integrity sha512-2QywqXEAGBIUoTdgn1lAB4/C8QEqwXHj2jrCLeYTk2xVGtLiPEUD8jcMoeB2noclbiW2mMt4+Fq7fZStuz3wAQ==
+
 "@tanstack/query-persist-client-core@4.19.1":
   version "4.19.1"
   resolved "https://registry.yarnpkg.com/@tanstack/query-persist-client-core/-/query-persist-client-core-4.19.1.tgz#e473859ee07d281e6da5f213bf4cddb58dfa738f"
@@ -737,6 +742,14 @@
   integrity sha512-5dvHvmc0vrWI03AJugzvKfirxCyCLe+qawrWFCXdu8t7dklIhJ7D5ZhgTypv7mMtIpdHPcECtCiT/+V74wCn2A==
   dependencies:
     "@tanstack/query-core" "4.19.1"
+    use-sync-external-store "^1.2.0"
+
+"@tanstack/react-query@^4.24.10":
+  version "4.24.10"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.24.10.tgz#2e1004bb1d1f55198961a21e875e2c65ec865130"
+  integrity sha512-FY1DixytOcNNCydPQXLxuKEV7VSST32CAuJ55BjhDNqASnMLZn+6c30yQBMrODjmWMNwzfjMZnq0Vw7C62Fwow==
+  dependencies:
+    "@tanstack/query-core" "4.24.10"
     use-sync-external-store "^1.2.0"
 
 "@types/bn.js@^4.11.3":

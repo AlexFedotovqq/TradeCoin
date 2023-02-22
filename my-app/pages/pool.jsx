@@ -5,7 +5,6 @@ import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 
 import { getContractInfo, getERC20, getPair } from "../utils/contracts";
-import { queryContract } from "../utils/queryContract";
 
 function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
@@ -16,7 +15,16 @@ function classNames(...classes) {
 }
 
 export default function Example({ pools }) {
+  var initialChain = "xdc";
+
   const { chain } = useNetwork();
+
+  console.log(chain?.network);
+
+  if (chain?.id && (chain.id === 80001 || chain.id === 5001)) {
+    initialChain = chain.network;
+  }
+
   const { data: signer } = useSigner();
   const { address } = useAccount();
 
@@ -60,6 +68,7 @@ export default function Example({ pools }) {
 
   async function removeLiquidity(pairAddress) {
     const { abiPair } = getPair();
+
     const pair = new ethers.Contract(pairAddress, abiPair, signer);
 
     await pair.transfer(pair.address, expandTo18Decimals(withdrawalQuantity), {
