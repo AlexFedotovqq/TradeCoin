@@ -28,5 +28,10 @@ module.exports = {
       url: "https://api2-testnet.trust.one",
       accounts: [process.env.PRIVATE_KEY],
     },
+    mantle: {
+      url: "https://rpc.testnet.mantle.xyz/",
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 5001,
+    },
   },
 };

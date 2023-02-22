@@ -16,22 +16,23 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+  const { data: signer } = useSigner();
+
   const fetchPools = async (name) => {
     const res = await fetch(`/api/${name}`);
     return res.json();
   };
 
-  var initialChain = "xdc";
+  var initialChain = "mantle";
 
   const { chain } = useNetwork();
 
-  if (chain?.id && (chain.id === 80001 || chain.id === 5001)) {
+  if (chain?.id && (chain.id === 80001 || chain.id === 50)) {
     initialChain = chain.network;
   }
 
   const { data, status } = useQuery(["pools"], () => fetchPools(initialChain));
 
-  const { signer } = useSigner();
   const { address } = useAccount();
 
   const [tokenA, setTokenA] = useState("");

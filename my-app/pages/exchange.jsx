@@ -16,11 +16,11 @@ export default function Example() {
     return res.json();
   };
 
-  var initialChain = "xdc";
+  var initialChain = "mantle";
 
   const { chain } = useNetwork();
 
-  if (chain?.id && (chain.id === 80001 || chain.id === 5001)) {
+  if (chain?.id && (chain.id === 80001 || chain.id === 50)) {
     initialChain = chain.network;
   }
 
