@@ -70,7 +70,7 @@ export default function Index() {
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
                     How does it{" "}
-                    <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 ">
+                    <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 ">
                       Work?
                     </span>
                   </h1>
@@ -119,7 +119,7 @@ export default function Index() {
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
                       <strong>What Is an</strong>
-                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                         {" "}
                         Automated Market Maker?
                       </span>
@@ -166,7 +166,7 @@ export default function Index() {
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
                       <strong>Do you want to</strong>
-                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                         {" "}
                         exchange cryptocurrency?
                       </span>
@@ -207,7 +207,7 @@ export default function Index() {
                       <strong>
                         Faced with the fact that you do not know how to
                       </strong>
-                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                         {" "}
                         use the application?
                       </span>
@@ -285,7 +285,7 @@ export default function Index() {
                   </h1>
                   <p className="mt-6 text-lg leading-8 text-black sm:text-center">
                     <strong>Do you want to</strong>
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                    <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                       {" "}
                       contact us?
                     </span>
