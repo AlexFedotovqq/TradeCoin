@@ -13,9 +13,9 @@ const posts = [
       readingTime: '6 min',
       author: {
         name: 'Our Twitter',
-        href: 'https://twitter.com/XrcSwap',
+        href: 'https://twitter.com/_TradeCoin_',
         imageUrl:
-          'https://pbs.twimg.com/profile_images/1599419783618904064/1spC1U1G_400x400.jpg',
+          '/twitter.jpg',
       },
     },
     {
@@ -31,9 +31,9 @@ const posts = [
       readingTime: '3 min',
       author: {
         name: 'Our Twitter',
-        href: 'https://twitter.com/XrcSwap',
+        href: 'https://twitter.com/_TradeCoin_',
         imageUrl:
-          'https://pbs.twimg.com/profile_images/1599419783618904064/1spC1U1G_400x400.jpg',
+          '/twitter.jpg',
       },
     },
     {
@@ -49,9 +49,9 @@ const posts = [
       readingTime: '6 min',
       author: {
         name: 'Our Twitter',
-        href: 'https://twitter.com/XrcSwap',
+        href: 'https://twitter.com/_TradeCoin_',
         imageUrl:
-          'https://pbs.twimg.com/profile_images/1599419783618904064/1spC1U1G_400x400.jpg',
+          '/twitter.jpg',
       },
     },
   ]

@@ -24,5 +24,9 @@ module.exports = {
       url: "https://rpc-mumbai.maticvigil.com",
       accounts: [process.env.PRIVATE_KEY],
     },
+    Trust: {
+      url: "https://api2-testnet.trust.one",
+      accounts: [process.env.PRIVATE_KEY],
+    },
   },
 };

@@ -8,20 +8,26 @@ const myLoader = ({ src, width }) => {
 export default function Index() {
   return (
     <div>
-      <div className="relative overflow-hidden bg-gradient-to-r from-violet-500 to-fuchsia-500">
-        <div className="mx-auto max-w-7xl ">
-          <div className="relative z-10  pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
+      <div className="relative overflow-hidden bg-gradient-to-r from-violet-300 to-fuchsia-800">
+        <div className="mx-auto max-w-7xl">
+          <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
+            
+         
+
+            
+
+
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
               <div className="sm:text-center lg:text-left">
+                
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-                  <span className="block xl:inline">XRC-Swap</span>{" "}
+                  <span className="block xl:inline">TradeCoin</span>{" "}
                 </h1>
                 <p className="mt-3 text-base text-black sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
-                  <strong>
-                    XRC-Swap provides DeFi tools for token holders & businesses
-                    to buy, trade, create, and secure crypto assets with
-                    confidence.
-                  </strong>
+
+                  <strong>TradeCoin provides DeFi tools for token holders & businesses to
+                  buy, trade, create, and secure crypto assets with confidence.</strong>
+
                 </p>
 
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
@@ -71,7 +77,7 @@ export default function Index() {
 
                   <p className="mt-6 text-lg leading-8 text-gray-900 sm:text-center">
                     <strong>
-                      XRC-Swap provides DeFi tools for token holders &
+                      TradeCoin provides DeFi tools for token holders &
                       businesses to buy, trade, create, and secure crypto assets
                       with confidence.
                     </strong>
@@ -87,7 +93,7 @@ export default function Index() {
                       </span>
                     </Link>
                     <a
-                      href="https://www.youtube.com/watch?v=kDQ0fN4s-Jc&ab_channel=Dspyt"
+                      href="https://youtu.be/4Ft4wfPhjNw"
                       className="inline-block bg-pink-500 rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-white ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
                     >
                       Live demo video{" "}
@@ -226,7 +232,7 @@ export default function Index() {
                     </div>
                     <p className="mt-4 mb-9 text-lg leading-8 text-gray-900 sm:text-center">
                       <strong>
-                        How to use XDC-Swap: Unlock liquidity with XRC-Swap -
+                        How to use TradeCoin: Unlock liquidity with TradeCoin -
                         empowering decentralized finance
                       </strong>
                     </p>
@@ -239,8 +245,10 @@ export default function Index() {
                   </h1>
                   <p className="mt-4 text-lg leading-8 text-black sm:text-center">
                     <strong>Interested in reading about </strong>
-                    <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
-                      automated market makers and XRC-Swap.
+
+                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      automated market makers and TradeCoin.
+
                     </span>
                   </p>
                   <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
@@ -313,6 +321,7 @@ export default function Index() {
                     </div>
                   </div>
                 </div>
+                
               </div>
             </div>
           </div>
