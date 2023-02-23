@@ -252,174 +252,179 @@ export default function Example() {
         </div>
 
         <div className="overflow-hidden rounded-lg bg-gray-200 shadow p-6">
-          <ul role="list" className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-            {data?.map((pool) => (
-              <li
-                key={pool.pairAddress}
-                className="col-span-1 rounded-lg bg-white shadow"
-              >
-                <div className="flex w-full items-center justify-between space-x-6 sm:p-5 ">
-                  <div className="flex-1">
-                    <h3 className="mt-2 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
+          {status == "loading" ? (
+            <div className="flex items-center justify-center">
+              <div className="w-8 h-8 border-4 border-blue-200 rounded-full animate-spin"></div>
+              <p className="ml-2">Loading...</p>
+            </div>
+          ) : (
+            <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+              {data?.map((pool) => (
+                <li
+                  key={pool.pairAddress}
+                  className="col-span-1 rounded-lg bg-white shadow"
+                >
+                  <div className="w-full items-center justify-between sm:p-5">
+                    <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                       {pool.token0Name}
                     </h3>
-                    <h3 className="text-ellipsis flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
+                    <h3 className="truncate flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
                       {pool.token0Address}
                     </h3>
                     <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                       {pool.token1Name}
                     </h3>
-                    <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-500 ">
+                    <h3 className="truncate flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
                       {pool.token1Address}
                     </h3>
                     <h3 className="mt-3 mb-6 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                       Total Supply: {pool.totalSupply}
                     </h3>
                   </div>
-                </div>
 
-                <div className="-mt-px flex divide-x divide-gray-300">
-                  <div className="flex flex-1 justify-center">
-                    <Disclosure as="div" key="Add new pair">
-                      {({ open }) => (
-                        <>
-                          <div className="flex items-center justify-center">
-                            <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-1 py-2 text-base font-medium text-white hover:bg-green-700">
-                              <span
-                                className={classNames(
-                                  open ? "text-green-200" : "text-white",
-                                  "text-sm font-bold"
-                                )}
-                              >
-                                Add
-                              </span>
-                              <span className="ml-5 flex items-center">
-                                {open ? (
-                                  <MinusIcon
-                                    className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <PlusIcon
-                                    className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </span>
-                            </Disclosure.Button>
-                          </div>
-
-                          <Disclosure.Panel
-                            as="div"
-                            className="prose prose-sm pb-6"
-                          >
-                            <div className="relative mt-1 ml-1 mr-1 rounded-md shadow-sm sm:col-span-2">
-                              <input
-                                type="text"
-                                name="number"
-                                id="number"
-                                onChange={(event) =>
-                                  setTokenAQuantity(event.target.value)
-                                }
-                                className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-green-50"
-                                placeholder="1"
-                              />
-
-                              <input
-                                type="text"
-                                name="number"
-                                id="number"
-                                onChange={(event) =>
-                                  setTokenBQuantity(event.target.value)
-                                }
-                                className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-green-50"
-                                placeholder="1"
-                              />
+                  <div className="-mt-px flex divide-x divide-gray-300">
+                    <div className="flex flex-1 justify-center">
+                      <Disclosure as="div" key="Add new pair">
+                        {({ open }) => (
+                          <>
+                            <div className="flex items-center justify-center">
+                              <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-1 py-2 text-base font-medium text-white hover:bg-green-700">
+                                <span
+                                  className={classNames(
+                                    open ? "text-green-200" : "text-white",
+                                    "text-sm font-bold"
+                                  )}
+                                >
+                                  Add
+                                </span>
+                                <span className="ml-5 flex items-center">
+                                  {open ? (
+                                    <MinusIcon
+                                      className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <PlusIcon
+                                      className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                </span>
+                              </Disclosure.Button>
                             </div>
 
-                            <div className="ml-2 mt-2 inline-flex justify-center rounded-md shadow lg:flex-shrink-0">
-                              <a
-                                onClick={() =>
-                                  addLiquidity(
-                                    pool.token0Address,
-                                    pool.token1Address,
-                                    pool.pairAddress
-                                  )
-                                }
-                                className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
-                              >
-                                Add
-                              </a>
+                            <Disclosure.Panel
+                              as="div"
+                              className="prose prose-sm pb-6"
+                            >
+                              <div className="relative mt-1 ml-1 mr-1 rounded-md shadow-sm sm:col-span-2">
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setTokenAQuantity(event.target.value)
+                                  }
+                                  className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-green-50"
+                                  placeholder="1"
+                                />
+
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setTokenBQuantity(event.target.value)
+                                  }
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-green-50"
+                                  placeholder="1"
+                                />
+                              </div>
+
+                              <div className="ml-2 mt-2 inline-flex justify-center rounded-md shadow lg:flex-shrink-0">
+                                <a
+                                  onClick={() =>
+                                    addLiquidity(
+                                      pool.token0Address,
+                                      pool.token1Address,
+                                      pool.pairAddress
+                                    )
+                                  }
+                                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                                >
+                                  Add
+                                </a>
+                              </div>
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
+                    </div>
+                    <div className="-ml-px flex w-0 flex-1 justify-center">
+                      <Disclosure as="div">
+                        {({ open }) => (
+                          <>
+                            <div className="flex items-center justify-center">
+                              <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                                <span
+                                  className={classNames(
+                                    open ? "text-indigo-200" : "text-white",
+                                    "text-sm font-bold"
+                                  )}
+                                >
+                                  Remove
+                                </span>
+                                <span className="ml-0 flex items-center">
+                                  {open ? (
+                                    <MinusIcon
+                                      className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <PlusIcon
+                                      className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                </span>
+                              </Disclosure.Button>
                             </div>
-                          </Disclosure.Panel>
-                        </>
-                      )}
-                    </Disclosure>
+                            <Disclosure.Panel
+                              as="div"
+                              className="prose prose-sm pb-6"
+                            >
+                              <div className="relative mt-1 ml-1 mr-1 rounded-md shadow-sm sm:col-span-2">
+                                <input
+                                  type="text"
+                                  name="number"
+                                  id="number"
+                                  onChange={(event) =>
+                                    setWithdrawalQuantity(event.target.value)
+                                  }
+                                  className="block w-full rounded-md bg-indigo-50 py-3 px-4 pl-25"
+                                  placeholder="1"
+                                />
+                              </div>
+                              <div className="ml-2 mt-2 lg:flex-shrink-0 inline-flex rounded-md shadow">
+                                <a
+                                  onClick={() =>
+                                    removeLiquidity(pool.pairAddress)
+                                  }
+                                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                                >
+                                  Add
+                                </a>
+                              </div>
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
+                    </div>
                   </div>
-                  <div className="-ml-px flex w-0 flex-1 justify-center">
-                    <Disclosure as="div">
-                      {({ open }) => (
-                        <>
-                          <div className="flex items-center justify-center">
-                            <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
-                              <span
-                                className={classNames(
-                                  open ? "text-indigo-200" : "text-white",
-                                  "text-sm font-bold"
-                                )}
-                              >
-                                Remove
-                              </span>
-                              <span className="ml-0 flex items-center">
-                                {open ? (
-                                  <MinusIcon
-                                    className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <PlusIcon
-                                    className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </span>
-                            </Disclosure.Button>
-                          </div>
-                          <Disclosure.Panel
-                            as="div"
-                            className="prose prose-sm pb-6"
-                          >
-                            <div className="relative mt-1 ml-1 mr-1 rounded-md shadow-sm sm:col-span-2">
-                              <input
-                                type="text"
-                                name="number"
-                                id="number"
-                                onChange={(event) =>
-                                  setWithdrawalQuantity(event.target.value)
-                                }
-                                className="block w-full rounded-md bg-indigo-50 py-3 px-4 pl-25"
-                                placeholder="1"
-                              />
-                            </div>
-                            <div className="ml-2 mt-2 lg:flex-shrink-0 inline-flex rounded-md shadow">
-                              <a
-                                onClick={() =>
-                                  removeLiquidity(pool.pairAddress)
-                                }
-                                className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
-                              >
-                                Add
-                              </a>
-                            </div>
-                          </Disclosure.Panel>
-                        </>
-                      )}
-                    </Disclosure>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>
