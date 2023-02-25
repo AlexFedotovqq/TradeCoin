@@ -1,8 +1,14 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
+require("hardhat-gas-reporter");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
+  gasReporter: {
+    currency: "CHF",
+    gasPrice: 21,
+    enabled: true,
+  },
   solidity: "0.5.16",
 
   networks: {
@@ -32,6 +38,11 @@ module.exports = {
       url: "https://rpc.testnet.mantle.xyz/",
       accounts: [process.env.PRIVATE_KEY],
       chainId: 5001,
+    },
+    fantom: {
+      url: "https://rpc.ftm.tools/",
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 250,
     },
   },
 };
