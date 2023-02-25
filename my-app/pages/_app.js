@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
 
 import { Layout } from "@/components/Layout";
 
-import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
@@ -13,6 +13,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { polygonMumbai, fantom } from "wagmi/chains";
 
 const XDC = {
   id: 50,
@@ -24,7 +25,9 @@ const XDC = {
     symbol: "XDC",
   },
   rpcUrls: {
-    default: "https://rpc.xinfin.network",
+    default: {
+      http: ["https://rpc.xinfin.network"],
+    },
   },
   testnet: false,
 };
@@ -38,36 +41,21 @@ const Mantle = {
     symbol: "BIT",
   },
   rpcUrls: {
-    default: "https://rpc.testnet.mantle.xyz/",
-  },
-  testnet: true,
-};
-
-const Mumbai = {
-  id: 80001,
-  name: "Mumbai",
-  network: "maticmum",
-  nativeCurrency: {
-    symbol: "MATIC",
-  },
-  rpcUrls: {
-    default: "https://rpc-mumbai.maticvigil.com",
+    default: {
+      http: ["https://rpc.testnet.mantle.xyz/"],
+    },
   },
   testnet: true,
 };
 
 const { chains, provider } = configureChains(
-  [XDC, Mumbai, Mantle],
+  [XDC, polygonMumbai, fantom, Mantle],
   [
     publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => {
-        if (
-          chain.id === XDC.id ||
-          chain.id === Mumbai.id ||
-          chain.id === Mantle.id
-        )
-          return { http: chain.rpcUrls.default };
+        if (chain.id === XDC.id || chain.id === Mantle.id)
+          return { http: chain.rpcUrls.default.http[0] };
         return null;
       },
     }),

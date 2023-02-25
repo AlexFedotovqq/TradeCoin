@@ -3,6 +3,13 @@ import ERC20 from "@/utils/contracts/ERC20.json";
 import UniswapV2Pair from "@/utils/contracts/UniswapV2Pair.json";
 
 export function getContractInfo(chain) {
+  if (chain === 250) {
+    return {
+      addressFactory: "0x30bea678b14c6be5De742f4ea065Dd20C34de8Da",
+      abiFactory: UniswapV2Factory.abi,
+    };
+  }
+
   if (chain === 5001) {
     return {
       addressFactory: "0x1d4e02a5680ca146E246335Df2c413b9254D25F0",
