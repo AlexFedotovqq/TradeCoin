@@ -14,11 +14,11 @@ export default function Index() {
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
               <div className="sm:text-center lg:text-left">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-                  <span className="block xl:inline">TradeCoin</span>{" "}
+                  <span className="block xl:inline">XRC-Swap</span>{" "}
                 </h1>
                 <p className="mt-3 text-base text-black sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
                   <strong>
-                    TradeCoin provides DeFi tools for token holders & businesses
+                  XRC-Swap provides DeFi tools for token holders & businesses
                     to buy, trade, create, and secure crypto assets with
                     confidence.
                   </strong>
@@ -71,7 +71,7 @@ export default function Index() {
 
                   <p className="mt-6 text-lg leading-8 text-gray-900 sm:text-center">
                     <strong>
-                      TradeCoin provides DeFi tools for token holders &
+                    XRC-Swap provides DeFi tools for token holders &
                       businesses to buy, trade, create, and secure crypto assets
                       with confidence.
                     </strong>
@@ -226,7 +226,7 @@ export default function Index() {
                     </div>
                     <p className="mt-4 mb-9 text-lg leading-8 text-gray-900 sm:text-center">
                       <strong>
-                        How to use TradeCoin: Unlock liquidity with TradeCoin -
+                        How to use XRC-Swap: Unlock liquidity with TradeCoin -
                         empowering decentralized finance
                       </strong>
                     </p>
@@ -241,7 +241,7 @@ export default function Index() {
                     <strong>Interested in reading about </strong>
 
                     <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
-                      automated market makers and TradeCoin.
+                      automated market makers and XRC-Swap.
                     </span>
                   </p>
                   <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
