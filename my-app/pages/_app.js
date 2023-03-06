@@ -48,13 +48,28 @@ const Mantle = {
   testnet: true,
 };
 
+const Filecoin = {
+  id: 3114,
+  name: "Filecoin",
+  network: "filecoin",
+  nativeCurrency: {
+    symbol: "tFIL",
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.ankr.com/filecoin_testnet"],
+    },
+  },
+  testnet: true,
+};
+
 const { chains, provider } = configureChains(
-  [XDC, polygonMumbai, fantom, Mantle],
+  [XDC, polygonMumbai, fantom, Mantle, Filecoin],
   [
     publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => {
-        if (chain.id === XDC.id || chain.id === Mantle.id)
+        if (chain.id === XDC.id || chain.id === Mantle.id|| chain.id === Filecoin.id)
           return { http: chain.rpcUrls.default.http[0] };
         return null;
       },
