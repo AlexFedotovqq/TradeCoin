@@ -30,7 +30,7 @@ module.exports = {
       url: "https://rpc-mumbai.maticvigil.com",
       accounts: [process.env.PRIVATE_KEY],
     },
-    Trust: {
+    trust: {
       url: "https://api2-testnet.trust.one",
       accounts: [process.env.PRIVATE_KEY],
     },
@@ -43,6 +43,11 @@ module.exports = {
       url: "https://rpc.ftm.tools/",
       accounts: [process.env.PRIVATE_KEY],
       chainId: 250,
+    },
+    filecoin: {
+      url: "https://rpc.ankr.com/filecoin_testnet",
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 3141,
     },
   },
 };
