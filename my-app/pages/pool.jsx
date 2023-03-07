@@ -3,9 +3,9 @@ import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
+import { useQuery } from "@tanstack/react-query";
 
-import { getContractInfo, getERC20, getPair } from "../utils/contracts";
-import { queryContract } from "../utils/queryContract";
+import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
 function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
@@ -15,9 +15,24 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example({ pools }) {
-  const { chain } = useNetwork();
+export default function Example() {
   const { data: signer } = useSigner();
+
+  const fetchPools = async (name) => {
+    const res = await fetch(`/api/${name}`);
+    return res.json();
+  };
+
+  var initialChain = "mantle";
+
+  const { chain } = useNetwork();
+
+  if (chain?.id && (chain.id === 80001 || chain.id === 50)) {
+    initialChain = chain.network;
+  }
+
+  const { data, status } = useQuery(["pools"], () => fetchPools(initialChain));
+
   const { address } = useAccount();
 
   const [tokenA, setTokenA] = useState("");
@@ -60,6 +75,7 @@ export default function Example({ pools }) {
 
   async function removeLiquidity(pairAddress) {
     const { abiPair } = getPair();
+
     const pair = new ethers.Contract(pairAddress, abiPair, signer);
 
     await pair.transfer(pair.address, expandTo18Decimals(withdrawalQuantity), {
@@ -236,31 +252,34 @@ export default function Example({ pools }) {
         </div>
 
         <div className="overflow-hidden rounded-lg bg-gray-200 shadow p-6">
-          <ul role="list" className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-            {pools &&
-              pools.map((pool) => (
+          {status == "loading" ? (
+            <div className="flex items-center justify-center">
+              <div className="w-8 h-8 border-4 border-blue-200 rounded-full animate-spin"></div>
+              <p className="ml-2">Loading...</p>
+            </div>
+          ) : (
+            <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+              {data?.map((pool) => (
                 <li
                   key={pool.pairAddress}
                   className="col-span-1 rounded-lg bg-white shadow"
                 >
-                  <div className="flex w-full items-center justify-between space-x-6 sm:p-5 ">
-                    <div className="flex-1">
-                      <h3 className="mt-2 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
-                        {pool.token0Name}
-                      </h3>
-                      <h3 className="text-ellipsis flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
-                        {pool.token0Address}
-                      </h3>
-                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
-                        {pool.token1Name}
-                      </h3>
-                      <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-500 ">
-                        {pool.token1Address}
-                      </h3>
-                      <h3 className="mt-3 mb-6 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
-                        Total Supply: {pool.totalSupply}
-                      </h3>
-                    </div>
+                  <div className="w-full items-center justify-between sm:p-5">
+                    <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
+                      {pool.token0Name}
+                    </h3>
+                    <h3 className="truncate flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
+                      {pool.token0Address}
+                    </h3>
+                    <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
+                      {pool.token1Name}
+                    </h3>
+                    <h3 className="truncate flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
+                      {pool.token1Address}
+                    </h3>
+                    <h3 className="mt-3 mb-6 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
+                      Total Supply: {pool.totalSupply}
+                    </h3>
                   </div>
 
                   <div className="-mt-px flex divide-x divide-gray-300">
@@ -404,22 +423,10 @@ export default function Example({ pools }) {
                   </div>
                 </li>
               ))}
-          </ul>
+            </ul>
+          )}
         </div>
       </div>
     </div>
   );
-}
-
-export async function getStaticProps() {
-  const res = await fetch("https://xrc-swap.vercel.app/api/xdc/");
-  //const pools = await queryContract();
-  const pools = await res.json();
-
-  return {
-    props: {
-      pools,
-    },
-    revalidate: 10,
-  };
 }

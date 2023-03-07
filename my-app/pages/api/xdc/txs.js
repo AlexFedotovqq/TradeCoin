@@ -1,11 +1,11 @@
 import { ethers } from "ethers";
-import { getContractInfo } from "../../../utils/contracts";
-import UniswapV2Pair from "../../../utils/contracts/UniswapV2Pair.json";
-import ERC20 from "../../../utils/contracts/ERC20.json";
+import { getContractInfo } from "@/utils/contracts";
+import UniswapV2Pair from "@/utils/contracts/UniswapV2Pair.json";
+import ERC20 from "@/utils/contracts/ERC20.json";
 
 export default async function handler(req, res) {
   try {
-    const { addressFactory, abiFactory } = getContractInfo();
+    const { addressFactory, abiFactory } = getContractInfo(50);
 
     const customHttpProvider = new ethers.providers.JsonRpcProvider(
       "https://rpc.xinfin.network"

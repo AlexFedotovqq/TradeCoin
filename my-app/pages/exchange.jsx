@@ -2,16 +2,31 @@ import { BanknotesIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
+import { useQuery } from "@tanstack/react-query";
 
-import { queryPrices } from "../utils/queryContract";
-import { getContractInfo, getERC20, getPair } from "../utils/contracts";
+import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
 function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
 }
 
-export default function Example({ transactions }) {
+export default function Example() {
+  const fetchTxs = async (name) => {
+    const res = await fetch(`/api/${name}/txs`);
+    return res.json();
+  };
+
+  var initialChain = "mantle";
   const { chain } = useNetwork();
+
+  if (chain?.id && (chain.id === 80001 || chain.id === 50)) {
+    initialChain = chain.network;
+  }
+
+  const { data: transactions, status } = useQuery(["txs"], () =>
+    fetchTxs(initialChain)
+  );
+
   const { data: signer } = useSigner();
   const { address } = useAccount();
 
@@ -187,113 +202,75 @@ export default function Example({ transactions }) {
           <div className="flex flex-1 flex-col  lg:pl-68">
             <main className="flex-1 pb-8">
               <div className="mt-8">
-                {/* Activity list (smallest breakpoint only) */}
-                <div className="shadow sm:hidden">
-                  <ul
-                    role="list"
-                    className="mt-2 divide-y divide-gray-200 overflow-hidden shadow sm:hidden"
-                  >
-                    {transactions.map((transaction) => (
-                      <li key={transaction.id}>
-                        <a
-                          href={`https://explorer.xinfin.network/address/${transaction.pairAddress}`}
-                          className="block bg-white px-4 py-4 hover:bg-gray-50"
-                        >
-                          <span className="flex items-center space-x-4">
-                            <span className="flex flex-1 space-x-2 truncate">
-                              <BanknotesIcon
-                                className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                aria-hidden="true"
-                              />
-                              <span className="flex flex-col truncate text-sm text-gray-500">
-                                <span className="truncate">
-                                  {transaction.token0Name} /{" "}
-                                  {transaction.token1Name}
-                                </span>
-                                <span>
-                                  <span className="font-medium text-gray-900">
-                                    {transaction.reserveRatio}
-                                  </span>
-                                </span>
-                                Price: {" " + transaction.price0}
-                              </span>
-                            </span>
-                            <ChevronRightIcon
-                              className="h-5 w-5 flex-shrink-0 text-gray-400"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Activity table (small breakpoint and up) */}
+                {/* Activity list */}
 
                 <div className="hidden sm:block">
                   <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-1">
                     <div className="mt-2 flex flex-col">
                       <div className="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
-                        <table className="min-w-full divide-y divide-gray-200">
-                          <thead>
-                            <tr>
-                              <th
-                                className="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
-                                scope="col"
-                              >
-                                Cryptocurrency Pair
-                              </th>
-                              <th
-                                className="bg-gray-50 px-12 py-3 text-right text-sm font-semibold text-gray-900"
-                                scope="col"
-                              >
-                                Reserve Ratio
-                              </th>
+                        {status == "loading" ? (
+                          <div className="flex items-center justify-center">
+                            <div className="w-8 h-8 border-4 border-blue-200 rounded-full animate-spin"></div>
+                            <div className="">Loading...</div>
+                          </div>
+                        ) : (
+                          <table className="min-w-full divide-y divide-gray-200">
+                            <thead>
+                              <tr>
+                                <th
+                                  className="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                                  scope="col"
+                                >
+                                  Cryptocurrency Pair
+                                </th>
+                                <th
+                                  className="bg-gray-50 px-12 py-3 text-right text-sm font-semibold text-gray-900"
+                                  scope="col"
+                                >
+                                  Reserve Ratio
+                                </th>
 
-                              <th
-                                className="bg-gray-50 px-10 py-3 text-right text-sm font-semibold text-gray-900"
-                                scope="col"
-                              >
-                                Price
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-gray-200 bg-white">
-                            {transactions.map((transaction) => (
-                              <tr key={transaction.id} className="bg-white">
-                                <td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900">
-                                  <div className="flex">
-                                    <a
-                                      href={`https://explorer.xinfin.network/address/${transaction.pairAddress}`}
-                                      className="group inline-flex space-x-2 truncate text-sm"
-                                    >
-                                      <BanknotesIcon
-                                        className="h-5 w-5 flex-shrink-0 text-black group-hover:text-gray-500"
-                                        aria-hidden="true"
-                                      />
-                                      <p className="text-black group-hover:text-gray-900">
-                                        {transaction.token0Symbol} /{" "}
-                                        {transaction.token1Symbol}
-                                      </p>
-                                    </a>
-                                  </div>
-                                </td>
-                                <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
-                                  <span className="truncate font-medium text-gray-900">
-                                    {transaction.reserveRatio}
-                                  </span>
-                                </td>
-
-                                <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
-                                  <span className="truncate font-medium text-gray-900">
-                                    {transaction.price0}
-                                  </span>
-                                </td>
+                                <th
+                                  className="bg-gray-50 px-10 py-3 text-right text-sm font-semibold text-gray-900"
+                                  scope="col"
+                                >
+                                  Price
+                                </th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                            </thead>
+                            <tbody className="divide-y divide-gray-200 bg-white">
+                              {transactions?.map((transaction) => (
+                                <tr key={transaction.id} className="bg-white">
+                                  <td className="w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                                    <div className="flex">
+                                      <a className="group inline-flex space-x-2 truncate text-sm">
+                                        <BanknotesIcon
+                                          className="h-5 w-5 flex-shrink-0 text-black group-hover:text-gray-500"
+                                          aria-hidden="true"
+                                        />
+                                        <p className="text-black group-hover:text-gray-900">
+                                          {transaction.token0Symbol} /{" "}
+                                          {transaction.token1Symbol}
+                                        </p>
+                                      </a>
+                                    </div>
+                                  </td>
+                                  <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
+                                    <span className="truncate font-medium text-gray-900">
+                                      {transaction.reserveRatio}
+                                    </span>
+                                  </td>
+
+                                  <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
+                                    <span className="truncate font-medium text-gray-900">
+                                      {transaction.price0}
+                                    </span>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -305,17 +282,4 @@ export default function Example({ transactions }) {
       </div>
     </div>
   );
-}
-
-export async function getStaticProps() {
-  const res = await fetch("https://xrc-swap.vercel.app/api/xdc/txs");
-  // const transactions = await queryPrices();
-  const transactions = await res.json();
-
-  return {
-    props: {
-      transactions,
-    },
-    revalidate: 10,
-  };
 }

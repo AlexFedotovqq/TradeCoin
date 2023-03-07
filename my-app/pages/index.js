@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const myLoader = ({ src, width }) => {
-  return `https://www.interactivebrokers.com/images/web/${src}?w=${width}&q=${100}`;
+  return `https://www.interactivebrokers.com/images/web/${src}?w=${width}&q=${75}`;
 };
 
 export default function Index() {
@@ -11,23 +11,17 @@ export default function Index() {
       <div className="relative overflow-hidden bg-gradient-to-r from-violet-300 to-fuchsia-800">
         <div className="mx-auto max-w-7xl">
           <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
-            
-         
-
-            
-
-
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
               <div className="sm:text-center lg:text-left">
-                
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
                   <span className="block xl:inline">TradeCoin</span>{" "}
                 </h1>
                 <p className="mt-3 text-base text-black sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
-
-                  <strong>TradeCoin provides DeFi tools for token holders & businesses to
-                  buy, trade, create, and secure crypto assets with confidence.</strong>
-
+                  <strong>
+                    TradeCoin provides DeFi tools for token holders & businesses
+                    to buy, trade, create, and secure crypto assets with
+                    confidence.
+                  </strong>
                 </p>
 
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
@@ -70,7 +64,7 @@ export default function Index() {
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
                     How does it{" "}
-                    <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 ">
+                    <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 ">
                       Work?
                     </span>
                   </h1>
@@ -119,7 +113,7 @@ export default function Index() {
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
                       <strong>What Is an</strong>
-                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                         {" "}
                         Automated Market Maker?
                       </span>
@@ -166,7 +160,7 @@ export default function Index() {
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
                       <strong>Do you want to</strong>
-                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                         {" "}
                         exchange cryptocurrency?
                       </span>
@@ -207,7 +201,7 @@ export default function Index() {
                       <strong>
                         Faced with the fact that you do not know how to
                       </strong>
-                      <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                      <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                         {" "}
                         use the application?
                       </span>
@@ -246,9 +240,8 @@ export default function Index() {
                   <p className="mt-4 text-lg leading-8 text-black sm:text-center">
                     <strong>Interested in reading about </strong>
 
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                    <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                       automated market makers and TradeCoin.
-
                     </span>
                   </p>
                   <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
@@ -285,7 +278,7 @@ export default function Index() {
                   </h1>
                   <p className="mt-6 text-lg leading-8 text-black sm:text-center">
                     <strong>Do you want to</strong>
-                    <span class="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+                    <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
                       {" "}
                       contact us?
                     </span>
@@ -362,7 +355,6 @@ export default function Index() {
       </div>
     </div>
                 </div>
-                
               </div>
             </div>
           </div>
