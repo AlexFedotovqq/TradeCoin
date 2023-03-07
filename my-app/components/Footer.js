@@ -64,8 +64,9 @@ const navigation = [
 
 export default function Example() {
   return (
+    
     <footer className="bg-white">
-      <div className="mx-auto max-w-7xl py-12 px-6 md:flex md:items-center md:justify-between lg:px-8">
+      <div className="mx-auto max-w-7xl py-2 px-6 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
           {navigation.map((item) => (
             <a key={item.name} href={item.href} className="text-gray-900 hover:text-gray-900">
