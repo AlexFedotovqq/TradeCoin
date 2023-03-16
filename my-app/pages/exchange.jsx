@@ -68,7 +68,7 @@ export default function Example() {
   }
 
   return (
-    <div className="overflow-hidden bg-white  py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
+    <div className="overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500 p-20  py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
       <div className="relative mx-auto max-w-xl">
         <svg
           className="absolute left-full translate-x-1/2 transform"

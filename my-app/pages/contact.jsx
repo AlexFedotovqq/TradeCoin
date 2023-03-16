@@ -2,7 +2,7 @@ import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline'
 
 export default function Example() {
   return (
-    <div className="bg-white ">
+    <div className="bg-gradient-to-b from-indigo-200 to-indigo-500 ">
       <div className="mx-auto max-w-7xl py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
         <div className="relative bg-white shadow-xl">
           <h2 className="sr-only">Contact us</h2>

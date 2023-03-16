@@ -8,8 +8,8 @@ const myLoader = ({ src, width }) => {
 export default function Index() {
   return (
     <div>
-      <div className="relative overflow-hidden bg-gradient-to-r from-violet-300 to-fuchsia-800">
-        <div className="mx-auto max-w-7xl">
+      <div className="relative overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500">
+        <div className="mx-auto max-w-7xl ">
           <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
               <div className="sm:text-center lg:text-left">
@@ -59,7 +59,7 @@ export default function Index() {
       <div className="isolate bg-gradient-to-tl">
         <main>
           <div className="relative px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl pt-20 pb-32  sm:pb-40">
+            <div className="mx-auto max-w-3xl pt-5 pb-32  sm:pb-40">
               <div>
                 <div>
                   <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
@@ -76,10 +76,10 @@ export default function Index() {
                       with confidence.
                     </strong>
                   </p>
-                  <div className="mt-8 flex gap-x-4 sm:justify-center">
+                  <div className="mt-8 flex items-center gap-x-4 justify-center">
                     <Link
                       href="/exchange"
-                      className="inline-block rounded-lg bg-indigo-500 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-500 hover:bg-indigo-700 hover:ring-indigo-700"
+                      className="inline-block rounded-lg bg-indigo-500 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-500 hover:bg-indigo-700 hover:ring-indigo-700 "
                     >
                       Exchange{" "}
                       <span className="text-indigo-200" aria-hidden="true">
@@ -136,8 +136,8 @@ export default function Index() {
                         allowFullScreen
                       />
                     </div>
-                    <div className="mt-3 flex gap-x-4 sm:justify-center">
-                      <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+                    <div className="mt-3 flex items-center gap-x-4 justify-center">
+                      <div className=" sm:mb-8 sm:flex sm:justify-center">
                         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                           <span className="text-gray-900 ">
                             <Link
@@ -175,8 +175,8 @@ export default function Index() {
                         className="justify-center flex items-center"
                       />
                     </div>
-                    <div className="mt-3 flex gap-x-4 sm:justify-center">
-                      <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+                    <div className="mt-3 flex items-center gap-x-4 justify-center">
+                      <div className=" sm:mb-8 sm:flex sm:justify-center">
                         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                           <span className="text-gray-900">
                             <Link
@@ -256,9 +256,9 @@ export default function Index() {
 
                   <div
                     className="mt-5
-                     flex gap-x-4 sm:justify-center"
+                     flex gap-x-4 justify-center"
                   >
-                    <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+                    <div className="sm:mb-8 flex items-center justify-center">
                       <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                         <span className="text-gray-900">
                           <Link
@@ -298,8 +298,8 @@ export default function Index() {
                       className="justify-center flex items-center"
                     />
                   </div>
-                  <div className="mt-8 flex gap-x-4 sm:justify-center">
-                    <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+                  <div className="mt-8 flex gap-x-4 justify-center">
+                    <div className=" sm:mb-8 flex items-center justify-center">
                       <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                         <span className="text-gray-600">
                           {" "}
