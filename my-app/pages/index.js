@@ -8,23 +8,25 @@ const myLoader = ({ src, width }) => {
 export default function Index() {
   return (
     <div>
-      <div className="relative overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500">
-        <div className="mx-auto max-w-7xl ">
-          <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
+      <div className="relative overflow-hidden bg-no-repeat bg-cover bg-center bg-[url('/bg2.jpg')]">
+        <div className="mx-auto max-w-2xl">
+          <div className="xl:pb-32 text-center">
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
-              <div className="sm:text-center lg:text-left">
-                <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-                  <span className="block xl:inline">TradeCoin</span>{" "}
+              <div className="sm:text-center lg:text-center">
+                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+                <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-sky-100 to-sky-500 ">
+                  TradeCoin</span>{" "}
                 </h1>
-                <p className="mt-3 text-base text-black sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
+                <p className="mt-3 font-bold text-base text-white text-center sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg  md:text-xl lg:mx-0">
                   <strong>
+                    
                     TradeCoin provides DeFi tools for token holders & businesses
                     to buy, trade, create, and secure crypto assets with
                     confidence.
                   </strong>
                 </p>
 
-                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center ">
                   <div className="rounded-md shadow">
                     <Link
                       href="/pool"
@@ -47,14 +49,7 @@ export default function Index() {
           </div>
         </div>
 
-        <Image
-          className="h-56 w-full object-cover sm:h-72 md:h-96 lg:h-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2"
-          src="cryptocurrency-hero.jpg"
-          alt=""
-          width="600"
-          height="600"
-          loader={myLoader}
-        />
+       
       </div>
       <div className="isolate bg-gradient-to-tl">
         <main>
