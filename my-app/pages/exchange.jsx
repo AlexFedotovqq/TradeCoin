@@ -269,6 +269,7 @@ export default function Example() {
                                 </tr>
                               ))}
                             </tbody>
+                            
                           </table>
                         )}
                       </div>

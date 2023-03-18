@@ -54,6 +54,24 @@ const posts = [
           '/twitter.jpg',
       },
     },
+    {
+      title: 'How do I add custom tokens to MetaMask?',
+      href: '/blogs/custom-token',
+      category: { name: 'Article', href: '#' },
+      description:
+        'If your custom (unlisted) tokens are not showing up automatically in MetaMasks assets area, this article will explain how to add them. ',
+      date: 'Mar 18, 2022',
+      datetime: '2022-01-17',
+      imageUrl:
+        '/meta.jpg',
+      readingTime: '4 min',
+      author: {
+        name: 'Our Twitter',
+        href: 'https://twitter.com/_TradeCoin_',
+        imageUrl:
+          '/twitter.jpg',
+      },
+    },
   ]
   
   export default function Example() {
