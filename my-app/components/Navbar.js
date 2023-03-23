@@ -1,6 +1,5 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const navigation = [
   { name: "TradeCoin", href: "/" },
@@ -60,7 +59,9 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="flex items-center md:ml-12">
-                <ConnectButton />;
+              <div className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 ">
+                      Connect Wallet
+                  </div>
               </div>
             </div>
           </div>
