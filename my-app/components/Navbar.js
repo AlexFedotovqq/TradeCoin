@@ -13,7 +13,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 const Navbar = () => {
+  async function ffdf(){console.log(3232323)
+     await        
+    window.tronWeb.contract().at('TMH1jAzAjCp2GdWm7hXSmhYyD3iKdpExoZ');
+  }
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -55,9 +60,9 @@ const Navbar = () => {
               </div>
             
               <div className="flex items-center md:ml-12">
-              <div className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 ">
+              <button onClick={()=>ffdf()} className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 ">
                       Connect Wallet
-                  </div>
+                  </button>
               </div>
             </div>
           </div>
