@@ -15,9 +15,12 @@ function classNames(...classes) {
 
 
 const Navbar = () => {
-  async function ffdf(){console.log(3232323)
-     await        
-    window.tronWeb.contract().at('TMH1jAzAjCp2GdWm7hXSmhYyD3iKdpExoZ');
+  async function ffdf(){
+    let abi = [{"inputs":[{"name":"_feeToSetter","type":"address"}],"stateMutability":"Nonpayable","type":"Constructor"},{"inputs":[{"indexed":true,"name":"token0","type":"address"},{"indexed":true,"name":"token1","type":"address"},{"name":"pair","type":"address"},{"type":"uint256"}],"name":"PairCreated","type":"Event"},{"outputs":[{"type":"address"}],"constant":true,"inputs":[{"type":"uint256"}],"name":"allPairs","stateMutability":"view","type":"function"},{"outputs":[{"type":"uint256"}],"constant":true,"name":"allPairsLength","stateMutability":"view","type":"function"},{"outputs":[{"name":"pair","type":"address"}],"inputs":[{"name":"tokenA","type":"address"},{"name":"tokenB","type":"address"}],"name":"createPair","stateMutability":"Nonpayable","type":"Function"},{"outputs":[{"type":"address"}],"constant":true,"name":"feeTo","stateMutability":"view","type":"function"},{"outputs":[{"type":"address"}],"constant":true,"name":"feeToSetter","stateMutability":"view","type":"function"},{"outputs":[{"type":"address"}],"constant":true,"inputs":[{"type":"address"},{"type":"address"}],"name":"getPair","stateMutability":"view","type":"function"},{"inputs":[{"name":"_feeTo","type":"address"}],"name":"setFeeTo","stateMutability":"Nonpayable","type":"Function"},{"inputs":[{"name":"_feeToSetter","type":"address"}],"name":"setFeeToSetter","stateMutability":"Nonpayable","type":"Function"}]
+    const bla = await tronWeb.contract(abi,"TBm29AMoKKkxE9z5mwWdVdbt5CPqPhZxTq");
+    console.log(bla);
+   let s = await bla.allPairsLength().call();
+   console.log(s);
   }
   return (
     <Disclosure as="nav" className="bg-gray-800">
