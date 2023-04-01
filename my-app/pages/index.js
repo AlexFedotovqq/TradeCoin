@@ -14,12 +14,12 @@ export default function Index() {
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
               <div className="sm:text-center lg:text-center">
                 <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-                <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-sky-100 to-sky-500 ">
-                  TradeCoin</span>{" "}
+                  <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-sky-100 to-sky-500 ">
+                    TradeCoin
+                  </span>{" "}
                 </h1>
                 <p className="mt-3 font-bold text-base text-white text-center sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg  md:text-xl lg:mx-0">
                   <strong>
-                    
                     TradeCoin provides DeFi tools for token holders & businesses
                     to buy, trade, create, and secure crypto assets with
                     confidence.
@@ -48,8 +48,6 @@ export default function Index() {
             </main>
           </div>
         </div>
-
-       
       </div>
       <div className="isolate bg-gradient-to-tl">
         <main>
@@ -309,46 +307,46 @@ export default function Index() {
                     </div>
                   </div>
                   <div className="bg-white py-24 sm:py-12">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-          <img
-            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            src="https://mms.businesswire.com/media/20211123005573/en/929867/23/vercel-logo-freelogovectors.net.jpg"
-            alt="Transistor"
-            width={158}
-            height={48}
-          />
-          <img
-            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            src="https://trust.one/images/logo.png"
-            alt="Reform"
-            width={158}
-            height={48}
-          />
-          <img
-            className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-            src="https://logos-download.com/wp-content/uploads/2022/01/TRON_TRX_Logo_full.png"
-            alt="Tuple"
-            width={158}
-            height={48}
-          />
-          <img
-            className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-            src="https://fantomfoundation-prod-wp-website.s3.ap-southeast-2.amazonaws.com/wp-content/uploads/2020/04/22185711/fantom-logo-blue.png"
-            alt="SavvyCal"
-            width={158}
-            height={48}
-          />
-          <img
-            className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-            src="https://www.bcbitcoin.com/site/assets/files/110712/image-1.png"
-            alt="Statamic"
-            width={158}
-            height={48}
-          />
-        </div>
-      </div>
-    </div>
+                    <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                      <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+                        <img
+                          className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                          src="https://mms.businesswire.com/media/20211123005573/en/929867/23/vercel-logo-freelogovectors.net.jpg"
+                          alt="Transistor"
+                          width={158}
+                          height={48}
+                        />
+                        <img
+                          className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                          src="https://trust.one/images/logo.png"
+                          alt="Reform"
+                          width={158}
+                          height={48}
+                        />
+                        <img
+                          className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                          src="https://logos-download.com/wp-content/uploads/2022/01/TRON_TRX_Logo_full.png"
+                          alt="Tuple"
+                          width={158}
+                          height={48}
+                        />
+                        <img
+                          className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
+                          src="https://fantomfoundation-prod-wp-website.s3.ap-southeast-2.amazonaws.com/wp-content/uploads/2020/04/22185711/fantom-logo-blue.png"
+                          alt="SavvyCal"
+                          width={158}
+                          height={48}
+                        />
+                        <img
+                          className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
+                          src="https://www.bcbitcoin.com/site/assets/files/110712/image-1.png"
+                          alt="Statamic"
+                          width={158}
+                          height={48}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -13,14 +13,91 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-
 const Navbar = () => {
-  async function ffdf(){
-    let abi = [{"inputs":[{"name":"_feeToSetter","type":"address"}],"stateMutability":"Nonpayable","type":"Constructor"},{"inputs":[{"indexed":true,"name":"token0","type":"address"},{"indexed":true,"name":"token1","type":"address"},{"name":"pair","type":"address"},{"type":"uint256"}],"name":"PairCreated","type":"Event"},{"outputs":[{"type":"address"}],"constant":true,"inputs":[{"type":"uint256"}],"name":"allPairs","stateMutability":"view","type":"function"},{"outputs":[{"type":"uint256"}],"constant":true,"name":"allPairsLength","stateMutability":"view","type":"function"},{"outputs":[{"name":"pair","type":"address"}],"inputs":[{"name":"tokenA","type":"address"},{"name":"tokenB","type":"address"}],"name":"createPair","stateMutability":"Nonpayable","type":"Function"},{"outputs":[{"type":"address"}],"constant":true,"name":"feeTo","stateMutability":"view","type":"function"},{"outputs":[{"type":"address"}],"constant":true,"name":"feeToSetter","stateMutability":"view","type":"function"},{"outputs":[{"type":"address"}],"constant":true,"inputs":[{"type":"address"},{"type":"address"}],"name":"getPair","stateMutability":"view","type":"function"},{"inputs":[{"name":"_feeTo","type":"address"}],"name":"setFeeTo","stateMutability":"Nonpayable","type":"Function"},{"inputs":[{"name":"_feeToSetter","type":"address"}],"name":"setFeeToSetter","stateMutability":"Nonpayable","type":"Function"}]
-    const bla = await tronWeb.contract(abi,"TBm29AMoKKkxE9z5mwWdVdbt5CPqPhZxTq");
+  async function ffdf() {
+    let abi = [
+      {
+        inputs: [{ name: "_feeToSetter", type: "address" }],
+        stateMutability: "Nonpayable",
+        type: "Constructor",
+      },
+      {
+        inputs: [
+          { indexed: true, name: "token0", type: "address" },
+          { indexed: true, name: "token1", type: "address" },
+          { name: "pair", type: "address" },
+          { type: "uint256" },
+        ],
+        name: "PairCreated",
+        type: "Event",
+      },
+      {
+        outputs: [{ type: "address" }],
+        constant: true,
+        inputs: [{ type: "uint256" }],
+        name: "allPairs",
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        outputs: [{ type: "uint256" }],
+        constant: true,
+        name: "allPairsLength",
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        outputs: [{ name: "pair", type: "address" }],
+        inputs: [
+          { name: "tokenA", type: "address" },
+          { name: "tokenB", type: "address" },
+        ],
+        name: "createPair",
+        stateMutability: "Nonpayable",
+        type: "Function",
+      },
+      {
+        outputs: [{ type: "address" }],
+        constant: true,
+        name: "feeTo",
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        outputs: [{ type: "address" }],
+        constant: true,
+        name: "feeToSetter",
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        outputs: [{ type: "address" }],
+        constant: true,
+        inputs: [{ type: "address" }, { type: "address" }],
+        name: "getPair",
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [{ name: "_feeTo", type: "address" }],
+        name: "setFeeTo",
+        stateMutability: "Nonpayable",
+        type: "Function",
+      },
+      {
+        inputs: [{ name: "_feeToSetter", type: "address" }],
+        name: "setFeeToSetter",
+        stateMutability: "Nonpayable",
+        type: "Function",
+      },
+    ];
+    const bla = await tronWeb.contract(
+      abi,
+      "TBm29AMoKKkxE9z5mwWdVdbt5CPqPhZxTq"
+    );
     console.log(bla);
-   let s = await bla.allPairsLength().call();
-   console.log(s);
+    let s = await bla.allPairsLength().call();
+    console.log(s);
   }
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -61,11 +138,14 @@ const Navbar = () => {
                   ))}
                 </div>
               </div>
-            
+
               <div className="flex items-center md:ml-12">
-              <button onClick={()=>ffdf()} className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 ">
-                      Connect Wallet
-                  </button>
+                <button
+                  onClick={() => ffdf()}
+                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 "
+                >
+                  Connect Wallet
+                </button>
               </div>
             </div>
           </div>
