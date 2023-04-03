@@ -70,73 +70,7 @@ export default function Example() {
 
   return (
     <div className="overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500 p-20  py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
-      <div className="relative mx-auto max-w-xl">
-        <svg
-          className="absolute left-full translate-x-1/2 transform"
-          width={404}
-          height={1104}
-          fill="none"
-          viewBox="0 0 404 804"
-          aria-hidden="true"
-        >
-          <defs>
-            <pattern
-              id="85737c0e-0916-41d7-917f-596dc7edfa27"
-              x={0}
-              y={0}
-              width={20}
-              height={20}
-              patternUnits="userSpaceOnUse"
-            >
-              <rect
-                x={0}
-                y={0}
-                width={4}
-                height={4}
-                className="text-black-200"
-                fill="currentColor"
-              />
-            </pattern>
-          </defs>
-          <rect
-            width={404}
-            height={404}
-            fill="url(#85737c0e-0916-41d7-917f-596dc7edfa27)"
-          />
-        </svg>
-        <svg
-          className="absolute right-full bottom-0 -translate-x-1/2 transform"
-          width={404}
-          height={1104}
-          fill="none"
-          viewBox="0 0 404 790"
-          aria-hidden="true"
-        >
-          <defs>
-            <pattern
-              id="85737c0e-0916-41d7-917f-596dc7edfa27"
-              x={0}
-              y={0}
-              width={20}
-              height={20}
-              patternUnits="userSpaceOnUse"
-            >
-              <rect
-                x={0}
-                y={0}
-                width={4}
-                height={4}
-                className="text-gray-200"
-                fill="currentColor"
-              />
-            </pattern>
-          </defs>
-          <rect
-            width={404}
-            height={404}
-            fill="url(#85737c0e-0916-41d7-917f-596dc7edfa27)"
-          />
-        </svg>
+      <div className="relative mx-auto max-w-sm">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">
             Exchange
@@ -149,11 +83,11 @@ export default function Example() {
         <div className="sm:col-span-2">
           <label
             htmlFor="number"
-            className="block text-sm mt-4 font-medium text-black-700"
+            className="block text-bold text-center mt-4 font-medium text-black-700"
           >
             Exchange cryptocurrency
           </label>
-          <div className="sm:col-span-2">
+          <div className="flex justify-center items-center">
             <div className="relative mt-2.5">
               <div className="absolute inset-y-0 left-0 flex items-center">
                 <select
@@ -162,29 +96,7 @@ export default function Example() {
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 >
                   <option>XDC</option>
-                  <option>XDC</option>
-                  <option>XDC</option>
-                </select>
-              </div>
-              <input
-                type="tel"
-                name="phone-number"
-                id="phone-number"
-                autoComplete="tel"
-                className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-          <div className="sm:col-span-2">
-            <div className="relative mt-2.5">
-              <div className="absolute inset-y-0 left-0 flex items-center">
-                <select
-                  id="country"
-                  name="country"
-                  className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                >
-                  <option>XDC</option>
-                  <option>XDC</option>
+                  <option>TRX</option>
                   <option>XDC</option>
                 </select>
               </div>
@@ -193,26 +105,38 @@ export default function Example() {
                 name="phone-number"
                 id="phone-number"
                 autoComplete="tel"
-                className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block  rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
           <label
             htmlFor="number"
-            className="block text-sm font-medium text-black-700"
+            className="block mt-2 text-bold text-center font-medium text-black-700"
           >
             for cryptocurrency
           </label>
-
-          <input
-            type="text"
-            name="number"
-            id="number"
-            autoComplete="tel"
-            onChange={(event) => setTokenB(event.target.value)}
-            className="block w-full rounded-md border-gray-300 bg-indigo-100 py-3 px-4 pl-25 focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="0x..."
-          />
+        </div>
+        <div className="flex justify-center items-center">
+          <div className="relative mt-2.5">
+            <div className="absolute inset-y-0 left-0 flex items-center">
+              <select
+                id="country"
+                name="country"
+                className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+              >
+                <option>XDC</option>
+                <option>TRX</option>
+                <option>XDC</option>
+              </select>
+            </div>
+            <input
+              type="tel"
+              name="phone-number"
+              id="phone-number"
+              autoComplete="tel"
+              className="block  rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
         </div>
 
         <button
