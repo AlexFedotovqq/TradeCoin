@@ -1,9 +1,5 @@
-import { BanknotesIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
-import { useAccount, useSigner, useNetwork } from "wagmi";
-import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
@@ -17,19 +13,9 @@ export default function Example() {
     return res.json();
   };
 
-  var initialChain = "mantle";
-  const { chain } = useNetwork();
-
-  if (chain?.id && (chain.id === 80001 || chain.id === 50)) {
-    initialChain = chain.network;
-  }
-
   const { data: transactions, status } = useQuery(["txs"], () =>
     fetchTxs(initialChain)
   );
-
-  const { data: signer } = useSigner();
-  const { address } = useAccount();
 
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
@@ -71,11 +57,11 @@ export default function Example() {
   return (
     <div className="overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500 p-20  py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
       <div className="relative mx-auto max-w-sm">
-        <div className="text-center">
+        <div className="text-center mt-12">
           <h2 className="text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">
             Exchange
           </h2>
-          <p className="mt-4 text-lg leading-8 text-gray-900">
+          <p className="mt-8 text-xl leading-8 text-gray-900">
             <strong>Here you can exchange cryptocurrency</strong>
           </p>
         </div>
@@ -83,7 +69,7 @@ export default function Example() {
         <div className="sm:col-span-2">
           <label
             htmlFor="number"
-            className="block text-bold text-center mt-4 font-medium text-black-700"
+            className="block text-lg text-bold text-center mt-6 font-medium text-black-700"
           >
             Exchange cryptocurrency
           </label>
@@ -111,9 +97,9 @@ export default function Example() {
           </div>
           <label
             htmlFor="number"
-            className="block mt-2 text-bold text-center font-medium text-black-700"
+            className="block mt-5 text-lg text-bold text-center font-medium text-black-700"
           >
-            for cryptocurrency
+            For cryptocurrency
           </label>
         </div>
         <div className="flex justify-center items-center">
@@ -134,7 +120,7 @@ export default function Example() {
               name="phone-number"
               id="phone-number"
               autoComplete="tel"
-              className="block  rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="block rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
         </div>

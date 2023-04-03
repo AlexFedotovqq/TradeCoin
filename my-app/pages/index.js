@@ -1,10 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const myLoader = ({ src, width }) => {
-  return `https://www.interactivebrokers.com/images/web/${src}?w=${width}&q=${75}`;
-};
-
 export default function Index() {
   return (
     <div>
