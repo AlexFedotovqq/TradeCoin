@@ -1,7 +1,6 @@
-import ERC20 from "@/utils/contracts/ERC20.json";
-import UniswapV2Pair from "@/utils/contracts/UniswapV2Pair.json";
-
+import { TRX20Abi } from "./contracts/TRX20";
 import { TradeCoinFactoryAbi } from "./contracts/TradeCoinFactory";
+import { TradeCoinPairAbi } from "./contracts/TradeCoinPair";
 
 export function getContractInfo() {
   return {
@@ -12,12 +11,12 @@ export function getContractInfo() {
 
 export function getERC20() {
   return {
-    abiERC20: ERC20.abi,
+    abiERC20: TRX20Abi,
   };
 }
 
 export function getPair() {
   return {
-    abiPair: UniswapV2Pair.abi,
+    abiPair: TradeCoinPairAbi,
   };
 }
