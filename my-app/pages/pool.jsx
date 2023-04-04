@@ -2,6 +2,7 @@ import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { ethers } from "ethers";
+import { useQuery } from "@tanstack/react-query";
 
 import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
@@ -14,13 +15,13 @@ function classNames(...classes) {
 }
 
 export default function Pool() {
-  /*   const fetchPools = async (name) => {
+  const fetchPools = async (name) => {
     const res = await fetch(`/api/${name}`);
     return res.json();
-  }; */
+  };
 
-  // const { data, status } = useQuery(["pools"], () => fetchPools());
-
+  const { data, status } = useQuery(["pools"], () => fetchPools("test"));
+  console.log(data);
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
 
@@ -40,9 +41,9 @@ export default function Pool() {
     const { abiPair } = getPair();
     const address = await tronWeb.defaultAddress.base58;
 
-    const token0 = await tronWeb.contract(abiERC20, address0);
-    const token1 = await tronWeb.contract(abiERC20, address1);
-    const pair = await tronWeb.contract(abiPair, pairAddress);
+    const token0 = await tronWeb.contract(abiERC20, address0).call();
+    const token1 = await tronWeb.contract(abiERC20, address1).call();
+    const pair = await tronWeb.contract(abiPair, pairAddress).call();
 
     await token0.transfer(pairAddress, expandTo18Decimals(tokenAQuantity), {
       gasLimit: 100000,
@@ -236,7 +237,7 @@ export default function Pool() {
         </div>
 
         <div className="overflow-hidden rounded-lg bg-gray-200 shadow p-6">
-          {/* status == "loading" ? (
+          {status == "loading" ? (
             <div className="flex items-center justify-center">
               <div className="w-8 h-8 border-4 border-blue-200 rounded-full animate-spin"></div>
               <p className="ml-2">Loading...</p>
@@ -408,7 +409,7 @@ export default function Pool() {
                 </li>
               ))}
             </ul>
-                                ) */}
+          )}
         </div>
       </div>
     </div>

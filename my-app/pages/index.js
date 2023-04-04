@@ -6,11 +6,11 @@ export default function Index() {
     <div>
       <div className="relative overflow-hidden bg-no-repeat bg-cover bg-center bg-[url('/bg2.jpg')]">
         <div className="mx-auto max-w-2xl">
-          <div className="xl:pb-32 text-center">
+          <div className="xl:pb-32 pb-10 text-center">
             <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-48">
               <div className="sm:text-center lg:text-center">
                 <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-                  <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-sky-100 to-sky-500 ">
+                  <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-sky-100 to-sky-500 ">
                     TradeCoin
                   </span>{" "}
                 </h1>

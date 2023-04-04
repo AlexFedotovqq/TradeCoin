@@ -4,7 +4,7 @@ import { TradeCoinPairAbi } from "./contracts/TradeCoinPair";
 
 export function getContractInfo() {
   return {
-    addressFactory: "TBm29AMoKKkxE9z5mwWdVdbt5CPqPhZxTq",
+    addressFactory: "TDrWZVU9g2bRQSN6vqFeuRjYJ1pytcdHw5",
     abiFactory: TradeCoinFactoryAbi,
   };
 }
