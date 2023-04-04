@@ -29,15 +29,15 @@ export default function Exchange() {
     let s = await contract.allPairsLength().call();
     console.log(s);
 
-    // create 2 tokens, create pair
-    const pairAddress = await contract.getPair(tokenA, tokenB);
-    // const pair = new ethers.Contract(pairAddress, abiPair, signer);
+    const pairAddress = await contract.getPair(tokenA, tokenB).call();
+    const pair = await tronWeb.contract(abiPair, pairAddress);
 
     const orderIn = (await pair.token0()) === tokenA ? 0 : 1;
     const orderOut = (await pair.token1()) === tokenB ? 1 : 0;
 
-    const token = new ethers.Contract(tokenA, abiERC20, signer);
+    const token = await tronWeb.contract(tokenA, abiERC20);
 
+    //
     await token.transfer(pairAddress, expandTo18Decimals(swapAmount), {
       gasLimit: 60000,
     });
@@ -157,14 +157,14 @@ export default function Exchange() {
                   fill="#699e64"
                   stroke="#323c44"
                   stroke-miterlimit="10"
-                  stroke-width="14"
+                  strokeWidth="14"
                 />
                 <path
                   d="M424.73,165.49c-10-2.53-17.38-12-17.68-24H316.44c-.09,11.58-7,21.53-16.62,23.94-3.24.92-5.54,4.29-5.62,8.21V376.54H430.1V173.71C430.15,169.83,427.93,166.43,424.73,165.49Z"
                   fill="#699e64"
                   stroke="#323c44"
                   stroke-miterlimit="10"
-                  stroke-width="14"
+                  strokeWidth="14"
                 />
               </g>
               <g id="creditcard">
@@ -173,7 +173,7 @@ export default function Exchange() {
                   fill="#a76fe2"
                   stroke="#323c44"
                   stroke-miterlimit="10"
-                  stroke-width="14"
+                  strokeWidth="14"
                 />
                 <path
                   d="M347.55,261.85H332.22c-3.73,0-6.76-3.58-6.76-8v-35.2c0-4.42,3-8,6.76-8h15.33c3.73,0,6.76,3.58,6.76,8v35.2C354.31,258.27,351.28,261.85,347.55,261.85Z"
@@ -188,21 +188,21 @@ export default function Exchange() {
                 fill="#a4bdc1"
                 stroke="#323c44"
                 stroke-miterlimit="10"
-                stroke-width="14"
+                strokeWidth="14"
               />
               <path
                 d="M512.83,382.71H416.71a28.93,28.93,0,0,0-28.95,28.94h0V467.8a29,29,0,0,0,28.95,28.95h96.12a19.31,19.31,0,0,0,19.3-19.3V402a19.3,19.3,0,0,0-19.3-19.3Z"
                 fill="#a4bdc1"
                 stroke="#323c44"
                 stroke-miterlimit="10"
-                stroke-width="14"
+                strokeWidth="14"
               />
               <path
                 d="M451.46,435.79v7.88a14.48,14.48,0,1,1-29,0v-7.9a14.48,14.48,0,0,1,29,0Z"
                 fill="#a4bdc1"
                 stroke="#323c44"
                 stroke-miterlimit="10"
-                stroke-width="14"
+                strokeWidth="14"
               />
               <path
                 d="M147.87,541.93V320.84c-.05-13.2,8.25-21.51,21.62-24.27a42.71,42.71,0,0,1,7.14-1.32l-29.36-.63a67.77,67.77,0,0,0-9.13.45c-13.37,2.75-20.32,12.57-20.27,25.77l.38,221.24c-1.57,15.44,8.15,27.08,25.34,26.1l33-.19c-15.9,0-28.78-10.58-28.76-25.93Z"
