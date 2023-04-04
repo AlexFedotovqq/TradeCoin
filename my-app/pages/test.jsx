@@ -1,9 +1,7 @@
-import { BanknotesIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 

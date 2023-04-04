@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { ethers } from "ethers";
 
 import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
@@ -7,28 +7,31 @@ function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
 }
 
-export default function Example() {
-  const fetchTxs = async (name) => {
+export default function Exchange() {
+  /* const fetchTxs = async (name) => {
     const res = await fetch(`/api/${name}/txs`);
     return res.json();
   };
 
   const { data: transactions, status } = useQuery(["txs"], () =>
     fetchTxs(initialChain)
-  );
-
+  ); */
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
   const [swapAmount, setSwapAmount] = useState(0);
 
   async function swap() {
-    const { addressFactory, abiFactory } = getContractInfo(chain.id);
+    const { addressFactory, abiFactory } = getContractInfo();
     const { abiPair } = getPair();
     const { abiERC20 } = getERC20();
 
-    const contract = new ethers.Contract(addressFactory, abiFactory, signer);
+    const contract = await tronWeb.contract(abiFactory, addressFactory);
+    let s = await contract.allPairsLength().call();
+    console.log(s);
+
+    // create 2 tokens, create pair
     const pairAddress = await contract.getPair(tokenA, tokenB);
-    const pair = new ethers.Contract(pairAddress, abiPair, signer);
+    // const pair = new ethers.Contract(pairAddress, abiPair, signer);
 
     const orderIn = (await pair.token0()) === tokenA ? 0 : 1;
     const orderOut = (await pair.token1()) === tokenB ? 1 : 0;

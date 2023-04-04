@@ -1,7 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-import { useAccount, useSigner, useNetwork } from "wagmi";
 import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,9 +14,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
-  const { data: signer } = useSigner();
-
+export default function Pool() {
   const fetchPools = async (name) => {
     const res = await fetch(`/api/${name}`);
     return res.json();
@@ -25,15 +22,7 @@ export default function Example() {
 
   var initialChain = "mantle";
 
-  const { chain } = useNetwork();
-
-  if (chain?.id && (chain.id === 80001 || chain.id === 50)) {
-    initialChain = chain.network;
-  }
-
   const { data, status } = useQuery(["pools"], () => fetchPools(initialChain));
-
-  const { address } = useAccount();
 
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
@@ -44,8 +33,8 @@ export default function Example() {
   const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
 
   async function startUpload() {
-    const { addressFactory, abiFactory } = getContractInfo(chain.id);
-    const contract = new ethers.Contract(addressFactory, abiFactory, signer);
+    const { addressFactory, abiFactory } = getContractInfo();
+    const contract = await tronWeb.contract(abiFactory, addressFactory);
     await contract.createPair(tokenA, tokenB),
       {
         gasLimit: 100000,
@@ -55,6 +44,7 @@ export default function Example() {
   async function addLiquidity(address0, address1, pairAddress) {
     const { abiERC20 } = getERC20();
     const { abiPair } = getPair();
+    const address = await tronWeb.defaultAddress.base58;
 
     const token0 = new ethers.Contract(address0, abiERC20, signer);
     const token1 = new ethers.Contract(address1, abiERC20, signer);
