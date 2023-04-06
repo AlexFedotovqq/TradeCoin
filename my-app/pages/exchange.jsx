@@ -8,22 +8,18 @@ function expandTo18Decimals(n) {
 }
 
 export default function Exchange() {
-  /* const fetchTxs = async (name) => {
-    const res = await fetch(`/api/${name}/txs`);
-    return res.json();
-  };
-
-  const { data: transactions, status } = useQuery(["txs"], () =>
-    fetchTxs(initialChain)
-  ); */
-  const [tokenA, setTokenA] = useState("");
-  const [tokenB, setTokenB] = useState("");
+  const [tokenA, setTokenA] = useState(
+    "410f01b1b54fb6a6433f2eedfc51a294177c43f706"
+  );
+  const [tokenB, setTokenB] = useState(
+    "410f01b1b54fb6a6433f2eedfc51a294177c43f706"
+  );
   const [swapAmount, setSwapAmount] = useState(0);
 
   async function swap() {
-    console.log(tokenA);
+    /* console.log(tokenA);
     console.log(tokenB);
-    console.log(swapAmount);
+    console.log(swapAmount); */
 
     const { addressFactory, abiFactory } = getContractInfo();
     const { abiPair } = getPair();
@@ -85,7 +81,6 @@ export default function Exchange() {
                   onChange={(event) => setTokenA(event.target.value)}
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 >
-                  <option>Select Token</option>
                   <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
                     First Token
                   </option>
@@ -120,7 +115,6 @@ export default function Exchange() {
                 onChange={(event) => setTokenB(event.target.value)}
                 className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
               >
-                <option>Select Token</option>
                 <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
                   First Token
                 </option>
