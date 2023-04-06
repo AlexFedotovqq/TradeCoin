@@ -21,7 +21,6 @@ export default function Pool() {
   };
 
   const { data, status } = useQuery(["pools"], () => fetchPools("test"));
-  console.log(data);
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
 
@@ -41,21 +40,19 @@ export default function Pool() {
     const { abiPair } = getPair();
     const address = await tronWeb.defaultAddress.base58;
 
-    const token0 = await tronWeb.contract(abiERC20, address0).call();
-    const token1 = await tronWeb.contract(abiERC20, address1).call();
-    const pair = await tronWeb.contract(abiPair, pairAddress).call();
+    const token0 = await tronWeb.contract(abiERC20, address0);
+    const token1 = await tronWeb.contract(abiERC20, address1);
+    const pair = await tronWeb.contract(abiPair, pairAddress);
 
-    await token0.transfer(pairAddress, expandTo18Decimals(tokenAQuantity), {
-      gasLimit: 100000,
-    });
+    await token0
+      .transfer(pairAddress, expandTo18Decimals(tokenAQuantity))
+      .send();
 
-    await token1.transfer(pairAddress, expandTo18Decimals(tokenBQuantity), {
-      gasLimit: 100000,
-    });
+    await token1
+      .transfer(pairAddress, expandTo18Decimals(tokenBQuantity))
+      .send();
 
-    await pair.mint(address, {
-      gasLimit: 200000,
-    });
+    await pair.mint(address).send();
   }
 
   async function removeLiquidity(pairAddress) {
@@ -63,13 +60,11 @@ export default function Pool() {
 
     const pair = await tronWeb.contract(abiPair, pairAddress);
 
-    await pair.transfer(pair.address, expandTo18Decimals(withdrawalQuantity), {
-      gasLimit: 60000,
-    });
+    await pair
+      .transfer(pair.address, expandTo18Decimals(withdrawalQuantity))
+      .send();
 
-    await pair.burn(address, {
-      gasLimit: 200000,
-    });
+    await pair.burn(address).send();
   }
 
   return (

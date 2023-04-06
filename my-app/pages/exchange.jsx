@@ -21,28 +21,28 @@ export default function Exchange() {
   const [swapAmount, setSwapAmount] = useState(0);
 
   async function swap() {
+    console.log(tokenA);
+    console.log(tokenB);
+    console.log(swapAmount);
+
     const { addressFactory, abiFactory } = getContractInfo();
     const { abiPair } = getPair();
     const { abiERC20 } = getERC20();
 
     const contract = await tronWeb.contract(abiFactory, addressFactory);
-    let s = await contract.allPairsLength().call();
-    console.log(s);
 
     const pairAddress = await contract.getPair(tokenA, tokenB).call();
+
     const pair = await tronWeb.contract(abiPair, pairAddress);
 
-    const orderIn = (await pair.token0()) === tokenA ? 0 : 1;
-    const orderOut = (await pair.token1()) === tokenB ? 1 : 0;
+    const orderIn = (await pair.token0().call()) === tokenA ? 0 : 1;
+    const orderOut = (await pair.token1().call()) === tokenB ? 1 : 0;
 
-    const token = await tronWeb.contract(tokenA, abiERC20);
+    const token = await tronWeb.contract(abiERC20, tokenA);
 
-    //
-    await token.transfer(pairAddress, expandTo18Decimals(swapAmount), {
-      gasLimit: 60000,
-    });
+    await token.transfer(pairAddress, expandTo18Decimals(swapAmount)).send();
 
-    const Preserves = await pair.getReserves();
+    const Preserves = await pair.getReserves().call();
 
     var amountInWithFee = expandTo18Decimals(swapAmount).mul(996);
 
@@ -52,9 +52,9 @@ export default function Exchange() {
 
     const expectedOutputAmount = ethers.BigNumber.from(String(amountOut));
 
-    await pair.swap(0, expectedOutputAmount, address, "0x", {
-      gasLimit: 200000,
-    });
+    const address = await tronWeb.defaultAddress.base58;
+
+    await pair.swap(0, expectedOutputAmount, address, "0x").send();
   }
 
   return (
@@ -82,11 +82,16 @@ export default function Exchange() {
                 <select
                   id="country"
                   name="country"
+                  onChange={(event) => setTokenA(event.target.value)}
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 >
-                  <option>XDC</option>
-                  <option>TRX</option>
-                  <option>XDC</option>
+                  <option>Select Token</option>
+                  <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
+                    First Token
+                  </option>
+                  <option value="4166d6e6db4cc217931a69f7382796ac1e5191b7ab">
+                    Second Token
+                  </option>
                 </select>
               </div>
               <input
@@ -94,7 +99,8 @@ export default function Exchange() {
                 name="phone-number"
                 id="phone-number"
                 autoComplete="tel"
-                className="block  rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                onChange={(event) => setSwapAmount(event.target.value)}
+                className="block rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -111,20 +117,19 @@ export default function Exchange() {
               <select
                 id="country"
                 name="country"
+                onChange={(event) => setTokenB(event.target.value)}
                 className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
               >
-                <option>XDC</option>
-                <option>TRX</option>
-                <option>XDC</option>
+                <option>Select Token</option>
+                <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
+                  First Token
+                </option>
+                <option value="4166d6e6db4cc217931a69f7382796ac1e5191b7ab">
+                  Second Token
+                </option>
               </select>
             </div>
-            <input
-              type="tel"
-              name="phone-number"
-              id="phone-number"
-              autoComplete="tel"
-              className="block rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
+            <input className="block rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
           </div>
         </div>
 

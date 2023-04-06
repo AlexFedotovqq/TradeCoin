@@ -1,7 +1,7 @@
-import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
+const TronWeb = require("tronweb");
 import { ethers } from "ethers";
 
-const TronWeb = require("tronweb");
+import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
 export default async function handler(req, res) {
   const { addressFactory, abiFactory } = getContractInfo();
@@ -46,7 +46,6 @@ export default async function handler(req, res) {
       ethers.BigNumber.from(reserves[1]).toString()
     );
 
-    //
     const supply = ethers.utils.formatEther(
       ethers.BigNumber.from(await Pair.totalSupply().call()).toString()
     );
