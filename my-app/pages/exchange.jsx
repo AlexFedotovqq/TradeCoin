@@ -79,7 +79,7 @@ export default function Exchange() {
                   id="country"
                   name="country"
                   onChange={(event) => setTokenA(event.target.value)}
-                  className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                  className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 >
                   <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
                     First Token
@@ -95,7 +95,7 @@ export default function Exchange() {
                 id="phone-number"
                 autoComplete="tel"
                 onChange={(event) => setSwapAmount(event.target.value)}
-                className="block rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block rounded-md border-0 px-3.5 py-2 pl-32 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -106,31 +106,33 @@ export default function Exchange() {
             For cryptocurrency
           </label>
         </div>
+
         <div className="flex justify-center items-center">
           <div className="relative mt-2.5">
-            <div className="absolute inset-y-0 left-0 flex items-center">
-              <select
-                id="country"
-                name="country"
-                onChange={(event) => setTokenB(event.target.value)}
-                className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-              >
-                <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
-                  First Token
-                </option>
-                <option value="4166d6e6db4cc217931a69f7382796ac1e5191b7ab">
-                  Second Token
-                </option>
-              </select>
+            <div className=" flex items-center ">
+              <div className="overflow-hidden rounded-lg bg-white shadow mt-2 py-2">
+                <select
+                  id="country"
+                  name="country"
+                  onChange={(event) => setTokenB(event.target.value)}
+                  className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 sm:text-sm"
+                >
+                  <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
+                    First Token
+                  </option>
+                  <option value="4166d6e6db4cc217931a69f7382796ac1e5191b7ab">
+                    Second Token
+                  </option>
+                </select>
+              </div>
             </div>
-            <input className="block rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
           </div>
         </div>
 
         <button
           type="submit"
           onClick={() => swap()}
-          className="relative mt-5 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2"
+          className="relative mt-4 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2"
         >
           <span class="button__text">
             <span>E</span>
