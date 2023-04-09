@@ -57,6 +57,7 @@ export default function Pool() {
 
   async function removeLiquidity(pairAddress) {
     const { abiPair } = getPair();
+    const address = await tronWeb.defaultAddress.base58;
 
     const pair = await tronWeb.contract(abiPair, pairAddress);
 

@@ -15,6 +15,7 @@ export default async function handler(req, res) {
   const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
 
   const contract = await tronWeb.contract(abiFactory, addressFactory);
+
   const currentCount = ethers.BigNumber.from(
     await contract.allPairsLength().call()
   ).toNumber();
@@ -22,15 +23,17 @@ export default async function handler(req, res) {
   let items = [];
 
   for (let i = currentCount; i > 0; i--) {
+    if (i === 4 || i === 1) {
+      continue;
+    }
     const pairAddress = await contract.allPairs(i - 1).call();
-
     const Pair = await tronWeb.contract(abiPair, pairAddress);
 
     const token0 = await Pair.token0().call();
     const token1 = await Pair.token1().call();
 
-    const Token0 = await tronWeb.contract(abiPair, token0);
-    const Token1 = await tronWeb.contract(abiPair, token1);
+    const Token0 = await tronWeb.contract(abiERC20, token0);
+    const Token1 = await tronWeb.contract(abiERC20, token1);
 
     const name0 = await Token0.name().call();
     const name1 = await Token1.name().call();
