@@ -1,6 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const navigation = [
   { name: "TradeCoin", href: "/" },
@@ -16,10 +16,26 @@ function classNames(...classes) {
 
 const Navbar = () => {
   const [appAddress, setAppAddress] = useState("");
+  const [displayAddress, setDisplayAddress] = useState("");
+
+  /*   useEffect(() => {
+
+    const fetchData = async () => {
+      const res = await fetch(`/api/login`);
+
+      return res.json();
+    };
+
+    //if (appAddress === "") {
+    console.log(fetchData());
+    //}
+  }, [appAddress]); */
 
   async function connectWallet() {
     const address = await tronWeb.defaultAddress.base58;
     setAppAddress(address);
+    setDisplayAddress(address.substring(0, 8) + "...");
+    // post address
   }
 
   return (
@@ -40,8 +56,6 @@ const Navbar = () => {
                     )}
                   </Disclosure.Button>
                 </div>
-
-                <div className="flex flex-shrink-0 items-center"></div>
 
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map((item) => (
@@ -72,7 +86,7 @@ const Navbar = () => {
                   </button>
                 ) : (
                   <button className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 ">
-                    {appAddress}
+                    {displayAddress}
                   </button>
                 )}
               </div>
