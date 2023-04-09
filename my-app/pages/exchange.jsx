@@ -9,18 +9,14 @@ function expandTo18Decimals(n) {
 
 export default function Exchange() {
   const [tokenA, setTokenA] = useState(
-    "410f01b1b54fb6a6433f2eedfc51a294177c43f706"
+    "412baca645bf7d8249eee9fd1b67dd2457dc76cdd6"
   );
   const [tokenB, setTokenB] = useState(
-    "410f01b1b54fb6a6433f2eedfc51a294177c43f706"
+    "412baca645bf7d8249eee9fd1b67dd2457dc76cdd6"
   );
   const [swapAmount, setSwapAmount] = useState(0);
 
   async function swap() {
-    /* console.log(tokenA);
-    console.log(tokenB);
-    console.log(swapAmount); */
-
     const { addressFactory, abiFactory } = getContractInfo();
     const { abiPair } = getPair();
     const { abiERC20 } = getERC20();
@@ -76,11 +72,15 @@ export default function Exchange() {
             <div className="relative mt-2.5">
               <div className="absolute inset-y-0 left-0 flex items-center">
                 <select
-                  id="country"
-                  name="country"
                   onChange={(event) => setTokenA(event.target.value)}
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 >
+                  <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
+                    Dspyt
+                  </option>
+                  <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
+                    TradeCoin
+                  </option>
                   <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
                     First Token
                   </option>
@@ -117,6 +117,12 @@ export default function Exchange() {
                   onChange={(event) => setTokenB(event.target.value)}
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 sm:text-sm"
                 >
+                  <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
+                    Dspyt
+                  </option>
+                  <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
+                    TradeCoin
+                  </option>
                   <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
                     First Token
                   </option>

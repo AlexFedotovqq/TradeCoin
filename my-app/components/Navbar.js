@@ -1,5 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import React, { useState } from "react";
 
 const navigation = [
   { name: "TradeCoin", href: "/" },
@@ -14,10 +15,13 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
+  const [appAddress, setAppAddress] = useState("");
+
   async function connectWallet() {
     const address = await tronWeb.defaultAddress.base58;
-    console.log(address);
+    setAppAddress(address);
   }
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -59,12 +63,18 @@ const Navbar = () => {
               </div>
 
               <div className="flex items-center md:ml-12">
-                <button
-                  onClick={() => connectWallet()}
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 "
-                >
-                  Connect Wallet
-                </button>
+                {!appAddress ? (
+                  <button
+                    onClick={() => connectWallet()}
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 "
+                  >
+                    Connect Wallet
+                  </button>
+                ) : (
+                  <button className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 ">
+                    {appAddress}
+                  </button>
+                )}
               </div>
             </div>
           </div>
