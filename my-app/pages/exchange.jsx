@@ -9,10 +9,10 @@ function expandTo18Decimals(n) {
 
 export default function Exchange() {
   const [tokenA, setTokenA] = useState(
-    "412baca645bf7d8249eee9fd1b67dd2457dc76cdd6"
+    "41377a640a0bf48d4c5ab79f63d2e4885659b82a29"
   );
   const [tokenB, setTokenB] = useState(
-    "412baca645bf7d8249eee9fd1b67dd2457dc76cdd6"
+    "41377a640a0bf48d4c5ab79f63d2e4885659b82a29"
   );
   const [swapAmount, setSwapAmount] = useState(0);
 
@@ -75,6 +75,12 @@ export default function Exchange() {
                   onChange={(event) => setTokenA(event.target.value)}
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 >
+                  <option value="41377a640a0bf48d4c5ab79f63d2e4885659b82a29">
+                    TradeC0
+                  </option>
+                  <option value="4191447b0204cf766eaf5f3f44d31370c870ec3f45">
+                    TradeC1
+                  </option>
                   <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
                     Dspyt
                   </option>
@@ -117,6 +123,12 @@ export default function Exchange() {
                   onChange={(event) => setTokenB(event.target.value)}
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 sm:text-sm"
                 >
+                  <option value="41377a640a0bf48d4c5ab79f63d2e4885659b82a29">
+                    TradeC0
+                  </option>
+                  <option value="4191447b0204cf766eaf5f3f44d31370c870ec3f45">
+                    TradeC1
+                  </option>
                   <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
                     Dspyt
                   </option>
