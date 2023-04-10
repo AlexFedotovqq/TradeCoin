@@ -69,7 +69,7 @@ export default function Pool() {
   }
 
   return (
-    <div className="overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500  py-16 px-4 sm:px-6 h-screen">
+    <div className="overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500 py-16 px-8 h-screen">
       <div className="relative mx-auto max-w-4xl">
         <svg
           className="absolute left-full translate-x-1/2 transform"
@@ -138,12 +138,12 @@ export default function Pool() {
           />
         </svg>
         <div className="text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-black-900 sm:text-4xl">
-            Pools
+          <h2 className="text-4xl font-bold tracking-tight text-black-900">
+            TradeCoin Pools
           </h2>
         </div>
         <div className="mx-auto flex items-center justify-center py-2 px-4">
-          <div className="mt-2 flex sm:mt-5 sm:flex-shrink-0">
+          <div className="mt-5 flex">
             <Disclosure as="div" key="Add new pair">
               {({ open }) => (
                 <>
@@ -245,7 +245,7 @@ export default function Pool() {
                   key={pool.pairAddress}
                   className="col-span-1 rounded-lg bg-white shadow"
                 >
-                  <div className="w-full items-center justify-between sm:p-5">
+                  <div className="w-full items-center justify-between p-5">
                     <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
                       {pool.token0Name}
                     </h3>

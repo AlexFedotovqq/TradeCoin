@@ -52,14 +52,14 @@ export default function Exchange() {
   }
 
   return (
-    <div className="overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500 p-20  py-16 px-4 sm:px-6 lg:px-8 lg:py-5 h-screen">
+    <div className="overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500 py-16 px-8 h-screen">
       <div className="relative mx-auto max-w-sm">
-        <div className="text-center mt-12">
-          <h2 className="text-3xl font-bold tracking-tight text-black-900 sm:text-4xl">
-            Exchange
+        <div className="text-center">
+          <h2 className="text-4xl font-bold tracking-tight text-black-900">
+            TradeCoin Exchange
           </h2>
           <p className="mt-8 text-xl leading-8 text-gray-900">
-            <strong>Here you can exchange cryptocurrency</strong>
+            <strong>Here you can exchange your TRX20 tokens</strong>
           </p>
         </div>
 
@@ -88,12 +88,6 @@ export default function Exchange() {
                   </option>
                   <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
                     TradeCoin
-                  </option>
-                  <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
-                    First Token
-                  </option>
-                  <option value="4166d6e6db4cc217931a69f7382796ac1e5191b7ab">
-                    Second Token
                   </option>
                 </select>
               </div>
@@ -136,12 +130,6 @@ export default function Exchange() {
                   </option>
                   <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
                     TradeCoin
-                  </option>
-                  <option value="410f01b1b54fb6a6433f2eedfc51a294177c43f706">
-                    First Token
-                  </option>
-                  <option value="4166d6e6db4cc217931a69f7382796ac1e5191b7ab">
-                    Second Token
                   </option>
                 </select>
               </div>

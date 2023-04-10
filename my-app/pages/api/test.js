@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   let items = [];
 
   for (let i = currentCount; i > 0; i--) {
-    if (i === 4 || i === 1) {
+    if (i === 4 || i === 2 || i === 1) {
       continue;
     }
     const pairAddress = await contract.allPairs(i - 1).call();
