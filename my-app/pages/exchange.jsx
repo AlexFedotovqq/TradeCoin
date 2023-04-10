@@ -16,6 +16,8 @@ export default function Exchange() {
   );
   const [swapAmount, setSwapAmount] = useState(0);
 
+  // price display in useEffect with 2 tokens
+
   async function swap() {
     const { addressFactory, abiFactory } = getContractInfo();
     const { abiPair } = getPair();

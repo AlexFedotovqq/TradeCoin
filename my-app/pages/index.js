@@ -207,7 +207,7 @@ export default function Index() {
                         <iframe
                           width="600"
                           height="350"
-                          src="https://www.youtube.com/embed/OlRdaxTm9N0?autoplay=1&mute=1"
+                          src="https://www.youtube.com/embed/BUigc1HjJEw?autoplay=1&mute=1"
                           title="YouTube video player"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;fullscreen"
                         />
