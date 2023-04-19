@@ -69,76 +69,10 @@ export default function Pool() {
   }
 
   return (
-    <div className="overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-500 py-16 px-8 h-screen">
+    <div className="overflow-hidden bg-gray-800 py-16 px-8 h-screen">
       <div className="relative mx-auto max-w-4xl">
-        <svg
-          className="absolute left-full translate-x-1/2 transform"
-          width={404}
-          height={1104}
-          fill="none"
-          viewBox="0 0 404 804"
-          aria-hidden="true"
-        >
-          <defs>
-            <pattern
-              id="85737c0e-0916-41d7-917f-596dc7edfa27"
-              x={0}
-              y={0}
-              width={20}
-              height={20}
-              patternUnits="userSpaceOnUse"
-            >
-              <rect
-                x={0}
-                y={0}
-                width={4}
-                height={4}
-                className="text-black-200"
-                fill="currentColor"
-              />
-            </pattern>
-          </defs>
-          <rect
-            width={404}
-            height={404}
-            fill="url(#85737c0e-0916-41d7-917f-596dc7edfa27)"
-          />
-        </svg>
-        <svg
-          className="absolute right-full bottom-0 -translate-x-1/2 transform"
-          width={404}
-          height={1104}
-          fill="none"
-          viewBox="0 0 404 1104"
-          aria-hidden="true"
-        >
-          <defs>
-            <pattern
-              id="85737c0e-0916-41d7-917f-596dc7edfa27"
-              x={0}
-              y={0}
-              width={20}
-              height={20}
-              patternUnits="userSpaceOnUse"
-            >
-              <rect
-                x={0}
-                y={0}
-                width={4}
-                height={4}
-                className="text-gray-200"
-                fill="currentColor"
-              />
-            </pattern>
-          </defs>
-          <rect
-            width={404}
-            height={1104}
-            fill="url(#85737c0e-0916-41d7-917f-596dc7edfa27)"
-          />
-        </svg>
         <div className="text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-black-900">
+          <h2 className="text-4xl font-bold tracking-tight text-white">
             TradeCoin Pools
           </h2>
         </div>
@@ -148,7 +82,7 @@ export default function Pool() {
               {({ open }) => (
                 <>
                   <h3 className="flex items-center justify-center">
-                    <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-pink-500 px-4 py-2 text-base font-medium text-white hover:bg-pink-700">
+                    <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
                       <span
                         className={classNames(
                           open ? "text-white-200" : "text-white",
@@ -157,6 +91,7 @@ export default function Pool() {
                       >
                         Add new pair
                       </span>
+
                       <span className="ml-6 flex items-center justify-center">
                         {open ? (
                           <MinusIcon
@@ -172,57 +107,60 @@ export default function Pool() {
                       </span>
                     </Disclosure.Button>
                   </h3>
+
                   <Disclosure.Panel as="div" className="prose prose-sm pb-6">
-                    <div className="mt-4 sm:col-span-2">
-                      <label
-                        htmlFor="number"
-                        className="block text-center font-medium text-black-900"
-                      >
-                        Cryptocurrency
-                      </label>
-                      <div className="relative mt-1 rounded-md shadow-sm">
-                        <div className="absolute inset-y-0 left-0 flex items-center">
-                          <label className="sr-only">Cryptocurrency</label>
-                        </div>
-                        <input
-                          type="text"
-                          name="number"
-                          id="number"
-                          onChange={(event) => setTokenA(event.target.value)}
-                          className="block w-full bg-pink-50 rounded-md py-3 px-4 pl-25"
-                          placeholder="0x..."
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-4 sm:col-span-2">
-                      <label
-                        htmlFor="number"
-                        className="block text-center font-medium text-black-900"
-                      >
-                        Cryptocurrency
-                      </label>
-                      <div className="relative mt-1 rounded-md shadow-sm">
-                        <div className="absolute inset-y-0 left-0 flex items-center">
-                          <label className="sr-only">Cryptocurrency</label>
-                        </div>
-                        <input
-                          type="text"
-                          name="number"
-                          id="number"
-                          onChange={(event) => setTokenB(event.target.value)}
-                          className="block w-full rounded-md bg-pink-50 py-3 px-4 pl-25"
-                          placeholder="0x..."
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
-                      <div className="inline-flex rounded-md shadow">
-                        <a
-                          onClick={() => startUpload()}
-                          className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
+                    <div className="rounded-2xl mt-5  bg-gray-700 p-4">
+                      <div className="mt- sm:col-span-2">
+                        <label
+                          htmlFor="number"
+                          className="block text-center font-medium text-white"
                         >
-                          Add
-                        </a>
+                          Cryptocurrency
+                        </label>
+                        <div className="relative mt-1 rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 flex items-center">
+                            <label className="sr-only">Cryptocurrency</label>
+                          </div>
+                          <input
+                            type="text"
+                            name="number"
+                            id="number"
+                            onChange={(event) => setTokenA(event.target.value)}
+                            className="block w-full bg-white rounded-md py-3 px-4 pl-25"
+                            placeholder="0x..."
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-4 sm:col-span-2">
+                        <label
+                          htmlFor="number"
+                          className="block text-center font-medium text-white"
+                        >
+                          Cryptocurrency
+                        </label>
+                        <div className="relative mt-1 rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 flex items-center">
+                            <label className="sr-only">Cryptocurrency</label>
+                          </div>
+                          <input
+                            type="text"
+                            name="number"
+                            id="number"
+                            onChange={(event) => setTokenB(event.target.value)}
+                            className="block w-full rounded-md bg-white py-3 px-4 pl-25"
+                            placeholder="0x..."
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
+                        <div className="inline-flex rounded-md shadow">
+                          <a
+                            onClick={() => startUpload()}
+                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white hover:bg-red-700"
+                          >
+                            Add
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </Disclosure.Panel>
