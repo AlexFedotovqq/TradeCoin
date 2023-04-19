@@ -170,11 +170,11 @@ export default function Pool() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-lg bg-gray-200 shadow p-6">
+        <div className="overflow-hidden rounded-lg bg-gray-700 shadow p-6">
           {status == "loading" ? (
             <div className="flex items-center justify-center">
               <div className="w-8 h-8 border-4 border-blue-200 rounded-full animate-spin"></div>
-              <p className="ml-2">Loading...</p>
+              <p className="ml-2 text-white">Loading...</p>
             </div>
           ) : (
             <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
@@ -207,10 +207,10 @@ export default function Pool() {
                         {({ open }) => (
                           <>
                             <div className="flex items-center justify-center">
-                              <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-1 py-2 text-base font-medium text-white hover:bg-green-700">
+                              <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-1 py-2 text-base font-medium text-white hover:bg-red-700">
                                 <span
                                   className={classNames(
-                                    open ? "text-green-200" : "text-white",
+                                    open ? "text-red-200" : "text-white",
                                     "text-sm font-bold"
                                   )}
                                 >
@@ -244,7 +244,7 @@ export default function Pool() {
                                   onChange={(event) =>
                                     setTokenAQuantity(event.target.value)
                                   }
-                                  className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-green-50"
+                                  className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-red-50"
                                   placeholder="1"
                                 />
 
@@ -255,7 +255,7 @@ export default function Pool() {
                                   onChange={(event) =>
                                     setTokenBQuantity(event.target.value)
                                   }
-                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-green-50"
+                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-red-50"
                                   placeholder="1"
                                 />
                               </div>
