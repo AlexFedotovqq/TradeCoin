@@ -1,8 +1,5 @@
-import { Disclosure } from "@headlessui/react";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { ethers } from "ethers";
-import { useQuery } from "@tanstack/react-query";
 
 import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 
@@ -10,340 +7,225 @@ function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
 }
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+export default function Exchange() {
+  const [tokenA, setTokenA] = useState(
+    "41377a640a0bf48d4c5ab79f63d2e4885659b82a29"
+  );
+  const [tokenB, setTokenB] = useState(
+    "41377a640a0bf48d4c5ab79f63d2e4885659b82a29"
+  );
+  const [swapAmount, setSwapAmount] = useState(0);
 
-export default function Pool() {
-  const fetchPools = async (name) => {
-    const res = await fetch(`/api/${name}`);
-    return res.json();
-  };
+  // price display in useEffect with 2 tokens
 
-  const { data, status } = useQuery(["pools"], () => fetchPools("test"));
-  const [tokenA, setTokenA] = useState("");
-  const [tokenB, setTokenB] = useState("");
-
-  const [tokenAQuantity, setTokenAQuantity] = useState(1);
-  const [tokenBQuantity, setTokenBQuantity] = useState(1);
-
-  const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
-
-  async function startUpload() {
+  async function swap() {
     const { addressFactory, abiFactory } = getContractInfo();
-    const contract = await tronWeb.contract(abiFactory, addressFactory);
-    await contract.createPair(tokenA, tokenB).send({ feeLimit: 4000000000 });
-  }
-
-  async function addLiquidity(address0, address1, pairAddress) {
+    const { abiPair } = getPair();
     const { abiERC20 } = getERC20();
-    const { abiPair } = getPair();
-    const address = await tronWeb.defaultAddress.base58;
 
-    const token0 = await tronWeb.contract(abiERC20, address0);
-    const token1 = await tronWeb.contract(abiERC20, address1);
-    const pair = await tronWeb.contract(abiPair, pairAddress);
+    const contract = await tronWeb.contract(abiFactory, addressFactory);
 
-    await token0
-      .transfer(pairAddress, expandTo18Decimals(tokenAQuantity))
-      .send();
-
-    await token1
-      .transfer(pairAddress, expandTo18Decimals(tokenBQuantity))
-      .send();
-
-    await pair.mint(address).send();
-  }
-
-  async function removeLiquidity(pairAddress) {
-    const { abiPair } = getPair();
-    const address = await tronWeb.defaultAddress.base58;
+    const pairAddress = await contract.getPair(tokenA, tokenB).call();
 
     const pair = await tronWeb.contract(abiPair, pairAddress);
 
-    await pair
-      .transfer(pair.address, expandTo18Decimals(withdrawalQuantity))
-      .send();
+    const orderIn = (await pair.token0().call()) === tokenA ? 0 : 1;
+    const orderOut = (await pair.token1().call()) === tokenB ? 1 : 0;
 
-    await pair.burn(address).send();
+    const token = await tronWeb.contract(abiERC20, tokenA);
+
+    await token.transfer(pairAddress, expandTo18Decimals(swapAmount)).send();
+
+    const Preserves = await pair.getReserves().call();
+
+    var amountInWithFee = expandTo18Decimals(swapAmount).mul(996);
+
+    var numerator = amountInWithFee.mul(Preserves[orderOut]);
+    var denominator = Preserves[orderIn].mul(1000).add(amountInWithFee);
+    var amountOut = numerator / denominator;
+
+    const expectedOutputAmount = ethers.BigNumber.from(String(amountOut));
+
+    const address = await tronWeb.defaultAddress.base58;
+
+    await pair.swap(0, expectedOutputAmount, address, "0x").send();
   }
 
   return (
     <div className="overflow-hidden bg-gray-800 py-16 px-8 h-screen">
-      <div className="relative mx-auto max-w-4xl">
+      <div className="relative mx-auto max-w-sm">
         <div className="text-center">
           <h2 className="text-4xl font-bold tracking-tight text-white">
-            TradeCoin Pools
+            TradeCoin Exchange
           </h2>
         </div>
-        <div className="mx-auto flex items-center justify-center py-1 px-4">
-          <div className="mt-5 flex">
-            <Disclosure as="div" key="Add new pair">
-              {({ open }) => (
-                <>
-                  <h3 className="flex items-center justify-center">
-                    <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
-                      <span
-                        className={classNames(
-                          open ? "text-white-200" : "text-white",
-                          "text-sm font-medium"
-                        )}
-                      >
-                        Add new pair
-                      </span>
-
-                      <span className="ml-6 flex items-center justify-center">
-                        {open ? (
-                          <MinusIcon
-                            className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <PlusIcon
-                            className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                            aria-hidden="true"
-                          />
-                        )}
-                      </span>
-                    </Disclosure.Button>
-                  </h3>
-
-                  <Disclosure.Panel as="div" className="prose prose-sm pb-6">
-                    <div className="rounded-2xl mt-5  bg-gray-700 p-4">
-                      <div className="mt- sm:col-span-2">
-                        <label
-                          htmlFor="number"
-                          className="block text-center font-medium text-white"
-                        >
-                          Cryptocurrency
-                        </label>
-                        <div className="relative mt-1 rounded-md shadow-sm">
-                          <div className="absolute inset-y-0 left-0 flex items-center">
-                            <label className="sr-only">Cryptocurrency</label>
-                          </div>
-                          <input
-                            type="text"
-                            name="number"
-                            id="number"
-                            onChange={(event) => setTokenA(event.target.value)}
-                            className="block w-full bg-white rounded-md py-3 px-4 pl-25"
-                            placeholder="0x..."
-                          />
-                        </div>
-                      </div>
-                      <div className="mt-4 sm:col-span-2">
-                        <label
-                          htmlFor="number"
-                          className="block text-center font-medium text-white"
-                        >
-                          Cryptocurrency
-                        </label>
-                        <div className="relative mt-1 rounded-md shadow-sm">
-                          <div className="absolute inset-y-0 left-0 flex items-center">
-                            <label className="sr-only">Cryptocurrency</label>
-                          </div>
-                          <input
-                            type="text"
-                            name="number"
-                            id="number"
-                            onChange={(event) => setTokenB(event.target.value)}
-                            className="block w-full rounded-md bg-white py-3 px-4 pl-25"
-                            placeholder="0x..."
-                          />
-                        </div>
-                      </div>
-                      <div className="mt-9 flex lg:mt-2 lg:flex-shrink-0">
-                        <div className="inline-flex rounded-md shadow">
-                          <a
-                            onClick={() => startUpload()}
-                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white hover:bg-red-700"
-                          >
-                            Add
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </Disclosure.Panel>
-                </>
-              )}
-            </Disclosure>
-          </div>
-        </div>
-
-        <div className="overflow-hidden rounded-lg mt-1 bg-gray-700 shadow p-6">
-          {status == "loading" ? (
-            <div className="flex items-center justify-center">
-              <div className="w-8 h-8 border-4 border-blue-200 rounded-full animate-spin"></div>
-              <p className="ml-2 text-white">Loading...</p>
+        <div className="rounded-2xl mt-5  bg-gray-700 p-4">
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="number"
+              className="block text-lg text-bold text-center mt-5 font-medium text-white"
+            >
+              Exchange cryptocurrency
+            </label>
+            <div className="flex justify-center items-center">
+              <div className="relative mt-2.5">
+                <div className="absolute inset-y-0 left-0 flex items-center">
+                  <select
+                    onChange={(event) => setTokenA(event.target.value)}
+                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-1 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                  >
+                    <option value="41377a640a0bf48d4c5ab79f63d2e4885659b82a29">
+                      TradeC0
+                    </option>
+                    <option value="4191447b0204cf766eaf5f3f44d31370c870ec3f45">
+                      TradeC1
+                    </option>
+                    <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
+                      Dspyt
+                    </option>
+                    <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
+                      TradeCoin
+                    </option>
+                  </select>
+                </div>
+                <input
+                  type="tel"
+                  name="phone-number"
+                  id="phone-number"
+                  autoComplete="tel"
+                  onChange={(event) => setSwapAmount(event.target.value)}
+                  className="block rounded-md border-0  py-2 pl-24 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
             </div>
-          ) : (
-            <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-              {data?.map((pool) => (
-                <li
-                  key={pool.pairAddress}
-                  className="col-span-1 rounded-lg bg-white shadow"
-                >
-                  <div className="w-full items-center justify-between p-5">
-                    <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
-                      {pool.token0Name}
-                    </h3>
-                    <h3 className="truncate flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
-                      {pool.token0Address}
-                    </h3>
-                    <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
-                      {pool.token1Name}
-                    </h3>
-                    <h3 className="truncate flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
-                      {pool.token1Address}
-                    </h3>
-                    <h3 className="mt-3 mb-6 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
-                      Total Supply: {pool.totalSupply}
-                    </h3>
-                  </div>
 
-                  <div className="-mt-px flex divide-x divide-gray-300">
-                    <div className="flex flex-1 justify-center">
-                      <Disclosure as="div" key="Add new pair">
-                        {({ open }) => (
-                          <>
-                            <div className="flex items-center justify-center">
-                              <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-1 py-1.5 text-base font-medium text-white hover:bg-red-700">
-                                <span
-                                  className={classNames(
-                                    open ? "text-red-200" : "text-white",
-                                    "text-sm font-bold"
-                                  )}
-                                >
-                                  Add
-                                </span>
-                                <span className="ml-5 flex items-center">
-                                  {open ? (
-                                    <MinusIcon
-                                      className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <PlusIcon
-                                      className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </div>
+            <label
+              htmlFor="number"
+              className="block mt-5 text-lg text-bold text-center font-medium text-white"
+            >
+              For cryptocurrency
+            </label>
+          </div>
 
-                            <Disclosure.Panel
-                              as="div"
-                              className="prose prose-sm pb-6"
-                            >
-                              <div className="relative mt-1 ml-1 mr-1 rounded-md shadow-sm sm:col-span-2">
-                                <input
-                                  type="text"
-                                  name="number"
-                                  id="number"
-                                  onChange={(event) =>
-                                    setTokenAQuantity(event.target.value)
-                                  }
-                                  className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-red-50"
-                                  placeholder="1"
-                                />
+          <div className="flex justify-center items-center">
+            <div className="relative mt-2.5">
+              <div className=" flex items-center ">
+                <div className="overflow-hidden rounded-lg bg-white shadow mt-2 py-2">
+                  <select
+                    id="country"
+                    name="country"
+                    onChange={(event) => setTokenB(event.target.value)}
+                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 sm:text-sm"
+                  >
+                    <option value="41377a640a0bf48d4c5ab79f63d2e4885659b82a29">
+                      TradeC0
+                    </option>
+                    <option value="4191447b0204cf766eaf5f3f44d31370c870ec3f45">
+                      TradeC1
+                    </option>
+                    <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
+                      Dspyt
+                    </option>
+                    <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
+                      TradeCoin
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                                <input
-                                  type="text"
-                                  name="number"
-                                  id="number"
-                                  onChange={(event) =>
-                                    setTokenBQuantity(event.target.value)
-                                  }
-                                  className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-red-50"
-                                  placeholder="1"
-                                />
-                              </div>
-
-                              <div className="ml-2 mt-2 inline-flex justify-center rounded-md shadow lg:flex-shrink-0">
-                                <a
-                                  onClick={() =>
-                                    addLiquidity(
-                                      pool.token0Address,
-                                      pool.token1Address,
-                                      pool.pairAddress
-                                    )
-                                  }
-                                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
-                                >
-                                  Add
-                                </a>
-                              </div>
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
-                    </div>
-                    <div className="-ml-px flex w-0 flex-1 justify-center">
-                      <Disclosure as="div">
-                        {({ open }) => (
-                          <>
-                            <div className="flex items-center justify-center">
-                              <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-1.5 text-base font-medium text-white hover:bg-indigo-700">
-                                <span
-                                  className={classNames(
-                                    open ? "text-indigo-200" : "text-white",
-                                    "text-sm font-bold"
-                                  )}
-                                >
-                                  Remove
-                                </span>
-                                <span className="ml-0 flex items-center">
-                                  {open ? (
-                                    <MinusIcon
-                                      className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
-                                      aria-hidden="true"
-                                    />
-                                  ) : (
-                                    <PlusIcon
-                                      className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
-                                      aria-hidden="true"
-                                    />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </div>
-                            <Disclosure.Panel
-                              as="div"
-                              className="prose prose-sm pb-6"
-                            >
-                              <div className="relative mt-1 ml-1 mr-1 rounded-md shadow-sm sm:col-span-2">
-                                <input
-                                  type="text"
-                                  name="number"
-                                  id="number"
-                                  onChange={(event) =>
-                                    setWithdrawalQuantity(event.target.value)
-                                  }
-                                  className="block w-full rounded-md bg-indigo-50 py-3 px-4 pl-25"
-                                  placeholder="1"
-                                />
-                              </div>
-                              <div className="ml-2 mt-2 lg:flex-shrink-0 inline-flex rounded-md shadow">
-                                <a
-                                  onClick={() =>
-                                    removeLiquidity(pool.pairAddress)
-                                  }
-                                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
-                                >
-                                  Add
-                                </a>
-                              </div>
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+          <button
+            type="submit"
+            onClick={() => swap()}
+            className="relative mt-4 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-offset-2"
+          >
+            <span className="button__text">
+              <span>E</span>
+              <span>x</span>c
+            </span>
+            <span>
+              <span>h</span>
+              <span>a</span>
+              <span>n</span>
+              <span>g</span>
+              <span>e</span>
+            </span>
+            <svg
+              className="button__svg"
+              role="presentational"
+              viewBox="0 0 600 600"
+            >
+              <defs>
+                <clipPath id="myClip">
+                  <rect x="0" y="0" width="100%" height="50%" />
+                </clipPath>
+              </defs>
+              <g clipPath="url(#myClip)">
+                <g id="money">
+                  <path
+                    d="M441.9,116.54h-162c-4.66,0-8.49,4.34-8.62,9.83l.85,278.17,178.37,2V126.37C450.38,120.89,446.56,116.52,441.9,116.54Z"
+                    fill="#699e64"
+                    stroke="#323c44"
+                    strokeMiterlimit="10"
+                    strokeWidth="14"
+                  />
+                  <path
+                    d="M424.73,165.49c-10-2.53-17.38-12-17.68-24H316.44c-.09,11.58-7,21.53-16.62,23.94-3.24.92-5.54,4.29-5.62,8.21V376.54H430.1V173.71C430.15,169.83,427.93,166.43,424.73,165.49Z"
+                    fill="#699e64"
+                    stroke="#323c44"
+                    strokeMiterlimit="10"
+                    strokeWidth="14"
+                  />
+                </g>
+                <g id="creditcard">
+                  <path
+                    d="M372.12,181.59H210.9c-4.64,0-8.45,4.34-8.58,9.83l.85,278.17,177.49,2V191.42C380.55,185.94,376.75,181.57,372.12,181.59Z"
+                    fill="#a76fe2"
+                    stroke="#323c44"
+                    strokeMiterlimit="10"
+                    strokeWidth="14"
+                  />
+                  <path
+                    d="M347.55,261.85H332.22c-3.73,0-6.76-3.58-6.76-8v-35.2c0-4.42,3-8,6.76-8h15.33c3.73,0,6.76,3.58,6.76,8v35.2C354.31,258.27,351.28,261.85,347.55,261.85Z"
+                    fill="#ffdc67"
+                  />
+                  <path d="M249.73,183.76h28.85v274.8H249.73Z" fill="#323c44" />
+                </g>
+              </g>
+              <g id="wallet">
+                <path
+                  d="M478,288.23h-337A28.93,28.93,0,0,0,112,317.14V546.2a29,29,0,0,0,28.94,28.95H478a29,29,0,0,0,28.95-28.94h0v-229A29,29,0,0,0,478,288.23Z"
+                  fill="#a4bdc1"
+                  stroke="#323c44"
+                  strokeMiterlimit="10"
+                  strokeWidth="14"
+                />
+                <path
+                  d="M512.83,382.71H416.71a28.93,28.93,0,0,0-28.95,28.94h0V467.8a29,29,0,0,0,28.95,28.95h96.12a19.31,19.31,0,0,0,19.3-19.3V402a19.3,19.3,0,0,0-19.3-19.3Z"
+                  fill="#a4bdc1"
+                  stroke="#323c44"
+                  strokeMiterlimit="10"
+                  strokeWidth="14"
+                />
+                <path
+                  d="M451.46,435.79v7.88a14.48,14.48,0,1,1-29,0v-7.9a14.48,14.48,0,0,1,29,0Z"
+                  fill="#a4bdc1"
+                  stroke="#323c44"
+                  strokeMiterlimit="10"
+                  strokeWidth="14"
+                />
+                <path
+                  d="M147.87,541.93V320.84c-.05-13.2,8.25-21.51,21.62-24.27a42.71,42.71,0,0,1,7.14-1.32l-29.36-.63a67.77,67.77,0,0,0-9.13.45c-13.37,2.75-20.32,12.57-20.27,25.77l.38,221.24c-1.57,15.44,8.15,27.08,25.34,26.1l33-.19c-15.9,0-28.78-10.58-28.76-25.93Z"
+                  fill="#7b8f91"
+                />
+                <path
+                  d="M148.16,343.22a6,6,0,0,0-6,6v92a6,6,0,0,0,12,0v-92A6,6,0,0,0,148.16,343.22Z"
+                  fill="#323c44"
+                />
+              </g>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
