@@ -72,7 +72,7 @@ export default function Exchange() {
                 <div className="absolute inset-y-0 left-0 flex items-center">
                   <select
                     onChange={(event) => setTokenA(event.target.value)}
-                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-1 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                   >
                     <option value="41377a640a0bf48d4c5ab79f63d2e4885659b82a29">
                       TradeC0
@@ -94,7 +94,7 @@ export default function Exchange() {
                   id="phone-number"
                   autoComplete="tel"
                   onChange={(event) => setSwapAmount(event.target.value)}
-                  className="block rounded-md border-0 px-3.5 py-2 pl-32 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block rounded-md border-0  py-2 pl-24 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
