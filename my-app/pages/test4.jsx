@@ -67,36 +67,50 @@ export default function Exchange() {
             >
               Exchange cryptocurrency
             </label>
-            <div className="flex justify-center items-center">
-              <div className="relative mt-2.5">
-                <div className="absolute inset-y-0 left-0 flex items-center">
-                  <select
-                    onChange={(event) => setTokenA(event.target.value)}
-                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-1 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                  >
-                    <option value="41377a640a0bf48d4c5ab79f63d2e4885659b82a29">
-                      TradeC0
-                    </option>
-                    <option value="4191447b0204cf766eaf5f3f44d31370c870ec3f45">
-                      TradeC1
-                    </option>
-                    <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
-                      Dspyt
-                    </option>
-                    <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
-                      TradeCoin
-                    </option>
-                  </select>
-                </div>
-                <input
-                  type="tel"
-                  name="phone-number"
-                  id="phone-number"
-                  autoComplete="tel"
-                  onChange={(event) => setSwapAmount(event.target.value)}
-                  className="block rounded-md border-0  py-2 pl-24 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            <div className="flex justify-center mt-2.5 items-center">
+              <button
+                type="submit"
+                onChange={(event) => setTokenB(event.target.value)}
+                className="relative  inline-flex  items-center justify-center rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+              >
+                <img
+                  className="h-6 w-6 rounded-full"
+                  src="data:image/png;base64,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"
+                  alt=""
                 />
-              </div>
+
+                <span className="ml-2">TradeC1</span>
+                <svg
+                  fill="#000000"
+                  width="20px"
+                  height="25px"
+                  viewBox="-8.5 0 32 32"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#000000"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <title>angle-down</title>{" "}
+                    <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path>{" "}
+                  </g>
+                </svg>
+              </button>
+
+              <input
+                type="tel"
+                name="phone-number"
+                id="phone-number"
+                autoComplete="tel"
+                onChange={(event) => setSwapAmount(event.target.value)}
+                className="block rounded-md border-0   py-2 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
+              />
             </div>
 
             <label
@@ -113,7 +127,7 @@ export default function Exchange() {
                 <button
                   type="submit"
                   onChange={(event) => setTokenB(event.target.value)}
-                  className="relative  inline-flex  items-center justify-center rounded-md border border-transparent bg-white px-3 py-2 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+                  className="relative  inline-flex  items-center justify-center rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
                 >
                   <img
                     className="h-6 w-6 rounded-full"
@@ -121,11 +135,11 @@ export default function Exchange() {
                     alt=""
                   />
 
-                  <span className="ml-2">BNB</span>
+                  <span className="ml-2">TradeC0</span>
                   <svg
                     fill="#000000"
                     width="20px"
-                    height="20px"
+                    height="25px"
                     viewBox="-8.5 0 32 32"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
