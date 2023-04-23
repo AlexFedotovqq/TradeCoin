@@ -358,7 +358,7 @@ export default function Exchange() {
                               {filteredPeople.map((person) => (
                                 <Combobox.Option
                                   key={person.id}
-                                  value={person.name}
+                                  value={person}
                                   className={({ active }) =>
                                     classNames(
                                       "relative cursor-default select-none py-2 pl-4 pr-12",
