@@ -41,6 +41,7 @@ const tokens = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
 export default function Exchange() {
   const [query, setQuery] = useState("");
 
@@ -55,8 +56,8 @@ export default function Exchange() {
   const filteredTokens =
     query === ""
       ? tokens
-      : tokens.filter((person) => {
-          return person.name.toLowerCase().includes(query.toLowerCase());
+      : tokens.filter((token) => {
+          return token.name.toLowerCase().includes(query.toLowerCase());
         });
 
   async function swap() {
@@ -69,6 +70,11 @@ export default function Exchange() {
     const pairAddress = await contract
       .getPair(tokenA.address, tokenB.address)
       .call();
+
+    if (pairAddress === "410000000000000000000000000000000000000000") {
+      console.log("create a pair first");
+      return;
+    }
 
     const pair = await tronWeb.contract(abiPair, pairAddress);
 
