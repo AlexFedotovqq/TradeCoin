@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { CheckIcon } from "@heroicons/react/24/outline";
+import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { Combobox } from "@headlessui/react";
 import { ethers } from "ethers";
 
 import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
@@ -7,16 +11,53 @@ function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
 }
 
+const tokens = [
+  {
+    id: 1,
+    name: "TradeC0",
+    address: "41377a640a0bf48d4c5ab79f63d2e4885659b82a29",
+    imageUrl: "/TradeC0.jpg",
+  },
+  {
+    id: 2,
+    name: "TradeC1",
+    address: "4191447b0204cf766eaf5f3f44d31370c870ec3f45",
+    imageUrl: "/TradeC1.jpg",
+  },
+  {
+    id: 3,
+    name: "Dspyt",
+    address: "412baca645bf7d8249eee9fd1b67dd2457dc76cdd6",
+    imageUrl: "/Dspyt.png",
+  },
+  {
+    id: 4,
+    name: "TradeCoin",
+    address: "413e152ac3ebbb60fd4af26fcfa0938189383a38f1",
+    imageUrl: "/TradeCoin.png",
+  },
+];
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 export default function Exchange() {
-  const [tokenA, setTokenA] = useState(
-    "41377a640a0bf48d4c5ab79f63d2e4885659b82a29"
-  );
-  const [tokenB, setTokenB] = useState(
-    "41377a640a0bf48d4c5ab79f63d2e4885659b82a29"
-  );
+  const [query, setQuery] = useState("");
+
+  const [openTokenA, setOpenTokenA] = useState(false);
+  const [openTokenB, setOpenTokenB] = useState(false);
+
+  const [tokenA, setTokenA] = useState(tokens[0]);
+  const [tokenB, setTokenB] = useState(tokens[1]);
+
   const [swapAmount, setSwapAmount] = useState(0);
 
-  // price display in useEffect with 2 tokens
+  const filteredTokens =
+    query === ""
+      ? tokens
+      : tokens.filter((person) => {
+          return person.name.toLowerCase().includes(query.toLowerCase());
+        });
 
   async function swap() {
     const { addressFactory, abiFactory } = getContractInfo();
@@ -25,14 +66,16 @@ export default function Exchange() {
 
     const contract = await tronWeb.contract(abiFactory, addressFactory);
 
-    const pairAddress = await contract.getPair(tokenA, tokenB).call();
+    const pairAddress = await contract
+      .getPair(tokenA.address, tokenB.address)
+      .call();
 
     const pair = await tronWeb.contract(abiPair, pairAddress);
 
     const orderIn = (await pair.token0().call()) === tokenA ? 0 : 1;
     const orderOut = (await pair.token1().call()) === tokenB ? 1 : 0;
 
-    const token = await tronWeb.contract(abiERC20, tokenA);
+    const token = await tronWeb.contract(abiERC20, tokenA.address);
 
     await token.transfer(pairAddress, expandTo18Decimals(swapAmount)).send();
 
@@ -63,45 +106,60 @@ export default function Exchange() {
           <div className="sm:col-span-2">
             <label
               htmlFor="number"
-              className="block text-lg text-bold text-center mt-5 font-medium text-white"
+              className="block text-lg text-bold text-center mt-2.5 font-medium text-white"
             >
               Exchange cryptocurrency
             </label>
-            <div className="flex justify-center items-center">
-              <div className="relative mt-2.5">
-                <div className="absolute inset-y-0 left-0 flex items-center">
-                  <select
-                    onChange={(event) => setTokenA(event.target.value)}
-                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-1 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                  >
-                    <option value="41377a640a0bf48d4c5ab79f63d2e4885659b82a29">
-                      TradeC0
-                    </option>
-                    <option value="4191447b0204cf766eaf5f3f44d31370c870ec3f45">
-                      TradeC1
-                    </option>
-                    <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
-                      Dspyt
-                    </option>
-                    <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
-                      TradeCoin
-                    </option>
-                  </select>
-                </div>
-                <input
-                  type="tel"
-                  name="phone-number"
-                  id="phone-number"
-                  autoComplete="tel"
-                  onChange={(event) => setSwapAmount(event.target.value)}
-                  className="block rounded-md border-0  py-2 pl-24 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            <div className="flex justify-center mt-2.5 items-center">
+              <button
+                type="submit"
+                onClick={() => setOpenTokenA(true)}
+                className="relative inline-flex items-center justify-center right-2 rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+              >
+                <img
+                  className="h-6 w-6 rounded-full"
+                  src={tokenA.imageUrl}
+                  alt="tokenA"
                 />
-              </div>
+
+                <span className="ml-2">{tokenA.name}</span>
+                <svg
+                  fill="#000000"
+                  width="20px"
+                  height="25px"
+                  viewBox="-8.5 0 32 32"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="#000000"
+                >
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <title>angle-down</title>{" "}
+                    <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path>{" "}
+                  </g>
+                </svg>
+              </button>
+
+              <input
+                type="tel"
+                name="phone-number"
+                id="phone-number"
+                autoComplete="tel"
+                onChange={(event) => setSwapAmount(event.target.value)}
+                className="block rounded-md border-0 py-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
+                placeholder=" 0.0"
+              />
             </div>
 
             <label
               htmlFor="number"
-              className="block mt-5 text-lg text-bold text-center font-medium text-white"
+              className="block mt-2.5 text-lg text-bold text-center font-medium text-white"
             >
               For cryptocurrency
             </label>
@@ -109,28 +167,41 @@ export default function Exchange() {
 
           <div className="flex justify-center items-center">
             <div className="relative mt-2.5">
-              <div className=" flex items-center ">
-                <div className="overflow-hidden rounded-lg bg-white shadow mt-2 py-2">
-                  <select
-                    id="country"
-                    name="country"
-                    onChange={(event) => setTokenB(event.target.value)}
-                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-1 text-gray-900 sm:text-sm"
+              <div className="flex items-center">
+                <button
+                  type="submit"
+                  onClick={() => setOpenTokenB(true)}
+                  className="relative inline-flex items-center justify-center rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+                >
+                  <img
+                    className="h-6 w-6 rounded-full"
+                    src={tokenB.imageUrl}
+                    alt="tokenB"
+                  />
+
+                  <span className="ml-2">{tokenB.name}</span>
+                  <svg
+                    fill="#000000"
+                    width="20px"
+                    height="25px"
+                    viewBox="-8.5 0 32 32"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    stroke="#000000"
                   >
-                    <option value="41377a640a0bf48d4c5ab79f63d2e4885659b82a29">
-                      TradeC0
-                    </option>
-                    <option value="4191447b0204cf766eaf5f3f44d31370c870ec3f45">
-                      TradeC1
-                    </option>
-                    <option value="412baca645bf7d8249eee9fd1b67dd2457dc76cdd6">
-                      Dspyt
-                    </option>
-                    <option value="413e152ac3ebbb60fd4af26fcfa0938189383a38f1">
-                      TradeCoin
-                    </option>
-                  </select>
-                </div>
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <title>angle-down</title>{" "}
+                      <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path>{" "}
+                    </g>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
@@ -228,6 +299,250 @@ export default function Exchange() {
           </button>
         </div>
       </div>
+      {/* tokenA */}
+      <Transition.Root show={openTokenA} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={setOpenTokenA}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                  <div>
+                    <div className="mt-3 text-center sm:mt-5">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-base font-semibold  text-gray-900"
+                      >
+                        Tokens
+                      </Dialog.Title>
+                      <Combobox as="div" value={tokenA} onChange={setTokenA}>
+                        <div className="relative mt-2">
+                          <Combobox.Input
+                            className="rounded-md border-0 bg-white py-1.5 pl-2 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            onChange={(event) => setQuery(event.target.value)}
+                            displayValue={(person) => person?.name}
+                          />
+                          <Combobox.Button className="absolute inset-y-0  pl-64 flex items-center rounded-r-md px-2 focus:outline-none">
+                            <ChevronUpDownIcon
+                              className="h-5 w-5 text-gray-900"
+                              aria-hidden="true"
+                            />
+                          </Combobox.Button>
+
+                          {filteredTokens.length > 0 && (
+                            <Combobox.Options className="relative z-10 mt-1 max-h-36  overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                              {filteredTokens.map((person) => (
+                                <Combobox.Option
+                                  key={person.id}
+                                  value={person}
+                                  className={({ active }) =>
+                                    classNames(
+                                      "relative cursor-default select-none py-2 pl-4 pr-12",
+                                      active
+                                        ? "bg-indigo-600 text-white"
+                                        : "text-gray-900"
+                                    )
+                                  }
+                                >
+                                  {({ active, selected }) => (
+                                    <>
+                                      <div className="flex items-center">
+                                        <img
+                                          src={person.imageUrl}
+                                          alt=""
+                                          className="h-6 w-6 flex-shrink-0  rounded-full"
+                                        />
+                                        <span
+                                          className={classNames(
+                                            "ml-3 truncate  ",
+                                            selected && "font-semibold"
+                                          )}
+                                        >
+                                          {person.name}
+                                        </span>
+                                      </div>
+
+                                      {selected && (
+                                        <span
+                                          className={classNames(
+                                            "absolute inset-y-0 right-0 flex items-center pr-4",
+                                            active
+                                              ? "text-white"
+                                              : "text-indigo-600"
+                                          )}
+                                        >
+                                          <CheckIcon
+                                            className="h-5 w-5"
+                                            aria-hidden="true"
+                                          />
+                                        </span>
+                                      )}
+                                    </>
+                                  )}
+                                </Combobox.Option>
+                              ))}
+                            </Combobox.Options>
+                          )}
+                        </div>
+                      </Combobox>
+                    </div>
+                  </div>
+                  <div className="mt-5 sm:mt-6">
+                    <button
+                      type="button"
+                      className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      onClick={() => setOpenTokenA(false)}
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+      {/* tokenB */}
+      <Transition.Root show={openTokenB} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={setOpenTokenB}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                  <div>
+                    <div className="mt-3 text-center sm:mt-5">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-base font-semibold  text-gray-900"
+                      >
+                        Tokens
+                      </Dialog.Title>
+                      <Combobox as="div" value={tokenB} onChange={setTokenB}>
+                        <div className="relative mt-2  ">
+                          <Combobox.Input
+                            className=" rounded-md border-0 bg-white py-1.5 pl-2 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            onChange={(event) => setQuery(event.target.value)}
+                            displayValue={(person) => person?.name}
+                          />
+                          <Combobox.Button className="absolute inset-y-0  pl-64 flex items-center rounded-r-md px-2 focus:outline-none">
+                            <ChevronUpDownIcon
+                              className="h-5 w-5 text-gray-900"
+                              aria-hidden="true"
+                            />
+                          </Combobox.Button>
+
+                          {filteredTokens.length > 0 && (
+                            <Combobox.Options className="relative z-10 mt-1 max-h-36  overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                              {filteredTokens.map((person) => (
+                                <Combobox.Option
+                                  key={person.id}
+                                  value={person}
+                                  className={({ active }) =>
+                                    classNames(
+                                      "relative cursor-default select-none py-2 pl-4 pr-12",
+                                      active
+                                        ? "bg-indigo-600 text-white"
+                                        : "text-gray-900"
+                                    )
+                                  }
+                                >
+                                  {({ active, selected }) => (
+                                    <>
+                                      <div className="flex items-center">
+                                        <img
+                                          src={person.imageUrl}
+                                          alt=""
+                                          className="h-6 w-6 flex-shrink-0  rounded-full"
+                                        />
+                                        <span
+                                          className={classNames(
+                                            "ml-3 truncate  ",
+                                            selected && "font-semibold"
+                                          )}
+                                        >
+                                          {person.name}
+                                        </span>
+                                      </div>
+
+                                      {selected && (
+                                        <span
+                                          className={classNames(
+                                            "absolute inset-y-0 right-0 flex items-center pr-4",
+                                            active
+                                              ? "text-white"
+                                              : "text-indigo-600"
+                                          )}
+                                        >
+                                          <CheckIcon
+                                            className="h-5 w-5"
+                                            aria-hidden="true"
+                                          />
+                                        </span>
+                                      )}
+                                    </>
+                                  )}
+                                </Combobox.Option>
+                              ))}
+                            </Combobox.Options>
+                          )}
+                        </div>
+                      </Combobox>
+                    </div>
+                  </div>
+                  <div className="mt-5 sm:mt-6">
+                    <button
+                      type="button"
+                      className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      onClick={() => setOpenTokenB(false)}
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
     </div>
   );
 }
