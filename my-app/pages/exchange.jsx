@@ -158,8 +158,8 @@ export default function Exchange() {
                 id="phone-number"
                 autoComplete="tel"
                 onChange={(event) => setSwapAmount(event.target.value)}
-                className="block rounded-md border-0 py-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
-                placeholder=" 0.0"
+                className="block rounded-md border-0 py-2  px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
+                placeholder="0"
               />
             </div>
 
@@ -209,6 +209,16 @@ export default function Exchange() {
                   </svg>
                 </button>
               </div>
+            </div>
+          </div>
+          <div className="rounded-2xl mt-5  bg-gray-600 p-1">
+            <div className="flex justify-center items-center">
+              <span className="  relative text-white  items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium text-gray-900">
+                {swapAmount} {tokenA.name} =
+              </span>
+              <span className="relative right-5 text-white inline-flex items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium text-gray-900 ">
+                {tokenB.name}
+              </span>
             </div>
           </div>
 

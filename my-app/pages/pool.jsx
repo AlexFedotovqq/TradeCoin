@@ -82,7 +82,7 @@ export default function Pool() {
               {({ open }) => (
                 <>
                   <h3 className="flex items-center justify-center">
-                    <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
+                    <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700">
                       <span
                         className={classNames(
                           open ? "text-white-200" : "text-white",
