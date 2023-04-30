@@ -1,12 +1,11 @@
 import "@/styles/globals.css";
 import { Layout } from "@/components/Layout";
-
-import { useState } from "react";
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { useState } from "react";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [queryClient] = useState(() => new QueryClient());

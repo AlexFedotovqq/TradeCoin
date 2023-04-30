@@ -80,7 +80,7 @@ const Navbar = () => {
                 {!appAddress ? (
                   <button
                     onClick={() => connectWallet()}
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-red-700 px-4 py-3 text-base font-medium text-white hover:bg-red-800 md:py-2 md:px-5 "
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 "
                   >
                     Connect Wallet
                   </button>
