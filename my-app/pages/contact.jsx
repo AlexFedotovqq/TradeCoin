@@ -2,9 +2,9 @@ import { PhoneIcon } from "@heroicons/react/24/outline";
 
 export default function Example() {
   return (
-    <div className=" bg-gray-800 py-24 ">
+    <div className=" bg-gray-800 h-screen ">
       <div className="mx-auto max-w-7xl py-24 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl space-y-16 divide-y divide-gray-100 lg:mx-0 lg:max-w-none">
+        <div className="mt-12 mx-auto max-w-2xl space-y-16 divide-y divide-gray-100 lg:mx-0 lg:max-w-none">
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3">
             <div>
               <h2 className="text-4xl font-bold  tracking-tight text-white">
