@@ -1,10 +1,9 @@
+import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
-import { ethers } from "ethers";
 import { useQuery } from "@tanstack/react-query";
-
-import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
+import { ethers } from "ethers";
+import React, { useState } from "react";
 
 function expandTo18Decimals(n) {
   return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
@@ -76,6 +75,7 @@ export default function Pool() {
             TradeCoin Pools
           </h2>
         </div>
+
         <div className="mx-auto flex items-center justify-center py-2 px-4">
           <div className="mt-5 flex">
             <Disclosure as="div" key="Add new pair">
@@ -95,12 +95,12 @@ export default function Pool() {
                       <span className="ml-6 flex items-center justify-center">
                         {open ? (
                           <MinusIcon
-                            className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
+                            className="block h-6 w-6 text-white group-hover:text-indigo-500"
                             aria-hidden="true"
                           />
                         ) : (
                           <PlusIcon
-                            className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                            className="block h-6 w-6 text-white group-hover:text-gray-500"
                             aria-hidden="true"
                           />
                         )}
@@ -170,7 +170,7 @@ export default function Pool() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-lg bg-gray-700 shadow p-6">
+        <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6">
           {status == "loading" ? (
             <div className="flex items-center justify-center">
               <div className="w-8 h-8 border-4 border-blue-200 rounded-full animate-spin"></div>
