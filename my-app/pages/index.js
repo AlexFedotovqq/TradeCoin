@@ -314,7 +314,7 @@ export default function Index() {
                         />
                         <img
                           className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-                          src="https://trust.one/images/logo.png"
+                          src="https://cdn.1001vouchercodes.co.uk/logos/uk/tronlink-voucher-codes.png"
                           alt="Reform"
                           width={158}
                           height={48}
