@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+
 const navigation = [
   {
     name: "Facebook",
@@ -89,6 +90,9 @@ export default function Example() {
         </div>
       </footer>
     );
+  }
+  if (router.route === "/pool") {
+    return <footer className="bg-white"></footer>;
   }
   return (
     <footer className="bg-gray-800">

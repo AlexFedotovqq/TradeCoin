@@ -71,7 +71,7 @@ export default function Index() {
                       className="inline-block rounded-lg bg-indigo-500 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-500 hover:bg-indigo-700 hover:ring-indigo-700 "
                     >
                       Exchange{" "}
-                      <span className="text-indigo-200" aria-hidden="true">
+                      <span className="text-gray-100" aria-hidden="true">
                         &rarr;
                       </span>
                     </Link>
@@ -80,7 +80,7 @@ export default function Index() {
                       className="inline-block bg-pink-500 rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-white ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
                     >
                       Live demo video{" "}
-                      <span className="text-gray-900" aria-hidden="true">
+                      <span className="text-gray-100" aria-hidden="true">
                         &rarr;
                       </span>
                     </a>
