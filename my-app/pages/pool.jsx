@@ -211,7 +211,7 @@ export default function Pool() {
                         <Disclosure as="div" key="Add new pair">
                           {({ open }) => (
                             <>
-                              <div className="flex items-center justify-center">
+                              <div className="flex items-center justify-center py-3">
                                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-1 py-2 text-base font-medium text-white hover:bg-red-700">
                                   <span
                                     className={classNames(
@@ -288,7 +288,7 @@ export default function Pool() {
                         <Disclosure as="div">
                           {({ open }) => (
                             <>
-                              <div className="flex items-center justify-center">
+                              <div className="flex items-center justify-center py-3">
                                 <Disclosure.Button className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-1 py-2 text-base font-medium text-white hover:bg-indigo-700">
                                   <span
                                     className={classNames(

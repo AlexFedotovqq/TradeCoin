@@ -248,7 +248,7 @@ export default function Exchange() {
                 id="phone-number"
                 autoComplete="tel"
                 onChange={(event) => setSwapAmount(event.target.value)}
-                className="block rounded-md border-0 py-2  px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
+                className="relative  inline-flex w-full items-center justify-center block rounded-md border-0 py-2  px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
                 placeholder="0"
               />
             </div>
