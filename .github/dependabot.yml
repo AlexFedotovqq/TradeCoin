@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/my-app"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/contracts"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/mina"
+    schedule:
+      interval: "weekly"
