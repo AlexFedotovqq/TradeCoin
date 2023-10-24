@@ -33,17 +33,16 @@ const links = [
   },
 ];
 
-export default function Example() {
+export default function ErrorPage() {
   return (
-    <div className="bg-gray-800">
+    <div className="bg-gray-800 h-screen">
       <main className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:pb-24 lg:px-8">
         <div className="mx-auto mt-6 max-w-2xl text-center sm:mt-6">
-          <p className="text-base font-semibold leading-8 text-white">404</p>
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
             This page does not exist
           </h1>
           <p className="mt-4 text-base leading-7 text-white sm:mt-6 sm:text-lg sm:leading-8">
-            Sorry, we couldn’t find the page you’re looking for.
+            Sorry, we couldn't find the page you're looking for.
           </p>
         </div>
         <div className="mx-auto mt-16 flow-root max-w-lg sm:mt-20">
@@ -83,7 +82,7 @@ export default function Example() {
           <div className="mt-10 flex justify-center">
             <a
               href="/"
-              className="text-sm font-semibold leading-6 text-indigo-600"
+              className="text-xl font-semibold leading-6 text-indigo-400"
             >
               <span aria-hidden="true">&larr;</span>
               Back to home
