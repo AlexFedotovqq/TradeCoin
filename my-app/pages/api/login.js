@@ -21,5 +21,5 @@ export default withIronSessionApiRoute(
     cookieOptions: {
       secure: process.env.NODE_ENV === "production",
     },
-  }
+  },
 );
