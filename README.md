@@ -42,7 +42,7 @@ We plan to continue to improve the protocol and make it more secure and reliable
 1. [WebSite](https://trade-coin-xi.vercel.app/)
 2. [Twitter](https://twitter.com/_TradeCoin_)
 3. [instagram](https://www.instagram.com/_tradecoin_/)
-4. communication.with.tradecoin@gmail.com
+4. Email - communication.with.tradecoin@gmail.com
 
 ## Video Review
 
