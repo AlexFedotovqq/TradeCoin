@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/my-app" # Location of package manifests
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/contracts" # Location of package manifests
+    schedule:
+      interval: "weekly"
