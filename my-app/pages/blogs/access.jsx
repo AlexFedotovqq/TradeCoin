@@ -1,5 +1,6 @@
 import Link from "next/link";
-export default function Example() {
+
+export default function BlogAccess() {
   return (
     <div className="relative overflow-hidden bg-gray-800 py-16">
       <div className="hidden lg:absolute lg:inset-y-0 lg:block lg:h-full lg:w-full lg:[overflow-anchor:none]">
@@ -130,10 +131,10 @@ export default function Example() {
               <li>
                 3. Now, you need to connect your wallet to the XDC network. To
                 do this, click on the three dots in the top right corner of the
-                MetaMask wallet and select ‘Settings’.
+                MetaMask wallet and select 'Settings'.
               </li>
-              <li>4. In the ‘Networks’ tab, select ‘Add Network’.</li>
-              <li>5.Enter the following details in the ‘Add Network’ form</li>
+              <li>4. In the 'Networks' tab, select 'Add Network'.</li>
+              <li>5.Enter the following details in the 'Add Network' form</li>
               <li>
                 {" "}
                 <strong>Network Name: XDC</strong>
@@ -164,16 +165,16 @@ export default function Example() {
                   </a>
                 </strong>
               </li>
-              <li>6. Click on ‘Save’.</li>
+              <li>6. Click on 'Save'.</li>
               <li>
-                7. Now, click on ‘Home’ and select ‘Accounts’ from the menu.
+                7. Now, click on 'Home' and select 'Accounts' from the menu.
               </li>
               <li>
-                8. Click on ‘Import Account’ and select the ‘Private Key’
+                8. Click on 'Import Account' and select the 'Private Key'
                 option.
               </li>
               <li>
-                9. Enter your XDC account’s private key and click ‘Import’.
+                9. Enter your XDC account's private key and click 'Import'.
               </li>
               <li>10. Your XDC account will now</li>
             </ul>
