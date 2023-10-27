@@ -1,3 +1,3 @@
-import { Square } from './Square.js';
+import { BasicTokenContract } from "./BasicTokenContract.js";
 
-export { Square };
+export { BasicTokenContract };
