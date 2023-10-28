@@ -87,7 +87,7 @@ export default function Pool() {
                         <span
                           className={classNames(
                             open ? "text-white-200" : "text-white",
-                            "text-sm font-medium"
+                            "text-sm font-medium",
                           )}
                         >
                           Add new pair
@@ -216,7 +216,7 @@ export default function Pool() {
                                   <span
                                     className={classNames(
                                       open ? "text-red-200" : "text-white",
-                                      "text-sm font-bold"
+                                      "text-sm font-bold",
                                     )}
                                   >
                                     Add
@@ -271,7 +271,7 @@ export default function Pool() {
                                       addLiquidity(
                                         pool.token0Address,
                                         pool.token1Address,
-                                        pool.pairAddress
+                                        pool.pairAddress,
                                       )
                                     }
                                     className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
@@ -293,7 +293,7 @@ export default function Pool() {
                                   <span
                                     className={classNames(
                                       open ? "text-indigo-200" : "text-white",
-                                      "text-sm font-bold"
+                                      "text-sm font-bold",
                                     )}
                                   >
                                     Remove

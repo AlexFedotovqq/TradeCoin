@@ -428,7 +428,7 @@ export default function Exchange() {
                                       "relative cursor-default select-none py-2 pl-4 pr-12",
                                       active
                                         ? "bg-indigo-600 text-white"
-                                        : "text-gray-900"
+                                        : "text-gray-900",
                                     )
                                   }
                                 >
@@ -443,7 +443,7 @@ export default function Exchange() {
                                         <span
                                           className={classNames(
                                             "ml-3 truncate  ",
-                                            selected && "font-semibold"
+                                            selected && "font-semibold",
                                           )}
                                         >
                                           {person.name}
@@ -456,7 +456,7 @@ export default function Exchange() {
                                             "absolute inset-y-0 right-0 flex items-center pr-4",
                                             active
                                               ? "text-white"
-                                              : "text-indigo-600"
+                                              : "text-indigo-600",
                                           )}
                                         >
                                           <CheckIcon
@@ -550,7 +550,7 @@ export default function Exchange() {
                                       "relative cursor-default select-none py-2 pl-4 pr-12",
                                       active
                                         ? "bg-indigo-600 text-white"
-                                        : "text-gray-900"
+                                        : "text-gray-900",
                                     )
                                   }
                                 >
@@ -565,7 +565,7 @@ export default function Exchange() {
                                         <span
                                           className={classNames(
                                             "ml-3 truncate  ",
-                                            selected && "font-semibold"
+                                            selected && "font-semibold",
                                           )}
                                         >
                                           {person.name}
@@ -578,7 +578,7 @@ export default function Exchange() {
                                             "absolute inset-y-0 right-0 flex items-center pr-4",
                                             active
                                               ? "text-white"
-                                              : "text-indigo-600"
+                                              : "text-indigo-600",
                                           )}
                                         >
                                           <CheckIcon

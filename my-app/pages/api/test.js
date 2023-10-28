@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   const contract = await tronWeb.contract(abiFactory, addressFactory);
 
   const currentCount = ethers.BigNumber.from(
-    await contract.allPairsLength().call()
+    await contract.allPairsLength().call(),
   ).toNumber();
 
   let items = [];
@@ -43,14 +43,14 @@ export default async function handler(req, res) {
     //console.log(tronWeb.BigNumber(reserves[0]).toNumber());
 
     const reserves0 = ethers.utils.formatEther(
-      ethers.BigNumber.from(reserves[0]).toString()
+      ethers.BigNumber.from(reserves[0]).toString(),
     );
     const reserves1 = ethers.utils.formatEther(
-      ethers.BigNumber.from(reserves[1]).toString()
+      ethers.BigNumber.from(reserves[1]).toString(),
     );
 
     const supply = ethers.utils.formatEther(
-      ethers.BigNumber.from(await Pair.totalSupply().call()).toString()
+      ethers.BigNumber.from(await Pair.totalSupply().call()).toString(),
     );
 
     items.push({

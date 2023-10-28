@@ -35,7 +35,7 @@ We plan to continue to improve the protocol and make it more secure and reliable
 3. **react**
 4. **solidity**
 5. **vercel**
-6. **Mantle, XDC, Trust EVM**
+6. **Mina**
 
 ## Important Links
 
