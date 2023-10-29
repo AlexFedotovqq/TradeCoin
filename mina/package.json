@@ -16,7 +16,7 @@
     "buildw": "tsc --watch",
     "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "format": "prettier --write --ignore-unknown **/*",
-    "test": "yarn build && node build/src/main.js",
+    "test": "tsc && node build/src/main.js",
     "lint": "npx eslint src/* --fix"
   },
   "dependencies": {

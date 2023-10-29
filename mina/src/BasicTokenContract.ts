@@ -18,11 +18,14 @@ export class BasicTokenContract extends SmartContract {
   deploy(args?: DeployArgs) {
     super.deploy(args);
 
-    //const permissionToEdit = Permissions.proof();
+    const permissionToEdit = Permissions.proof();
 
     this.account.permissions.set({
       ...Permissions.default(),
-      access: Permissions.proofOrSignature(),
+      editState: permissionToEdit,
+      setTokenSymbol: permissionToEdit,
+      send: permissionToEdit,
+      receive: permissionToEdit,
     });
   }
 

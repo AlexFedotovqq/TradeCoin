@@ -6,14 +6,12 @@ console.log("o1js loaded");
 const proofsEnabled = false;
 const Local = Mina.LocalBlockchain({
   proofsEnabled,
-  enforceTransactionLimits: false,
 });
 
 Mina.setActiveInstance(Local);
 
-let accountFee = Mina.accountCreationFee();
-
 const deployerAccount = Local.testAccounts[0].privateKey;
+
 console.log(
   "deployerAccount.toPublicKey :" + deployerAccount.toPublicKey().toBase58()
 );
@@ -24,7 +22,11 @@ const zkAppAddress = zkAppPrivateKey.toPublicKey();
 
 console.log("zkAppAddress:" + zkAppAddress.toBase58());
 
-let { verificationKey } = await BasicTokenContract.compile();
+let verificationKey: any;
+
+if (proofsEnabled) {
+  ({ verificationKey } = await BasicTokenContract.compile());
+}
 
 console.log("compiled");
 
@@ -37,13 +39,9 @@ const contract = new BasicTokenContract(zkAppAddress);
 console.log("compiling...:" + zkAppAddress.toBase58());
 
 const deploy_txn = await Mina.transaction(deployerAccount.toPublicKey(), () => {
-  let feePayerUpdate = AccountUpdate.fundNewAccount(
-    deployerAccount.toPublicKey()
-  );
-  feePayerUpdate.send({ to: zkAppAddress, amount: accountFee });
+  AccountUpdate.fundNewAccount(deployerAccount.toPublicKey());
 
   contract.deploy({ verificationKey, zkappKey: zkAppPrivateKey });
-  //contract.deploy();
 });
 
 await deploy_txn.prove();
@@ -53,19 +51,6 @@ console.log("prove()");
 await deploy_txn.sign([deployerAccount]).send();
 
 console.log("deployed");
-
-// ----------------------------------------------------
-
-console.log("initializing...");
-
-const init_txn = await Mina.transaction(deployerAccount.toPublicKey(), () => {
-  contract.init();
-});
-
-await init_txn.prove();
-await init_txn.sign([deployerAccount, zkAppPrivateKey]).send();
-
-console.log("initialized");
 
 // ----------------------------------------------------
 
@@ -105,7 +90,7 @@ const send_txn = await Mina.transaction(deployerAccount.toPublicKey(), () => {
   contract.sendTokens(zkAppAddress, deployerAccount.toPublicKey(), sendAmount);
 });
 await send_txn.prove();
-await send_txn.sign([deployerAccount]).send();
+await send_txn.sign([deployerAccount, zkAppPrivateKey]).send();
 
 console.log("sent");
 
