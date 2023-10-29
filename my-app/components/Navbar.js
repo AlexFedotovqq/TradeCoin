@@ -32,7 +32,7 @@ const Navbar = () => {
   }, [appAddress]); */
 
   async function connectWallet() {
-    const address = await tronWeb.defaultAddress.base58;
+    const address = "132424353";
     setAppAddress(address);
     setDisplayAddress(address.substring(0, 8) + "...");
     // post address
@@ -66,7 +66,7 @@ const Navbar = () => {
                         item.current
                           ? "bg-gray-900 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                        "rounded-md px-3 py-2 text-md font-medium",
+                        "rounded-md px-3 py-2 text-md font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}
                     >
@@ -104,7 +104,7 @@ const Navbar = () => {
                     item.current
                       ? "bg-gray-900 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.current ? "page" : undefined}
                 >

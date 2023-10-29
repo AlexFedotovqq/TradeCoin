@@ -8,7 +8,6 @@ import {
   ExclamationTriangleIcon,
 } from "@heroicons/react/20/solid";
 import { CheckIcon } from "@heroicons/react/24/outline";
-import { ethers } from "ethers";
 import { Fragment, useState } from "react";
 
 function expandTo18Decimals(n) {
@@ -303,10 +302,10 @@ export default function Exchange() {
           </div>
           <div className="rounded-2xl mt-5  bg-gray-600 p-1">
             <div className="flex justify-center items-center">
-              <span className="  relative text-white  items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium text-gray-900">
+              <span className="  relative text-white  items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium">
                 {swapAmount} {tokenA.name} =
               </span>
-              <span className="relative right-5 text-white inline-flex items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium text-gray-900 ">
+              <span className="relative right-5 text-white inline-flex items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium">
                 {tokenB.name}
               </span>
             </div>
@@ -496,7 +495,7 @@ export default function Exchange() {
                                       "relative cursor-default select-none py-2 pl-4 pr-12",
                                       active
                                         ? "bg-indigo-600 text-white"
-                                        : "text-gray-900",
+                                        : "text-gray-900"
                                     )
                                   }
                                 >
@@ -511,7 +510,7 @@ export default function Exchange() {
                                         <span
                                           className={classNames(
                                             "ml-3 truncate  ",
-                                            selected && "font-semibold",
+                                            selected && "font-semibold"
                                           )}
                                         >
                                           {person.name}
@@ -524,7 +523,7 @@ export default function Exchange() {
                                             "absolute inset-y-0 right-0 flex items-center pr-4",
                                             active
                                               ? "text-white"
-                                              : "text-indigo-600",
+                                              : "text-indigo-600"
                                           )}
                                         >
                                           <CheckIcon
@@ -618,7 +617,7 @@ export default function Exchange() {
                                       "relative cursor-default select-none py-2 pl-4 pr-12",
                                       active
                                         ? "bg-indigo-600 text-white"
-                                        : "text-gray-900",
+                                        : "text-gray-900"
                                     )
                                   }
                                 >
@@ -633,7 +632,7 @@ export default function Exchange() {
                                         <span
                                           className={classNames(
                                             "ml-3 truncate  ",
-                                            selected && "font-semibold",
+                                            selected && "font-semibold"
                                           )}
                                         >
                                           {person.name}
@@ -646,7 +645,7 @@ export default function Exchange() {
                                             "absolute inset-y-0 right-0 flex items-center pr-4",
                                             active
                                               ? "text-white"
-                                              : "text-indigo-600",
+                                              : "text-indigo-600"
                                           )}
                                         >
                                           <CheckIcon
