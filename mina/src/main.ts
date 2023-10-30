@@ -1,9 +1,8 @@
 import { BasicTokenContract } from "./BasicTokenContract.js";
 import { Mina, PrivateKey, AccountUpdate, UInt64, Signature } from "o1js";
 
-console.log("o1js loaded");
-
 const proofsEnabled = false;
+
 const Local = Mina.LocalBlockchain({
   proofsEnabled,
 });
@@ -45,8 +44,6 @@ const deploy_txn = await Mina.transaction(deployerAccount.toPublicKey(), () => {
 });
 
 await deploy_txn.prove();
-
-console.log("prove()");
 
 await deploy_txn.sign([deployerAccount]).send();
 
@@ -114,7 +111,3 @@ console.log(
   "zkapp tokens:",
   Mina.getBalance(zkAppAddress, contract.token.id).value.toBigInt()
 );
-
-// ----------------------------------------------------
-
-console.log("Shutting down");

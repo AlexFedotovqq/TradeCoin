@@ -10,8 +10,6 @@ import {
   Signature,
 } from "o1js";
 
-const tokenSymbol = "MYTKN";
-
 export class BasicTokenContract extends SmartContract {
   @state(UInt64) totalAmountInCirculation = State<UInt64>();
 
@@ -31,7 +29,6 @@ export class BasicTokenContract extends SmartContract {
 
   @method init() {
     super.init();
-    this.account.tokenSymbol.set(tokenSymbol);
     this.totalAmountInCirculation.set(UInt64.zero);
   }
 
