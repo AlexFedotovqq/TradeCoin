@@ -1,6 +1,6 @@
-import { TRX20Abi } from "./contracts/TRX20";
-import { TradeCoinFactoryAbi } from "./contracts/TradeCoinFactory";
-import { TradeCoinPairAbi } from "./contracts/TradeCoinPair";
+import { TRX20Abi } from "./TRX20";
+import { TradeCoinFactoryAbi } from "./TradeCoinFactory";
+import { TradeCoinPairAbi } from "./TradeCoinPair";
 
 export function getContractInfo() {
   return {

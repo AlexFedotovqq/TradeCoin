@@ -1,11 +1,8 @@
-import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
+import { classNames } from "@/utils/classNames";
+
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function Pool() {
   const [data, setData] = useState([]);
@@ -16,45 +13,6 @@ export default function Pool() {
   const [tokenBQuantity, setTokenBQuantity] = useState(1);
 
   const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
-
-  async function startUpload() {
-    const { addressFactory, abiFactory } = getContractInfo();
-    const contract = await tronWeb.contract(abiFactory, addressFactory);
-    await contract.createPair(tokenA, tokenB).send({ feeLimit: 4000000000 });
-  }
-
-  async function addLiquidity(address0, address1, pairAddress) {
-    const { abiERC20 } = getERC20();
-    const { abiPair } = getPair();
-    const address = await tronWeb.defaultAddress.base58;
-
-    const token0 = await tronWeb.contract(abiERC20, address0);
-    const token1 = await tronWeb.contract(abiERC20, address1);
-    const pair = await tronWeb.contract(abiPair, pairAddress);
-
-    await token0
-      .transfer(pairAddress, expandTo18Decimals(tokenAQuantity))
-      .send();
-
-    await token1
-      .transfer(pairAddress, expandTo18Decimals(tokenBQuantity))
-      .send();
-
-    await pair.mint(address).send();
-  }
-
-  async function removeLiquidity(pairAddress) {
-    const { abiPair } = getPair();
-    const address = await tronWeb.defaultAddress.base58;
-
-    const pair = await tronWeb.contract(abiPair, pairAddress);
-
-    await pair
-      .transfer(pair.address, expandTo18Decimals(withdrawalQuantity))
-      .send();
-
-    await pair.burn(address).send();
-  }
 
   return (
     <div className="bg-gray-800 h-screen">
@@ -119,7 +77,7 @@ export default function Pool() {
                                 setTokenA(event.target.value)
                               }
                               className="block w-full bg-white rounded-md py-3 px-4 pl-25"
-                              placeholder="TR…"
+                              placeholder="…"
                             />
                           </div>
                         </div>
@@ -142,7 +100,7 @@ export default function Pool() {
                                 setTokenB(event.target.value)
                               }
                               className="block w-full rounded-md bg-white py-3 px-4 pl-25"
-                              placeholder="TR…"
+                              placeholder="…"
                             />
                           </div>
                         </div>

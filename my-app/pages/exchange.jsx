@@ -1,8 +1,8 @@
-import { getContractInfo, getERC20, getPair } from "@/utils/contracts";
-import { Dialog, Transition } from "@headlessui/react";
-import { Combobox } from "@headlessui/react";
 import { tokens } from "@/utils/tokens";
 import { classNames } from "@/utils/classNames";
+
+import { Dialog, Transition } from "@headlessui/react";
+import { Combobox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import {
   CheckCircleIcon,
@@ -12,15 +12,17 @@ import {
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
 
-export function expandTo18Decimals(n) {
-  return ethers.BigNumber.from(n).mul(ethers.BigNumber.from(10).pow(18));
-}
 export default function Exchange() {
   const [isLoading, setIsLoading] = useState(false);
+
+  // tx status
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [query, setQuery] = useState("");
-  const [show, setShow] = useState(true);
+
+  // warning
+  const [show, setShow] = useState(false);
+
   const [openTokenA, setOpenTokenA] = useState(false);
   const [openTokenB, setOpenTokenB] = useState(false);
 
@@ -35,55 +37,6 @@ export default function Exchange() {
       : tokens.filter((token) => {
           return token.name.toLowerCase().includes(query.toLowerCase());
         });
-
-  async function swap() {
-    const { addressFactory, abiFactory } = getContractInfo();
-    const { abiPair } = getPair();
-    const { abiERC20 } = getERC20();
-
-    const contract = await tronWeb.contract(abiFactory, addressFactory);
-
-    const pairAddress = await contract
-      .getPair(tokenA.address, tokenB.address)
-      .call();
-
-    if (pairAddress === "410000000000000000000000000000000000000000") {
-      console.log("create a pair first");
-      return;
-    }
-
-    const pair = await tronWeb.contract(abiPair, pairAddress);
-
-    const orderIn = (await pair.token0().call()) === tokenA ? 0 : 1;
-    const orderOut = (await pair.token1().call()) === tokenB ? 1 : 0;
-
-    const token = await tronWeb.contract(abiERC20, tokenA.address);
-
-    await token.transfer(pairAddress, expandTo18Decimals(swapAmount)).send();
-
-    const Preserves = await pair.getReserves().call();
-
-    var amountInWithFee = expandTo18Decimals(swapAmount).mul(996);
-
-    var numerator = amountInWithFee.mul(Preserves[orderOut]);
-    var denominator = Preserves[orderIn].mul(1000).add(amountInWithFee);
-    var amountOut = numerator / denominator;
-
-    const expectedOutputAmount = ethers.BigNumber.from(String(amountOut));
-
-    const address = await tronWeb.defaultAddress.base58;
-
-    await pair.swap(0, expectedOutputAmount, address, "0x").send();
-    try {
-      setIsSuccess(true);
-
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 5000);
-    } catch (error) {
-      console.error("Error during swap:", error);
-    }
-  }
 
   return (
     <div className="overflow-hidden bg-gray-800 py-16 px-8 h-screen">
@@ -151,7 +104,7 @@ export default function Exchange() {
                     </div>
 
                     <p className="ml-3 text-sm font-medium text-green-800">
-                      I think the transaction has succeeded.
+                      =The transaction has succeeded.
                     </p>
                   </div>
                 </div>
@@ -202,10 +155,9 @@ export default function Exchange() {
                     id="SVGRepo_tracerCarrier"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                  ></g>
+                  />
                   <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <title>angle-down</title>{" "}
+                    <title>angle-down</title>
                     <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path>{" "}
                   </g>
                 </svg>
@@ -217,7 +169,7 @@ export default function Exchange() {
                 id="phone-number"
                 autoComplete="tel"
                 onChange={(event) => setSwapAmount(event.target.value)}
-                className="relative  inline-flex w-full items-center justify-center block rounded-md border-0 py-2  px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
+                className="relative w-full items-center justify-center block rounded-md border-0 py-2  px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
                 placeholder="0"
               />
             </div>
@@ -254,15 +206,14 @@ export default function Exchange() {
                     xmlns="http://www.w3.org/2000/svg"
                     stroke="#000000"
                   >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0" />
                     <g
                       id="SVGRepo_tracerCarrier"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                    ></g>
+                    />
                     <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <title>angle-down</title>{" "}
+                      <title>angle-down</title>
                       <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path>{" "}
                     </g>
                   </svg>
@@ -272,7 +223,7 @@ export default function Exchange() {
           </div>
           <div className="rounded-2xl mt-5  bg-gray-600 p-1">
             <div className="flex justify-center items-center">
-              <span className="  relative text-white  items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium">
+              <span className="relative text-white  items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium">
                 {swapAmount} {tokenA.name} =
               </span>
               <span className="relative right-5 text-white inline-flex items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium">
@@ -285,14 +236,11 @@ export default function Exchange() {
             type="submit"
             onClick={async () => {
               setIsLoading(true);
-
               try {
                 await swap();
-
                 setIsLoading(false);
               } catch (error) {
                 console.error("Error during swap:", error);
-
                 setIsLoading(false);
               }
             }}
@@ -445,7 +393,7 @@ export default function Exchange() {
                           <Combobox.Input
                             className="rounded-md border-0 bg-white py-1.5 pl-2 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             onChange={(event) => setQuery(event.target.value)}
-                            displayValue={(person) => person?.name}
+                            displayValue={(token) => token?.name}
                           />
                           <Combobox.Button className="absolute inset-y-0  pl-64 flex items-center rounded-r-md px-2 focus:outline-none">
                             <ChevronUpDownIcon
@@ -456,10 +404,10 @@ export default function Exchange() {
 
                           {filteredTokens.length > 0 && (
                             <Combobox.Options className="relative z-10 mt-1 max-h-36  overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                              {filteredTokens.map((person) => (
+                              {filteredTokens.map((token) => (
                                 <Combobox.Option
-                                  key={person.id}
-                                  value={person}
+                                  key={token.id}
+                                  value={token}
                                   className={({ active }) =>
                                     classNames(
                                       "relative cursor-default select-none py-2 pl-4 pr-12",
@@ -473,8 +421,8 @@ export default function Exchange() {
                                     <>
                                       <div className="flex items-center">
                                         <img
-                                          src={person.imageUrl}
-                                          alt=""
+                                          src={token.imageUrl}
+                                          alt={token.name}
                                           className="h-6 w-6 flex-shrink-0  rounded-full"
                                         />
                                         <span
@@ -483,7 +431,7 @@ export default function Exchange() {
                                             selected && "font-semibold"
                                           )}
                                         >
-                                          {person.name}
+                                          {token.name}
                                         </span>
                                       </div>
 
@@ -527,6 +475,7 @@ export default function Exchange() {
           </div>
         </Dialog>
       </Transition.Root>
+
       {/* tokenB */}
       <Transition.Root show={openTokenB} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setOpenTokenB}>
@@ -567,7 +516,7 @@ export default function Exchange() {
                           <Combobox.Input
                             className=" rounded-md border-0 bg-white py-1.5 pl-2 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             onChange={(event) => setQuery(event.target.value)}
-                            displayValue={(person) => person?.name}
+                            displayValue={(token) => token?.name}
                           />
                           <Combobox.Button className="absolute inset-y-0  pl-64 flex items-center rounded-r-md px-2 focus:outline-none">
                             <ChevronUpDownIcon
@@ -578,10 +527,10 @@ export default function Exchange() {
 
                           {filteredTokens.length > 0 && (
                             <Combobox.Options className="relative z-10 mt-1 max-h-36  overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                              {filteredTokens.map((person) => (
+                              {filteredTokens.map((token) => (
                                 <Combobox.Option
-                                  key={person.id}
-                                  value={person}
+                                  key={token.id}
+                                  value={token}
                                   className={({ active }) =>
                                     classNames(
                                       "relative cursor-default select-none py-2 pl-4 pr-12",
@@ -595,9 +544,9 @@ export default function Exchange() {
                                     <>
                                       <div className="flex items-center">
                                         <img
-                                          src={person.imageUrl}
-                                          alt=""
-                                          className="h-6 w-6 flex-shrink-0  rounded-full"
+                                          src={token.imageUrl}
+                                          alt={person.name}
+                                          className="h-6 w-6 flex-shrink-0 rounded-full"
                                         />
                                         <span
                                           className={classNames(
@@ -605,7 +554,7 @@ export default function Exchange() {
                                             selected && "font-semibold"
                                           )}
                                         >
-                                          {person.name}
+                                          {token.name}
                                         </span>
                                       </div>
 
