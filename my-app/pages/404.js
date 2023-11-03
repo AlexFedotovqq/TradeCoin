@@ -5,6 +5,7 @@ import {
   QueueListIcon,
   RssIcon,
 } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 const links = [
   {
@@ -80,13 +81,13 @@ export default function ErrorPage() {
             ))}
           </ul>
           <div className="mt-10 flex justify-center">
-            <a
+            <Link
               href="/"
               className="text-xl font-semibold leading-6 text-indigo-400"
             >
               <span aria-hidden="true">&larr;</span>
               Back to home
-            </a>
+            </Link>
           </div>
         </div>
       </main>
