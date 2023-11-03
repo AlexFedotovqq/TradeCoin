@@ -1,26 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export const WalletButton = () => {
   const [appAddress, setAppAddress] = useState("");
   const [displayAddress, setDisplayAddress] = useState("");
 
-  /*   useEffect(() => {
+  useEffect(() => {
+    const fetchData = async () => {
+      /*       const res = (await fetch(`/api/login`)).json();
+      console.log(await res); */
+    };
 
-  const fetchData = async () => {
-    const res = await fetch(`/api/login`);
-
-    return res.json();
-  };
-
-  //if (appAddress === "") {
-  console.log(fetchData());
-  //}
-}, [appAddress]); */
+    //if (appAddress === "") {
+    fetchData();
+    //}
+  }, [appAddress]);
 
   async function connectWallet() {
     const address = "132424353";
     setAppAddress(address);
-    setDisplayAddress(address.substring(0, 8) + "...");
+    setDisplayAddress(address.substring(0, 6) + "...");
     // post address
   }
   return (
