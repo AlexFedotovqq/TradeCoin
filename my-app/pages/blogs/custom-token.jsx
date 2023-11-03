@@ -118,7 +118,7 @@ export default function Example() {
             </span>
             <p className="mt-8 text-xl leading-8 text-white">
               If your custom (unlisted) tokens are not showing up automatically
-              in MetaMask's assets area, this article will explain how to add
+              in MetaMask assets area, this article will explain how to add
               them.
             </p>
             <p className="mt-8 text-3xl font-bold leading-8 tracking-tight text-white sm:text-4xl">

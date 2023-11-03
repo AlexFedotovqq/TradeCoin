@@ -131,10 +131,10 @@ export default function BlogAccess() {
               <li>
                 3. Now, you need to connect your wallet to the XDC network. To
                 do this, click on the three dots in the top right corner of the
-                MetaMask wallet and select 'Settings'.
+                MetaMask wallet and select Settings.
               </li>
-              <li>4. In the 'Networks' tab, select 'Add Network'.</li>
-              <li>5.Enter the following details in the 'Add Network' form</li>
+              <li>4. In the Networks tab, select Add Network.</li>
+              <li>5. Enter the following details in the Add Network form</li>
               <li>
                 {" "}
                 <strong>Network Name: XDC</strong>
@@ -165,17 +165,12 @@ export default function BlogAccess() {
                   </a>
                 </strong>
               </li>
-              <li>6. Click on 'Save'.</li>
+              <li>6. Click on Save.</li>
+              <li>7. Now, click on Home and select Accounts from the menu.</li>
               <li>
-                7. Now, click on 'Home' and select 'Accounts' from the menu.
+                8. Click on Import Account and select the Private Key option.
               </li>
-              <li>
-                8. Click on 'Import Account' and select the 'Private Key'
-                option.
-              </li>
-              <li>
-                9. Enter your XDC account's private key and click 'Import'.
-              </li>
+              <li>9. Enter your XDC accounts private key and click Import.</li>
               <li>10. Your XDC account will now</li>
             </ul>
           </div>

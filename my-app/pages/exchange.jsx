@@ -71,8 +71,7 @@ export default function Exchange() {
                         Warning!
                       </p>
                       <p className="mt-1 text-sm text-gray-500">
-                        Don't forget to choose the right network.(TRON Shasta
-                        Testnet)
+                        Choose the right network.
                       </p>
                     </div>
 

@@ -42,7 +42,7 @@ export default function ErrorPage() {
             This page does not exist
           </h1>
           <p className="mt-4 text-base leading-7 text-white sm:mt-6 sm:text-lg sm:leading-8">
-            Sorry, we couldn't find the page you're looking for.
+            Sorry, we could not find the page you are looking for.
           </p>
         </div>
         <div className="mx-auto mt-16 flow-root max-w-lg sm:mt-20">
