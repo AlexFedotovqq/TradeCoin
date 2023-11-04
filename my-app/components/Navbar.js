@@ -43,17 +43,18 @@ const Navbar = () => {
                     {navigation.map((item) => (
                       <li
                         key={item.name}
+                        className="text-xl"
                         style={{
                           width: "125px",
                           height: "50px",
+
                           textAlign: "center",
                         }}
                       >
                         <a
                           href={item.href}
                           style={{
-                            fontSize: "20px",
-
+                            fontSize: "1rem",
                             transition: "all 0.45s",
                           }}
                         >
