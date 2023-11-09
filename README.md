@@ -48,3 +48,7 @@ You can email us at communication.with.tradecoin@gmail.com
 ## Video Review
 
 [YouTube video](http://youtu.be/4Ft4wfPhjNw)
+
+## TradeCoin Docs
+
+[TradeCoin Docs](https://alexfedotovqq.github.io/DocsTradeCoin/#/)
