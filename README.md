@@ -2,7 +2,7 @@
 
 ![photo_2023-01-28_21-56-55](https://user-images.githubusercontent.com/88692544/215295626-88a3456a-5543-4c6e-af70-a6b4ea65dc5b.jpg)
 
-TradeCoin is a decentralized protocol for automated token exchange on EVM compatible blockchains
+TradeCoin is a decentralized protocol for automated token exchange on Mina compatible blockchains
 
 ## What it does
 
@@ -22,7 +22,7 @@ We are proud of having built a secure, reliable, and user-friendly protocol for 
 
 ## What we learned
 
-We learned a lot about smart contract development and Trust EVM security best practices. We learned how to create secure and reliable smart contracts, as well as how to design an intuitive user interface for interacting with the protocol. We also learned how to provide liquidity to other projects and protocols.
+We learned a lot about smart contract development and Mina security best practices. We learned how to create secure and reliable smart contracts, as well as how to design an intuitive user interface for interacting with the protocol. We also learned how to provide liquidity to other projects and protocols.
 
 ## What's next for TradeCoin
 
