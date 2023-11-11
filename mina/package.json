@@ -17,10 +17,13 @@
     "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "format": "prettier --write --ignore-unknown **/*",
     "test": "tsc && node build/src/main.js",
+    "testDex": "tsc && node build/src/DexContract.test.js",
+    "testBasicToken": "tsc && node build/src/BasicTokenContract.test.js",
     "lint": "npx eslint src/* --fix"
   },
   "dependencies": {
-    "o1js": "^0.14.0"
+    "dotenv": "^16.3.1",
+    "o1js": "0.14.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.4",

@@ -1,100 +1,60 @@
 import { BasicTokenContract } from "./BasicTokenContract.js";
-import { Mina, PrivateKey, AccountUpdate, UInt64, Signature } from "o1js";
+import { Dex } from "./DexContract.js";
+import { Mina, PrivateKey } from "o1js";
+import dotenv from "dotenv";
 
-const proofsEnabled = false;
+const proofsEnabled = true;
 
-const Local = Mina.LocalBlockchain({
-  proofsEnabled,
-});
+dotenv.config();
 
-Mina.setActiveInstance(Local);
+const Berkeley = Mina.Network(
+  "https://proxy.berkeley.minaexplorer.com/graphql"
+);
+Mina.setActiveInstance(Berkeley);
 
-const deployerAccount = Local.testAccounts[0].privateKey;
-const deployerAddress = Local.testAccounts[0].publicKey;
-
-console.log("deployerAccount: " + deployerAddress.toBase58());
-
-const zkAppPrivateKey = PrivateKey.random();
-const zkAppAddress = zkAppPrivateKey.toPublicKey();
-
-console.log("zkAppAddress: " + zkAppAddress.toBase58());
+const transactionFee = 800_000_000;
 
 let verificationKey: any;
 
 if (proofsEnabled) {
-  ({ verificationKey } = await BasicTokenContract.compile());
+  ({ verificationKey } = await Dex.compile());
 }
 
-console.log("compiled");
-
-const contract = new BasicTokenContract(zkAppAddress);
-
-const deploy_txn = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress);
-
-  contract.deploy({ verificationKey, zkappKey: zkAppPrivateKey });
-});
-
-await deploy_txn.prove();
-
-await deploy_txn.sign([deployerAccount]).send();
-
-console.log("deployed");
-
-console.log("minting...");
-
-const mintAmount = UInt64.from(1);
-
-const mintSignature = Signature.create(
-  zkAppPrivateKey,
-  mintAmount.toFields().concat(zkAppAddress.toFields())
+// Create a public/private key pair. The public key is your address and where you deploy the zkApp to
+const zkAppPrivateKey = PrivateKey.fromBase58(
+  process.env.zkAppPrivateKey as string
 );
 
-const mint_txn = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress);
-  contract.mint(zkAppAddress, mintSignature);
-});
+const zkAppAddress = zkAppPrivateKey.toPublicKey();
 
-await mint_txn.prove();
-await mint_txn.sign([deployerAccount]).send();
+const deployerKey = PrivateKey.fromBase58(process.env.deployerKey as string);
 
-console.log("minted");
+const deployerAccount = deployerKey.toPublicKey();
 
-console.log(
-  "totalAmountInCirculation: " + contract.totalAmountInCirculation.get()
+const tokenXKey = PrivateKey.fromBase58(process.env.pkTokenX as string);
+const tokenYKey = PrivateKey.fromBase58(process.env.pkTokenY as string);
+
+const tokenXPublic = tokenXKey.toPublicKey();
+const tokenYPublic = tokenYKey.toPublicKey();
+
+const tokenX = new BasicTokenContract(tokenXPublic);
+const tokenY = new BasicTokenContract(tokenYPublic);
+
+const dexApp = new Dex(zkAppAddress);
+
+const init_txn = await Mina.transaction(
+  { sender: deployerAccount, fee: transactionFee },
+  () => {
+    dexApp.initTokenAddresses(tokenX.address, tokenY.address);
+  }
 );
 
-console.log(
-  "zkapp tokens:",
-  Mina.getBalance(zkAppAddress, contract.token.id).value.toBigInt()
-);
+await init_txn.prove();
 
-// ----------------------------------------------------
+await init_txn.sign([deployerKey]).send();
 
-console.log("sending...");
+console.log("initialised tokens in a dex");
 
-const sendAmount = UInt64.from(1);
+console.log(dexApp.tokenX.get().toBase58());
 
-const send_txn = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress);
-  contract.sendTokens(zkAppAddress, deployerAddress, sendAmount);
-});
-await send_txn.prove();
-await send_txn.sign([deployerAccount, zkAppPrivateKey]).send();
-
-console.log("sent");
-
-// ----------------------------------------------------
-
-console.log(
-  "deployer tokens:",
-  Mina.getBalance(
-    deployerAddress,
-    contract.token.id
-  ).value.toBigInt()
-);
-
-console.log(
-  "zkapp tokens:",
-  Mina.getBalance(zkAppAddress, contract.token.id).value.toBigInt()
-);
+console.log("finished");
