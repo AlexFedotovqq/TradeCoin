@@ -4,27 +4,15 @@ export const WalletButton = () => {
   const [appAddress, setAppAddress] = useState("");
   const [displayAddress, setDisplayAddress] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      /*       const res = (await fetch(`/api/login`)).json();
-      console.log(await res); */
-    };
-
-    //if (appAddress === "") {
-    fetchData();
-    //}
-  }, [appAddress]);
-
   async function connectWallet() {
-    const address = "132424353";
-    setAppAddress(address);
-    setDisplayAddress(address.substring(0, 6) + "...");
-    // post address
+    let accounts = await window.mina.requestAccounts();
+
+    setDisplayAddress(`${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`);
   }
   return (
     <>
       <div className="flex items-center md:ml-12">
-        {!appAddress ? (
+        {!displayAddress ? (
           <button
             onClick={() => connectWallet()}
             className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5 "
