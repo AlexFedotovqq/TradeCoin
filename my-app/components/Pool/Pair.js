@@ -27,6 +27,7 @@ export function Pair() {
   const [tokenBQuantity, setTokenBQuantity] = useState(1);
 
   const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
+
   return (
     <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6">
       <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
