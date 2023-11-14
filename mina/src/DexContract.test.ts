@@ -2,7 +2,7 @@ import { BasicTokenContract } from "./BasicTokenContract.js";
 import { Dex } from "./DexContract.js";
 import { Mina, PrivateKey, AccountUpdate } from "o1js";
 
-const proofsEnabled = true;
+const proofsEnabled = false;
 
 const Local = Mina.LocalBlockchain({
   proofsEnabled,
@@ -85,3 +85,4 @@ await init_dex_txn.sign([deployerAccount]).send();
 console.log("initialised tokens in a dex");
 
 console.log(dexApp.tokenX.get().toBase58());
+console.log(dexApp.tokenY.get().toBase58());

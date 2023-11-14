@@ -5,7 +5,22 @@ import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
 export default function Pool() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([
+    {
+      pairAddress: "",
+      token0Name: "TradeC0",
+      token0Address: "asd",
+      token1Name: "TradeC1",
+      token1Address: "asd",
+    },
+    {
+      pairAddress: "",
+      token0Name: "TradeC0",
+      token0Address: "asd",
+      token1Name: "TradeCoin",
+      token1Address: "asd",
+    },
+  ]);
   const [tokenA, setTokenA] = useState("");
   const [tokenB, setTokenB] = useState("");
 
@@ -16,9 +31,9 @@ export default function Pool() {
 
   return (
     <div className="bg-gray-800 h-screen">
-      <div className="overflow-hidden bg-gray-800 py-16 px-8  ">
+      <div className="overflow-hidden bg-gray-800 py-16 px-8">
         <div className="relative mx-auto max-w-4xl">
-          <div className="text-center ">
+          <div className="text-center">
             <h2 className="text-4xl font-bold tracking-tight text-white">
               TradeCoin Pools
             </h2>
@@ -34,7 +49,7 @@ export default function Pool() {
                         <span
                           className={classNames(
                             open ? "text-white-200" : "text-white",
-                            "text-sm font-medium",
+                            "text-sm font-medium"
                           )}
                         >
                           Add new pair
@@ -157,7 +172,7 @@ export default function Pool() {
                                 <span
                                   className={classNames(
                                     open ? "text-red-200" : "text-white",
-                                    "text-sm font-bold",
+                                    "text-sm font-bold"
                                   )}
                                 >
                                   Add
@@ -212,7 +227,7 @@ export default function Pool() {
                                     addLiquidity(
                                       pool.token0Address,
                                       pool.token1Address,
-                                      pool.pairAddress,
+                                      pool.pairAddress
                                     )
                                   }
                                   className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
@@ -234,7 +249,7 @@ export default function Pool() {
                                 <span
                                   className={classNames(
                                     open ? "text-indigo-200" : "text-white",
-                                    "text-sm font-bold",
+                                    "text-sm font-bold"
                                   )}
                                 >
                                   Remove
