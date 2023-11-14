@@ -506,7 +506,7 @@ export default function Exchange() {
                     <div className="mt-3 text-center sm:mt-5">
                       <Dialog.Title
                         as="h3"
-                        className="text-base font-semibold  text-gray-900"
+                        className="text-base font-semibold text-gray-900"
                       >
                         Tokens
                       </Dialog.Title>
@@ -549,7 +549,7 @@ export default function Exchange() {
                                         />
                                         <span
                                           className={classNames(
-                                            "ml-3 truncate  ",
+                                            "ml-3 truncate",
                                             selected && "font-semibold"
                                           )}
                                         >
