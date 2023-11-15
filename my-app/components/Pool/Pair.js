@@ -1,37 +1,57 @@
 import { classNames } from "@/utils/classNames";
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import { signal, effect } from "@preact/signals-react";
+import { Field, Mina, fetchAccount, PublicKey } from "o1js";
 
 export function Pair() {
-  const [data, setData] = useState([
+  /*   const Berkeley = Mina.Network(
+    "https://proxy.berkeley.minaexplorer.com/graphql"
+  );
+
+  Mina.setActiveInstance(Berkeley); */
+
+  const data = signal([
     {
-      pairAddress: "",
+      pairAddress: "B62qq1DMusFhTJHrcQPUnxVo1xMJK6wKCcurBfNLhACmsmmrzZAyqVE",
       token0Name: "TradeC0",
-      token0Address: "asd",
+      token0Address: "B62qmETvJ7c1pWa7sA933UQeR8TrnMXx9iPnKQxLX2kaqVQKSaDPtjG",
       token1Name: "TradeC1",
-      token1Address: "asd",
+      token1Address: "B62qo2kpW6HBz77vB7914P5pjDYavHNkjbTTQiQVtmNJTmrrYiFAojj",
     },
     {
-      pairAddress: "",
+      pairAddress: "12",
       token0Name: "TradeC0",
       token0Address: "asd",
       token1Name: "TradeCoin",
       token1Address: "asd",
     },
   ]);
-  const [tokenA, setTokenA] = useState("");
-  const [tokenB, setTokenB] = useState("");
 
-  const [tokenAQuantity, setTokenAQuantity] = useState(1);
-  const [tokenBQuantity, setTokenBQuantity] = useState(1);
+  effect(async () => {
+    try {
+      /*       const zkAppAddress = PublicKey.fromBase58(data.value[0].pairAddress);
+      console.log(zkAppAddress);
+      console.log(await fetchAccount({ publicKey: zkAppAddress })); */
+      //const zkAppInstance = new BasicTokenContract(zkAppAddress);
+      //console.log(zkAppInstance);
+    } catch {
+      console.log("error");
+    }
+  });
 
-  const [withdrawalQuantity, setWithdrawalQuantity] = useState("");
+  const withdrawalQuantity = signal(1);
+  const tokenAQuantity = signal(1);
+  const tokenBQuantity = signal(1);
+
+  function removeLiquidity() {}
+
+  function addLiquidity() {}
 
   return (
     <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6">
       <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-        {data?.map((pool) => (
+        {data?.value?.map((pool) => (
           <li
             key={pool.pairAddress}
             className="col-span-1 rounded-lg bg-white shadow"
@@ -54,7 +74,7 @@ export function Pair() {
               </h3>
             </div>
 
-            <div className="-mt-px flex divide-x divide-gray-300">
+            <div className="-mt-px flex">
               <div className="flex flex-1 justify-center">
                 <Disclosure as="div" key="Add new pair">
                   {({ open }) => (
@@ -95,7 +115,7 @@ export function Pair() {
                             name="number"
                             id="number"
                             onChange={(event) =>
-                              setTokenAQuantity(event.target.value)
+                              (tokenAQuantity.value = event.target.value)
                             }
                             className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-red-50"
                             placeholder="1"
@@ -106,9 +126,9 @@ export function Pair() {
                             name="number"
                             id="number"
                             onChange={(event) =>
-                              setTokenBQuantity(event.target.value)
+                              (tokenBQuantity.value = event.target.value)
                             }
-                            className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25  bg-red-50"
+                            className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 bg-red-50"
                             placeholder="1"
                           />
                         </div>
@@ -171,7 +191,7 @@ export function Pair() {
                             name="number"
                             id="number"
                             onChange={(event) =>
-                              setWithdrawalQuantity(event.target.value)
+                              (withdrawalQuantity.value = event.target.value)
                             }
                             className="block w-full rounded-md bg-indigo-50 py-3 px-4 pl-25"
                             placeholder="1"
