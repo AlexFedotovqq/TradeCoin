@@ -43,6 +43,7 @@ class Dex extends SmartContract {
    */
   init() {
     super.init();
+
     let proof = Permissions.proof();
     this.account.permissions.set({
       ...Permissions.allImpossible(),
@@ -74,24 +75,22 @@ class Dex extends SmartContract {
    */
   @method supplyLiquidityBase(dx: UInt64, dy: UInt64): UInt64 {
     let user = this.sender;
+
     let tokenX = new BasicTokenContract(this.tokenX.getAndAssertEquals());
     let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
 
     // get balances of X and Y token
-    let dexX = AccountUpdate.create(this.address, tokenX.token.id);
-    let x = dexX.account.balance.getAndAssertEquals();
 
-    let dexY = AccountUpdate.create(this.address, tokenY.token.id);
-    let y = dexY.account.balance.getAndAssertEquals();
+    let dexX = tokenX.balanceOf(this.address);
+    let dexY = tokenY.balanceOf(this.address);
 
     // // assert dy === [dx * y/x], or x === 0
-    let isXZero = x.equals(UInt64.zero);
-    let xSafe = Provable.if(isXZero, UInt64.one, x);
-    let isDyCorrect = dy.equals(dx.mul(y).div(xSafe));
+    let isXZero = dexX.equals(UInt64.zero);
+    let xSafe = Provable.if(isXZero, UInt64.one, dexX);
+    let isDyCorrect = dy.equals(dx.mul(dexY).div(xSafe));
     isDyCorrect.or(isXZero).assertTrue();
-
-    tokenX.transfer(user, dexX, dx);
-    tokenY.transfer(user, dexY, dy);
+    tokenX.transfer(user, this.address, dx);
+    tokenY.transfer(user, this.address, dy);
 
     // calculate liquidity token output simply as dl = dx + dx
     // => maintains ratio x/l, y/l
@@ -99,8 +98,7 @@ class Dex extends SmartContract {
     this.token.mint({ address: user, amount: dl });
 
     // update l supply
-    let l = this.totalSupply.get();
-    this.totalSupply.assertEquals(l);
+    let l = this.totalSupply.getAndAssertEquals();
     this.totalSupply.set(l.add(dl));
 
     return dl;

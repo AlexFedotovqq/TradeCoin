@@ -18,7 +18,7 @@
     "format": "prettier --write --ignore-unknown **/*",
     "test": "tsc && node build/src/main.js",
     "testDex": "tsc && node build/src/DexContract.test.js",
-    "testBasicToken": "tsc && node build/src/BasicTokenContract.test.js",
+    "testToken": "tsc && node build/src/BasicTokenContract.test.js",
     "lint": "npx eslint src/* --fix"
   },
   "dependencies": {
