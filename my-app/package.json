@@ -18,7 +18,7 @@
     "autoprefixer": "^10.4.13",
     "eslint": "^8.53.0",
     "eslint-config-next": "^14.0.1",
-    "iron-session": "^6.3.1",
+    "iron-session": "^8.0.1",
     "next": "^14.0.1",
     "o1js": "^0.14.1",
     "postcss": "^8.4.19",
