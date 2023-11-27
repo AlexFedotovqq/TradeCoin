@@ -13,6 +13,7 @@ import {
   Field,
   Permissions,
   Provable,
+  Bool,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
@@ -22,7 +23,6 @@ export { Dex, DexTokenHolder };
 class RedeemAction extends Struct({ address: PublicKey, dl: UInt64 }) {}
 
 class Dex extends SmartContract {
-  // addresses of token contracts are constants
   @state(PublicKey) tokenX = State<PublicKey>();
   @state(PublicKey) tokenY = State<PublicKey>();
 
@@ -55,6 +55,12 @@ class Dex extends SmartContract {
   }
 
   @method initTokenAddresses(_tokenX: PublicKey, _tokenY: PublicKey) {
+    this.tokenX.assertEquals(
+      PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
+    );
+    this.tokenY.assertEquals(
+      PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
+    );
     this.tokenX.set(_tokenX);
     this.tokenY.set(_tokenY);
   }
