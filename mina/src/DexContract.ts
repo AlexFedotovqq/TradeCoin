@@ -65,10 +65,6 @@ class Dex extends SmartContract {
     this.tokenY.set(_tokenY);
   }
 
-  @method createAccount() {
-    this.token.mint({ address: this.sender, amount: UInt64.from(0) });
-  }
-
   /**
    * Mint liquidity tokens in exchange for X and Y tokens
    * @param dx input amount of X tokens
@@ -202,10 +198,6 @@ class Dex extends SmartContract {
     let dx = dexX.swap(this.sender, dy, this.tokenY.get());
     tokenX.approveUpdateAndSend(dexX.self, this.sender, dx);
     return dx;
-  }
-
-  @method transfer(from: PublicKey, to: PublicKey, amount: UInt64) {
-    this.token.send({ from, to, amount });
   }
 }
 
