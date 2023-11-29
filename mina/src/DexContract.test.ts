@@ -132,6 +132,7 @@ console.log(dexApp.tokenY.get().toBase58());
 
 // supply the initial liquidity where the token ratio can be arbitrary
 console.log("supply liquidity -- base");
+
 let tx = await Mina.transaction(deployerAddress, () => {
   AccountUpdate.fundNewAccount(deployerAddress);
   dexApp.supplyLiquidityBase(UInt64.from(1), UInt64.from(1));
@@ -149,6 +150,16 @@ console.log(
 console.log(
   "zkDexAppAddress tokenX tokens:",
   Mina.getBalance(zkDexAppAddress, tokenX.token.id).value.toBigInt()
+);
+
+console.log(
+  "deployerAddress tokenY tokens:",
+  Mina.getBalance(deployerAddress, tokenY.token.id).value.toBigInt()
+);
+
+console.log(
+  "zkDexAppAddress tokenY tokens:",
+  Mina.getBalance(zkDexAppAddress, tokenY.token.id).value.toBigInt()
 );
 
 console.log(

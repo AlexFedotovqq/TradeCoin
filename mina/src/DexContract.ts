@@ -89,13 +89,16 @@ class Dex extends SmartContract {
     // // assert dy === [dx * y/x], or x === 0
     let isXZero = dexX.equals(UInt64.zero);
     let xSafe = Provable.if(isXZero, UInt64.one, dexX);
+
     let isDyCorrect = dy.equals(dx.mul(dexY).div(xSafe));
     isDyCorrect.or(isXZero).assertTrue();
+
     tokenX.transfer(user, this.address, dx);
     tokenY.transfer(user, this.address, dy);
 
-    // calculate liquidity token output simply as dl = dx + dx
+    // calculate liquidity token output simply as dl = dx + dy
     // => maintains ratio x/l, y/l
+
     let dl = dy.add(dx);
     this.token.mint({ address: user, amount: dl });
 

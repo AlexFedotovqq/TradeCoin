@@ -20,7 +20,7 @@ export class BasicTokenContract extends SmartContract {
     super.deploy(args);
 
     const permissionToEdit = Permissions.proof();
-    let none = Permissions.none();
+    //let none = Permissions.none();
 
     this.account.permissions.set({
       ...Permissions.default(),
@@ -61,6 +61,14 @@ export class BasicTokenContract extends SmartContract {
     this.totalAmountInCirculation.set(newTotalAmountInCirculation);
   }
 
+  @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
+    this.token.send({ from, to, amount: value });
+  }
+
+  @method transferToUpdate(from: PublicKey, to: AccountUpdate, value: UInt64) {
+    this.token.send({ from, to, amount: value });
+  }
+
   transfer(from: PublicKey, to: PublicKey | AccountUpdate, amount: UInt64) {
     if (to instanceof PublicKey)
       return this.transferToAddress(from, to, amount);
@@ -72,14 +80,6 @@ export class BasicTokenContract extends SmartContract {
     let account = Account(owner, this.token.id);
     let balance = account.balance.getAndAssertEquals();
     return balance;
-  }
-
-  @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
-    this.token.send({ from, to, amount: value });
-  }
-
-  @method transferToUpdate(from: PublicKey, to: AccountUpdate, value: UInt64) {
-    this.token.send({ from, to, amount: value });
   }
 
   @method approveUpdateAndSend(
