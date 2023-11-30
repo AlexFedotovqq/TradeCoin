@@ -119,21 +119,18 @@ class Dex extends SmartContract {
    * Fails if the liquidity pool is empty, so can't be used for the first deposit.
    */
   supplyLiquidity(dx: UInt64): UInt64 {
-    // calculate dy outside circuit
-    let x = Account(
-      this.address,
-      TokenId.derive(this.tokenX.get())
-    ).balance.get();
-    let y = Account(
-      this.address,
-      TokenId.derive(this.tokenY.get())
-    ).balance.get();
-    if (x.value.isConstant() && x.value.isZero().toBoolean()) {
+    let tokenX = new BasicTokenContract(this.tokenX.getAndAssertEquals());
+    let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
+
+    let dexX = tokenX.balanceOf(this.address);
+    let dexY = tokenY.balanceOf(this.address);
+
+    if (!dexX.value.equals(0)) {
       throw Error(
         "Cannot call `supplyLiquidity` when reserves are zero. Use `supplyLiquidityBase`."
       );
     }
-    let dy = dx.mul(y).div(x);
+    let dy = dx.mul(dexY).div(dexX);
     return this.supplyLiquidityBase(dx, dy);
   }
 

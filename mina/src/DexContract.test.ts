@@ -130,7 +130,6 @@ console.log("initialised tokens in a dex");
 console.log(dexApp.tokenX.get().toBase58());
 console.log(dexApp.tokenY.get().toBase58());
 
-// supply the initial liquidity where the token ratio can be arbitrary
 console.log("supply liquidity -- base");
 
 let tx = await Mina.transaction(deployerAddress, () => {
@@ -140,7 +139,42 @@ let tx = await Mina.transaction(deployerAddress, () => {
 
 await tx.prove();
 
-await tx.sign([deployerAccount, zkDexAppPrivateKey]).send();
+await tx.sign([deployerAccount]).send();
+
+console.log(
+  "deployerAddress tokenX tokens:",
+  Mina.getBalance(deployerAddress, tokenX.token.id).value.toBigInt()
+);
+
+console.log(
+  "zkDexAppAddress tokenX tokens:",
+  Mina.getBalance(zkDexAppAddress, tokenX.token.id).value.toBigInt()
+);
+
+console.log(
+  "deployerAddress tokenY tokens:",
+  Mina.getBalance(deployerAddress, tokenY.token.id).value.toBigInt()
+);
+
+console.log(
+  "zkDexAppAddress tokenY tokens:",
+  Mina.getBalance(zkDexAppAddress, tokenY.token.id).value.toBigInt()
+);
+
+console.log(
+  "deployer dexApp tokens:",
+  Mina.getBalance(deployerAddress, dexApp.token.id).value.toBigInt()
+);
+
+console.log("supply one side liquidity");
+
+let txLiq = await Mina.transaction(deployerAddress, () => {
+  dexApp.supplyLiquidity(UInt64.from(1));
+});
+
+await txLiq.prove();
+
+await txLiq.sign([deployerAccount]).send();
 
 console.log(
   "deployerAddress tokenX tokens:",
