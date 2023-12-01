@@ -134,6 +134,13 @@ class Dex extends SmartContract {
     return this.supplyLiquidityBase(dx, dy);
   }
 
+  @method redeem(dl: UInt64) {
+    this.token.burn({ address: this.sender, amount: dl });
+    // TODO: preconditioning on the state here ruins concurrent interactions,
+    // there should be another `finalize` DEX method which reduces actions & updates state
+    this.totalSupply.set(this.totalSupply.getAndAssertEquals().sub(dl));
+  }
+
   /**
    * Burn liquidity tokens to get back X and Y tokens
    * @param dl input amount of lqXY token
