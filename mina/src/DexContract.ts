@@ -54,6 +54,11 @@ class Dex extends SmartContract {
     });
   }
 
+  /**
+   * Initialize Token Addresses
+   * @param _tokenX X token public key
+   * @param _tokenY Y token public key
+   */
   @method initTokenAddresses(_tokenX: PublicKey, _tokenY: PublicKey) {
     this.tokenX.assertEquals(
       PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
@@ -136,8 +141,7 @@ class Dex extends SmartContract {
 
   @method redeem(dl: UInt64) {
     this.token.burn({ address: this.sender, amount: dl });
-    // TODO: preconditioning on the state here ruins concurrent interactions,
-    // there should be another `finalize` DEX method which reduces actions & updates state
+
     this.totalSupply.set(this.totalSupply.getAndAssertEquals().sub(dl));
   }
 
