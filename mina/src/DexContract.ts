@@ -1,5 +1,4 @@
 import {
-  Account,
   method,
   AccountUpdate,
   PublicKey,
@@ -8,7 +7,6 @@ import {
   Struct,
   State,
   state,
-  TokenId,
   Reducer,
   Field,
   Permissions,
@@ -83,13 +81,9 @@ class Dex extends SmartContract {
   @method supplyLiquidityBase(dx: UInt64, dy: UInt64): UInt64 {
     let user = this.sender;
 
-    let tokenX = new BasicTokenContract(this.tokenX.getAndAssertEquals());
-    let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
+    let { tokenX, tokenY } = this.initTokens();
 
-    // get balances of X and Y token
-
-    let dexX = tokenX.balanceOf(this.address);
-    let dexY = tokenY.balanceOf(this.address);
+    let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
 
     // // assert dy === [dx * y/x], or x === 0
     let isXZero = dexX.equals(UInt64.zero);
@@ -124,11 +118,9 @@ class Dex extends SmartContract {
    * Fails if the liquidity pool is empty, so can't be used for the first deposit.
    */
   supplyLiquidity(dx: UInt64): UInt64 {
-    let tokenX = new BasicTokenContract(this.tokenX.getAndAssertEquals());
-    let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
+    let { tokenX, tokenY } = this.initTokens();
 
-    let dexX = tokenX.balanceOf(this.address);
-    let dexY = tokenY.balanceOf(this.address);
+    let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
 
     if (!dexX.value.equals(0)) {
       throw Error(
@@ -139,31 +131,50 @@ class Dex extends SmartContract {
     return this.supplyLiquidityBase(dx, dy);
   }
 
+  /**
+   * Burn liquidity tokens to get back X and Y tokens
+   * @param dl input amount of lqXY token
+   *
+   * The transaction needs to be signed by the user's private key.
+   * Works with ZK app pk only atm
+   *
+   **/
   @method redeem(dl: UInt64) {
+    dl.assertGreaterThanOrEqual(UInt64.from(2));
+    let user = this.sender;
+
+    let { tokenX, tokenY } = this.initTokens();
+
+    tokenX.transfer(this.address, user, dl.div(2));
+    tokenY.transfer(this.address, user, dl.div(2));
+
     this.token.burn({ address: this.sender, amount: dl });
 
     this.totalSupply.set(this.totalSupply.getAndAssertEquals().sub(dl));
   }
 
   /**
-   * Burn liquidity tokens to get back X and Y tokens
-   * @param dl input amount of lqXY token
-   *
-   * The transaction needs to be signed by the user's private key.
-   *
-   * NOTE: this does not give back tokens in return for liquidity right away.
-   * to get back the tokens, you have to call {@link DexTokenHolder}.redeemFinalize()
-   * on both token holder contracts, after `redeemInitialize()` has been accepted into a block.
-   *
-   * @emits RedeemAction - action on the Dex account that will make the token holder
-   * contracts pay you tokens when reducing the action.
+   * Helper which creates instances of tokenX and tokenY
    */
-  @method redeemInitialize(dl: UInt64) {
-    this.reducer.dispatch(new RedeemAction({ address: this.sender, dl }));
-    this.token.burn({ address: this.sender, amount: dl });
-    // TODO: preconditioning on the state here ruins concurrent interactions,
-    // there should be another `finalize` DEX method which reduces actions & updates state
-    this.totalSupply.set(this.totalSupply.getAndAssertEquals().sub(dl));
+  initTokens(): {
+    tokenX: BasicTokenContract;
+    tokenY: BasicTokenContract;
+  } {
+    let tokenX = new BasicTokenContract(this.tokenX.getAndAssertEquals());
+    let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
+    return { tokenX, tokenY };
+  }
+
+  /**
+   * Helper which queries app balances of tokenX and tokenY
+   */
+  dexTokensBalance(
+    tokenX: BasicTokenContract,
+    tokenY: BasicTokenContract
+  ): { dexX: UInt64; dexY: UInt64 } {
+    let dexX = tokenX.balanceOf(this.address);
+    let dexY = tokenY.balanceOf(this.address);
+    return { dexX, dexY };
   }
 
   /**

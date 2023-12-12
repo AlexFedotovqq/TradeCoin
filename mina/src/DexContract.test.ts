@@ -187,11 +187,11 @@ logOutBalances();
 console.log("burn liquidity");
 
 let txBurn = await Mina.transaction(deployerAddress, () => {
-  dexApp.redeem(UInt64.from(1));
+  dexApp.redeem(UInt64.from(2));
 });
 
 await txBurn.prove();
 
-await txBurn.sign([deployerAccount]).send();
+await txBurn.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
 logOutBalances();
