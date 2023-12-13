@@ -32,7 +32,7 @@ function logOutBalances() {
 }
 
 const proofsEnabled = false;
-const enforceTransactionLimits = false;
+const enforceTransactionLimits = true;
 
 const Local = Mina.LocalBlockchain({
   proofsEnabled,
@@ -107,6 +107,7 @@ await mint_txn.prove();
 await mint_txn.sign([deployerAccount]).send();
 
 console.log("minted");
+
 console.log(
   "deployerAddress tokenX tokens:",
   Mina.getBalance(deployerAddress, tokenX.token.id).value.toBigInt()
@@ -116,11 +117,13 @@ console.log(
   Mina.getBalance(deployerAddress, tokenY.token.id).value.toBigInt()
 );
 
+// necessary to initialize tokens for ZkApp
 const send_txn = await Mina.transaction(deployerAddress, () => {
   AccountUpdate.fundNewAccount(deployerAddress, 2);
-  tokenX.transfer(deployerAddress, zkDexAppAddress, UInt64.from(0));
-  tokenY.transfer(deployerAddress, zkDexAppAddress, UInt64.from(0));
+  tokenX.transfer(deployerAddress, zkDexAppAddress, UInt64.zero);
+  tokenY.transfer(deployerAddress, zkDexAppAddress, UInt64.zero);
 });
+
 await send_txn.prove();
 await send_txn.sign([deployerAccount]).send();
 
@@ -128,7 +131,6 @@ console.log("sent");
 
 if (proofsEnabled) {
   ({ verificationKey } = await Dex.compile());
-  //console.log(verificationKey.hash);
 }
 console.log("compiled");
 
@@ -161,26 +163,30 @@ console.log(dexApp.tokenY.get().toBase58());
 
 console.log("supply liquidity -- base");
 
-let tx = await Mina.transaction(deployerAddress, () => {
+let txBaseX = await Mina.transaction(deployerAddress, () => {
+  dexApp.supplyTokenX(UInt64.from(1));
+});
+
+await txBaseX.prove();
+
+await txBaseX.sign([deployerAccount, zkDexAppPrivateKey]).send();
+
+let txBaseY = await Mina.transaction(deployerAddress, () => {
+  dexApp.supplyTokenY(UInt64.from(1));
+});
+
+await txBaseY.prove();
+
+await txBaseY.sign([deployerAccount]).send();
+
+let txBaseMint = await Mina.transaction(deployerAddress, () => {
   AccountUpdate.fundNewAccount(deployerAddress);
-  dexApp.supplyLiquidityBase(UInt64.from(1), UInt64.from(1));
+  dexApp.mintLiquidityToken(UInt64.from(2));
 });
 
-await tx.prove();
+await txBaseMint.prove();
 
-await tx.sign([deployerAccount]).send();
-
-logOutBalances();
-
-console.log("supply one side liquidity");
-
-let txLiq = await Mina.transaction(deployerAddress, () => {
-  dexApp.supplyLiquidity(UInt64.from(1));
-});
-
-await txLiq.prove();
-
-await txLiq.sign([deployerAccount]).send();
+await txBaseMint.sign([deployerAccount]).send();
 
 logOutBalances();
 

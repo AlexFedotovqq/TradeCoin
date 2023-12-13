@@ -2,9 +2,11 @@ import { BasicTokenContract } from "./BasicTokenContract.js";
 import { Mina, PrivateKey, AccountUpdate, UInt64, Signature } from "o1js";
 
 const proofsEnabled = false;
+const enforceTransactionLimits = true;
 
 const Local = Mina.LocalBlockchain({
   proofsEnabled,
+  enforceTransactionLimits,
 });
 
 Mina.setActiveInstance(Local);

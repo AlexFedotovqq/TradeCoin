@@ -20,7 +20,6 @@ export class BasicTokenContract extends SmartContract {
     super.deploy(args);
 
     const permissionToEdit = Permissions.proof();
-    //let none = Permissions.none();
 
     this.account.permissions.set({
       ...Permissions.default(),

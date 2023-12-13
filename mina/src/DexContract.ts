@@ -35,6 +35,7 @@ class Dex extends SmartContract {
    * redeeming liquidity is a 2-step process leveraging actions, to get past the account update limit
    */
   reducer = Reducer({ actionType: RedeemAction });
+  supplyReducer = Reducer({ actionType: RedeemAction });
 
   /**
    * Initialization. _All_ permissions are set to impossible except the explicitly required permissions.
@@ -43,12 +44,14 @@ class Dex extends SmartContract {
     super.init();
 
     let proof = Permissions.proof();
+
     this.account.permissions.set({
-      ...Permissions.allImpossible(),
+      ...Permissions.default(),
       access: proof,
       editState: proof,
       editActionState: proof,
       send: proof,
+      incrementNonce: proof,
     });
   }
 
@@ -68,67 +71,48 @@ class Dex extends SmartContract {
     this.tokenY.set(_tokenY);
   }
 
-  /**
-   * Mint liquidity tokens in exchange for X and Y tokens
-   * @param dx input amount of X tokens
-   * @param dy input amount of Y tokens
-   * @return output amount of lqXY tokens
-   *
-   * This function fails if the X and Y token amounts don't match the current X/Y ratio in the pool.
-   * This can also be used if the pool is empty. In that case, there is no check on X/Y;
-   * instead, the input X and Y amounts determine the initial ratio.
-   */
-  @method supplyLiquidityBase(dx: UInt64, dy: UInt64): UInt64 {
+  @method supplyTokenX(dx: UInt64) {
+    let user = this.sender;
+
+    let { tokenX, tokenY } = this.initTokens();
+    tokenX.transfer(user, this.address, dx);
+  }
+
+  @method supplyTokenY(dy: UInt64) {
+    let user = this.sender;
+    let { tokenX, tokenY } = this.initTokens();
+    tokenY.transfer(user, this.address, dy);
+  }
+
+  // change to user address *mapping*
+  // probably something like a merkle map
+  @method mintLiquidityToken(dl: UInt64) {
+    // more checks
+    // access balances
+    // change balances for a user
     let user = this.sender;
 
     let { tokenX, tokenY } = this.initTokens();
 
     let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
 
-    // // assert dy === [dx * y/x], or x === 0
-    let isXZero = dexX.equals(UInt64.zero);
-    let xSafe = Provable.if(isXZero, UInt64.one, dexX);
+    dexX.assertGreaterThan(UInt64.zero);
+    dexY.assertGreaterThan(UInt64.zero);
 
-    let isDyCorrect = dy.equals(dx.mul(dexY).div(xSafe));
-    isDyCorrect.or(isXZero).assertTrue();
+    let liquidity = this.totalSupply.getAndAssertEquals();
 
-    tokenX.transfer(user, this.address, dx);
-    tokenY.transfer(user, this.address, dy);
+    // how do we verify that user sent tokens?
+    // we update merkle tree balances in x and y supplies
+    // essentially, reedeming the balances here
+    // potentially available for sandwitch attacks )))
+    // we should supply merkle leaf associated with index being user's address
+    // also store merkle map root
 
-    // calculate liquidity token output simply as dl = dx + dy
-    // => maintains ratio x/l, y/l
-
-    let dl = dy.add(dx);
     this.token.mint({ address: user, amount: dl });
 
-    // update l supply
-    let l = this.totalSupply.getAndAssertEquals();
-    this.totalSupply.set(l.add(dl));
+    // update liquidity supply
 
-    return dl;
-  }
-
-  /**
-   * Mint liquidity tokens in exchange for X and Y tokens
-   * @param dx input amount of X tokens
-   * @return output amount of lqXY tokens
-   *
-   * This uses supplyLiquidityBase as the circuit, but for convenience,
-   * the input amount of Y tokens is calculated automatically from the X tokens.
-   * Fails if the liquidity pool is empty, so can't be used for the first deposit.
-   */
-  supplyLiquidity(dx: UInt64): UInt64 {
-    let { tokenX, tokenY } = this.initTokens();
-
-    let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
-
-    if (!dexX.value.equals(0)) {
-      throw Error(
-        "Cannot call `supplyLiquidity` when reserves are zero. Use `supplyLiquidityBase`."
-      );
-    }
-    let dy = dx.mul(dexY).div(dexX);
-    return this.supplyLiquidityBase(dx, dy);
+    this.totalSupply.set(liquidity.add(dl));
   }
 
   /**
@@ -224,11 +208,13 @@ class Dex extends SmartContract {
 }
 
 class DexTokenHolder extends SmartContract {
+  @state(Field) supplyActionState = State<Field>();
   @state(Field) redeemActionState = State<Field>();
   static redeemActionBatchSize = 5;
 
   init() {
     super.init();
+    this.supplyActionState.set(Reducer.initialActionState);
     this.redeemActionState.set(Reducer.initialActionState);
   }
 
