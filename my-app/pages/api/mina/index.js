@@ -5,13 +5,13 @@ import { Dex } from "tradecoin-mina";
 export default async function handler(req, res) {
   try {
     const Berkeley = Mina.Network(
-      "https://proxy.berkeley.minaexplorer.com/graphql"
+      "https://proxy.berkeley.minaexplorer.com/graphql",
     );
 
     Mina.setActiveInstance(Berkeley);
 
     const zkAppAddress = PublicKey.fromBase58(
-      "B62qq1DMusFhTJHrcQPUnxVo1xMJK6wKCcurBfNLhACmsmmrzZAyqVE"
+      "B62qq1DMusFhTJHrcQPUnxVo1xMJK6wKCcurBfNLhACmsmmrzZAyqVE",
     );
 
     const ass = await fetchAccount({ publicKey: zkAppAddress });
