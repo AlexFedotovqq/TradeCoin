@@ -61,10 +61,10 @@ class Dex extends SmartContract {
    * @param _tokenY Y token public key
    */
   @method initTokenAddresses(_tokenX: PublicKey, _tokenY: PublicKey) {
-    this.tokenX.assertEquals(
+    this.tokenX.requireEquals(
       PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
     );
-    this.tokenY.assertEquals(
+    this.tokenY.requireEquals(
       PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
     );
     this.tokenX.set(_tokenX);
@@ -99,7 +99,7 @@ class Dex extends SmartContract {
     dexX.assertGreaterThan(UInt64.zero);
     dexY.assertGreaterThan(UInt64.zero);
 
-    let liquidity = this.totalSupply.getAndAssertEquals();
+    let liquidity = this.totalSupply.getAndRequireEquals();
 
     // how do we verify that user sent tokens?
     // we update merkle tree balances in x and y supplies
@@ -134,7 +134,7 @@ class Dex extends SmartContract {
 
     this.token.burn({ address: this.sender, amount: dl });
 
-    this.totalSupply.set(this.totalSupply.getAndAssertEquals().sub(dl));
+    this.totalSupply.set(this.totalSupply.getAndRequireEquals().sub(dl));
   }
 
   /**
@@ -144,8 +144,8 @@ class Dex extends SmartContract {
     tokenX: BasicTokenContract;
     tokenY: BasicTokenContract;
   } {
-    let tokenX = new BasicTokenContract(this.tokenX.getAndAssertEquals());
-    let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
+    let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
+    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
     return { tokenX, tokenY };
   }
 
@@ -166,8 +166,8 @@ class Dex extends SmartContract {
    * the current action state and token supply
    */
   @method assertActionsAndSupply(actionState: Field, totalSupply: UInt64) {
-    this.account.actionState.assertEquals(actionState);
-    this.totalSupply.assertEquals(totalSupply);
+    this.account.actionState.requireEquals(actionState);
+    this.totalSupply.requireEquals(totalSupply);
   }
 
   /**
@@ -181,9 +181,9 @@ class Dex extends SmartContract {
    * the called methods which requires proof authorization.
    */
   swapX(dx: UInt64): UInt64 {
-    let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
+    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
     let dexY = new DexTokenHolder(this.address, tokenY.token.id);
-    let dy = dexY.swap(this.sender, dx, this.tokenX.getAndAssertEquals());
+    let dy = dexY.swap(this.sender, dx, this.tokenX.getAndRequireEquals());
     tokenY.approveUpdateAndSend(dexY.self, this.sender, dy);
     return dy;
   }
@@ -221,7 +221,7 @@ class DexTokenHolder extends SmartContract {
   @method redeemLiquidityFinalize() {
     // get redeem actions
     let dex = new Dex(this.address);
-    let fromActionState = this.redeemActionState.getAndAssertEquals();
+    let fromActionState = this.redeemActionState.getAndRequireEquals();
     let actions = dex.reducer.getActions({ fromActionState });
 
     // get total supply of liquidity tokens _before_ applying these actions
@@ -236,7 +236,7 @@ class DexTokenHolder extends SmartContract {
     });
 
     // get our token balance
-    let x = this.account.balance.getAndAssertEquals();
+    let x = this.account.balance.getAndRequireEquals();
 
     let redeemActionState = dex.reducer.forEach(
       actions,
@@ -281,8 +281,8 @@ class DexTokenHolder extends SmartContract {
 
     // get balances of X and Y token
     let dexX = AccountUpdate.create(this.address, tokenX.token.id);
-    let x = dexX.account.balance.getAndAssertEquals();
-    let y = this.account.balance.getAndAssertEquals();
+    let x = dexX.account.balance.getAndRequireEquals();
+    let y = this.account.balance.getAndRequireEquals();
 
     // send x from user to us (i.e., to the same address as this but with the other token)
     tokenX.transfer(user, dexX, dx);

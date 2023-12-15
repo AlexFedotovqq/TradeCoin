@@ -41,7 +41,7 @@ export class BasicTokenContract extends SmartContract {
     adminSignature: Signature
   ) {
     let totalAmountInCirculation =
-      this.totalAmountInCirculation.getAndAssertEquals();
+      this.totalAmountInCirculation.getAndRequireEquals();
 
     let newTotalAmountInCirculation = totalAmountInCirculation.add(amount);
 
@@ -77,7 +77,7 @@ export class BasicTokenContract extends SmartContract {
 
   @method balanceOf(owner: PublicKey): UInt64 {
     let account = Account(owner, this.token.id);
-    let balance = account.balance.getAndAssertEquals();
+    let balance = account.balance.getAndRequireEquals();
     return balance;
   }
 
