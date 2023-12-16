@@ -4,12 +4,14 @@ import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { signal, effect } from "@preact/signals-react";
 import { Field, Mina, fetchAccount, PublicKey } from "o1js";
 
+import { Dex } from "tradecoin-mina";
+
 export function Pair() {
-  /*   const Berkeley = Mina.Network(
-    "https://proxy.berkeley.minaexplorer.com/graphql"
+  const Berkeley = Mina.Network(
+    "https://proxy.berkeley.minaexplorer.com/graphql",
   );
 
-  Mina.setActiveInstance(Berkeley); */
+  Mina.setActiveInstance(Berkeley);
 
   const data = signal([
     {
@@ -28,23 +30,19 @@ export function Pair() {
     },
   ]);
 
-  effect(async () => {
-    try {
-      /*       const zkAppAddress = PublicKey.fromBase58(data.value[0].pairAddress);
-      console.log(zkAppAddress);
-      console.log(await fetchAccount({ publicKey: zkAppAddress })); */
-      //const zkAppInstance = new BasicTokenContract(zkAppAddress);
-      //console.log(zkAppInstance);
-    } catch {
-      console.log("error");
-    }
-  });
-
   const withdrawalQuantity = signal(1);
   const tokenAQuantity = signal(1);
   const tokenBQuantity = signal(1);
 
-  function removeLiquidity() {}
+  async function removeLiquidity() {
+    const zkAppAddress = PublicKey.fromBase58(data.value[0].pairAddress);
+    console.log(zkAppAddress.toBase58());
+    console.log(await fetchAccount({ publicKey: zkAppAddress }));
+    //await Dex.compile();
+    const zkAppInstance = new Dex(zkAppAddress);
+    console.log(zkAppInstance);
+    //console.log(zkAppInstance.tokenX.get());
+  }
 
   function addLiquidity() {}
 

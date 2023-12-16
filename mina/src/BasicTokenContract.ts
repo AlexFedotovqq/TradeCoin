@@ -10,6 +10,7 @@ import {
   Signature,
   AccountUpdate,
   Int64,
+  Account,
 } from "o1js";
 
 export class BasicTokenContract extends SmartContract {
@@ -34,11 +35,14 @@ export class BasicTokenContract extends SmartContract {
     this.totalAmountInCirculation.set(UInt64.zero);
   }
 
-  @method mint(receiverAddress: PublicKey, adminSignature: Signature) {
-    let totalAmountInCirculation = this.totalAmountInCirculation.get();
-    this.totalAmountInCirculation.assertEquals(totalAmountInCirculation);
+  @method mint(
+    receiverAddress: PublicKey,
+    amount: UInt64,
+    adminSignature: Signature
+  ) {
+    let totalAmountInCirculation =
+      this.totalAmountInCirculation.getAndRequireEquals();
 
-    let amount = UInt64.one;
     let newTotalAmountInCirculation = totalAmountInCirculation.add(amount);
 
     adminSignature
@@ -56,17 +60,25 @@ export class BasicTokenContract extends SmartContract {
     this.totalAmountInCirculation.set(newTotalAmountInCirculation);
   }
 
+  @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
+    this.token.send({ from, to, amount: value });
+  }
+
+  @method transferToUpdate(from: PublicKey, to: AccountUpdate, value: UInt64) {
+    this.token.send({ from, to, amount: value });
+  }
+
   transfer(from: PublicKey, to: PublicKey | AccountUpdate, amount: UInt64) {
     if (to instanceof PublicKey)
       return this.transferToAddress(from, to, amount);
     if (to instanceof AccountUpdate)
       return this.transferToUpdate(from, to, amount);
   }
-  @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
-    this.token.send({ from, to, amount: value });
-  }
-  @method transferToUpdate(from: PublicKey, to: AccountUpdate, value: UInt64) {
-    this.token.send({ from, to, amount: value });
+
+  @method balanceOf(owner: PublicKey): UInt64 {
+    let account = Account(owner, this.token.id);
+    let balance = account.balance.getAndRequireEquals();
+    return balance;
   }
 
   @method approveUpdateAndSend(

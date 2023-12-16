@@ -2,9 +2,11 @@ import { BasicTokenContract } from "./BasicTokenContract.js";
 import { Mina, PrivateKey, AccountUpdate, UInt64, Signature } from "o1js";
 
 const proofsEnabled = false;
+const enforceTransactionLimits = true;
 
 const Local = Mina.LocalBlockchain({
   proofsEnabled,
+  enforceTransactionLimits,
 });
 
 Mina.setActiveInstance(Local);
@@ -43,7 +45,7 @@ console.log("deployed");
 
 console.log("minting...");
 
-const mintAmount = UInt64.from(1);
+const mintAmount = UInt64.from(10);
 
 const mintSignature = Signature.create(
   zkAppPrivateKey,
@@ -52,7 +54,7 @@ const mintSignature = Signature.create(
 
 const mint_txn = await Mina.transaction(deployerAddress, () => {
   AccountUpdate.fundNewAccount(deployerAddress);
-  contract.mint(zkAppAddress, mintSignature);
+  contract.mint(zkAppAddress, mintAmount, mintSignature);
 });
 
 await mint_txn.prove();
@@ -95,3 +97,9 @@ console.log(
   "zkapp tokens:",
   Mina.getBalance(zkAppAddress, contract.token.id).value.toBigInt()
 );
+
+const balance_txn = await Mina.transaction(deployerAddress, () => {
+  contract.balanceOf(deployerAddress);
+});
+await balance_txn.prove();
+await balance_txn.sign([deployerAccount, zkAppPrivateKey]).send();

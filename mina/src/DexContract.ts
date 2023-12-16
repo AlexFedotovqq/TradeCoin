@@ -1,5 +1,4 @@
 import {
-  Account,
   method,
   AccountUpdate,
   PublicKey,
@@ -8,11 +7,11 @@ import {
   Struct,
   State,
   state,
-  TokenId,
   Reducer,
   Field,
   Permissions,
   Provable,
+  Bool,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
@@ -22,7 +21,6 @@ export { Dex, DexTokenHolder };
 class RedeemAction extends Struct({ address: PublicKey, dl: UInt64 }) {}
 
 class Dex extends SmartContract {
-  // addresses of token contracts are constants
   @state(PublicKey) tokenX = State<PublicKey>();
   @state(PublicKey) tokenY = State<PublicKey>();
 
@@ -37,101 +35,84 @@ class Dex extends SmartContract {
    * redeeming liquidity is a 2-step process leveraging actions, to get past the account update limit
    */
   reducer = Reducer({ actionType: RedeemAction });
+  supplyReducer = Reducer({ actionType: RedeemAction });
 
   /**
    * Initialization. _All_ permissions are set to impossible except the explicitly required permissions.
    */
   init() {
     super.init();
+
     let proof = Permissions.proof();
+
     this.account.permissions.set({
-      ...Permissions.allImpossible(),
+      ...Permissions.default(),
       access: proof,
       editState: proof,
       editActionState: proof,
       send: proof,
+      incrementNonce: proof,
     });
   }
 
+  /**
+   * Initialize Token Addresses
+   * @param _tokenX X token public key
+   * @param _tokenY Y token public key
+   */
   @method initTokenAddresses(_tokenX: PublicKey, _tokenY: PublicKey) {
+    this.tokenX.requireEquals(
+      PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
+    );
+    this.tokenY.requireEquals(
+      PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
+    );
     this.tokenX.set(_tokenX);
     this.tokenY.set(_tokenY);
   }
 
-  @method createAccount() {
-    this.token.mint({ address: this.sender, amount: UInt64.from(0) });
+  @method supplyTokenX(dx: UInt64) {
+    let user = this.sender;
+
+    let { tokenX, tokenY } = this.initTokens();
+    tokenX.transfer(user, this.address, dx);
   }
 
-  /**
-   * Mint liquidity tokens in exchange for X and Y tokens
-   * @param dx input amount of X tokens
-   * @param dy input amount of Y tokens
-   * @return output amount of lqXY tokens
-   *
-   * This function fails if the X and Y token amounts don't match the current X/Y ratio in the pool.
-   * This can also be used if the pool is empty. In that case, there is no check on X/Y;
-   * instead, the input X and Y amounts determine the initial ratio.
-   */
-  @method supplyLiquidityBase(dx: UInt64, dy: UInt64): UInt64 {
+  @method supplyTokenY(dy: UInt64) {
     let user = this.sender;
-    let tokenX = new BasicTokenContract(this.tokenX.getAndAssertEquals());
-    let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
+    let { tokenX, tokenY } = this.initTokens();
+    tokenY.transfer(user, this.address, dy);
+  }
 
-    // get balances of X and Y token
-    let dexX = AccountUpdate.create(this.address, tokenX.token.id);
-    let x = dexX.account.balance.getAndAssertEquals();
+  // change to user address *mapping*
+  // probably something like a merkle map
+  @method mintLiquidityToken(dl: UInt64) {
+    // more checks
+    // access balances
+    // change balances for a user
+    let user = this.sender;
 
-    let dexY = AccountUpdate.create(this.address, tokenY.token.id);
-    let y = dexY.account.balance.getAndAssertEquals();
+    let { tokenX, tokenY } = this.initTokens();
 
-    // // assert dy === [dx * y/x], or x === 0
-    let isXZero = x.equals(UInt64.zero);
-    let xSafe = Provable.if(isXZero, UInt64.one, x);
-    let isDyCorrect = dy.equals(dx.mul(y).div(xSafe));
-    isDyCorrect.or(isXZero).assertTrue();
+    let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
 
-    tokenX.transfer(user, dexX, dx);
-    tokenY.transfer(user, dexY, dy);
+    dexX.assertGreaterThan(UInt64.zero);
+    dexY.assertGreaterThan(UInt64.zero);
 
-    // calculate liquidity token output simply as dl = dx + dx
-    // => maintains ratio x/l, y/l
-    let dl = dy.add(dx);
+    let liquidity = this.totalSupply.getAndRequireEquals();
+
+    // how do we verify that user sent tokens?
+    // we update merkle tree balances in x and y supplies
+    // essentially, reedeming the balances here
+    // potentially available for sandwitch attacks )))
+    // we should supply merkle leaf associated with index being user's address
+    // also store merkle map root
+
     this.token.mint({ address: user, amount: dl });
 
-    // update l supply
-    let l = this.totalSupply.get();
-    this.totalSupply.assertEquals(l);
-    this.totalSupply.set(l.add(dl));
+    // update liquidity supply
 
-    return dl;
-  }
-
-  /**
-   * Mint liquidity tokens in exchange for X and Y tokens
-   * @param dx input amount of X tokens
-   * @return output amount of lqXY tokens
-   *
-   * This uses supplyLiquidityBase as the circuit, but for convenience,
-   * the input amount of Y tokens is calculated automatically from the X tokens.
-   * Fails if the liquidity pool is empty, so can't be used for the first deposit.
-   */
-  supplyLiquidity(dx: UInt64): UInt64 {
-    // calculate dy outside circuit
-    let x = Account(
-      this.address,
-      TokenId.derive(this.tokenX.get())
-    ).balance.get();
-    let y = Account(
-      this.address,
-      TokenId.derive(this.tokenY.get())
-    ).balance.get();
-    if (x.value.isConstant() && x.value.isZero().toBoolean()) {
-      throw Error(
-        "Cannot call `supplyLiquidity` when reserves are zero. Use `supplyLiquidityBase`."
-      );
-    }
-    let dy = dx.mul(y).div(x);
-    return this.supplyLiquidityBase(dx, dy);
+    this.totalSupply.set(liquidity.add(dl));
   }
 
   /**
@@ -139,20 +120,45 @@ class Dex extends SmartContract {
    * @param dl input amount of lqXY token
    *
    * The transaction needs to be signed by the user's private key.
+   * Works with ZK app pk only atm
    *
-   * NOTE: this does not give back tokens in return for liquidity right away.
-   * to get back the tokens, you have to call {@link DexTokenHolder}.redeemFinalize()
-   * on both token holder contracts, after `redeemInitialize()` has been accepted into a block.
-   *
-   * @emits RedeemAction - action on the Dex account that will make the token holder
-   * contracts pay you tokens when reducing the action.
-   */
-  @method redeemInitialize(dl: UInt64) {
-    this.reducer.dispatch(new RedeemAction({ address: this.sender, dl }));
+   **/
+  @method redeem(dl: UInt64) {
+    dl.assertGreaterThanOrEqual(UInt64.from(2));
+    let user = this.sender;
+
+    let { tokenX, tokenY } = this.initTokens();
+
+    tokenX.transfer(this.address, user, dl.div(2));
+    tokenY.transfer(this.address, user, dl.div(2));
+
     this.token.burn({ address: this.sender, amount: dl });
-    // TODO: preconditioning on the state here ruins concurrent interactions,
-    // there should be another `finalize` DEX method which reduces actions & updates state
-    this.totalSupply.set(this.totalSupply.getAndAssertEquals().sub(dl));
+
+    this.totalSupply.set(this.totalSupply.getAndRequireEquals().sub(dl));
+  }
+
+  /**
+   * Helper which creates instances of tokenX and tokenY
+   */
+  initTokens(): {
+    tokenX: BasicTokenContract;
+    tokenY: BasicTokenContract;
+  } {
+    let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
+    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
+    return { tokenX, tokenY };
+  }
+
+  /**
+   * Helper which queries app balances of tokenX and tokenY
+   */
+  dexTokensBalance(
+    tokenX: BasicTokenContract,
+    tokenY: BasicTokenContract
+  ): { dexX: UInt64; dexY: UInt64 } {
+    let dexX = tokenX.balanceOf(this.address);
+    let dexY = tokenY.balanceOf(this.address);
+    return { dexX, dexY };
   }
 
   /**
@@ -160,8 +166,8 @@ class Dex extends SmartContract {
    * the current action state and token supply
    */
   @method assertActionsAndSupply(actionState: Field, totalSupply: UInt64) {
-    this.account.actionState.assertEquals(actionState);
-    this.totalSupply.assertEquals(totalSupply);
+    this.account.actionState.requireEquals(actionState);
+    this.totalSupply.requireEquals(totalSupply);
   }
 
   /**
@@ -175,9 +181,9 @@ class Dex extends SmartContract {
    * the called methods which requires proof authorization.
    */
   swapX(dx: UInt64): UInt64 {
-    let tokenY = new BasicTokenContract(this.tokenY.getAndAssertEquals());
+    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
     let dexY = new DexTokenHolder(this.address, tokenY.token.id);
-    let dy = dexY.swap(this.sender, dx, this.tokenX.getAndAssertEquals());
+    let dy = dexY.swap(this.sender, dx, this.tokenX.getAndRequireEquals());
     tokenY.approveUpdateAndSend(dexY.self, this.sender, dy);
     return dy;
   }
@@ -199,25 +205,23 @@ class Dex extends SmartContract {
     tokenX.approveUpdateAndSend(dexX.self, this.sender, dx);
     return dx;
   }
-
-  @method transfer(from: PublicKey, to: PublicKey, amount: UInt64) {
-    this.token.send({ from, to, amount });
-  }
 }
 
 class DexTokenHolder extends SmartContract {
+  @state(Field) supplyActionState = State<Field>();
   @state(Field) redeemActionState = State<Field>();
   static redeemActionBatchSize = 5;
 
   init() {
     super.init();
+    this.supplyActionState.set(Reducer.initialActionState);
     this.redeemActionState.set(Reducer.initialActionState);
   }
 
   @method redeemLiquidityFinalize() {
     // get redeem actions
     let dex = new Dex(this.address);
-    let fromActionState = this.redeemActionState.getAndAssertEquals();
+    let fromActionState = this.redeemActionState.getAndRequireEquals();
     let actions = dex.reducer.getActions({ fromActionState });
 
     // get total supply of liquidity tokens _before_ applying these actions
@@ -232,7 +236,7 @@ class DexTokenHolder extends SmartContract {
     });
 
     // get our token balance
-    let x = this.account.balance.getAndAssertEquals();
+    let x = this.account.balance.getAndRequireEquals();
 
     let redeemActionState = dex.reducer.forEach(
       actions,
@@ -277,8 +281,8 @@ class DexTokenHolder extends SmartContract {
 
     // get balances of X and Y token
     let dexX = AccountUpdate.create(this.address, tokenX.token.id);
-    let x = dexX.account.balance.getAndAssertEquals();
-    let y = this.account.balance.getAndAssertEquals();
+    let x = dexX.account.balance.getAndRequireEquals();
+    let y = this.account.balance.getAndRequireEquals();
 
     // send x from user to us (i.e., to the same address as this but with the other token)
     tokenX.transfer(user, dexX, dx);
