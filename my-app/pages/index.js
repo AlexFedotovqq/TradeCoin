@@ -198,22 +198,16 @@ export default function Index() {
                     </p>
                     <p className="mt-4 text-lg leading-8 text-gray-900 sm:text-center">
                       <strong>
-                        Then you can watch the video below. It clearly shows you
-                        how to use it.
+                        Then you can watch the{" "}
+                        <Link
+                          href="https://www.youtube.com/embed/BUigc1HjJEw?autoplay=1&mute=1"
+                          className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center"
+                        >
+                          YouTube video
+                        </Link>
+                        . It clearly shows you how to use it.
                       </strong>
                     </p>
-
-                    <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
-                      <div className="flex justify-center">
-                        <iframe
-                          width="600"
-                          height="350"
-                          src="https://www.youtube.com/embed/BUigc1HjJEw?autoplay=1&mute=1"
-                          title="YouTube video player"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;fullscreen"
-                        />
-                      </div>
-                    </div>
                     <p className="mt-4 mb-9 text-lg leading-8 text-gray-900 sm:text-center">
                       <strong>
                         How to use TradeCoin: Unlock liquidity with TradeCoin -

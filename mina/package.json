@@ -1,6 +1,6 @@
 {
-  "name": "tradecoin",
-  "version": "1.1.1",
+  "name": "tradecoin-mina",
+  "version": "0.0.2",
   "license": "MIT",
   "keywords": [
     "mina-zkapp",
