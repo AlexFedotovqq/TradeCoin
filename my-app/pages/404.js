@@ -36,7 +36,7 @@ const links = [
 
 export default function ErrorPage() {
   return (
-    <div className="bg-gray-800 h-screen">
+    <div className="relative bg-gray-800">
       <main className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:pb-24 lg:px-8">
         <div className="mx-auto mt-6 max-w-2xl text-center sm:mt-6">
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
