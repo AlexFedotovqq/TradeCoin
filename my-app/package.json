@@ -28,7 +28,7 @@
     "tradecoin-mina": "^0.0.2"
   },
   "devDependencies": {
-    "@types/node": "20.10.4",
+    "@types/node": "20.10.5",
     "@types/react": "18.2.45",
     "eslint-plugin-next": "^0.0.0",
     "prettier": "^3.0.3",
