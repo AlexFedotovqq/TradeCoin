@@ -1,5 +1,6 @@
 import { tokens } from "@/utils/tokens";
 import { classNames } from "@/utils/classNames";
+import Image from "next/image";
 
 import { Dialog, Transition } from "@headlessui/react";
 import { Combobox } from "@headlessui/react";
@@ -133,8 +134,10 @@ export default function Exchange() {
                 onClick={() => setOpenTokenA(true)}
                 className="relative inline-flex items-center justify-center right-2 rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
               >
-                <img
+                <Image
                   className="h-6 w-6 rounded-full"
+                  width={400}
+                  height={400}
                   src={tokenA.imageUrl}
                   alt="tokenA"
                 />
@@ -189,8 +192,10 @@ export default function Exchange() {
                   onClick={() => setOpenTokenB(true)}
                   className="relative inline-flex items-center justify-center rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
                 >
-                  <img
+                  <Image
                     className="h-6 w-6 rounded-full"
+                    width={400}
+                    height={400}
                     src={tokenB.imageUrl}
                     alt="tokenB"
                   />
@@ -419,10 +424,12 @@ export default function Exchange() {
                                   {({ active, selected }) => (
                                     <>
                                       <div className="flex items-center">
-                                        <img
+                                        <Image
                                           src={token.imageUrl}
                                           alt={token.name}
-                                          className="h-6 w-6 flex-shrink-0  rounded-full"
+                                          className="h-6 w-6 flex-shrink-0 rounded-full"
+                                          width={400}
+                                          height={400}
                                         />
                                         <span
                                           className={classNames(
@@ -542,10 +549,12 @@ export default function Exchange() {
                                   {({ active, selected }) => (
                                     <>
                                       <div className="flex items-center">
-                                        <img
+                                        <Image
                                           src={token.imageUrl}
                                           alt={token.name}
                                           className="h-6 w-6 flex-shrink-0 rounded-full"
+                                          width={400}
+                                          height={400}
                                         />
                                         <span
                                           className={classNames(

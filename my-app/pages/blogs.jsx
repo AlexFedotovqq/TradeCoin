@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+
 const posts = [
   {
     title:
@@ -92,8 +94,10 @@ export default function Example() {
               className="flex flex-col overflow-hidden rounded-lg shadow-lg"
             >
               <div className="flex-shrink-0">
-                <img
+                <Image
                   className="h-48 w-full object-cover"
+                  width={400}
+                  height={400}
                   src={post.imageUrl}
                   alt=""
                 />
@@ -118,8 +122,10 @@ export default function Example() {
                   <div className="flex-shrink-0">
                     <a href={post.author.href}>
                       <span className="sr-only">{post.author.name}</span>
-                      <img
+                      <Image
                         className="h-10 w-10 rounded-full"
+                        width={400}
+                        height={400}
                         src={post.author.imageUrl}
                         alt=""
                       />
