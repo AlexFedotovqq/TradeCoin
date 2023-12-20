@@ -39,7 +39,7 @@ We plan to continue to improve the protocol and make it more secure and reliable
 
 ## Important Links
 
-1. [WebSite](https://trade-coin-xi.vercel.app/)
+1. [WebSite](https://tradecoin.dev/)
 2. [Twitter](https://twitter.com/_TradeCoin_)
 3. [instagram](https://www.instagram.com/_tradecoin_/)
 
