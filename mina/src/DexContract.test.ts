@@ -190,6 +190,20 @@ await txBaseMint.sign([deployerAccount]).send();
 
 logOutBalances();
 
+// add script for swap
+
+/* console.log("swap");
+
+let txSwap = await Mina.transaction(deployerAddress, () => {
+  dexApp.swapXforY(UInt64.from(1));
+});
+
+await txSwap.prove();
+
+await txSwap.sign([deployerAccount, zkDexAppPrivateKey]).send();
+
+logOutBalances(); */
+
 console.log("burn liquidity");
 
 let txBurn = await Mina.transaction(deployerAddress, () => {

@@ -137,6 +137,17 @@ class Dex extends SmartContract {
     this.totalSupply.set(this.totalSupply.getAndRequireEquals().sub(dl));
   }
 
+  @method swapXforY(tokenAmountIn: UInt64) {
+    let user = this.sender;
+
+    let { tokenX, tokenY } = this.initTokens();
+
+    tokenY.transfer(user, this.address, tokenAmountIn);
+    // add function to calculate
+    tokenX.transfer(this.address, user, tokenAmountIn);
+    // add balances?
+  }
+
   /**
    * Helper which creates instances of tokenX and tokenY
    */
