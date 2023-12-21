@@ -1,4 +1,4 @@
 import { BasicTokenContract } from "./BasicTokenContract.js";
-import { Dex, DexTokenHolder } from "./DexContract.js";
+import { Dex } from "./DexContract.js";
 
-export { BasicTokenContract, Dex, DexTokenHolder };
+export { BasicTokenContract, Dex };

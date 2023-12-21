@@ -140,19 +140,21 @@ class Dex extends SmartContract {
   @method swapXforY(tokenAmountIn: UInt64) {
     let user = this.sender;
 
-    let { tokenX, tokenY } = this.initTokens();
+    let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
 
-    let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
+    //let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
 
     // check amm function to calculate outputs
-    let dy = dexY.mul(tokenAmountIn).div(dexX.add(tokenAmountIn));
-    dy.assertGreaterThanOrEqual(UInt64.from(1));
+    //let dy = dexY.mul(dx).div(dexX.add(dx));
+    //dy.assertGreaterThanOrEqual(UInt64.from(1));
 
-    tokenY.transfer(user, this.address, tokenAmountIn);
+    tokenX.transfer(user, this.address, tokenAmountIn);
 
-    tokenX.transfer(this.address, user, dy);
+    //tokenY.transfer(this.address, user, dy);
     // add balances?
   }
+
+  // add Y for X
 
   /**
    * Helper which creates instances of tokenX and tokenY

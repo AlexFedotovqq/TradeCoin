@@ -32,7 +32,7 @@ function logOutBalances() {
 }
 
 const proofsEnabled = false;
-const enforceTransactionLimits = false;
+const enforceTransactionLimits = true;
 
 const Local = Mina.LocalBlockchain({
   proofsEnabled,
