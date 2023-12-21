@@ -194,7 +194,7 @@ logOutBalances();
 console.log("swap");
 
 let txSwap = await Mina.transaction(deployerAddress, () => {
-  dexApp.swapXforY(UInt64.from(2));
+  dexApp.swapXforY(UInt64.from(4));
 });
 
 await txSwap.prove();

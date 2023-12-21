@@ -1,24 +1,18 @@
 import {
   method,
-  AccountUpdate,
   PublicKey,
   SmartContract,
   UInt64,
-  Struct,
   State,
   state,
-  Reducer,
   Field,
   Permissions,
-  Provable,
   Bool,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
 
 export { Dex };
-
-class RedeemAction extends Struct({ address: PublicKey, dl: UInt64 }) {}
 
 class Dex extends SmartContract {
   @state(PublicKey) tokenX = State<PublicKey>();
@@ -31,11 +25,14 @@ class Dex extends SmartContract {
    */
   @state(UInt64) totalSupply = State<UInt64>();
 
+  @state(UInt64) Xbalance = State<UInt64>();
+  @state(UInt64) Ybalance = State<UInt64>();
+
   /**
    * redeeming liquidity is a 2-step process leveraging actions, to get past the account update limit
    */
-  reducer = Reducer({ actionType: RedeemAction });
-  supplyReducer = Reducer({ actionType: RedeemAction });
+  //reducer = Reducer({ actionType: RedeemAction });
+  //supplyReducer = Reducer({ actionType: RedeemAction });
 
   /**
    * Initialization. _All_ permissions are set to impossible except the explicitly required permissions.
@@ -75,12 +72,20 @@ class Dex extends SmartContract {
     let user = this.sender;
     let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
     tokenX.transfer(user, this.address, dx);
+
+    let Xbalance = this.Xbalance.getAndRequireEquals();
+    Xbalance = Xbalance.add(dx);
+    this.Xbalance.set(Xbalance);
   }
 
   @method supplyTokenY(dy: UInt64) {
     let user = this.sender;
     let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
     tokenY.transfer(user, this.address, dy);
+
+    let Ybalance = this.Ybalance.getAndRequireEquals();
+    Ybalance = Ybalance.add(dy);
+    this.Ybalance.set(Ybalance);
   }
 
   // change to user address *mapping*
@@ -126,32 +131,47 @@ class Dex extends SmartContract {
     // add checks
     let user = this.sender;
 
+    let Xbalance = this.Xbalance.getAndRequireEquals();
+    let Ybalance = this.Ybalance.getAndRequireEquals();
+
     let { tokenX, tokenY } = this.initTokens();
 
     // calculate ratios
     tokenX.transfer(this.address, user, dl.div(2));
     tokenY.transfer(this.address, user, dl.div(2));
 
+    Xbalance = Xbalance.sub(dl.div(2));
+    this.Xbalance.set(Xbalance);
+
+    Ybalance = Ybalance.sub(dl.div(2));
+    this.Ybalance.set(Ybalance);
+
     this.token.burn({ address: this.sender, amount: dl });
 
     this.totalSupply.set(this.totalSupply.getAndRequireEquals().sub(dl));
   }
 
-  @method swapXforY(tokenAmountIn: UInt64) {
+  @method swapXforY(dx: UInt64) {
     let user = this.sender;
 
     let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
 
-    //let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
+    let Xbalance = this.Xbalance.getAndRequireEquals();
+    let Ybalance = this.Ybalance.getAndRequireEquals();
 
-    // check amm function to calculate outputs
-    //let dy = dexY.mul(dx).div(dexX.add(dx));
-    //dy.assertGreaterThanOrEqual(UInt64.from(1));
+    let dy = dx.mul(Xbalance).div(Xbalance.add(dx));
+    dy.assertGreaterThanOrEqual(UInt64.from(1));
 
-    tokenX.transfer(user, this.address, tokenAmountIn);
+    tokenX.transfer(user, this.address, dx);
+
+    Xbalance = Xbalance.add(dx);
+    this.Xbalance.set(Xbalance);
+
+    // add merkle map
 
     //tokenY.transfer(this.address, user, dy);
-    // add balances?
+    Ybalance = Ybalance.sub(dy);
+    this.Ybalance.set(Ybalance);
   }
 
   // add Y for X

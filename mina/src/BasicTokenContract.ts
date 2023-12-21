@@ -9,7 +9,6 @@ import {
   PublicKey,
   Signature,
   AccountUpdate,
-  Int64,
   Account,
 } from "o1js";
 
@@ -79,29 +78,5 @@ export class BasicTokenContract extends SmartContract {
     let account = Account(owner, this.token.id);
     let balance = account.balance.getAndRequireEquals();
     return balance;
-  }
-
-  @method approveUpdateAndSend(
-    zkappUpdate: AccountUpdate,
-    to: PublicKey,
-    amount: UInt64
-  ) {
-    // TODO: THIS IS INSECURE. The proper version has a prover error (compile != prove) that must be fixed
-    //this.approve(zkappUpdate, AccountUpdate.Layout.AnyChildren);
-
-    // THIS IS HOW IT SHOULD BE DONE:
-    // // approve a layout of two grandchildren, both of which can't inherit the token permission
-    let { StaticChildren, AnyChildren } = AccountUpdate.Layout;
-    this.approve(zkappUpdate, StaticChildren(AnyChildren, AnyChildren));
-    zkappUpdate.body.mayUseToken.parentsOwnToken.assertTrue();
-    let [grandchild1, grandchild2] = zkappUpdate.children.accountUpdates;
-    grandchild1.body.mayUseToken.inheritFromParent.assertFalse();
-    grandchild2.body.mayUseToken.inheritFromParent.assertFalse();
-
-    // see if balance change cancels the amount sent
-    let balanceChange = Int64.fromObject(zkappUpdate.body.balanceChange);
-    balanceChange.assertEquals(Int64.from(amount).neg());
-    // add same amount of tokens to the receiving address
-    this.token.mint({ address: to, amount });
   }
 }
