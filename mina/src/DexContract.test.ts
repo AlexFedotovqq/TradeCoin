@@ -32,7 +32,7 @@ function logOutBalances() {
 }
 
 const proofsEnabled = false;
-const enforceTransactionLimits = true;
+const enforceTransactionLimits = false;
 
 const Local = Mina.LocalBlockchain({
   proofsEnabled,
@@ -132,6 +132,7 @@ console.log("sent");
 if (proofsEnabled) {
   ({ verificationKey } = await Dex.compile());
 }
+
 console.log("compiled");
 
 const dexApp = new Dex(zkDexAppAddress);
@@ -164,7 +165,7 @@ console.log(dexApp.tokenY.get().toBase58());
 console.log("supply liquidity -- base");
 
 let txBaseX = await Mina.transaction(deployerAddress, () => {
-  dexApp.supplyTokenX(UInt64.from(1));
+  dexApp.supplyTokenX(UInt64.from(10));
 });
 
 await txBaseX.prove();
@@ -172,7 +173,7 @@ await txBaseX.prove();
 await txBaseX.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
 let txBaseY = await Mina.transaction(deployerAddress, () => {
-  dexApp.supplyTokenY(UInt64.from(1));
+  dexApp.supplyTokenY(UInt64.from(10));
 });
 
 await txBaseY.prove();
@@ -181,7 +182,7 @@ await txBaseY.sign([deployerAccount]).send();
 
 let txBaseMint = await Mina.transaction(deployerAddress, () => {
   AccountUpdate.fundNewAccount(deployerAddress);
-  dexApp.mintLiquidityToken(UInt64.from(2));
+  dexApp.mintLiquidityToken(UInt64.from(20));
 });
 
 await txBaseMint.prove();
@@ -190,19 +191,17 @@ await txBaseMint.sign([deployerAccount]).send();
 
 logOutBalances();
 
-// add script for swap
-
-/* console.log("swap");
+console.log("swap");
 
 let txSwap = await Mina.transaction(deployerAddress, () => {
-  dexApp.swapXforY(UInt64.from(1));
+  dexApp.swapXforY(UInt64.from(2));
 });
 
 await txSwap.prove();
 
 await txSwap.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
-logOutBalances(); */
+logOutBalances();
 
 console.log("burn liquidity");
 

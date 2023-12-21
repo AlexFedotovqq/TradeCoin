@@ -73,14 +73,13 @@ class Dex extends SmartContract {
 
   @method supplyTokenX(dx: UInt64) {
     let user = this.sender;
-
-    let { tokenX, tokenY } = this.initTokens();
+    let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
     tokenX.transfer(user, this.address, dx);
   }
 
   @method supplyTokenY(dy: UInt64) {
     let user = this.sender;
-    let { tokenX, tokenY } = this.initTokens();
+    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
     tokenY.transfer(user, this.address, dy);
   }
 
@@ -124,11 +123,12 @@ class Dex extends SmartContract {
    *
    **/
   @method redeem(dl: UInt64) {
-    dl.assertGreaterThanOrEqual(UInt64.from(2));
+    // add checks
     let user = this.sender;
 
     let { tokenX, tokenY } = this.initTokens();
 
+    // calculate ratios
     tokenX.transfer(this.address, user, dl.div(2));
     tokenY.transfer(this.address, user, dl.div(2));
 
@@ -142,9 +142,15 @@ class Dex extends SmartContract {
 
     let { tokenX, tokenY } = this.initTokens();
 
+    let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
+
+    // check amm function to calculate outputs
+    let dy = dexY.mul(tokenAmountIn).div(dexX.add(tokenAmountIn));
+    dy.assertGreaterThanOrEqual(UInt64.from(1));
+
     tokenY.transfer(user, this.address, tokenAmountIn);
-    // add function to calculate
-    tokenX.transfer(this.address, user, tokenAmountIn);
+
+    tokenX.transfer(this.address, user, dy);
     // add balances?
   }
 
