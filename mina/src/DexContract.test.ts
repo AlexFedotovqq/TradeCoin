@@ -29,6 +29,10 @@ function logOutBalances() {
   );
 
   console.log("total supply", dexApp.totalSupply.get().value.toBigInt());
+
+  console.log("Y balance", dexApp.Ybalance.get().value.toBigInt());
+
+  console.log("X balance", dexApp.Xbalance.get().value.toBigInt());
 }
 
 const proofsEnabled = false;
@@ -206,7 +210,7 @@ logOutBalances();
 console.log("burn liquidity");
 
 let txBurn = await Mina.transaction(deployerAddress, () => {
-  dexApp.redeem(UInt64.from(2));
+  dexApp.redeem(UInt64.from(4));
 });
 
 await txBurn.prove();

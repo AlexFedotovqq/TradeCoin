@@ -28,15 +28,6 @@ class Dex extends SmartContract {
   @state(UInt64) Xbalance = State<UInt64>();
   @state(UInt64) Ybalance = State<UInt64>();
 
-  /**
-   * redeeming liquidity is a 2-step process leveraging actions, to get past the account update limit
-   */
-  //reducer = Reducer({ actionType: RedeemAction });
-  //supplyReducer = Reducer({ actionType: RedeemAction });
-
-  /**
-   * Initialization. _All_ permissions are set to impossible except the explicitly required permissions.
-   */
   init() {
     super.init();
 
@@ -137,13 +128,23 @@ class Dex extends SmartContract {
     let { tokenX, tokenY } = this.initTokens();
 
     // calculate ratios
-    tokenX.transfer(this.address, user, dl.div(2));
-    tokenY.transfer(this.address, user, dl.div(2));
+    // add scenario for when one supply is 0
+    // UInt64.from(100).mul
+    // consider saving values after the .
+    // use (1-x) ?
 
-    Xbalance = Xbalance.sub(dl.div(2));
+    let totalLPShares = Xbalance.add(Ybalance);
+
+    let XOut = dl.mul(Xbalance).div(totalLPShares);
+    let YOut = dl.mul(Xbalance).div(totalLPShares);
+
+    tokenX.transfer(this.address, user, XOut);
+    tokenY.transfer(this.address, user, YOut);
+
+    Xbalance = Xbalance.sub(XOut);
     this.Xbalance.set(Xbalance);
 
-    Ybalance = Ybalance.sub(dl.div(2));
+    Ybalance = Ybalance.sub(YOut);
     this.Ybalance.set(Ybalance);
 
     this.token.burn({ address: this.sender, amount: dl });
@@ -169,9 +170,15 @@ class Dex extends SmartContract {
 
     // add merkle map
 
-    //tokenY.transfer(this.address, user, dy);
     Ybalance = Ybalance.sub(dy);
     this.Ybalance.set(Ybalance);
+  }
+
+  @method reedemY(dy: UInt64) {
+    let user = this.sender;
+    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
+    // add merkle map
+    tokenY.transfer(this.address, user, dy);
   }
 
   // add Y for X
@@ -200,3 +207,5 @@ class Dex extends SmartContract {
     return { dexX, dexY };
   }
 }
+
+// some ideas: add ability to withdraw using a key
