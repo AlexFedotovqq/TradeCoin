@@ -4,6 +4,7 @@ import {
   ComputerDesktopIcon,
   QueueListIcon,
   RssIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
@@ -31,6 +32,12 @@ const links = [
     href: "/blogs",
     description: "Read our latest news and articles.",
     icon: RssIcon,
+  },
+  {
+    name: "Docs",
+    href: "https://alexfedotovqq.github.io/DocsTradeCoin/#/",
+    description: "See our documentation",
+    icon: DocumentTextIcon,
   },
 ];
 
