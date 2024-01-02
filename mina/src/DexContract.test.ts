@@ -1,39 +1,8 @@
 import { BasicTokenContract } from "./BasicTokenContract.js";
 import { Dex } from "./DexContract.js";
+import { log2Tokens, logOutBalances } from "./helpers/logs.js";
+
 import { Mina, PrivateKey, AccountUpdate, UInt64, Signature } from "o1js";
-
-function logOutBalances() {
-  console.log(
-    "deployerAddress tokenX tokens:",
-    Mina.getBalance(deployerAddress, tokenX.token.id).value.toBigInt()
-  );
-
-  console.log(
-    "zkDexAppAddress tokenX tokens:",
-    Mina.getBalance(zkDexAppAddress, tokenX.token.id).value.toBigInt()
-  );
-
-  console.log(
-    "deployerAddress tokenY tokens:",
-    Mina.getBalance(deployerAddress, tokenY.token.id).value.toBigInt()
-  );
-
-  console.log(
-    "zkDexAppAddress tokenY tokens:",
-    Mina.getBalance(zkDexAppAddress, tokenY.token.id).value.toBigInt()
-  );
-
-  console.log(
-    "deployer dexApp tokens:",
-    Mina.getBalance(deployerAddress, dexApp.token.id).value.toBigInt()
-  );
-
-  console.log("total supply", dexApp.totalSupply.get().value.toBigInt());
-
-  console.log("Y balance", dexApp.Ybalance.get().value.toBigInt());
-
-  console.log("X balance", dexApp.Xbalance.get().value.toBigInt());
-}
 
 const proofsEnabled = false;
 const enforceTransactionLimits = true;
@@ -48,30 +17,21 @@ Mina.setActiveInstance(Local);
 const deployerAccount = Local.testAccounts[0].privateKey;
 const deployerAddress = Local.testAccounts[0].publicKey;
 
-console.log("deployerAccount: " + deployerAddress.toBase58());
-
 const TokenAddressXPrivateKey = PrivateKey.random();
 const TokenAddressX = TokenAddressXPrivateKey.toPublicKey();
-
-console.log("TokenAddressX: " + TokenAddressX.toBase58());
 
 const TokenAddressYPrivateKey = PrivateKey.random();
 const TokenAddressY = TokenAddressYPrivateKey.toPublicKey();
 
-console.log("TokenAddressY: " + TokenAddressY.toBase58());
-
 const zkDexAppPrivateKey = PrivateKey.random();
 const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
-
-console.log("zkDexAppAddress: " + zkDexAppAddress.toBase58());
 
 let verificationKey: any;
 
 if (proofsEnabled) {
   ({ verificationKey } = await BasicTokenContract.compile());
+  console.log("compiled");
 }
-
-console.log("compiled");
 
 const tokenX = new BasicTokenContract(TokenAddressX);
 const tokenY = new BasicTokenContract(TokenAddressY);
@@ -84,7 +44,6 @@ const deploy_txn = await Mina.transaction(deployerAddress, () => {
 });
 
 await deploy_txn.prove();
-
 await deploy_txn.sign([deployerAccount]).send();
 
 console.log("deployed 2 Tokens");
@@ -110,16 +69,9 @@ const mint_txn = await Mina.transaction(deployerAddress, () => {
 await mint_txn.prove();
 await mint_txn.sign([deployerAccount]).send();
 
-console.log("minted");
+console.log("created and minted 2 tokens");
 
-console.log(
-  "deployerAddress tokenX tokens:",
-  Mina.getBalance(deployerAddress, tokenX.token.id).value.toBigInt()
-);
-console.log(
-  "deployerAddress tokenY tokens:",
-  Mina.getBalance(deployerAddress, tokenY.token.id).value.toBigInt()
-);
+log2Tokens(Mina, deployerAddress, tokenX, tokenY);
 
 // necessary to initialize tokens for ZkApp
 const send_txn = await Mina.transaction(deployerAddress, () => {
@@ -135,20 +87,17 @@ console.log("sent");
 
 if (proofsEnabled) {
   ({ verificationKey } = await Dex.compile());
+  console.log("compiled");
 }
-
-console.log("compiled");
 
 const dexApp = new Dex(zkDexAppAddress);
 
 const deploy_dex_txn = await Mina.transaction(deployerAddress, () => {
   AccountUpdate.fundNewAccount(deployerAddress);
-
   dexApp.deploy({ verificationKey, zkappKey: zkDexAppPrivateKey });
 });
 
 await deploy_dex_txn.prove();
-
 await deploy_dex_txn.sign([deployerAccount]).send();
 
 console.log("deployed dex");
@@ -158,22 +107,17 @@ const init_dex_txn = await Mina.transaction(deployerAddress, () => {
 });
 
 await init_dex_txn.prove();
-
 await init_dex_txn.sign([deployerAccount]).send();
 
 console.log("initialised tokens in a dex");
 
-console.log(dexApp.tokenX.get().toBase58());
-console.log(dexApp.tokenY.get().toBase58());
-
-console.log("supply liquidity -- base");
+console.log("supplying liquidity -- base");
 
 let txBaseX = await Mina.transaction(deployerAddress, () => {
   dexApp.supplyTokenX(UInt64.from(10));
 });
 
 await txBaseX.prove();
-
 await txBaseX.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
 let txBaseY = await Mina.transaction(deployerAddress, () => {
@@ -181,7 +125,6 @@ let txBaseY = await Mina.transaction(deployerAddress, () => {
 });
 
 await txBaseY.prove();
-
 await txBaseY.sign([deployerAccount]).send();
 
 let txBaseMint = await Mina.transaction(deployerAddress, () => {
@@ -190,10 +133,9 @@ let txBaseMint = await Mina.transaction(deployerAddress, () => {
 });
 
 await txBaseMint.prove();
-
 await txBaseMint.sign([deployerAccount]).send();
 
-logOutBalances();
+logOutBalances(Mina, deployerAddress, tokenX, tokenY, dexApp);
 
 console.log("swap");
 
@@ -205,7 +147,7 @@ await txSwap.prove();
 
 await txSwap.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
-logOutBalances();
+logOutBalances(Mina, deployerAddress, tokenX, tokenY, dexApp);
 
 console.log("burn liquidity");
 
@@ -214,7 +156,6 @@ let txBurn = await Mina.transaction(deployerAddress, () => {
 });
 
 await txBurn.prove();
-
 await txBurn.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
-logOutBalances();
+logOutBalances(Mina, deployerAddress, tokenX, tokenY, dexApp);
