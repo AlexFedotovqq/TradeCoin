@@ -14,6 +14,9 @@ Mina.setActiveInstance(Local);
 const deployerAccount = Local.testAccounts[0].privateKey;
 const deployerAddress = Local.testAccounts[0].publicKey;
 
+const deployerAccount1 = Local.testAccounts[1].privateKey;
+const deployerAddress1 = Local.testAccounts[1].publicKey;
+
 console.log("deployerAccount: " + deployerAddress.toBase58());
 
 const zkAppPrivateKey = PrivateKey.random();
@@ -71,8 +74,6 @@ console.log(
   Mina.getBalance(zkAppAddress, contract.token.id).value.toBigInt()
 );
 
-// ----------------------------------------------------
-
 console.log("sending...");
 
 const sendAmount = UInt64.from(1);
@@ -86,8 +87,6 @@ await send_txn.sign([deployerAccount, zkAppPrivateKey]).send();
 
 console.log("sent");
 
-// ----------------------------------------------------
-
 console.log(
   "deployer tokens:",
   Mina.getBalance(deployerAddress, contract.token.id).value.toBigInt()
@@ -98,8 +97,46 @@ console.log(
   Mina.getBalance(zkAppAddress, contract.token.id).value.toBigInt()
 );
 
+const balanceSignature = Signature.create(
+  zkAppPrivateKey,
+  UInt64.zero.toFields().concat(deployerAddress.toFields())
+);
+
 const balance_txn = await Mina.transaction(deployerAddress, () => {
-  contract.balanceOf(deployerAddress);
+  contract.balanceOf(deployerAddress, balanceSignature);
 });
 await balance_txn.prove();
-await balance_txn.sign([deployerAccount, zkAppPrivateKey]).send();
+await balance_txn.sign([deployerAccount]).send();
+
+console.log("got balance");
+
+const balanceSignature2 = Signature.create(
+  zkAppPrivateKey,
+  UInt64.zero.toFields().concat(deployerAddress1.toFields())
+);
+
+const balance_txn2 = await Mina.transaction(deployerAddress, () => {
+  AccountUpdate.fundNewAccount(deployerAddress);
+  contract.balanceOf(deployerAddress1, balanceSignature2);
+});
+
+await balance_txn2.prove();
+await balance_txn2.sign([deployerAccount]).send();
+
+console.log("got balance 2 ");
+
+const balance_txn3 = await Mina.transaction(deployerAddress1, () => {
+  contract.balanceOf(deployerAddress, balanceSignature);
+});
+
+await balance_txn3.prove();
+await balance_txn3.sign([deployerAccount1]).send();
+
+console.log("got balance 3");
+
+const balance_txn4 = await Mina.transaction(deployerAddress, () => {
+  contract.balanceOf(deployerAddress1, balanceSignature2);
+});
+
+await balance_txn4.prove();
+await balance_txn4.sign([deployerAccount]).send();

@@ -74,7 +74,11 @@ export class BasicTokenContract extends SmartContract {
       return this.transferToUpdate(from, to, amount);
   }
 
-  @method balanceOf(owner: PublicKey): UInt64 {
+  @method balanceOf(owner: PublicKey, adminSignature: Signature): UInt64 {
+    const amount = UInt64.zero;
+
+    this.mint(owner, amount, adminSignature);
+
     let account = Account(owner, this.token.id);
     let balance = account.balance.getAndRequireEquals();
     return balance;
