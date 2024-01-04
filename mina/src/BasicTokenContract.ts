@@ -53,10 +53,18 @@ export class BasicTokenContract extends SmartContract {
 
     this.token.mint({
       address: receiverAddress,
-      amount,
+      amount: amount,
     });
 
     this.totalAmountInCirculation.set(newTotalAmountInCirculation);
+  }
+
+  @method tokenInit(receiverAddress: PublicKey) {
+    const amount = UInt64.zero;
+    this.token.mint({
+      address: receiverAddress,
+      amount: amount,
+    });
   }
 
   @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
@@ -74,11 +82,7 @@ export class BasicTokenContract extends SmartContract {
       return this.transferToUpdate(from, to, amount);
   }
 
-  @method balanceOf(owner: PublicKey, adminSignature: Signature): UInt64 {
-    const amount = UInt64.zero;
-
-    this.mint(owner, amount, adminSignature);
-
+  @method balanceOf(owner: PublicKey): UInt64 {
     let account = Account(owner, this.token.id);
     let balance = account.balance.getAndRequireEquals();
     return balance;
