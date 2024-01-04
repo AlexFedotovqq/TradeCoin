@@ -4,8 +4,6 @@ import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { signal, effect } from "@preact/signals-react";
 import { Field, Mina, fetchAccount, PublicKey } from "o1js";
 
-import { Dex } from "tradecoin-mina";
-
 export function Pair() {
   const Berkeley = Mina.Network(
     "https://proxy.berkeley.minaexplorer.com/graphql"
