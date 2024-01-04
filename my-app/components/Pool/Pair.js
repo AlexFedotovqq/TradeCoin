@@ -3,6 +3,7 @@ import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { signal, effect } from "@preact/signals-react";
 import { Field, Mina, fetchAccount, PublicKey } from "o1js";
+import { useState } from "react";
 
 export function Pair() {
   const Berkeley = Mina.Network(
@@ -44,33 +45,61 @@ export function Pair() {
 
   function addLiquidity() {}
 
+  const [copiedAddress, setCopiedAddress] = useState(null);
+
+  const copyToClipboard = (address) => {
+    navigator.clipboard.writeText(address);
+    setCopiedAddress(address);
+    setTimeout(() => setCopiedAddress(null), 3000);
+  };
+
   return (
     <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6">
-      <ul className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+      <ul className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {data?.value?.map((pool) => (
           <li
             key={pool.pairAddress}
-            className="col-span-1 rounded-lg bg-white shadow"
+            className="col-span-1 rounded-lg bg-white shadow-md p-6"
           >
-            <div className="w-full items-center justify-between p-5">
-              <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
-                {pool.token0Name}
+            <div className="w-full space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {pool.token0Name.length > 15
+                  ? `${pool.token0Name.substring(0, 15)}...`
+                  : pool.token0Name}
               </h3>
-              <h3 className="truncate flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
-                {pool.token0Address}
+              <div className="flex items-center space-x-2">
+                <p className="text-sm text-gray-500" title={pool.token0Address}>
+                  {pool.token0Address.substring(0, 15)}...
+                </p>
+                <button
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => copyToClipboard(pool.token0Address)}
+                >
+                  Copy
+                </button>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {pool.token1Name.length > 15
+                  ? `${pool.token1Name.substring(0, 15)}...`
+                  : pool.token1Name}
               </h3>
-              <h3 className="flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
-                {pool.token1Name}
-              </h3>
-              <h3 className="truncate flex items-center space-x-3 justify-center text-sm font-medium text-gray-500">
-                {pool.token1Address}
-              </h3>
-              <h3 className="mt-3 mb-6 flex items-center space-x-3 justify-center text-sm font-medium text-gray-900">
+              <div className="flex items-center space-x-2">
+                <p className="text-sm text-gray-500" title={pool.token1Address}>
+                  {pool.token1Address.substring(0, 15)}...
+                </p>
+                <button
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => copyToClipboard(pool.token1Address)}
+                >
+                  Copy
+                </button>
+              </div>
+              <p className="text-sm text-gray-900">
                 Total Supply: {pool.totalSupply}
-              </h3>
+              </p>
             </div>
 
-            <div className="-mt-px flex">
+            <div className="mt-4 flex space-x-4">
               <div className="flex flex-1 justify-center">
                 <Disclosure as="div" key="Add new pair">
                   {({ open }) => (
@@ -88,12 +117,12 @@ export function Pair() {
                           <span className="ml-5 flex items-center">
                             {open ? (
                               <MinusIcon
-                                className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
+                                className="block h-6 w-6 text-red-200 group-hover:text-indigo-500"
                                 aria-hidden="true"
                               />
                             ) : (
                               <PlusIcon
-                                className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                                className="block h-6 w-6 text-gray-200 group-hover:text-gray-500"
                                 aria-hidden="true"
                               />
                             )}
@@ -165,12 +194,12 @@ export function Pair() {
                           <span className="ml-0 flex items-center">
                             {open ? (
                               <MinusIcon
-                                className="block h-6 w-6 text-gray-900 group-hover:text-indigo-500"
+                                className="block h-6 w-6 text-indigo-200 group-hover:text-indigo-500"
                                 aria-hidden="true"
                               />
                             ) : (
                               <PlusIcon
-                                className="block h-6 w-6 text-gray-900 group-hover:text-gray-500"
+                                className="block h-6 w-6 text-gray-200 group-hover:text-gray-500"
                                 aria-hidden="true"
                               />
                             )}
@@ -207,6 +236,12 @@ export function Pair() {
                 </Disclosure>
               </div>
             </div>
+            {copiedAddress === pool.token0Address && (
+              <p className="text-green-500 mt-2">Address copied!</p>
+            )}
+            {copiedAddress === pool.token1Address && (
+              <p className="text-green-500 mt-2">Address copied!</p>
+            )}
           </li>
         ))}
       </ul>

@@ -54,7 +54,7 @@ export function AddNewPair() {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                        <div className="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity" />
                       </Transition.Child>
 
                       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -95,7 +95,7 @@ export function AddNewPair() {
                                           onChange={(event) =>
                                             setTokenA(event.target.value)
                                           }
-                                          className="block w-full bg-gray-300 rounded-md py-3 px-4 pl-25"
+                                          className="block w-full bg-indigo-100 rounded-md py-3 px-4 pl-25"
                                           placeholder="…"
                                         />
                                       </div>
@@ -120,7 +120,7 @@ export function AddNewPair() {
                                           onChange={(event) =>
                                             setTokenB(event.target.value)
                                           }
-                                          className="block w-full rounded-md bg-gray-300 py-3 px-4 pl-25"
+                                          className="block w-full rounded-md bg-indigo-100 py-3 px-4 pl-25"
                                           placeholder="…"
                                         />
                                       </div>
