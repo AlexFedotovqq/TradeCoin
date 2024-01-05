@@ -52,7 +52,7 @@ export default function Index() {
             <div className="mx-auto max-w-3xl pt-5 pb-32 mt-4 sm:pb-40">
               <div>
                 <div>
-                  <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
+                  <h1 className="text-3xl font-bold tracking-tight sm:text-center sm:text-6xl">
                     How does it{" "}
                     <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 ">
                       Work?
@@ -69,7 +69,7 @@ export default function Index() {
                   <div className="mt-8 flex items-center gap-x-4 justify-center">
                     <Link
                       href="/exchange"
-                      className="inline-block rounded-lg bg-indigo-500 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-500 hover:bg-indigo-700 hover:ring-indigo-700 "
+                      className="inline-block rounded-lg bg-indigo-500 px-2 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-500 hover:bg-indigo-700 hover:ring-indigo-700 "
                     >
                       Exchange{" "}
                       <span className="text-gray-100" aria-hidden="true">
@@ -78,7 +78,7 @@ export default function Index() {
                     </Link>
                     <a
                       href="https://youtu.be/4Ft4wfPhjNw"
-                      className="inline-block bg-pink-500 rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-white ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
+                      className="inline-block bg-pink-500 rounded-lg px-2 py-1.5 text-base font-semibold leading-7 text-white ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
                     >
                       Live demo video{" "}
                       <span className="text-gray-100" aria-hidden="true">
@@ -98,7 +98,7 @@ export default function Index() {
                 </div>
                 <div>
                   <div className="mt-8">
-                    <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-center sm:text-5xl">
                       <strong>Pool</strong>
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
@@ -145,7 +145,7 @@ export default function Index() {
 
                 <div>
                   <div className="mt-8">
-                    <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-center sm:text-5xl">
                       Token Exchange
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
@@ -184,7 +184,7 @@ export default function Index() {
 
                 <div>
                   <div className="mt-8">
-                    <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-center sm:text-5xl">
                       <strong>Application instruction</strong>
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-black sm:text-center">
@@ -218,7 +218,7 @@ export default function Index() {
                 </div>
 
                 <div>
-                  <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
+                  <h1 className="mt-6 text-3xl font-bold tracking-tight sm:text-center sm:text-6xl">
                     Blog
                   </h1>
                   <p className="mt-4 text-lg leading-8 text-black sm:text-center">
@@ -257,7 +257,7 @@ export default function Index() {
                   </div>
                 </div>
                 <div className="mt-8">
-                  <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-5xl">
+                  <h1 className="text-3xl font-bold tracking-tight sm:text-center sm:text-5xl">
                     Contact us
                   </h1>
                   <p className="mt-6 text-lg leading-8 text-black sm:text-center">
