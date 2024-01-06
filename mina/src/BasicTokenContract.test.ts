@@ -149,3 +149,5 @@ await balance_txn5.prove();
 await balance_txn5.sign([deployerAccount2]).send();
 
 console.log("got balance 5");
+
+// add sdk and tests to smart contract

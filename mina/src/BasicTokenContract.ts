@@ -59,13 +59,10 @@ export class BasicTokenContract extends SmartContract {
     this.totalAmountInCirculation.set(newTotalAmountInCirculation);
   }
 
-  @method tokenInit(receiverAddress: PublicKey) {
+  /*   @method tokenInit(receiverAddress: PublicKey) {
     const amount = UInt64.zero;
-    this.token.mint({
-      address: receiverAddress,
-      amount: amount,
-    });
-  }
+    this.transfer(this.address, receiverAddress, amount);
+  } */
 
   @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
     this.token.send({ from, to, amount: value });

@@ -118,7 +118,7 @@ let txBaseX = await Mina.transaction(deployerAddress, () => {
 });
 
 await txBaseX.prove();
-await txBaseX.sign([deployerAccount, zkDexAppPrivateKey]).send();
+await txBaseX.sign([deployerAccount]).send();
 
 let txBaseY = await Mina.transaction(deployerAddress, () => {
   dexApp.supplyTokenY(UInt64.from(10));
