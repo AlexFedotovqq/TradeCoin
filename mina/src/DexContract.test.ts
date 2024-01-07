@@ -71,7 +71,7 @@ await mint_txn.sign([deployerAccount]).send();
 
 console.log("created and minted 2 tokens");
 
-log2Tokens(Mina, deployerAddress, tokenX, tokenY);
+log2Tokens(deployerAddress, tokenX, tokenY);
 
 // necessary to initialize tokens for ZkApp
 const send_txn = await Mina.transaction(deployerAddress, () => {
@@ -135,7 +135,7 @@ let txBaseMint = await Mina.transaction(deployerAddress, () => {
 await txBaseMint.prove();
 await txBaseMint.sign([deployerAccount]).send();
 
-logOutBalances(Mina, deployerAddress, tokenX, tokenY, dexApp);
+logOutBalances(deployerAddress, tokenX, tokenY, dexApp);
 
 console.log("swap");
 
@@ -147,7 +147,7 @@ await txSwap.prove();
 
 await txSwap.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
-logOutBalances(Mina, deployerAddress, tokenX, tokenY, dexApp);
+logOutBalances(deployerAddress, tokenX, tokenY, dexApp);
 
 console.log("burn liquidity");
 
@@ -158,4 +158,4 @@ let txBurn = await Mina.transaction(deployerAddress, () => {
 await txBurn.prove();
 await txBurn.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
-logOutBalances(Mina, deployerAddress, tokenX, tokenY, dexApp);
+logOutBalances(deployerAddress, tokenX, tokenY, dexApp);
