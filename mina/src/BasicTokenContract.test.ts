@@ -6,7 +6,7 @@ import {
   transferToken,
 } from "./token/token.js";
 
-import { Mina, PrivateKey, AccountUpdate, UInt64, Signature } from "o1js";
+import { Mina } from "o1js";
 
 const proofsEnabled = false;
 const enforceTransactionLimits = true;
@@ -32,16 +32,9 @@ const deployerAddress3 = Local.testAccounts[3].publicKey;
 
 console.log("deployerAccount: " + deployerAddress.toBase58());
 
-const zkAppPrivateKey = PrivateKey.random();
-const zkAppAddress = zkAppPrivateKey.toPublicKey();
-
-console.log("zkAppAddress: " + zkAppAddress.toBase58());
-
-const contract = await deployToken(
+const { contract, zkAppPrivateKey } = await deployToken(
   deployerAddress,
   deployerAccount,
-  zkAppAddress,
-  zkAppPrivateKey,
   proofsEnabled
 );
 

@@ -12,11 +12,12 @@ import {
 export async function deployToken(
   pubkey: PublicKey,
   pk: PrivateKey,
-  contractAddress: PublicKey,
-  zkAppPrivateKey: PrivateKey,
   proofsEnabled: boolean
 ) {
-  const contract = new BasicTokenContract(contractAddress);
+  const zkAppPrivateKey = PrivateKey.random();
+  const zkAppAddress = zkAppPrivateKey.toPublicKey();
+  const contract = new BasicTokenContract(zkAppAddress);
+
   let verificationKey: any;
 
   if (proofsEnabled) {
@@ -32,7 +33,7 @@ export async function deployToken(
   await deploy_txn.prove();
 
   await deploy_txn.sign([pk]).send();
-  return contract;
+  return { contract: contract, zkAppPrivateKey: zkAppPrivateKey };
 }
 
 export async function mintToken(
