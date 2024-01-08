@@ -68,4 +68,4 @@ await getBalance(deployerAccount2, deployerAddress3, contract);
 
 console.log("got balance 4");
 
-// add tests to smart contract
+// add tests to a smart contract
