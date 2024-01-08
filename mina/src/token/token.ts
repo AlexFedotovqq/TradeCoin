@@ -36,23 +36,61 @@ export async function deployToken(
   return { contract: contract, zkAppPrivateKey: zkAppPrivateKey };
 }
 
+export async function deploy2Tokens(
+  pubKey: PublicKey,
+  pk: PrivateKey,
+  proofsEnabled: boolean
+) {
+  const TokenAddressXPrivateKey = PrivateKey.random();
+  const TokenAddressX = TokenAddressXPrivateKey.toPublicKey();
+
+  const TokenAddressYPrivateKey = PrivateKey.random();
+  const TokenAddressY = TokenAddressYPrivateKey.toPublicKey();
+
+  let verificationKey: any;
+
+  if (proofsEnabled) {
+    ({ verificationKey } = await BasicTokenContract.compile());
+    console.log("compiled");
+  }
+
+  const tokenX = new BasicTokenContract(TokenAddressX);
+  const tokenY = new BasicTokenContract(TokenAddressY);
+
+  const deploy_txn = await Mina.transaction(pubKey, () => {
+    AccountUpdate.fundNewAccount(pubKey, 2);
+
+    tokenX.deploy({ verificationKey, zkappKey: TokenAddressXPrivateKey });
+    tokenY.deploy({ verificationKey, zkappKey: TokenAddressYPrivateKey });
+  });
+
+  await deploy_txn.prove();
+  await deploy_txn.sign([pk]).send();
+  return {
+    tokenX: tokenX,
+    tokenY: tokenY,
+    tokenXPK: TokenAddressXPrivateKey,
+    tokenYPK: TokenAddressYPrivateKey,
+  };
+}
+
 export async function mintToken(
   zkAppPrivateKey: PrivateKey,
   deployerPk: PrivateKey,
+  receiverPub: PublicKey,
   contract: BasicTokenContract,
   mintAmount: UInt64 = UInt64.from(10)
 ) {
-  const zkAppAddress = zkAppPrivateKey.toPublicKey();
   const deployerAddress = deployerPk.toPublicKey();
 
   const mintSignature = Signature.create(
     zkAppPrivateKey,
-    mintAmount.toFields().concat(zkAppAddress.toFields())
+    mintAmount.toFields().concat(receiverPub.toFields())
   );
 
   const mint_txn = await Mina.transaction(deployerAddress, () => {
     AccountUpdate.fundNewAccount(deployerAddress);
-    contract.mint(zkAppAddress, mintAmount, mintSignature);
+    contract.mint(receiverPub, mintAmount, mintSignature);
   });
 
   await mint_txn.prove();

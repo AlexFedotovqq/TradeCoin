@@ -1,6 +1,7 @@
-import { BasicTokenContract } from "./BasicTokenContract.js";
 import { Dex } from "./DexContract.js";
 import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
+
+import { deploy2Tokens, mintToken } from "./token/token.js";
 
 import { Mina, PrivateKey, AccountUpdate, UInt64, Signature } from "o1js";
 
@@ -17,57 +18,35 @@ Mina.setActiveInstance(Local);
 const deployerAccount = Local.testAccounts[0].privateKey;
 const deployerAddress = Local.testAccounts[0].publicKey;
 
-const TokenAddressXPrivateKey = PrivateKey.random();
-const TokenAddressX = TokenAddressXPrivateKey.toPublicKey();
-
-const TokenAddressYPrivateKey = PrivateKey.random();
-const TokenAddressY = TokenAddressYPrivateKey.toPublicKey();
-
 const zkDexAppPrivateKey = PrivateKey.random();
 const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
 
-let verificationKey: any;
-
-if (proofsEnabled) {
-  ({ verificationKey } = await BasicTokenContract.compile());
-  console.log("compiled");
-}
-
-const tokenX = new BasicTokenContract(TokenAddressX);
-const tokenY = new BasicTokenContract(TokenAddressY);
-
-const deploy_txn = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress, 2);
-
-  tokenX.deploy({ verificationKey, zkappKey: TokenAddressXPrivateKey });
-  tokenY.deploy({ verificationKey, zkappKey: TokenAddressYPrivateKey });
-});
-
-await deploy_txn.prove();
-await deploy_txn.sign([deployerAccount]).send();
+const {
+  tokenX: tokenX,
+  tokenY: tokenY,
+  tokenXPK: TokenAddressXPrivateKey,
+  tokenYPK: TokenAddressYPrivateKey,
+} = await deploy2Tokens(deployerAddress, deployerAccount, proofsEnabled);
 
 console.log("deployed 2 Tokens");
 
 const mintAmount = UInt64.from(10_000);
 
-const mintSignatureX = Signature.create(
+await mintToken(
   TokenAddressXPrivateKey,
-  mintAmount.toFields().concat(deployerAddress.toFields())
+  deployerAccount,
+  deployerAddress,
+  tokenX,
+  mintAmount
 );
 
-const mintSignatureY = Signature.create(
+await mintToken(
   TokenAddressYPrivateKey,
-  mintAmount.toFields().concat(deployerAddress.toFields())
+  deployerAccount,
+  deployerAddress,
+  tokenY,
+  mintAmount
 );
-
-const mint_txn = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress, 2);
-  tokenX.mint(deployerAddress, mintAmount, mintSignatureX);
-  tokenY.mint(deployerAddress, mintAmount, mintSignatureY);
-});
-
-await mint_txn.prove();
-await mint_txn.sign([deployerAccount]).send();
 
 console.log("created and minted 2 tokens");
 
@@ -84,6 +63,8 @@ await send_txn.prove();
 await send_txn.sign([deployerAccount]).send();
 
 console.log("sent");
+
+let verificationKey: any;
 
 if (proofsEnabled) {
   ({ verificationKey } = await Dex.compile());
