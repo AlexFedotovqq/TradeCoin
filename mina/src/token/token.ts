@@ -9,6 +9,15 @@ import {
   Signature,
 } from "o1js";
 
+async function compileContractIfProofsEnabled(proofsEnabled: boolean) {
+  if (proofsEnabled) {
+    const { verificationKey } = await BasicTokenContract.compile();
+    console.log("compiled");
+    return verificationKey;
+  }
+  return undefined;
+}
+
 export async function deployToken(
   pubkey: PublicKey,
   pk: PrivateKey,
@@ -18,12 +27,7 @@ export async function deployToken(
   const zkAppAddress = zkAppPrivateKey.toPublicKey();
   const contract = new BasicTokenContract(zkAppAddress);
 
-  let verificationKey: any;
-
-  if (proofsEnabled) {
-    ({ verificationKey } = await BasicTokenContract.compile());
-    console.log("compiled");
-  }
+  const verificationKey = await compileContractIfProofsEnabled(proofsEnabled);
 
   const deploy_txn = await Mina.transaction(pubkey, () => {
     AccountUpdate.fundNewAccount(pubkey);
@@ -47,19 +51,13 @@ export async function deploy2Tokens(
   const TokenAddressYPrivateKey = PrivateKey.random();
   const TokenAddressY = TokenAddressYPrivateKey.toPublicKey();
 
-  let verificationKey: any;
-
-  if (proofsEnabled) {
-    ({ verificationKey } = await BasicTokenContract.compile());
-    console.log("compiled");
-  }
+  const verificationKey = await compileContractIfProofsEnabled(proofsEnabled);
 
   const tokenX = new BasicTokenContract(TokenAddressX);
   const tokenY = new BasicTokenContract(TokenAddressY);
 
   const deploy_txn = await Mina.transaction(pubKey, () => {
     AccountUpdate.fundNewAccount(pubKey, 2);
-
     tokenX.deploy({ verificationKey, zkappKey: TokenAddressXPrivateKey });
     tokenY.deploy({ verificationKey, zkappKey: TokenAddressYPrivateKey });
   });
@@ -135,4 +133,21 @@ export async function getBalance(
     await balance_txn4.prove();
     await balance_txn4.sign([fromPk]).send();
   }
+}
+
+export async function init2TokensSmartContract(
+  pk: PrivateKey,
+  tokenX: BasicTokenContract,
+  tokenY: BasicTokenContract,
+  zkDexAppAddress: PublicKey
+) {
+  const pub: PublicKey = pk.toPublicKey();
+  const send_txn = await Mina.transaction(pub, () => {
+    AccountUpdate.fundNewAccount(pub, 2);
+    tokenX.transfer(pub, zkDexAppAddress, UInt64.zero);
+    tokenY.transfer(pub, zkDexAppAddress, UInt64.zero);
+  });
+
+  await send_txn.prove();
+  await send_txn.sign([pk]).send();
 }

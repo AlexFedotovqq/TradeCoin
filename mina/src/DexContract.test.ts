@@ -1,9 +1,13 @@
-import { Dex } from "./DexContract.js";
+import { deployDex } from "./dex/dex.js";
 import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
 
-import { deploy2Tokens, mintToken } from "./token/token.js";
+import {
+  deploy2Tokens,
+  init2TokensSmartContract,
+  mintToken,
+} from "./token/token.js";
 
-import { Mina, PrivateKey, AccountUpdate, UInt64, Signature } from "o1js";
+import { Mina, PrivateKey, AccountUpdate, UInt64 } from "o1js";
 
 const proofsEnabled = false;
 const enforceTransactionLimits = true;
@@ -52,34 +56,16 @@ console.log("created and minted 2 tokens");
 
 log2TokensAddressBalance(deployerAddress, tokenX, tokenY);
 
-// necessary to initialize tokens for ZkApp
-const send_txn = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress, 2);
-  tokenX.transfer(deployerAddress, zkDexAppAddress, UInt64.zero);
-  tokenY.transfer(deployerAddress, zkDexAppAddress, UInt64.zero);
-});
-
-await send_txn.prove();
-await send_txn.sign([deployerAccount]).send();
+await init2TokensSmartContract(
+  deployerAccount,
+  tokenX,
+  tokenY,
+  zkDexAppAddress
+);
 
 console.log("sent");
 
-let verificationKey: any;
-
-if (proofsEnabled) {
-  ({ verificationKey } = await Dex.compile());
-  console.log("compiled");
-}
-
-const dexApp = new Dex(zkDexAppAddress);
-
-const deploy_dex_txn = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress);
-  dexApp.deploy({ verificationKey, zkappKey: zkDexAppPrivateKey });
-});
-
-await deploy_dex_txn.prove();
-await deploy_dex_txn.sign([deployerAccount]).send();
+const { dexApp: dexApp } = await deployDex(zkDexAppPrivateKey, deployerAccount);
 
 console.log("deployed dex");
 
