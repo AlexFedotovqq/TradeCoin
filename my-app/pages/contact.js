@@ -17,7 +17,7 @@ function Contact() {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="py-6">
+        <div className="bg-gray-800 overflow-hidden h-screen">
           <ContactForm />
         </div>
       </header>

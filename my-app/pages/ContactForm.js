@@ -60,44 +60,132 @@ const ContactForm = () => {
   if (status) {
     return (
       <>
-        <div className="text-2xl">Thank you!</div>
-        <div className="text-md">{status}</div>
+        <main className="relative isolate min-h-full">
+          <div
+            className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+            aria-hidden="true"
+          >
+            <div
+              className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+              style={{
+                clipPath:
+                  "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+              }}
+            />
+          </div>
+          <div className="mx-auto max-w-7xl px-6 py-32 text-center sm:py-40 lg:px-8">
+            <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+              Thank you!
+            </h1>
+            <p className="mt-4 text-base text-white/70 sm:mt-6">{status}</p>
+            <div className="mt-10 flex justify-center">
+              <a
+                href="/"
+                className="text-sm font-semibold leading-7 text-white"
+              >
+                <span aria-hidden="true">&larr;</span> Back to home
+              </a>
+            </div>
+          </div>
+        </main>
       </>
     );
   }
 
   return (
-    <form action={FORM_ENDPOINT} onSubmit={handleSubmit} method="POST">
-      <div className="pt-0 mb-3">
-        <input
-          type="text"
-          placeholder="Your name"
-          name="name"
-          className="focus:outline-none focus:ring relative w-full px-3 py-3 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none"
-          required
-        />
+    <form
+      action={FORM_ENDPOINT}
+      onSubmit={handleSubmit}
+      method="POST"
+      className="mx-auto mt-16 max-w-xl sm:mt-15 "
+    >
+      <div className="mx-auto max-w-2xl text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Contact us
+        </h2>
+        <p className="mt-2 text-lg leading-8 text-gray-200">
+          Fill out the form and send it, we will reply to you as soon as
+          possible!
+        </p>
       </div>
-      <div className="pt-0 mb-3">
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          className="focus:outline-none focus:ring relative w-full px-3 py-3 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none"
-          required
-        />
+
+      <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-2 ">
+        <div>
+          <label
+            htmlFor="first-name"
+            className="mt-2.5 block text-sm font-semibold leading-6 text-white"
+          >
+            First name
+          </label>
+          <div className="mt-1">
+            <input
+              type="text"
+              placeholder="First name"
+              name="First name"
+              required
+              className="focus:outline-none focus:ring relative w-full block  px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="last-name"
+            className="mt-2.5 block text-sm font-semibold leading-6 text-white"
+          >
+            Last name
+          </label>
+          <div className="mt-1">
+            <input
+              type="text"
+              placeholder="Last name"
+              name="Last name"
+              className=" focus:outline-none focus:ring relative w-full block  px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
+              required
+            />
+          </div>
+        </div>
       </div>
-      <div className="pt-0 mb-3">
-        <textarea
-          placeholder="Your message"
-          name="message"
-          className="focus:outline-none focus:ring relative w-full px-3 py-3 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none"
-          required
-        />
+      <div className="sm:col-span-2">
+        <label
+          htmlFor="email"
+          className="mt-2.5 block text-sm font-semibold leading-6 text-white"
+        >
+          Email
+        </label>
+        <div className="mt-1">
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            className="focus:outline-none focus:ring relative w-full block  px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
+            required
+          />
+        </div>
       </div>
-      <div className="pt-0 mb-3">
+      <div className="sm:col-span-2">
+        <label
+          htmlFor="message"
+          className="mt-2.5 block text-sm font-semibold leading-6 text-white"
+        >
+          Message
+        </label>
+        <div className="mt-1">
+          <textarea
+            placeholder="Your message"
+            name="message"
+            id="message"
+            rows={4}
+            className="focus:outline-none focus:ring relative w-full block  px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
+            defaultValue={""}
+            required
+          />
+        </div>
+      </div>
+      <div className="mt-8">
         <button
-          className="active:bg-blue-600 hover:shadow-lg focus:outline-none px-6 py-3 mb-1 mr-1 text-sm font-bold text-white uppercase transition-all duration-150 ease-linear bg-blue-500 rounded shadow outline-none"
           type="submit"
+          className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Send a message
         </button>
