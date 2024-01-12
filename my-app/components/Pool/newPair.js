@@ -7,7 +7,7 @@ import { Dialog, Transition } from "@headlessui/react";
 export function AddNewPair() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="mx-auto flex items-center justify-center py-2 px-4 mt-5">
+    <div className="mx-auto flex items-center justify-center py-2 px-4 mt-5 ">
       <Disclosure as="div" key="Add new pair">
         {({ open }) => (
           <>

@@ -54,7 +54,7 @@ export function Pair() {
   };
 
   return (
-    <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6">
+    <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6 ">
       <ul className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {data?.value?.map((pool) => (
           <li

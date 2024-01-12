@@ -104,9 +104,7 @@ export default function Example() {
       </footer>
     );
   }
-  if (router.route === "/pool") {
-    return <footer className="bg-white"></footer>;
-  }
+
   return (
     <footer className="bg-gray-800">
       <div className="mx-auto max-w-7xl py-2 px-6 md:flex md:items-center md:justify-between lg:px-8">
