@@ -17,7 +17,7 @@ function Contact() {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="bg-gray-800 overflow-hidden h-screen">
+        <div className="relative isolate min-h-screen bg-gray-800 overflow-hidden ">
           <ContactForm />
         </div>
       </header>

@@ -5,6 +5,7 @@ const FORM_ENDPOINT =
 
 const ContactForm = () => {
   const [status, setStatus] = useState();
+  const [agreedToPublication, setAgreedToPublication] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -56,7 +57,9 @@ const ContactForm = () => {
       .then(() => setStatus("We'll be in touch soon."))
       .catch((err) => setStatus(err.toString()));
   };
-
+  const handleAgreementChange = () => {
+    setAgreedToPublication(!agreedToPublication);
+  };
   if (status) {
     return (
       <>
@@ -97,7 +100,7 @@ const ContactForm = () => {
       action={FORM_ENDPOINT}
       onSubmit={handleSubmit}
       method="POST"
-      className="mx-auto mt-16 max-w-xl sm:mt-15 "
+      className="mx-auto py-16 max-w-xl sm: p-3"
     >
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -183,8 +186,23 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="mt-8">
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            checked={agreedToPublication}
+            onChange={handleAgreementChange}
+            className="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
+          />
+          <span className="ml-2 text-sm text-gray-200">
+            I give permission to post my message, including my first and last
+            name, on the website or social networks.
+          </span>
+        </label>
+      </div>
+      <div className="mt-8">
         <button
           type="submit"
+          disabled={!agreedToPublication}
           className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Send a message
