@@ -208,7 +208,7 @@ export default function Index() {
                         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                           <span className="text-gray-900">
                             <Link
-                              href="https://alexfedotovqq.github.io/DocsTradeCoin/#/./howdoesitwork/how-does-it-work"
+                              href="https://alexfedotovqq.github.io/DocsTradeCoin/#/"
                               className="font-semibold text-white"
                             >
                               View our Docs
