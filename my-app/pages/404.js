@@ -28,9 +28,9 @@ const links = [
     icon: WalletIcon,
   },
   {
-    name: "Blog",
-    href: "/blogs",
-    description: "Read our latest news and articles.",
+    name: "News",
+    href: "/news",
+    description: "Read our latest news.",
     icon: RssIcon,
   },
   {

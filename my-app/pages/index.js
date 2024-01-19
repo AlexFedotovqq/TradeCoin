@@ -134,7 +134,7 @@ export default function Index() {
                               href="/pool"
                               className="font-semibold  text-white"
                             >
-                              View our pool
+                              View our Pool
                             </Link>
                           </span>
                         </div>
@@ -222,13 +222,13 @@ export default function Index() {
 
                 <div>
                   <h1 className="mt-6 text-3xl font-bold tracking-tight sm:text-center sm:text-6xl">
-                    Blog
+                    News
                   </h1>
                   <p className="mt-4 text-lg leading-8 text-black sm:text-center">
-                    <strong>Interested in reading about </strong>
+                    <strong>You can check out the latest </strong>
 
                     <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
-                      automated market makers and TradeCoin.
+                      TradeCoin news
                     </span>
                   </p>
                   <div className="mt-3 relative overflow-hidden  flex items-center justify-center">
@@ -249,10 +249,10 @@ export default function Index() {
                       <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                         <span className="text-gray-900">
                           <Link
-                            href="/blogs"
+                            href="/news"
                             className="font-semibold text-white"
                           >
-                            View our blog
+                            View our news
                           </Link>
                         </span>
                       </div>
