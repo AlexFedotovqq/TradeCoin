@@ -109,8 +109,8 @@ const posts = [
 
 export default function Example() {
   return (
-    <div className="bg-gray-800 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <div className="overflow-hidden bg-gray-800 py-16 px-8 min-h-screen">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 ">
         <div className="mx-auto max-w-2xl lg:max-w-4xl">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             TradeCoin News
