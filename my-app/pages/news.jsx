@@ -1,12 +1,27 @@
 const posts = [
   {
+    title: "📢 A new News page has been added 📢",
+    href: "https://twitter.com/_TradeCoin_/status/1748692516960940344",
+    description:
+      "This page was added instead of the blog page. Now you can find out our latest news directly on the website! ⚒️",
+    imageUrl: "./news/update.jpg",
+    date: "Jan 20, 2024",
+    datetime: "2024-01-20",
+    category: { title: "Update" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
     title: "📢 Good news! 📢",
     href: "https://twitter.com/_TradeCoin_/status/1747483124890489083",
     description:
       "Our documentation has now been officially completed, and we are pleased to inform you about it. ⚒️",
     imageUrl: "./news/update.jpg",
     date: "Jan 17, 2024",
-    datetime: "2024-01-15",
+    datetime: "2024-01-17",
     category: { title: "Update" },
     author: {
       name: "TradeCoin",
