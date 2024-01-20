@@ -4,7 +4,7 @@ const posts = [
     href: "https://twitter.com/_TradeCoin_/status/1747483124890489083",
     description:
       "Our documentation has now been officially completed, and we are pleased to inform you about it. ⚒️",
-    imageUrl: "/docs.png",
+    imageUrl: "./news/docs.png",
     date: "Jan 17, 2024",
     datetime: "2024-01-15",
     category: { title: "Update" },
@@ -19,10 +19,86 @@ const posts = [
     href: "https://twitter.com/_TradeCoin_/status/1746886607972544760",
     description:
       "Added information about the pool page ⚒️ We will add information about the rest of the pages soon.📌",
-    imageUrl: "/1401.jpg",
+    imageUrl: "./news/1401.jpg",
     date: "Jan 15, 2024",
     datetime: "2024-01-15",
     category: { title: "Update" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title: "📢 We have started to develop documentation. 📢",
+    href: "https://twitter.com/_TradeCoin_/status/1746657038598382054",
+    description:
+      "At the moment, we have general information about the project, as well as how the exchange page works! ⚒️ Tomorrow we will add information about the Pool page📌",
+    imageUrl: "./news/docs.png",
+    date: "Jan 14, 2024",
+    datetime: "2024-01-14",
+    category: { title: "Update" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title: "📢 Exciting news! 📢",
+    href: "https://twitter.com/_TradeCoin_/status/1745963044360876142",
+    description:
+      "We have just updated our website with a new contact form!📨 Since her debut, our inbox has been literally teeming with messages from wonderful people like you.🌟 We are always glad to reply to your messages!💬",
+    imageUrl: "./news/1301.png",
+    date: "Jan 13, 2024",
+    datetime: "2024-01-13",
+    category: { title: "Update" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title:
+      "🚀 Launched a decentralized exchange (DEX) adventure with TypeScript and Node.js!🌐",
+    href: "https://twitter.com/_TradeCoin_/status/1745496030810935493",
+    description:
+      "Minted 2 tokens, initialized DEX, and supplied liquidity.🔄 Swapped tokens successfully and burned liquidity. All smooth in 22.04s!🎉",
+    imageUrl: "./news/1101.jpg",
+    date: "Jan 11, 2024",
+    datetime: "2024-01-11",
+    category: { title: "Exciting" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title: "🚀 Launched Yarn testToken script, deploying a BasicTokenContract.",
+    href: "https://twitter.com/_TradeCoin_/status/1745123764512112680",
+    description:
+      "Minted 10 tokens and sent 1 to B62qr2FdbdrVE2RpBLALd6NHpaEFvaQo1d4kkoNDEBLankp6kBUraQy.🌐💰 Explored balances for various addresses. Exciting journey in 18.50s!🚀🔍 ",
+    imageUrl: "./news/1001.png",
+    date: "Jan 10, 2024",
+    datetime: "2024-01-10",
+    category: { title: "Exciting" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title: "⚒️ The Pool page has been updated ⚒️",
+    href: "https://twitter.com/_TradeCoin_/status/1744112296174006612",
+    description:
+      "The first photo shows how it used to be. The second photo shows what it looks like at the moment. For more information about the changes, see below📢",
+    imageUrl: "./news/701.png",
+    date: "Jan 7, 2024",
+    datetime: "2024-01-7",
+    category: { title: "Exciting" },
     author: {
       name: "TradeCoin",
       href: "https://twitter.com/_TradeCoin_",
@@ -56,7 +132,7 @@ export default function Example() {
                     className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover object-center"
                   />
 
-                  <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+                  <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-300" />
                 </div>
                 <div>
                   <div className="flex items-center gap-x-4 text-xs">
