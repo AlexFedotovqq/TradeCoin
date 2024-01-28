@@ -1,1 +1,13 @@
 .env
+*.log
+keys/*
+coverage/*
+src/*
+config.json
+tsconfig.json
+*.cjs
+.prettierrc
+.gitattributes
+.prettierignore
+*.map
+*.test*
