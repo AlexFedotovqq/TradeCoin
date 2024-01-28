@@ -1876,23 +1876,10 @@ normalize-range@^0.1.2:
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==
 
-o1js@0.15:
+o1js@0.15, o1js@^0.15.3:
   version "0.15.3"
   resolved "https://registry.yarnpkg.com/o1js/-/o1js-0.15.3.tgz#5c57b10011004273339c506e1f409052a1a2b18e"
   integrity sha512-M2oLXAI9/xOE9qSpuE5hh1ZvuqVNI1nbxIITDbaHnxtJKb3UDQZFtmtVCT2PF/da4Pz9H49/+TTcTfy39yOmVw==
-  dependencies:
-    blakejs "1.2.1"
-    cachedir "^2.4.0"
-    detect-gpu "^5.0.5"
-    isomorphic-fetch "^3.0.0"
-    js-sha256 "^0.9.0"
-    reflect-metadata "^0.1.13"
-    tslib "^2.3.0"
-
-o1js@^0.14.1:
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/o1js/-/o1js-0.14.2.tgz#a7b26c832d0a329bccfab63137c5ce251026de79"
-  integrity sha512-xU0NfbaOeooT5G7sQbVD0uDKpViLKwfVeCk+3U4rJk7HRq2KtHkdc7rlA0/86AtLUSRQpD5OZlJbVGW4daDvfQ==
   dependencies:
     blakejs "1.2.1"
     cachedir "^2.4.0"
