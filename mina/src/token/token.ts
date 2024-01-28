@@ -125,13 +125,13 @@ export async function getBalance(
     await balance_txn.prove();
     await balance_txn.sign([fromPk]).send();
   } catch (e) {
-    const balance_txn4 = await Mina.transaction(deployerAddress, () => {
+    const balance_txn = await Mina.transaction(deployerAddress, () => {
       AccountUpdate.fundNewAccount(deployerAddress);
       contract.balanceOf(target);
     });
 
-    await balance_txn4.prove();
-    await balance_txn4.sign([fromPk]).send();
+    await balance_txn.prove();
+    await balance_txn.sign([fromPk]).send();
   }
 }
 
