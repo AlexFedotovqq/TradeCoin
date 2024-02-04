@@ -2,12 +2,6 @@ import { useState, useEffect } from "react";
 import { Disclosure } from "@headlessui/react";
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  AiFillCopy,
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiOutlineDisconnect,
-} from "react-icons/ai";
 
 const LOCAL_STORAGE_KEY = "MINA";
 
@@ -83,6 +77,20 @@ export const WalletButton = () => {
                 className={`flex items-center justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-2 md:px-5`}
               >
                 {displayedAddress}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 ml-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3"
+                  />
+                </svg>
               </button>
 
               <Disclosure as="div" key="Add new pair">
@@ -176,7 +184,21 @@ export const WalletButton = () => {
                                                     cursor: "pointer",
                                                   }}
                                                 >
-                                                  <AiFillCopy className="mr-2" />
+                                                  <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth={1.5}
+                                                    stroke="currentColor"
+                                                    className="w-5 h-5 mr-2"
+                                                  >
+                                                    <path
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
+                                                    />
+                                                  </svg>
+
                                                   <span>Copy Address</span>
                                                 </button>
 
@@ -196,9 +218,40 @@ export const WalletButton = () => {
                                                   }}
                                                 >
                                                   {isAddressHidden ? (
-                                                    <AiOutlineEye className="mr-2 " />
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                      strokeWidth={1.5}
+                                                      stroke="currentColor"
+                                                      className="w-5 h-5 mr-2"
+                                                    >
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                                                      />
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                                      />
+                                                    </svg>
                                                   ) : (
-                                                    <AiOutlineEyeInvisible className="mr-2" />
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                      strokeWidth={1.5}
+                                                      stroke="currentColor"
+                                                      className="w-5 h-5 mr-2"
+                                                    >
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+                                                      />
+                                                    </svg>
                                                   )}
                                                   <span>
                                                     {isAddressHidden
@@ -224,7 +277,21 @@ export const WalletButton = () => {
                                                     cursor: "pointer",
                                                   }}
                                                 >
-                                                  <AiOutlineDisconnect className="mr-2" />
+                                                  <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth={1.5}
+                                                    stroke="currentColor"
+                                                    className="w-5 h-5 mr-2"
+                                                  >
+                                                    <path
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                                                    />
+                                                  </svg>
+
                                                   <span>Disconnect</span>
                                                 </button>
                                               </div>
