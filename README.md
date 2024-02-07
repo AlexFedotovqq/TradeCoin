@@ -1,54 +1,69 @@
 # TradeCoin
 
-![photo_2023-01-28_21-56-55](https://user-images.githubusercontent.com/88692544/215295626-88a3456a-5543-4c6e-af70-a6b4ea65dc5b.jpg)
+![TradeCoin Logo]()
 
-TradeCoin is a decentralized protocol for automated token exchange on Mina
+TradeCoin is a decentralized protocol for automated token exchange on the Mina blockchain.
 
-## What it does
+## Overview
 
-The inspiration for TradeCoin was to create an automated, trustless, and permissionless system that allows users to exchange tokens in a secure and transparent manner. We wanted to create a system that would make it easier for users to access liquidity and trade in a secure and private environment.
+TradeCoin is an automated, trustless, and permissionless system designed to facilitate secure and transparent token exchange. Built with security and user experience in mind, TradeCoin aims to provide liquidity to users while ensuring privacy and reliability.
 
-## How we built it
+## Features
 
-TradeCoin was built using a combination of Solidity smart contracts and a React Framework Nextjs. The smart contracts handle the exchange of tokens, while Nextjs provides serves an decentralised application to an end user.
+- **Decentralized Exchange:** TradeCoin enables users to exchange tokens in a secure and private environment without the need for intermediaries.
+- **Secure Smart Contracts:** Implemented in Solidity, TradeCoin's smart contracts are designed to protect users from exploits and handle errors gracefully.
+- **User-Friendly Interface:** Leveraging React and Next.js, TradeCoin offers an intuitive interface for seamless interaction with the protocol.
+- **Liquidity Provision:** TradeCoin provides liquidity to other projects and protocols, supporting their growth and scalability.
 
-## Challenges we ran into
+## Challenges and Accomplishments
 
-The primary challenge we faced while building TradeCoin was ensuring that the protocol was secure and reliable. We had to ensure that the smart contracts were written in a way that would protect users from potential exploits and would handle unexpected errors gracefully. We also had to ensure that Nextjs was written in a way that would provide a secure and user-friendly interface for users to interact with the protocol.
+During development, ensuring protocol security and reliability posed significant challenges. However, we successfully built a secure, reliable, and user-friendly protocol for token exchange. We take pride in contributing to the liquidity ecosystem and supporting the growth of other projects.
 
-## Accomplishments that we're proud of
+## Technologies Used
 
-We are proud of having built a secure, reliable, and user-friendly protocol for token exchange. We are also proud of having created a platform that provides liquidity to other projects and protocols, allowing them to access the necessary resources to grow and scale.
+- JavaScript
+- Next.js
+- React
+- Solidity
+- Vercel
+- Mina
 
-## What we learned
+## Get Started
 
-We learned a lot about smart contract development and Mina security best practices. We learned how to create secure and reliable smart contracts, as well as how to design an intuitive user interface for interacting with the protocol. We also learned how to provide liquidity to other projects and protocols.
-
-## What's next for TradeCoin
-
-We plan to continue to improve the protocol and make it more secure and reliable. We plan to introduce new features that will enable users to access more liquidity, as well as providing additional security and transparency. We also plan to expand our platform to support more tokens and protocols, allowing users to access a greater variety of liquidity options.
-
-## Built With
-
-1. **javascript**
-2. **nextjs**
-3. **react**
-4. **solidity**
-5. **vercel**
-6. **Mina**
-
-## Important Links
-
-1. [WebSite](https://tradecoin.dev/)
-2. [Twitter](https://twitter.com/_TradeCoin_)
-3. [instagram](https://www.instagram.com/_tradecoin_/)
-
-You can email us at communication.with.tradecoin@gmail.com
+1. **Explore the Website:** Visit our [website](https://tradecoin.dev/) to learn more about TradeCoin.
+2. **Connect on Social Media:**
+   - Twitter: [@_TradeCoin_](https://twitter.com/_TradeCoin_)
+   - Instagram: [@_tradecoin_](https://www.instagram.com/_tradecoin_/)
+3. **Documentation:** Refer to our [TradeCoin Docs](https://alexfedotovqq.github.io/DocsTradeCoin/#/) for detailed information on using TradeCoin.
+4. **Contact Us:** For inquiries, email us at communication.with.tradecoin@gmail.com.
 
 ## Video Review
 
-[YouTube video](http://youtu.be/4Ft4wfPhjNw)
+Watch our [YouTube video review](http://youtu.be/4Ft4wfPhjNw) for a visual overview of TradeCoin.
 
-## TradeCoin Docs
+## Navigation, Design, Screenshots
+1. **Website**
+- [Main page](https://tradecoin.dev/)
+  ![Main page]()
 
-[TradeCoin Docs](https://alexfedotovqq.github.io/DocsTradeCoin/#/)
+- [Exchange page](https://tradecoin.dev/exchange)
+  ![Exchange page]()
+
+- [Pool page](https://tradecoin.dev/pool)
+  ![Pool page]()
+
+- [Contact us page](https://tradecoin.dev/contact)
+  ![Contact us page]()
+
+- [News page](https://tradecoin.dev/news)
+  ![News page]()
+
+2. **TradeCoin Docs**
+- [TradeCoin Docs](https://alexfedotovqq.github.io/DocsTradeCoin/#/)
+  ![TradeCoin Docs]()
+
+- [General information about the project](https://alexfedotovqq.github.io/DocsTradeCoin/#/README)
+  ![General information about the project]()
+
+- [How does it work?](https://alexfedotovqq.github.io/DocsTradeCoin/#/./howdoesitwork/how-does-it-work)
+  ![How does it work?]()  
