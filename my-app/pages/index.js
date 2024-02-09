@@ -77,7 +77,7 @@ export default function Index() {
                       </span>
                     </Link>
                     <a
-                      href="https://youtu.be/4Ft4wfPhjNw"
+                      href="https://www.youtube.com/watch?v=kCX36jTEUW0&ab_channel=Dspyt"
                       className="inline-block bg-pink-500 rounded-lg px-2 py-1.5 text-base font-semibold leading-7 text-white ring-1 ring-pink-500 hover:bg-pink-700 hover:ring-pink-700"
                     >
                       Live demo video{" "}
