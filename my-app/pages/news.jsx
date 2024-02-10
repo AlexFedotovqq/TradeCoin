@@ -1,5 +1,34 @@
 const posts = [
   {
+    title: "📢 Updated documentation  📢",
+    href: "https://twitter.com/_TradeCoin_/status/1756341365753921609",
+    description: "Added information about wallet settings ⚒️",
+    imageUrl: "./news/update.jpg",
+    date: "Feb 10, 2024",
+    datetime: "2024-02-10",
+    category: { title: "Update" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title: "📢 Exciting news! 📢",
+    href: "https://twitter.com/_TradeCoin_/status/1756054878592331881",
+    description:
+      "We just posted a new video! Check out our latest download to get a detailed overview of the TradeCoin project",
+    imageUrl: "./news/exciting.jpg",
+    date: "Feb 9, 2024",
+    datetime: "2024-02-09",
+    category: { title: "Exciting" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
     title: "📢 Exciting Update! 📢",
     href: "https://twitter.com/_TradeCoin_/status/1754249788105650286",
     description:
