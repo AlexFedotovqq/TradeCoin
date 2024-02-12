@@ -1,6 +1,5 @@
 import { Disclosure } from "@headlessui/react";
 import { classNames } from "@/utils/classNames";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 

@@ -1,5 +1,4 @@
-import { BasicTokenContract } from "./BasicTokenContract.js";
-import { Dex } from "./DexContract.js";
-import { deployDex } from "./dex/dex.js";
-import { deployToken } from "./token/token.js";
-export { BasicTokenContract, Dex, deployDex, deployToken };
+export { BasicTokenContract } from "./BasicTokenContract.js";
+export { Dex } from "./DexContract.js";
+export { deployDex } from "./dex/dex.js";
+export { deployToken } from "./token/token.js";

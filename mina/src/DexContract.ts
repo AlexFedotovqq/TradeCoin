@@ -8,15 +8,44 @@ import {
   Field,
   Permissions,
   Bool,
+  Struct,
+  MerkleMap,
+  MerkleMapWitness,
+  Poseidon,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
+import { BaseMerkleWitness } from "o1js/dist/node/lib/merkle_tree.js";
 
 export { Dex };
+
+export class Balances extends Struct({
+  owner: PublicKey,
+  id: Field,
+  tokenX: UInt64,
+  tokenY: UInt64,
+}) {
+  incrementX(amount: UInt64) {
+    this.tokenX = this.tokenX.add(amount);
+  }
+  decrementX(amount: UInt64) {
+    this.tokenX = this.tokenX.sub(amount);
+  }
+  incrementY(amount: UInt64) {
+    this.tokenY = this.tokenY.add(amount);
+  }
+  decrementY(amount: UInt64) {
+    this.tokenY = this.tokenY.sub(amount);
+  }
+  // add method to delete a leaf for a user
+}
 
 class Dex extends SmartContract {
   @state(PublicKey) tokenX = State<PublicKey>();
   @state(PublicKey) tokenY = State<PublicKey>();
+
+  // state to store maximum number of total users in a merkle tree
+  @state(UInt64) usersTotal = State<UInt64>();
 
   /**
    * state that keeps track of total lqXY supply -- this is needed to calculate what to return when redeeming liquidity
@@ -27,6 +56,9 @@ class Dex extends SmartContract {
 
   @state(UInt64) Xbalance = State<UInt64>();
   @state(UInt64) Ybalance = State<UInt64>();
+
+  // this is where we store data
+  @state(Field) treeRoot = State<Field>();
 
   init() {
     super.init();
@@ -59,10 +91,28 @@ class Dex extends SmartContract {
     this.tokenY.set(_tokenY);
   }
 
-  @method supplyTokenX(dx: UInt64) {
+  @method supplyTokenX(
+    dx: UInt64,
+    keyWitness: MerkleMapWitness,
+    balance: Balances
+  ) {
+    const initialRoot = this.treeRoot.getAndRequireEquals();
     let user = this.sender;
+
     let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
     tokenX.transfer(user, this.address, dx);
+
+    const [rootBefore, key] = keyWitness.computeRootAndKey(
+      Poseidon.hash(Balances.toFields(balance))
+    );
+    rootBefore.assertEquals(initialRoot);
+    key.assertEquals(balance.id);
+
+    balance.incrementX(dx);
+    const [rootAfter, _] = keyWitness.computeRootAndKey(
+      Poseidon.hash(Balances.toFields(balance))
+    );
+    this.treeRoot.set(rootAfter);
 
     let Xbalance = this.Xbalance.getAndRequireEquals();
     Xbalance = Xbalance.add(dx);
@@ -74,6 +124,9 @@ class Dex extends SmartContract {
     let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
     tokenY.transfer(user, this.address, dy);
 
+    // set merkle tree here
+    // add ratio at which entered
+
     let Ybalance = this.Ybalance.getAndRequireEquals();
     Ybalance = Ybalance.add(dy);
     this.Ybalance.set(Ybalance);
@@ -82,11 +135,9 @@ class Dex extends SmartContract {
   // change to user address *mapping*
   // probably something like a merkle map
   @method mintLiquidityToken(dl: UInt64) {
-    // more checks
     // access balances
     // change balances for a user
-    let user = this.sender;
-
+    // implement admin check
     let { tokenX, tokenY } = this.initTokens();
 
     let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
@@ -95,6 +146,7 @@ class Dex extends SmartContract {
     dexY.assertGreaterThan(UInt64.zero);
 
     let liquidity = this.totalSupply.getAndRequireEquals();
+    let user = this.sender;
 
     // how do we verify that user sent tokens?
     // we update merkle tree balances in x and y supplies

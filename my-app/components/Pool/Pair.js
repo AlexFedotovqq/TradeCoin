@@ -2,7 +2,7 @@ import { classNames } from "@/utils/classNames";
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { signal, effect } from "@preact/signals-react";
-import { Field, Mina, fetchAccount, PublicKey } from "o1js";
+import { Mina, fetchAccount, PublicKey } from "o1js";
 import { useState } from "react";
 
 export function Pair() {
