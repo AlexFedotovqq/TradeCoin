@@ -21,7 +21,7 @@
     "lint": "npx eslint src/* --fix"
   },
   "dependencies": {
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.3",
     "o1js": "0.16.0"
   },
   "devDependencies": {
