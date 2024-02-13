@@ -9,33 +9,32 @@ import {
   Permissions,
   Bool,
   Struct,
-  MerkleMap,
   MerkleMapWitness,
   Poseidon,
+  MerkleMap,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
-import { BaseMerkleWitness } from "o1js/dist/node/lib/merkle_tree.js";
 
 export { Dex };
 
 export class Balances extends Struct({
   owner: PublicKey,
   id: Field,
-  tokenX: UInt64,
-  tokenY: UInt64,
+  tokenXAmount: UInt64,
+  tokenYAmount: UInt64,
 }) {
   incrementX(amount: UInt64) {
-    this.tokenX = this.tokenX.add(amount);
+    this.tokenXAmount = this.tokenXAmount.add(amount);
   }
   decrementX(amount: UInt64) {
-    this.tokenX = this.tokenX.sub(amount);
+    this.tokenXAmount = this.tokenXAmount.sub(amount);
   }
   incrementY(amount: UInt64) {
-    this.tokenY = this.tokenY.add(amount);
+    this.tokenYAmount = this.tokenYAmount.add(amount);
   }
   decrementY(amount: UInt64) {
-    this.tokenY = this.tokenY.sub(amount);
+    this.tokenYAmount = this.tokenYAmount.sub(amount);
   }
   // add method to delete a leaf for a user
 }
@@ -90,6 +89,27 @@ class Dex extends SmartContract {
     this.tokenX.set(_tokenX);
     this.tokenY.set(_tokenY);
   }
+
+  @method createUser(keyWitness: MerkleMapWitness, balance: Balances) {
+    const usersTotal = this.usersTotal.getAndRequireEquals();
+    const initialRoot = this.treeRoot.getAndRequireEquals();
+    const [rootBefore, key] = keyWitness.computeRootAndKey(balance.id);
+    rootBefore.assertEquals(initialRoot);
+    key.assertEquals(balance.id);
+
+    // compute the root after incrementing
+    const [rootAfter, _] = keyWitness.computeRootAndKey(
+      Poseidon.hash(Balances.toFields(balance))
+    );
+
+    // set the new root
+    this.treeRoot.set(rootAfter);
+
+    // update liquidity supply
+    this.usersTotal.set(usersTotal.add(1));
+  }
+
+  // delete user as well
 
   @method supplyTokenX(
     dx: UInt64,

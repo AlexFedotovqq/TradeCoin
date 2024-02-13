@@ -1,3 +1,4 @@
+import { Balances } from "./DexContract.js";
 import { deployDex } from "./dex/dex.js";
 import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
 
@@ -7,7 +8,16 @@ import {
   mintToken,
 } from "./token/token.js";
 
-import { Mina, PrivateKey, AccountUpdate, UInt64 } from "o1js";
+import {
+  Mina,
+  PrivateKey,
+  AccountUpdate,
+  UInt64,
+  MerkleMap,
+  Field,
+} from "o1js";
+
+const map = new MerkleMap();
 
 const proofsEnabled = false;
 const enforceTransactionLimits = true;
@@ -63,7 +73,7 @@ await init2TokensSmartContract(
   zkDexAppAddress
 );
 
-console.log("sent");
+console.log("inited 2 tokens smart contracts");
 
 const { dexApp: dexApp } = await deployDex(zkDexAppPrivateKey, deployerAccount);
 
@@ -80,8 +90,29 @@ console.log("initialised tokens in a dex");
 
 console.log("supplying liquidity -- base");
 
+const witness = map.getWitness(Field(0));
+
+const balance: Balances = {
+  owner: deployerAddress,
+  id: Field(0),
+  tokenXAmount: UInt64.zero,
+  tokenYAmount: UInt64.zero,
+  incrementX(amount: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.add(amount);
+  },
+  decrementX(amount: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.sub(amount);
+  },
+  incrementY(amount: UInt64) {
+    this.tokenYAmount = this.tokenYAmount.add(amount);
+  },
+  decrementY(amount: UInt64) {
+    this.tokenYAmount = this.tokenYAmount.sub(amount);
+  },
+};
+
 let txBaseX = await Mina.transaction(deployerAddress, () => {
-  dexApp.supplyTokenX(UInt64.from(10));
+  dexApp.supplyTokenX(UInt64.from(10), witness, balance);
 });
 
 await txBaseX.prove();

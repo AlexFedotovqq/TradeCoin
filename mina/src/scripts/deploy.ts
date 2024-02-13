@@ -1,5 +1,5 @@
-import { BasicTokenContract } from "./BasicTokenContract.js";
-import { Dex } from "./DexContract.js";
+import { BasicTokenContract } from "../BasicTokenContract.js";
+import { Dex } from "../DexContract.js";
 import { Mina, PrivateKey } from "o1js";
 import dotenv from "dotenv";
 
