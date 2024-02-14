@@ -15,6 +15,7 @@ import {
   UInt64,
   MerkleMap,
   Field,
+  Poseidon,
 } from "o1js";
 
 const map = new MerkleMap();
@@ -88,9 +89,7 @@ await init_dex_txn.sign([deployerAccount]).send();
 
 console.log("initialised tokens in a dex");
 
-console.log("supplying liquidity -- base");
-
-const witness = map.getWitness(Field(0));
+console.log("creating new user");
 
 const balance: Balances = {
   owner: deployerAddress,
@@ -111,12 +110,25 @@ const balance: Balances = {
   },
 };
 
+const witness = map.getWitness(Field(0));
+
+const create_user_txn = await Mina.transaction(deployerAddress, () => {
+  dexApp.createUser(witness, balance);
+});
+
+await create_user_txn.prove();
+await create_user_txn.sign([deployerAccount]).send();
+
+console.log("supplying liquidity X -- base");
+
 let txBaseX = await Mina.transaction(deployerAddress, () => {
   dexApp.supplyTokenX(UInt64.from(10), witness, balance);
 });
 
 await txBaseX.prove();
 await txBaseX.sign([deployerAccount]).send();
+
+console.log("supplying liquidity Y -- base");
 
 let txBaseY = await Mina.transaction(deployerAddress, () => {
   dexApp.supplyTokenY(UInt64.from(10));

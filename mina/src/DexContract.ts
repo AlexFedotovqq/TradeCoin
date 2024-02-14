@@ -40,6 +40,9 @@ export class Balances extends Struct({
 }
 
 class Dex extends SmartContract {
+  // this is where we store data
+  @state(Field) treeRoot = State<Field>();
+  // token addresses
   @state(PublicKey) tokenX = State<PublicKey>();
   @state(PublicKey) tokenY = State<PublicKey>();
 
@@ -54,10 +57,8 @@ class Dex extends SmartContract {
   @state(UInt64) totalSupply = State<UInt64>();
 
   @state(UInt64) Xbalance = State<UInt64>();
+  // until here works state
   @state(UInt64) Ybalance = State<UInt64>();
-
-  // this is where we store data
-  @state(Field) treeRoot = State<Field>();
 
   init() {
     super.init();
@@ -86,13 +87,20 @@ class Dex extends SmartContract {
     this.tokenY.requireEquals(
       PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
     );
+
     this.tokenX.set(_tokenX);
     this.tokenY.set(_tokenY);
+
+    const emptyMap = new MerkleMap();
+
+    this.treeRoot.getAndRequireEquals();
+    this.treeRoot.set(emptyMap.getRoot());
   }
 
   @method createUser(keyWitness: MerkleMapWitness, balance: Balances) {
     const usersTotal = this.usersTotal.getAndRequireEquals();
     const initialRoot = this.treeRoot.getAndRequireEquals();
+
     const [rootBefore, key] = keyWitness.computeRootAndKey(balance.id);
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
