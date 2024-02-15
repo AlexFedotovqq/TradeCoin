@@ -21,9 +21,8 @@ export function logDexBalances(
 export function logDexStates(dexApp: Dex) {
   console.log("total supply", dexApp.totalSupply.get().value.toBigInt());
 
-  console.log("Y balance", dexApp.Ybalance.get().value.toBigInt());
-
-  console.log("X balance", dexApp.Xbalance.get().value.toBigInt());
+  console.log("X balance", dexApp.XYbalance.get().toBigInt());
+  console.log("Y balance", dexApp.XYbalance.get().toBigInt());
 }
 
 export function log2TokensAddressBalance(

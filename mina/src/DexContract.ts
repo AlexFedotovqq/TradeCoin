@@ -16,9 +16,9 @@ import {
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
 
-export { Dex };
+export { Dex, Balances, PairBalances };
 
-export class Balances extends Struct({
+class Balances extends Struct({
   owner: PublicKey,
   id: Field,
   tokenXAmount: UInt64,
@@ -39,6 +39,24 @@ export class Balances extends Struct({
   // add method to delete a leaf for a user
 }
 
+class PairBalances extends Struct({
+  tokenXAmount: UInt64,
+  tokenYAmount: UInt64,
+}) {
+  incrementX(amount: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.add(amount);
+  }
+  decrementX(amount: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.sub(amount);
+  }
+  incrementY(amount: UInt64) {
+    this.tokenYAmount = this.tokenYAmount.add(amount);
+  }
+  decrementY(amount: UInt64) {
+    this.tokenYAmount = this.tokenYAmount.sub(amount);
+  }
+}
+
 class Dex extends SmartContract {
   // this is where we store data
   @state(Field) treeRoot = State<Field>();
@@ -56,9 +74,7 @@ class Dex extends SmartContract {
    */
   @state(UInt64) totalSupply = State<UInt64>();
 
-  @state(UInt64) Xbalance = State<UInt64>();
-  // until here works state
-  @state(UInt64) Ybalance = State<UInt64>();
+  @state(Field) XYbalance = State<Field>();
 
   init() {
     super.init();
@@ -95,6 +111,11 @@ class Dex extends SmartContract {
 
     this.treeRoot.getAndRequireEquals();
     this.treeRoot.set(emptyMap.getRoot());
+
+    /* this.XYbalance.getAndRequireEquals();
+    this.XYbalance.set(
+      new PairBalances({ tokenXAmount: UInt64.zero, tokenYAmount: UInt64.zero })
+    ); */
   }
 
   @method createUser(keyWitness: MerkleMapWitness, balance: Balances) {
@@ -142,22 +163,24 @@ class Dex extends SmartContract {
     );
     this.treeRoot.set(rootAfter);
 
-    let Xbalance = this.Xbalance.getAndRequireEquals();
+    /* let Xbalance = this.Xbalance.getAndRequireEquals();
     Xbalance = Xbalance.add(dx);
-    this.Xbalance.set(Xbalance);
+    this.Xbalance.set(Xbalance); */
   }
 
-  @method supplyTokenY(dy: UInt64) {
+  @method supplyTokenY(dy: UInt64, _XYPairBalance: PairBalances) {
     let user = this.sender;
     let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
     tokenY.transfer(user, this.address, dy);
 
     // set merkle tree here
-    // add ratio at which entered
 
-    let Ybalance = this.Ybalance.getAndRequireEquals();
-    Ybalance = Ybalance.add(dy);
-    this.Ybalance.set(Ybalance);
+    _XYPairBalance.incrementY(dy);
+
+    let output = Poseidon.hash(PairBalances.toFields(_XYPairBalance));
+
+    this.XYbalance.getAndRequireEquals();
+    this.XYbalance.set(output);
   }
 
   // change to user address *mapping*
@@ -198,7 +221,7 @@ class Dex extends SmartContract {
    * Works with ZK app pk only atm
    *
    **/
-  @method redeem(dl: UInt64) {
+  /*   @method redeem(dl: UInt64) {
     // add checks
     let user = this.sender;
 
@@ -230,9 +253,9 @@ class Dex extends SmartContract {
     this.token.burn({ address: this.sender, amount: dl });
 
     this.totalSupply.set(this.totalSupply.getAndRequireEquals().sub(dl));
-  }
+  } */
 
-  @method swapXforY(dx: UInt64) {
+  /*   @method swapXforY(dx: UInt64) {
     let user = this.sender;
 
     let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
@@ -252,7 +275,7 @@ class Dex extends SmartContract {
 
     Ybalance = Ybalance.sub(dy);
     this.Ybalance.set(Ybalance);
-  }
+  } */
 
   @method reedemY(dy: UInt64) {
     let user = this.sender;

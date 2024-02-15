@@ -1,7 +1,6 @@
-import { Balances } from "./DexContract.js";
+import { Balances, PairBalances } from "./DexContract.js";
 import { deployDex } from "./dex/dex.js";
 import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
-
 import {
   deploy2Tokens,
   init2TokensSmartContract,
@@ -15,7 +14,6 @@ import {
   UInt64,
   MerkleMap,
   Field,
-  Poseidon,
 } from "o1js";
 
 const map = new MerkleMap();
@@ -130,12 +128,31 @@ await txBaseX.sign([deployerAccount]).send();
 
 console.log("supplying liquidity Y -- base");
 
+const XYbalances: PairBalances = {
+  tokenXAmount: UInt64.zero,
+  tokenYAmount: UInt64.zero,
+  incrementX(amount: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.add(amount);
+  },
+  decrementX(amount: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.sub(amount);
+  },
+  incrementY(amount: UInt64) {
+    this.tokenYAmount = this.tokenYAmount.add(amount);
+  },
+  decrementY(amount: UInt64) {
+    this.tokenYAmount = this.tokenYAmount.sub(amount);
+  },
+};
+
 let txBaseY = await Mina.transaction(deployerAddress, () => {
-  dexApp.supplyTokenY(UInt64.from(10));
+  dexApp.supplyTokenY(UInt64.from(10), XYbalances);
 });
 
 await txBaseY.prove();
 await txBaseY.sign([deployerAccount]).send();
+
+console.log("minting liquidity");
 
 let txBaseMint = await Mina.transaction(deployerAddress, () => {
   AccountUpdate.fundNewAccount(deployerAddress);
@@ -148,7 +165,7 @@ await txBaseMint.sign([deployerAccount]).send();
 logDexBalances(deployerAddress, tokenX, tokenY, dexApp);
 
 console.log("swap");
-
+/* 
 let txSwap = await Mina.transaction(deployerAddress, () => {
   dexApp.swapXforY(UInt64.from(4));
 });
@@ -169,3 +186,4 @@ await txBurn.prove();
 await txBurn.sign([deployerAccount, zkDexAppPrivateKey]).send();
 
 logDexBalances(deployerAddress, tokenX, tokenY, dexApp);
+ */
