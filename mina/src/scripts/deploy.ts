@@ -55,6 +55,6 @@ await init_txn.sign([deployerKey]).send();
 
 console.log("initialised tokens in a dex");
 
-console.log(dexApp.tokenX.get().toBase58());
+console.log(dexApp.tokenX.get());
 
 console.log("finished");

@@ -1,12 +1,3 @@
-import { Balances, PairBalances } from "./DexContract.js";
-import { deployDex } from "./dex/dex.js";
-import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
-import {
-  deploy2Tokens,
-  init2TokensSmartContract,
-  mintToken,
-} from "./token/token.js";
-
 import {
   Mina,
   PrivateKey,
@@ -15,6 +6,15 @@ import {
   MerkleMap,
   Field,
 } from "o1js";
+
+import { PersonalBalance, PairBalances } from "./DexContract.js";
+import { deployDex } from "./dex/dex.js";
+import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
+import {
+  deploy2Tokens,
+  init2TokensSmartContract,
+  mintToken,
+} from "./token/token.js";
 
 const map = new MerkleMap();
 
@@ -89,7 +89,7 @@ console.log("initialised tokens in a dex");
 
 console.log("creating new user");
 
-const balance: Balances = {
+const balance: PersonalBalance = {
   owner: deployerAddress,
   id: Field(0),
   tokenXAmount: UInt64.zero,
@@ -120,7 +120,7 @@ await create_user_txn.sign([deployerAccount]).send();
 console.log("supplying liquidity X -- base");
 
 let txBaseX = await Mina.transaction(deployerAddress, () => {
-  dexApp.supplyTokenX(UInt64.from(10), witness, balance);
+  dexApp.supplyTokenX(UInt64.from(10), balance, witness);
 });
 
 await txBaseX.prove();

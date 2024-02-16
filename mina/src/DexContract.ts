@@ -7,18 +7,18 @@ import {
   state,
   Field,
   Permissions,
-  Bool,
   Struct,
   MerkleMapWitness,
   Poseidon,
   MerkleMap,
+  CircuitString,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
 
-export { Dex, Balances, PairBalances };
+export { Dex, PersonalBalance, PairBalances };
 
-class Balances extends Struct({
+class PersonalBalance extends Struct({
   owner: PublicKey,
   id: Field,
   tokenXAmount: UInt64,
@@ -61,9 +61,11 @@ class Dex extends SmartContract {
   // this is where we store data
   @state(Field) treeRoot = State<Field>();
   // token addresses
-  @state(PublicKey) tokenX = State<PublicKey>();
-  @state(PublicKey) tokenY = State<PublicKey>();
+  @state(CircuitString) tokenX = State<Field[]>();
+  @state(CircuitString) tokenY = State<Field[]>();
 
+  // maybe use packing to include the state
+  // https://github.com/45930/o1js-pack/tree/main
   // state to store maximum number of total users in a merkle tree
   @state(UInt64) usersTotal = State<UInt64>();
 
@@ -74,7 +76,8 @@ class Dex extends SmartContract {
    */
   @state(UInt64) totalSupply = State<UInt64>();
 
-  @state(Field) XYbalance = State<Field>();
+  @state(UInt64) Xbalance = State<UInt64>();
+  @state(UInt64) Ybalance = State<UInt64>();
 
   init() {
     super.init();
@@ -97,29 +100,20 @@ class Dex extends SmartContract {
    * @param _tokenY Y token public key
    */
   @method initTokenAddresses(_tokenX: PublicKey, _tokenY: PublicKey) {
-    this.tokenX.requireEquals(
-      PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
-    );
-    this.tokenY.requireEquals(
-      PublicKey.from({ x: Field.from(""), isOdd: new Bool(false) })
-    );
+    this.tokenX.getAndRequireEquals();
+    this.tokenY.getAndRequireEquals();
 
-    this.tokenX.set(_tokenX);
-    this.tokenY.set(_tokenY);
+    this.tokenX.set(_tokenX.toFields());
+    this.tokenY.set(_tokenY.toFields());
 
     const emptyMap = new MerkleMap();
 
     this.treeRoot.getAndRequireEquals();
     this.treeRoot.set(emptyMap.getRoot());
-
-    /* this.XYbalance.getAndRequireEquals();
-    this.XYbalance.set(
-      new PairBalances({ tokenXAmount: UInt64.zero, tokenYAmount: UInt64.zero })
-    ); */
   }
 
-  @method createUser(keyWitness: MerkleMapWitness, balance: Balances) {
-    const usersTotal = this.usersTotal.getAndRequireEquals();
+  @method createUser(keyWitness: MerkleMapWitness, balance: PersonalBalance) {
+    //const usersTotal = this.usersTotal.getAndRequireEquals();
     const initialRoot = this.treeRoot.getAndRequireEquals();
 
     const [rootBefore, key] = keyWitness.computeRootAndKey(balance.id);
@@ -128,59 +122,66 @@ class Dex extends SmartContract {
 
     // compute the root after incrementing
     const [rootAfter, _] = keyWitness.computeRootAndKey(
-      Poseidon.hash(Balances.toFields(balance))
+      Poseidon.hash(PersonalBalance.toFields(balance))
     );
 
     // set the new root
     this.treeRoot.set(rootAfter);
 
     // update liquidity supply
-    this.usersTotal.set(usersTotal.add(1));
+    //this.usersTotal.set(usersTotal.add(1));
   }
 
   // delete user as well
 
   @method supplyTokenX(
     dx: UInt64,
-    keyWitness: MerkleMapWitness,
-    balance: Balances
+    balance: PersonalBalance,
+    keyWitness: MerkleMapWitness
   ) {
     const initialRoot = this.treeRoot.getAndRequireEquals();
-    let user = this.sender;
+    const Xbalance = this.Xbalance.getAndRequireEquals();
+    const user = this.sender;
 
-    let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
+    const tokenXPub = PublicKey.fromFields(this.tokenX.getAndRequireEquals());
+
+    const tokenX = new BasicTokenContract(tokenXPub);
     tokenX.transfer(user, this.address, dx);
 
     const [rootBefore, key] = keyWitness.computeRootAndKey(
-      Poseidon.hash(Balances.toFields(balance))
+      Poseidon.hash(PersonalBalance.toFields(balance))
     );
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
     balance.incrementX(dx);
     const [rootAfter, _] = keyWitness.computeRootAndKey(
-      Poseidon.hash(Balances.toFields(balance))
+      Poseidon.hash(PersonalBalance.toFields(balance))
     );
     this.treeRoot.set(rootAfter);
 
-    /* let Xbalance = this.Xbalance.getAndRequireEquals();
-    Xbalance = Xbalance.add(dx);
-    this.Xbalance.set(Xbalance); */
+    this.Xbalance.set(Xbalance.add(dx));
+
+    rootBefore.assertEquals(initialRoot);
+    key.assertEquals(balance.id);
   }
 
   @method supplyTokenY(dy: UInt64, _XYPairBalance: PairBalances) {
     let user = this.sender;
-    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
+
+    const tokenYPub = PublicKey.fromFields(this.tokenY.getAndRequireEquals());
+
+    let tokenY = new BasicTokenContract(tokenYPub);
     tokenY.transfer(user, this.address, dy);
 
     // set merkle tree here
 
-    _XYPairBalance.incrementY(dy);
+    /* _XYPairBalance.incrementY(dy);
 
     let output = Poseidon.hash(PairBalances.toFields(_XYPairBalance));
 
     this.XYbalance.getAndRequireEquals();
-    this.XYbalance.set(output);
+    this.XYbalance.set(output); */
   }
 
   // change to user address *mapping*
@@ -279,7 +280,10 @@ class Dex extends SmartContract {
 
   @method reedemY(dy: UInt64) {
     let user = this.sender;
-    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
+
+    const tokenYPub = PublicKey.fromFields(this.tokenY.getAndRequireEquals());
+
+    let tokenY = new BasicTokenContract(tokenYPub);
     // add merkle map
     tokenY.transfer(this.address, user, dy);
   }
@@ -293,8 +297,11 @@ class Dex extends SmartContract {
     tokenX: BasicTokenContract;
     tokenY: BasicTokenContract;
   } {
-    let tokenX = new BasicTokenContract(this.tokenX.getAndRequireEquals());
-    let tokenY = new BasicTokenContract(this.tokenY.getAndRequireEquals());
+    const tokenXPub = PublicKey.fromFields(this.tokenX.getAndRequireEquals());
+    const tokenYPub = PublicKey.fromFields(this.tokenY.getAndRequireEquals());
+
+    let tokenX = new BasicTokenContract(tokenXPub);
+    let tokenY = new BasicTokenContract(tokenYPub);
     return { tokenX, tokenY };
   }
 
