@@ -1,6 +1,6 @@
 import "./_app.js";
 import { useEffect } from "react";
-import ContactForm from "./ContactForm";
+import ContactForm from "../components/ContactForm/ContactForm.js";
 
 function Contact() {
   useEffect(() => {
