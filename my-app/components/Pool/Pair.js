@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export function Pair() {
   const Berkeley = Mina.Network(
-    "https://proxy.berkeley.minaexplorer.com/graphql"
+    "https://proxy.berkeley.minaexplorer.com/graphql",
   );
 
   Mina.setActiveInstance(Berkeley);
@@ -109,7 +109,7 @@ export function Pair() {
                           <span
                             className={classNames(
                               open ? "text-red-200" : "text-white",
-                              "text-sm font-bold"
+                              "text-sm font-bold",
                             )}
                           >
                             Add
@@ -164,7 +164,7 @@ export function Pair() {
                               addLiquidity(
                                 pool.token0Address,
                                 pool.token1Address,
-                                pool.pairAddress
+                                pool.pairAddress,
                               )
                             }
                             className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"
@@ -186,7 +186,7 @@ export function Pair() {
                           <span
                             className={classNames(
                               open ? "text-indigo-200" : "text-white",
-                              "text-sm font-bold"
+                              "text-sm font-bold",
                             )}
                           >
                             Remove

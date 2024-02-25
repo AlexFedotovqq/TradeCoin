@@ -16,7 +16,7 @@ export function AddNewPair() {
                   <span
                     className={classNames(
                       open ? "text-white-200" : "text-white",
-                      "text-sm font-medium"
+                      "text-sm font-medium",
                     )}
                   >
                     Add new pair
