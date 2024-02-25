@@ -121,9 +121,10 @@ class Dex extends SmartContract {
     key.assertEquals(balance.id);
 
     // compute the root after incrementing
-    const [rootAfter, _] = keyWitness.computeRootAndKey(
+    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(
       Poseidon.hash(PersonalBalance.toFields(balance))
     );
+    key.assertEquals(keyAfter);
 
     // set the new root
     this.treeRoot.set(rootAfter);
@@ -155,9 +156,12 @@ class Dex extends SmartContract {
     key.assertEquals(balance.id);
 
     balance.incrementX(dx);
-    const [rootAfter, _] = keyWitness.computeRootAndKey(
+
+    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(
       Poseidon.hash(PersonalBalance.toFields(balance))
     );
+    key.assertEquals(keyAfter);
+
     this.treeRoot.set(rootAfter);
 
     this.Xbalance.set(Xbalance.add(dx));
@@ -176,11 +180,11 @@ class Dex extends SmartContract {
 
     // set merkle tree here
 
-    /* _XYPairBalance.incrementY(dy);
+    _XYPairBalance.incrementY(dy);
 
-    let output = Poseidon.hash(PairBalances.toFields(_XYPairBalance));
+    // let output = Poseidon.hash(PairBalances.toFields(_XYPairBalance));
 
-    this.XYbalance.getAndRequireEquals();
+    /* this.XYbalance.getAndRequireEquals();
     this.XYbalance.set(output); */
   }
 
