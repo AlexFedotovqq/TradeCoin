@@ -78,7 +78,7 @@ const { dexApp: dexApp } = await deployDex(zkDexAppPrivateKey, deployerAccount);
 
 console.log("deployed dex");
 
-const init_dex_txn = await Mina.transaction(deployerAddress, () => {
+/* const init_dex_txn = await Mina.transaction(deployerAddress, () => {
   dexApp.initTokenAddresses(tokenX.address, tokenY.address);
 });
 
@@ -164,7 +164,7 @@ await txBaseMint.sign([deployerAccount]).send();
 
 logDexBalances(deployerAddress, tokenX, tokenY, dexApp);
 
-console.log("swap");
+console.log("swap"); */
 /* 
 let txSwap = await Mina.transaction(deployerAddress, () => {
   dexApp.swapXforY(UInt64.from(4));

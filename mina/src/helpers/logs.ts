@@ -15,15 +15,15 @@ export function logDexBalances(
 
   logTokenBalance(dexApp, pub);
 
-  logDexStates(dexApp);
+  //logDexStates(dexApp);
 }
 
-export function logDexStates(dexApp: Dex) {
+/* export function logDexStates(dexApp: Dex) {
   console.log("total supply", dexApp.totalSupply.get().value.toBigInt());
 
   console.log("X balance", dexApp.Xbalance.get().toBigInt());
   console.log("Y balance", dexApp.Ybalance.get().toBigInt());
-}
+} */
 
 export function log2TokensAddressBalance(
   pub: PublicKey,

@@ -11,7 +11,6 @@ import {
   MerkleMapWitness,
   Poseidon,
   MerkleMap,
-  CircuitString,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
@@ -60,12 +59,7 @@ class PairBalances extends Struct({
 class Dex extends SmartContract {
   // this is where we store data
   @state(Field) treeRoot = State<Field>();
-  // token addresses
-  @state(CircuitString) tokenX = State<Field[]>();
-  @state(CircuitString) tokenY = State<Field[]>();
 
-  // maybe use packing to include the state
-  // https://github.com/45930/o1js-pack/tree/main
   // state to store maximum number of total users in a merkle tree
   @state(UInt64) usersTotal = State<UInt64>();
 
@@ -75,9 +69,6 @@ class Dex extends SmartContract {
    * total supply is initially zero; it increases when supplying liquidity and decreases when redeeming it
    */
   @state(UInt64) totalSupply = State<UInt64>();
-
-  @state(UInt64) Xbalance = State<UInt64>();
-  @state(UInt64) Ybalance = State<UInt64>();
 
   init() {
     super.init();
@@ -94,26 +85,8 @@ class Dex extends SmartContract {
     });
   }
 
-  /**
-   * Initialize Token Addresses
-   * @param _tokenX X token public key
-   * @param _tokenY Y token public key
-   */
-  @method initTokenAddresses(_tokenX: PublicKey, _tokenY: PublicKey) {
-    this.tokenX.getAndRequireEquals();
-    this.tokenY.getAndRequireEquals();
-
-    this.tokenX.set(_tokenX.toFields());
-    this.tokenY.set(_tokenY.toFields());
-
-    const emptyMap = new MerkleMap();
-
-    this.treeRoot.getAndRequireEquals();
-    this.treeRoot.set(emptyMap.getRoot());
-  }
-
   @method createUser(keyWitness: MerkleMapWitness, balance: PersonalBalance) {
-    //const usersTotal = this.usersTotal.getAndRequireEquals();
+    const usersTotal = this.usersTotal.getAndRequireEquals();
     const initialRoot = this.treeRoot.getAndRequireEquals();
 
     const [rootBefore, key] = keyWitness.computeRootAndKey(balance.id);
@@ -130,12 +103,12 @@ class Dex extends SmartContract {
     this.treeRoot.set(rootAfter);
 
     // update liquidity supply
-    //this.usersTotal.set(usersTotal.add(1));
+    this.usersTotal.set(usersTotal.add(1));
   }
 
   // delete user as well
 
-  @method supplyTokenX(
+  /*   @method supplyTokenX(
     dx: UInt64,
     balance: PersonalBalance,
     keyWitness: MerkleMapWitness
@@ -168,9 +141,9 @@ class Dex extends SmartContract {
 
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
-  }
+  } */
 
-  @method supplyTokenY(dy: UInt64, _XYPairBalance: PairBalances) {
+  /*   @method supplyTokenY(dy: UInt64, _XYPairBalance: PairBalances) {
     let user = this.sender;
 
     const tokenYPub = PublicKey.fromFields(this.tokenY.getAndRequireEquals());
@@ -185,12 +158,12 @@ class Dex extends SmartContract {
     // let output = Poseidon.hash(PairBalances.toFields(_XYPairBalance));
 
     /* this.XYbalance.getAndRequireEquals();
-    this.XYbalance.set(output); */
-  }
+    this.XYbalance.set(output); 
+  } */
 
   // change to user address *mapping*
   // probably something like a merkle map
-  @method mintLiquidityToken(dl: UInt64) {
+  /*   @method mintLiquidityToken(dl: UInt64) {
     // access balances
     // change balances for a user
     // implement admin check
@@ -216,7 +189,7 @@ class Dex extends SmartContract {
     // update liquidity supply
 
     this.totalSupply.set(liquidity.add(dl));
-  }
+  } */
 
   /**
    * Burn liquidity tokens to get back X and Y tokens
@@ -282,7 +255,7 @@ class Dex extends SmartContract {
     this.Ybalance.set(Ybalance);
   } */
 
-  @method reedemY(dy: UInt64) {
+  /*   @method reedemY(dy: UInt64) {
     let user = this.sender;
 
     const tokenYPub = PublicKey.fromFields(this.tokenY.getAndRequireEquals());
@@ -291,13 +264,13 @@ class Dex extends SmartContract {
     // add merkle map
     tokenY.transfer(this.address, user, dy);
   }
-
+ */
   // add Y for X
 
   /**
    * Helper which creates instances of tokenX and tokenY
    */
-  initTokens(): {
+  /*   initTokens(): {
     tokenX: BasicTokenContract;
     tokenY: BasicTokenContract;
   } {
@@ -307,19 +280,19 @@ class Dex extends SmartContract {
     let tokenX = new BasicTokenContract(tokenXPub);
     let tokenY = new BasicTokenContract(tokenYPub);
     return { tokenX, tokenY };
-  }
+  } */
 
   /**
    * Helper which queries app balances of tokenX and tokenY
    */
-  dexTokensBalance(
+  /*   dexTokensBalance(
     tokenX: BasicTokenContract,
     tokenY: BasicTokenContract
   ): { dexX: UInt64; dexY: UInt64 } {
     let dexX = tokenX.balanceOf(this.address);
     let dexY = tokenY.balanceOf(this.address);
     return { dexX, dexY };
-  }
+  } */
 }
 
 // some ideas: add ability to withdraw using a key

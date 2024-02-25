@@ -40,7 +40,7 @@ const tokenYPublic = tokenYKey.toPublicKey();
 const tokenX = new BasicTokenContract(tokenXPublic);
 const tokenY = new BasicTokenContract(tokenYPublic);
 
-const dexApp = new Dex(zkAppAddress);
+/* const dexApp = new Dex(zkAppAddress);
 
 const init_txn = await Mina.transaction(
   { sender: deployerAccount, fee: transactionFee },
@@ -58,3 +58,4 @@ console.log("initialised tokens in a dex");
 console.log(dexApp.tokenX.get());
 
 console.log("finished");
+ */

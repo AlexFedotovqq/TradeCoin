@@ -75,7 +75,7 @@ export class BasicTokenContract extends SmartContract {
   transfer(from: PublicKey, to: PublicKey | AccountUpdate, amount: UInt64) {
     if (to instanceof PublicKey)
       return this.transferToAddress(from, to, amount);
-    if (to instanceof AccountUpdate)
+    if (to instanceof SmartContract)
       return this.transferToUpdate(from, to, amount);
   }
 
