@@ -11,69 +11,24 @@ import {
   MerkleMapWitness,
   Poseidon,
   MerkleMap,
+  Provable,
 } from "o1js";
 
-import { BasicTokenContract } from "./BasicTokenContract.js";
-
-export { Dex, PersonalBalance, PairBalances };
-
-class PersonalBalance extends Struct({
+export class PersonalBalance extends Struct({
   owner: PublicKey,
   id: Field,
-  tokenXAmount: UInt64,
-  tokenYAmount: UInt64,
-}) {
-  incrementX(amount: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.add(amount);
-  }
-  decrementX(amount: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.sub(amount);
-  }
-  incrementY(amount: UInt64) {
-    this.tokenYAmount = this.tokenYAmount.add(amount);
-  }
-  decrementY(amount: UInt64) {
-    this.tokenYAmount = this.tokenYAmount.sub(amount);
-  }
-  // add method to delete a leaf for a user
-}
+}) {}
 
-class PairBalances extends Struct({
-  tokenXAmount: UInt64,
-  tokenYAmount: UInt64,
-}) {
-  incrementX(amount: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.add(amount);
-  }
-  decrementX(amount: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.sub(amount);
-  }
-  incrementY(amount: UInt64) {
-    this.tokenYAmount = this.tokenYAmount.add(amount);
-  }
-  decrementY(amount: UInt64) {
-    this.tokenYAmount = this.tokenYAmount.sub(amount);
-  }
-}
-
-class Dex extends SmartContract {
-  // this is where we store data
+export class Dex extends SmartContract {
   @state(Field) treeRoot = State<Field>();
 
   // state to store maximum number of total users in a merkle tree
   @state(UInt64) usersTotal = State<UInt64>();
 
-  /**
-   * state that keeps track of total lqXY supply -- this is needed to calculate what to return when redeeming liquidity
-   *
-   * total supply is initially zero; it increases when supplying liquidity and decreases when redeeming it
-   */
-  @state(UInt64) totalSupply = State<UInt64>();
-
   init() {
     super.init();
 
-    let proof = Permissions.proof();
+    const proof = Permissions.proof();
 
     this.account.permissions.set({
       ...Permissions.default(),
@@ -83,6 +38,9 @@ class Dex extends SmartContract {
       send: proof,
       incrementNonce: proof,
     });
+
+    const map = new MerkleMap().getRoot();
+    this.treeRoot.set(map);
   }
 
   @method createUser(keyWitness: MerkleMapWitness, balance: PersonalBalance) {
@@ -102,25 +60,44 @@ class Dex extends SmartContract {
     // set the new root
     this.treeRoot.set(rootAfter);
 
-    // update liquidity supply
+    // update user count
     this.usersTotal.set(usersTotal.add(1));
   }
 
-  // delete user as well
+  @method deleteUser(keyWitness: MerkleMapWitness, balance: PersonalBalance) {
+    const usersTotal = this.usersTotal.getAndRequireEquals();
+    usersTotal.assertGreaterThanOrEqual(UInt64.one);
 
-  /*   @method supplyTokenX(
+    const initialRoot = this.treeRoot.getAndRequireEquals();
+    const [rootBefore, key] = keyWitness.computeRootAndKey(balance.id);
+    rootBefore.assertEquals(initialRoot);
+    key.assertEquals(balance.id);
+
+    // compute the root after incrementing
+    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(
+      Poseidon.hash(PersonalBalance.toFields(balance))
+    );
+    key.assertEquals(keyAfter);
+
+    // set the new root
+    this.treeRoot.set(rootAfter);
+
+    // update user count
+    this.usersTotal.set(usersTotal.sub(1));
+  }
+
+  /*   @method supplyToken(
     dx: UInt64,
     balance: PersonalBalance,
     keyWitness: MerkleMapWitness
   ) {
     const initialRoot = this.treeRoot.getAndRequireEquals();
-    const Xbalance = this.Xbalance.getAndRequireEquals();
-    const user = this.sender;
+    // const Xbalance = this.Xbalance.getAndRequireEquals();
 
-    const tokenXPub = PublicKey.fromFields(this.tokenX.getAndRequireEquals());
+    //const tokenXPub = PublicKey.fromFields(this.tokenX.getAndRequireEquals());
 
-    const tokenX = new BasicTokenContract(tokenXPub);
-    tokenX.transfer(user, this.address, dx);
+    // const tokenX = new BasicTokenContract(tokenXPub);
+    // tokenX.transfer(user, this.address, dx);
 
     const [rootBefore, key] = keyWitness.computeRootAndKey(
       Poseidon.hash(PersonalBalance.toFields(balance))
@@ -137,58 +114,10 @@ class Dex extends SmartContract {
 
     this.treeRoot.set(rootAfter);
 
-    this.Xbalance.set(Xbalance.add(dx));
+    // this.Xbalance.set(Xbalance.add(dx));
 
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
-  } */
-
-  /*   @method supplyTokenY(dy: UInt64, _XYPairBalance: PairBalances) {
-    let user = this.sender;
-
-    const tokenYPub = PublicKey.fromFields(this.tokenY.getAndRequireEquals());
-
-    let tokenY = new BasicTokenContract(tokenYPub);
-    tokenY.transfer(user, this.address, dy);
-
-    // set merkle tree here
-
-    _XYPairBalance.incrementY(dy);
-
-    // let output = Poseidon.hash(PairBalances.toFields(_XYPairBalance));
-
-    /* this.XYbalance.getAndRequireEquals();
-    this.XYbalance.set(output); 
-  } */
-
-  // change to user address *mapping*
-  // probably something like a merkle map
-  /*   @method mintLiquidityToken(dl: UInt64) {
-    // access balances
-    // change balances for a user
-    // implement admin check
-    let { tokenX, tokenY } = this.initTokens();
-
-    let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
-
-    dexX.assertGreaterThan(UInt64.zero);
-    dexY.assertGreaterThan(UInt64.zero);
-
-    let liquidity = this.totalSupply.getAndRequireEquals();
-    let user = this.sender;
-
-    // how do we verify that user sent tokens?
-    // we update merkle tree balances in x and y supplies
-    // essentially, reedeming the balances here
-    // potentially available for sandwitch attacks )))
-    // we should supply merkle leaf associated with index being user's address
-    // also store merkle map root
-
-    this.token.mint({ address: user, amount: dl });
-
-    // update liquidity supply
-
-    this.totalSupply.set(liquidity.add(dl));
   } */
 
   /**
@@ -266,33 +195,6 @@ class Dex extends SmartContract {
   }
  */
   // add Y for X
-
-  /**
-   * Helper which creates instances of tokenX and tokenY
-   */
-  /*   initTokens(): {
-    tokenX: BasicTokenContract;
-    tokenY: BasicTokenContract;
-  } {
-    const tokenXPub = PublicKey.fromFields(this.tokenX.getAndRequireEquals());
-    const tokenYPub = PublicKey.fromFields(this.tokenY.getAndRequireEquals());
-
-    let tokenX = new BasicTokenContract(tokenXPub);
-    let tokenY = new BasicTokenContract(tokenYPub);
-    return { tokenX, tokenY };
-  } */
-
-  /**
-   * Helper which queries app balances of tokenX and tokenY
-   */
-  /*   dexTokensBalance(
-    tokenX: BasicTokenContract,
-    tokenY: BasicTokenContract
-  ): { dexX: UInt64; dexY: UInt64 } {
-    let dexX = tokenX.balanceOf(this.address);
-    let dexY = tokenY.balanceOf(this.address);
-    return { dexX, dexY };
-  } */
 }
 
 // some ideas: add ability to withdraw using a key

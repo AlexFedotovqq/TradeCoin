@@ -7,7 +7,7 @@ import {
   Field,
 } from "o1js";
 
-import { PersonalBalance, PairBalances } from "./DexContract.js";
+import { PersonalBalance } from "./DexContract.js";
 import { deployDex } from "./dex/dex.js";
 import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
 import {
@@ -72,40 +72,17 @@ await init2TokensSmartContract(
   zkDexAppAddress
 );
 
-console.log("inited 2 tokens smart contracts");
+console.log("inited 2 tokens into smart contracts");
 
 const { dexApp: dexApp } = await deployDex(zkDexAppPrivateKey, deployerAccount);
 
 console.log("deployed dex");
-
-/* const init_dex_txn = await Mina.transaction(deployerAddress, () => {
-  dexApp.initTokenAddresses(tokenX.address, tokenY.address);
-});
-
-await init_dex_txn.prove();
-await init_dex_txn.sign([deployerAccount]).send();
-
-console.log("initialised tokens in a dex");
 
 console.log("creating new user");
 
 const balance: PersonalBalance = {
   owner: deployerAddress,
   id: Field(0),
-  tokenXAmount: UInt64.zero,
-  tokenYAmount: UInt64.zero,
-  incrementX(amount: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.add(amount);
-  },
-  decrementX(amount: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.sub(amount);
-  },
-  incrementY(amount: UInt64) {
-    this.tokenYAmount = this.tokenYAmount.add(amount);
-  },
-  decrementY(amount: UInt64) {
-    this.tokenYAmount = this.tokenYAmount.sub(amount);
-  },
 };
 
 const witness = map.getWitness(Field(0));
@@ -117,7 +94,7 @@ const create_user_txn = await Mina.transaction(deployerAddress, () => {
 await create_user_txn.prove();
 await create_user_txn.sign([deployerAccount]).send();
 
-console.log("supplying liquidity X -- base");
+/* console.log("supplying liquidity X -- base");
 
 let txBaseX = await Mina.transaction(deployerAddress, () => {
   dexApp.supplyTokenX(UInt64.from(10), balance, witness);

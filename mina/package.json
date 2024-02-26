@@ -18,6 +18,7 @@
     "format": "prettier --write --ignore-unknown **/*",
     "test": "tsc && node build/src/DexContract.test.js",
     "testToken": "tsc && node build/src/BasicTokenContract.test.js",
+    "testPair": "tsc && node build/src/PairContract.test.js",
     "compile": "rm -rf build && tsc",
     "pub": "yarn compile & yarn publish",
     "lint": "npx eslint src/* --fix"
