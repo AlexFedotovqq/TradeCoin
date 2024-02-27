@@ -43,8 +43,24 @@ During development, ensuring protocol security and reliability posed significant
 
 Watch our [YouTube video review](http://youtu.be/4Ft4wfPhjNw) for a visual overview of TradeCoin.
 
+## TradeCoin Docs
+
+- [TradeCoin Docs](https://alexfedotovqq.github.io/DocsTradeCoin/#/)
+  
+  ![TradeCoin Docs](https://github.com/AlexFedotovqq/TradeCoin/assets/88692544/cc0e20e3-87c4-4e37-adb0-37f813811425)
+
+- [General information about the project](https://alexfedotovqq.github.io/DocsTradeCoin/#/README)
+  
+  ![General information about the project](https://github.com/AlexFedotovqq/TradeCoin/assets/88692544/3236cd24-304f-450b-b730-e19f6584463c)
+
+- [How does it work?](https://alexfedotovqq.github.io/DocsTradeCoin/#/./howdoesitwork/how-does-it-work)
+  
+  ![How does it work?](https://github.com/AlexFedotovqq/TradeCoin/assets/88692544/5f87b3a7-c76d-402d-8feb-82ec9ad7e14f)
+
 ## Navigation, Design, Screenshots
-1. **Website**
+
+Website
+
 - [Main page](https://tradecoin.dev/)
   
   ![Main page](https://github.com/AlexFedotovqq/TradeCoin/assets/88692544/a8730d3b-507a-4b59-9db2-209473a42e4a)
@@ -64,16 +80,3 @@ Watch our [YouTube video review](http://youtu.be/4Ft4wfPhjNw) for a visual overv
 - [News page](https://tradecoin.dev/news)
   
   ![News page](https://github.com/AlexFedotovqq/TradeCoin/assets/88692544/f297c163-8ce7-4a18-b98e-480b769fa92f)
-
-2. **TradeCoin Docs**
-- [TradeCoin Docs](https://alexfedotovqq.github.io/DocsTradeCoin/#/)
-  
-  ![TradeCoin Docs](https://github.com/AlexFedotovqq/TradeCoin/assets/88692544/cc0e20e3-87c4-4e37-adb0-37f813811425)
-
-- [General information about the project](https://alexfedotovqq.github.io/DocsTradeCoin/#/README)
-  
-  ![General information about the project](https://github.com/AlexFedotovqq/TradeCoin/assets/88692544/3236cd24-304f-450b-b730-e19f6584463c)
-
-- [How does it work?](https://alexfedotovqq.github.io/DocsTradeCoin/#/./howdoesitwork/how-does-it-work)
-  
-  ![How does it work?](https://github.com/AlexFedotovqq/TradeCoin/assets/88692544/5f87b3a7-c76d-402d-8feb-82ec9ad7e14f)
