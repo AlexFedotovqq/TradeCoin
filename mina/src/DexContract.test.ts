@@ -5,6 +5,7 @@ import {
   UInt64,
   MerkleMap,
   Field,
+  Poseidon,
 } from "o1js";
 
 import { PersonalBalance } from "./DexContract.js";
@@ -30,6 +31,9 @@ Mina.setActiveInstance(Local);
 
 const deployerAccount = Local.testAccounts[0].privateKey;
 const deployerAddress = Local.testAccounts[0].publicKey;
+
+const secondAccount = Local.testAccounts[1].privateKey;
+const secondAddress = Local.testAccounts[1].publicKey;
 
 const zkDexAppPrivateKey = PrivateKey.random();
 const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
@@ -80,19 +84,61 @@ console.log("deployed dex");
 
 console.log("creating new user");
 
-const balance: PersonalBalance = {
+const firstId = Field(0);
+
+const balanceOne: PersonalBalance = {
   owner: deployerAddress,
-  id: Field(0),
+  id: firstId,
 };
 
-const witness = map.getWitness(Field(0));
+const witness = map.getWitness(firstId);
 
 const create_user_txn = await Mina.transaction(deployerAddress, () => {
-  dexApp.createUser(witness, balance);
+  dexApp.createUser(witness, balanceOne);
 });
 
 await create_user_txn.prove();
 await create_user_txn.sign([deployerAccount]).send();
+
+map.set(firstId, Poseidon.hash(PersonalBalance.toFields(balanceOne)));
+
+console.log("creating second user");
+
+const secondId = Field(1);
+
+const balanceTwo: PersonalBalance = {
+  owner: secondAddress,
+  id: secondId,
+};
+
+console.log("local map root", map.getRoot().toString());
+
+const witnessTwo = map.getWitness(secondId);
+
+const create_user_txnTwo = await Mina.transaction(secondAddress, () => {
+  dexApp.createUser(witnessTwo, balanceTwo);
+});
+
+await create_user_txnTwo.prove();
+await create_user_txnTwo.sign([secondAccount]).send();
+
+map.set(secondId, Poseidon.hash(PersonalBalance.toFields(balanceTwo)));
+
+console.log("deleting first user");
+console.log("local map root", map.getRoot().toString());
+
+const witnessOne_Two = map.getWitness(firstId);
+
+const delete_user_txn = await Mina.transaction(deployerAddress, () => {
+  dexApp.deleteUser(witnessOne_Two, balanceOne);
+});
+
+await delete_user_txn.prove();
+await delete_user_txn.sign([deployerAccount]).send();
+
+map.set(balanceOne.id, Field(0));
+
+console.log(map.getRoot().toString());
 
 /* console.log("supplying liquidity X -- base");
 

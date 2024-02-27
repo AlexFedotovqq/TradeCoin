@@ -47,7 +47,7 @@ export class Dex extends SmartContract {
     const usersTotal = this.usersTotal.getAndRequireEquals();
     const initialRoot = this.treeRoot.getAndRequireEquals();
 
-    const [rootBefore, key] = keyWitness.computeRootAndKey(balance.id);
+    const [rootBefore, key] = keyWitness.computeRootAndKey(Field(0));
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
@@ -69,14 +69,14 @@ export class Dex extends SmartContract {
     usersTotal.assertGreaterThanOrEqual(UInt64.one);
 
     const initialRoot = this.treeRoot.getAndRequireEquals();
-    const [rootBefore, key] = keyWitness.computeRootAndKey(balance.id);
+    const [rootBefore, key] = keyWitness.computeRootAndKey(
+      Poseidon.hash(PersonalBalance.toFields(balance))
+    );
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
     // compute the root after incrementing
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(
-      Poseidon.hash(PersonalBalance.toFields(balance))
-    );
+    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(Field(0));
     key.assertEquals(keyAfter);
 
     // set the new root
