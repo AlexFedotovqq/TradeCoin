@@ -22,6 +22,8 @@ During development, ensuring protocol security and reliability posed significant
 ## Technologies Used
 
 - JavaScript
+- TypeScript
+- o1js
 - Next.js
 - React
 - Solidity
