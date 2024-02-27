@@ -8,6 +8,7 @@ import {
   Permissions,
   UInt64,
   PublicKey,
+  AccountUpdate,
   Signature,
   Provable,
 } from "o1js";
@@ -67,49 +68,40 @@ export class PairContract extends SmartContract {
     this.tokenY.set(_tokenY);
   }
 
-  // change to user address *mapping*
-  // probably something like a merkle map
+  @method supplyTokenX(dx: UInt64) {
+    const tokenXPub = this.tokenX.getAndRequireEquals();
+    const tokenX = new BasicTokenContract(tokenXPub);
+
+    const user = this.sender;
+    const senderUpdate = AccountUpdate.create(user);
+    senderUpdate.requireSignature();
+
+    tokenX.transfer(user, this.address, dx);
+  }
+
+  @method supplyTokenY(dy: UInt64) {
+    const tokenYPub = this.tokenX.getAndRequireEquals();
+    const tokenY = new BasicTokenContract(tokenYPub);
+
+    const user = this.sender;
+    const senderUpdate = AccountUpdate.create(user);
+    senderUpdate.requireSignature();
+
+    tokenY.transfer(user, this.address, dy);
+  }
+
   @method mintLiquidityToken(dl: UInt64) {
-    // access balances
-    // change balances for a user
-    // implement admin check
-    let { tokenX, tokenY } = this.initTokens();
+    const liquidity = this.totalSupply.getAndRequireEquals();
 
-    let { dexX, dexY } = this.dexTokensBalance(tokenX, tokenY);
-
-    dexX.assertGreaterThan(UInt64.zero);
-    dexY.assertGreaterThan(UInt64.zero);
-
-    let liquidity = this.totalSupply.getAndRequireEquals();
-    let user = this.sender;
-
-    // how do we verify that user sent tokens?
-    // we update merkle tree balances in x and y supplies
-    // essentially, reedeming the balances here
-    // potentially available for sandwitch attacks )))
-    // we should supply merkle leaf associated with index being user's address
-    // also store merkle map root
+    const user = this.sender;
+    const senderUpdate = AccountUpdate.create(user);
+    senderUpdate.requireSignature();
 
     this.token.mint({ address: user, amount: dl });
 
     // update liquidity supply
 
     this.totalSupply.set(liquidity.add(dl));
-  }
-
-  /**
-   * Helper which creates instances of tokenX and tokenY
-   */
-  initTokens(): {
-    tokenX: BasicTokenContract;
-    tokenY: BasicTokenContract;
-  } {
-    const tokenXPub = this.tokenX.getAndRequireEquals();
-    const tokenYPub = this.tokenY.getAndRequireEquals();
-
-    let tokenX = new BasicTokenContract(tokenXPub);
-    let tokenY = new BasicTokenContract(tokenYPub);
-    return { tokenX, tokenY };
   }
 
   /**

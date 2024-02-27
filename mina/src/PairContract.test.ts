@@ -75,7 +75,8 @@ console.log("inited 2 tokens into smart contracts");
 
 const { pairSmartContract: pairSmartContract } = await deployPair(
   zkDexAppPrivateKey,
-  deployerAccount
+  deployerAccount,
+  proofsEnabled
 );
 
 console.log("deployed pair");
@@ -88,3 +89,29 @@ await init_dex_txn.prove();
 await init_dex_txn.sign([deployerAccount]).send();
 
 console.log("initialised tokens in a pair");
+
+const supplyYTxn = await Mina.transaction(deployerAddress, () => {
+  pairSmartContract.supplyTokenY(UInt64.one);
+});
+
+await supplyYTxn.prove();
+await supplyYTxn.sign([deployerAccount]).send();
+
+console.log("supplied Y");
+
+const supplyXTxn = await Mina.transaction(deployerAddress, () => {
+  pairSmartContract.supplyTokenX(UInt64.one);
+});
+
+await supplyXTxn.prove();
+await supplyXTxn.sign([deployerAccount]).send();
+
+console.log("supplied X");
+
+const supplyLiqTxn = await Mina.transaction(deployerAddress, () => {
+  AccountUpdate.fundNewAccount(deployerAddress);
+  pairSmartContract.mintLiquidityToken(UInt64.one);
+});
+
+await supplyLiqTxn.prove();
+await supplyLiqTxn.sign([deployerAccount]).send();
