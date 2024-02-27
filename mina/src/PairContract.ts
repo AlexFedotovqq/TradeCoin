@@ -10,10 +10,19 @@ import {
   PublicKey,
   AccountUpdate,
   Signature,
+  Struct,
   Provable,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
+
+export class PersonalBalance extends Struct({
+  owner: PublicKey,
+  id: Field,
+  tokenXAmount: UInt64,
+  tokenYAmount: UInt64,
+}) {}
+
 
 export class PairContract extends SmartContract {
   @state(Field) treeRoot = State<Field>();
@@ -26,6 +35,9 @@ export class PairContract extends SmartContract {
 
   @state(PublicKey) tokenX = State<PublicKey>();
   @state(PublicKey) tokenY = State<PublicKey>();
+
+  @state(UInt64) reservesX = State<UInt64>();
+  @state(UInt64) reservesY = State<UInt64>();
 
   deploy(args?: DeployArgs) {
     super.deploy(args);
@@ -53,13 +65,13 @@ export class PairContract extends SmartContract {
    */
   @method initTokenAddresses(
     _tokenX: PublicKey,
-    _tokenY: PublicKey
-    //adminSignature: Signature
+    _tokenY: PublicKey,
+    adminSignature: Signature
   ) {
     this.account.provedState.requireEquals(this.account.provedState.get());
     this.account.provedState.get().assertFalse();
 
-    //adminSignature.verify(this.address, this.address.toFields()).assertTrue();
+    adminSignature.verify(this.address, this.address.toFields()).assertTrue();
 
     this.tokenX.getAndRequireEquals();
     this.tokenY.getAndRequireEquals();
@@ -76,7 +88,13 @@ export class PairContract extends SmartContract {
     const senderUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
 
+
+
+
     tokenX.transfer(user, this.address, dx);
+    
+    const reservesX = this.reservesX.getAndRequireEquals();
+    reservesX.add(dx);
   }
 
   @method supplyTokenY(dy: UInt64) {
@@ -88,8 +106,12 @@ export class PairContract extends SmartContract {
     senderUpdate.requireSignature();
 
     tokenY.transfer(user, this.address, dy);
+
+    const reservesY = this.reservesY.getAndRequireEquals();
+    reservesY.add(dy);
   }
 
+  // 
   @method mintLiquidityToken(dl: UInt64) {
     const liquidity = this.totalSupply.getAndRequireEquals();
 

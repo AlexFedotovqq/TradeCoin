@@ -5,10 +5,11 @@ import {
   UInt64,
   MerkleMap,
   Field,
+  Signature
 } from "o1js";
 
 import { deployPair } from "./pair/pair.js";
-import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
+import { log2TokensAddressBalance } from "./helpers/logs.js";
 import {
   deploy2Tokens,
   init2TokensSmartContract,
@@ -30,8 +31,8 @@ Mina.setActiveInstance(Local);
 const deployerAccount = Local.testAccounts[0].privateKey;
 const deployerAddress = Local.testAccounts[0].publicKey;
 
-const zkDexAppPrivateKey = PrivateKey.random();
-const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
+const zkAppPrivateKey = PrivateKey.random();
+const zkPairAppAddress = zkAppPrivateKey.toPublicKey();
 
 const {
   tokenX: tokenX,
@@ -68,21 +69,26 @@ await init2TokensSmartContract(
   deployerAccount,
   tokenX,
   tokenY,
-  zkDexAppAddress
+  zkPairAppAddress
 );
 
 console.log("inited 2 tokens into smart contracts");
 
 const { pairSmartContract: pairSmartContract } = await deployPair(
-  zkDexAppPrivateKey,
+  zkAppPrivateKey,
   deployerAccount,
   proofsEnabled
 );
 
 console.log("deployed pair");
 
+const initSignature = Signature.create(
+  zkAppPrivateKey,
+  zkPairAppAddress.toFields()
+);
+
 const init_dex_txn = await Mina.transaction(deployerAddress, () => {
-  pairSmartContract.initTokenAddresses(tokenX.address, tokenY.address);
+  pairSmartContract.initTokenAddresses(tokenX.address, tokenY.address, initSignature);
 });
 
 await init_dex_txn.prove();
