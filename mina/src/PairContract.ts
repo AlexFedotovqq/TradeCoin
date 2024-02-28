@@ -18,6 +18,7 @@ import {
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
+import { PairMintContract } from "./PairContractMint.js";
 
 export class PersonalPairBalance extends Struct({
   owner: PublicKey,
@@ -167,8 +168,8 @@ export class PairContract extends SmartContract {
     dl: UInt64,
     keyWitness: MerkleMapWitness,
     balanceBefore: PersonalPairBalance,
-    balanceAfter: PersonalPairBalance
-    // tokenPub: PublicKey
+    balanceAfter: PersonalPairBalance,
+    tokenPub: PublicKey
   ) {
     const user = this.checkUserSignature();
 
@@ -183,12 +184,9 @@ export class PairContract extends SmartContract {
     const dXbalance = balanceBefore.tokenXAmount.sub(balanceAfter.tokenXAmount);
     dXbalance.assertEquals(dl);
 
-    //const pairMintContract = new PairMintContract(tokenPub);
+    const pairMintContract = new PairMintContract(tokenPub);
+    pairMintContract.mintLiquidityToken(dl, user);
 
-    //const liquidity = this.totalSupply.getAndRequireEquals();
-    //this.token.mint({ address: user, amount: dl });
-    // update liquidity supply
-    //this.totalSupply.set(liquidity.add(dl));
     this.treeRoot.set(rootAfter);
   }
 

@@ -23,23 +23,22 @@ async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
 }
 
 export async function deployPair(
-  zkDexAppPK: PrivateKey,
+  zkAppPK: PrivateKey,
   pk: PrivateKey,
   proofsEnabled?: boolean
 ) {
   const userAddress: PublicKey = pk.toPublicKey();
-  const zkDexAppAddress: PublicKey = zkDexAppPK.toPublicKey();
+  const zkDexAppAddress: PublicKey = zkAppPK.toPublicKey();
   const verificationKey = await compileContractIfProofsEnabled(proofsEnabled);
 
   const pairSmartContract = new PairContract(zkDexAppAddress);
 
   const deploy_txn = await Mina.transaction(userAddress, () => {
     AccountUpdate.fundNewAccount(userAddress);
-    pairSmartContract.deploy({ verificationKey, zkappKey: zkDexAppPK });
+    pairSmartContract.deploy({ verificationKey, zkappKey: zkAppPK });
   });
 
   await sendWaitTx(deploy_txn, [pk]);
-
   return { pairSmartContract: pairSmartContract };
 }
 
@@ -177,4 +176,48 @@ export function increaseYBalance(balance: PersonalPairBalance, dy: UInt64) {
     tokenYAmount: balance.tokenYAmount.add(dy),
   };
   return newBalance;
+}
+
+export function supplyBalance(balance: PersonalPairBalance, dl: UInt64) {
+  const newBalance: PersonalPairBalance = {
+    owner: balance.owner,
+    id: balance.id,
+    tokenXAmount: balance.tokenXAmount.sub(dl),
+    tokenYAmount: balance.tokenYAmount.sub(dl),
+  };
+  return newBalance;
+}
+
+export async function mintLiquidityToken(
+  map: MerkleMap,
+  balancePairBefore: PersonalPairBalance,
+  dl: UInt64,
+  pairSmartContract: PairContract,
+  userPK: PrivateKey,
+  pairAddress: PublicKey
+) {
+  const userAddress: PublicKey = userPK.toPublicKey();
+
+  const idField = Field(balancePairBefore.id);
+  const witness = map.getWitness(idField);
+
+  const balancePairAfter = supplyBalance(balancePairBefore, dl);
+
+  const mintLiqTxn = await Mina.transaction(userAddress, () => {
+    AccountUpdate.fundNewAccount(userAddress);
+    pairSmartContract.mintLiquidityToken(
+      dl,
+      witness,
+      balancePairBefore,
+      balancePairAfter,
+      pairAddress
+    );
+  });
+
+  await sendWaitTx(mintLiqTxn, [userPK]);
+
+  map.set(
+    idField,
+    Poseidon.hash(PersonalPairBalance.toFields(balancePairAfter))
+  );
 }

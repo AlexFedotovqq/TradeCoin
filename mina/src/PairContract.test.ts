@@ -1,13 +1,4 @@
-import {
-  Mina,
-  PrivateKey,
-  AccountUpdate,
-  UInt64,
-  MerkleMap,
-  Field,
-  Signature,
-  Poseidon,
-} from "o1js";
+import { PrivateKey, UInt64, MerkleMap } from "o1js";
 
 import {
   deployPair,
@@ -15,7 +6,9 @@ import {
   createUser,
   supplyX,
   supplyY,
+  mintLiquidityToken,
 } from "./pair/pair.js";
+import { deployPairMint } from "./pair/pairMint.js";
 import { startLocalBlockchainClient } from "./helpers/client.js";
 import { log2TokensAddressBalance } from "./helpers/logs.js";
 import {
@@ -149,14 +142,24 @@ firstUserBalance = await supplyX(
 
 console.log("supplied X");
 
-/* 
+console.log("deploying pair minting contract");
 
+const zkPairMintPrivateKey = PrivateKey.random();
 
-const supplyLiqTxn = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress);
-  pairSmartContract.mintLiquidityToken(UInt64.one);
-});
+const { pairSmartContractMint: pairSmartContractMint } = await deployPairMint(
+  zkPairMintPrivateKey,
+  deployerAccount
+);
+console.log("deployed pair minting contract");
 
-await supplyLiqTxn.prove();
-await supplyLiqTxn.sign([deployerAccount]).send();
- */
+console.log("minting liquidity");
+
+await mintLiquidityToken(
+  map,
+  firstUserBalance,
+  UInt64.one,
+  pairSmartContract,
+  deployerAccount,
+  pairSmartContractMint.address
+);
+console.log("minted liquidity");

@@ -1,7 +1,7 @@
+import { PublicKey, Mina, SmartContract } from "o1js";
+
 import { BasicTokenContract } from "../BasicTokenContract.js";
 import { Dex } from "../DexContract.js";
-
-import { PublicKey, Mina, SmartContract } from "o1js";
 
 export function logDexBalances(
   pub: PublicKey,
