@@ -1,5 +1,3 @@
-import { BasicTokenContract } from "../BasicTokenContract.js";
-
 import {
   PublicKey,
   Mina,
@@ -8,6 +6,8 @@ import {
   UInt64,
   Signature,
 } from "o1js";
+
+import { BasicTokenContract } from "../BasicTokenContract.js";
 
 async function compileContractIfProofsEnabled(proofsEnabled: boolean) {
   if (proofsEnabled) {
@@ -43,7 +43,7 @@ export async function deployToken(
 export async function deploy2Tokens(
   pubKey: PublicKey,
   pk: PrivateKey,
-  proofsEnabled: boolean
+  proofsEnabled: boolean = false
 ) {
   const TokenAddressXPrivateKey = PrivateKey.random();
   const TokenAddressX = TokenAddressXPrivateKey.toPublicKey();
@@ -77,7 +77,7 @@ export async function mintToken(
   deployerPk: PrivateKey,
   receiverPub: PublicKey,
   contract: BasicTokenContract,
-  mintAmount: UInt64 = UInt64.from(10)
+  mintAmount: UInt64 = UInt64.from(10_000_000)
 ) {
   const deployerAddress = deployerPk.toPublicKey();
 

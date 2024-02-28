@@ -2,11 +2,11 @@ import { PublicKey, PrivateKey, Mina } from "o1js";
 
 export async function sendWaitTx(
   tx: Mina.Transaction,
-  pk: PrivateKey,
-  live: boolean = true
+  pks: PrivateKey[],
+  live: boolean = false
 ) {
   await tx.prove();
-  tx.sign([pk]);
+  tx.sign(pks);
 
   let pendingTx = await tx.send();
 

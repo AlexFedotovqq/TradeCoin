@@ -5,10 +5,18 @@ import {
   UInt64,
   MerkleMap,
   Field,
-  Signature
+  Signature,
+  Poseidon,
 } from "o1js";
 
-import { deployPair } from "./pair/pair.js";
+import {
+  deployPair,
+  initPairTokens,
+  createUser,
+  supplyX,
+  supplyY,
+} from "./pair/pair.js";
+import { startLocalBlockchainClient } from "./helpers/client.js";
 import { log2TokensAddressBalance } from "./helpers/logs.js";
 import {
   deploy2Tokens,
@@ -16,20 +24,15 @@ import {
   mintToken,
 } from "./token/token.js";
 
+const testAccounts = await startLocalBlockchainClient();
+
 const map = new MerkleMap();
 
-const proofsEnabled = false;
-const enforceTransactionLimits = true;
+const deployerAccount = testAccounts[0].privateKey;
+const deployerAddress = testAccounts[0].publicKey;
 
-const Local = Mina.LocalBlockchain({
-  proofsEnabled,
-  enforceTransactionLimits,
-});
-
-Mina.setActiveInstance(Local);
-
-const deployerAccount = Local.testAccounts[0].privateKey;
-const deployerAddress = Local.testAccounts[0].publicKey;
+const secondAccount = testAccounts[1].privateKey;
+const thirdAccount = testAccounts[2].privateKey;
 
 const zkAppPrivateKey = PrivateKey.random();
 const zkPairAppAddress = zkAppPrivateKey.toPublicKey();
@@ -39,26 +42,22 @@ const {
   tokenY: tokenY,
   tokenXPK: TokenAddressXPrivateKey,
   tokenYPK: TokenAddressYPrivateKey,
-} = await deploy2Tokens(deployerAddress, deployerAccount, proofsEnabled);
+} = await deploy2Tokens(deployerAddress, deployerAccount);
 
 console.log("deployed 2 Tokens");
-
-const mintAmount = UInt64.from(10_000);
 
 await mintToken(
   TokenAddressXPrivateKey,
   deployerAccount,
   deployerAddress,
-  tokenX,
-  mintAmount
+  tokenX
 );
 
 await mintToken(
   TokenAddressYPrivateKey,
   deployerAccount,
   deployerAddress,
-  tokenY,
-  mintAmount
+  tokenY
 );
 
 console.log("created and minted 2 tokens");
@@ -76,43 +75,82 @@ console.log("inited 2 tokens into smart contracts");
 
 const { pairSmartContract: pairSmartContract } = await deployPair(
   zkAppPrivateKey,
-  deployerAccount,
-  proofsEnabled
+  deployerAccount
 );
 
 console.log("deployed pair");
 
-const initSignature = Signature.create(
+await initPairTokens(
   zkAppPrivateKey,
-  zkPairAppAddress.toFields()
+  deployerAccount,
+  tokenX.address,
+  tokenY.address,
+  pairSmartContract
 );
-
-const init_dex_txn = await Mina.transaction(deployerAddress, () => {
-  pairSmartContract.initTokenAddresses(tokenX.address, tokenY.address, initSignature);
-});
-
-await init_dex_txn.prove();
-await init_dex_txn.sign([deployerAccount]).send();
 
 console.log("initialised tokens in a pair");
 
-const supplyYTxn = await Mina.transaction(deployerAddress, () => {
-  pairSmartContract.supplyTokenY(UInt64.one);
-});
+console.log("creating a user");
 
-await supplyYTxn.prove();
-await supplyYTxn.sign([deployerAccount]).send();
+let firstUserBalance = await createUser(
+  map,
+  0,
+  pairSmartContract,
+  deployerAccount
+);
+
+console.log("created a user");
+
+console.log("creating another user");
+
+await createUser(map, 1, pairSmartContract, secondAccount);
+
+console.log("created a user");
+
+console.log("creating another user - user 3");
+
+await createUser(map, 2, pairSmartContract, thirdAccount);
+
+console.log("created a third user");
+
+console.log("supplying Y");
+
+firstUserBalance = await supplyY(
+  map,
+  firstUserBalance,
+  UInt64.one,
+  pairSmartContract,
+  deployerAccount
+);
 
 console.log("supplied Y");
 
-const supplyXTxn = await Mina.transaction(deployerAddress, () => {
-  pairSmartContract.supplyTokenX(UInt64.one);
-});
+console.log("supplying more Y");
 
-await supplyXTxn.prove();
-await supplyXTxn.sign([deployerAccount]).send();
+firstUserBalance = await supplyY(
+  map,
+  firstUserBalance,
+  UInt64.one,
+  pairSmartContract,
+  deployerAccount
+);
+
+console.log("supplied Y");
+
+console.log("supplying X");
+
+firstUserBalance = await supplyX(
+  map,
+  firstUserBalance,
+  UInt64.one,
+  pairSmartContract,
+  deployerAccount
+);
 
 console.log("supplied X");
+
+/* 
+
 
 const supplyLiqTxn = await Mina.transaction(deployerAddress, () => {
   AccountUpdate.fundNewAccount(deployerAddress);
@@ -121,3 +159,4 @@ const supplyLiqTxn = await Mina.transaction(deployerAddress, () => {
 
 await supplyLiqTxn.prove();
 await supplyLiqTxn.sign([deployerAccount]).send();
+ */
