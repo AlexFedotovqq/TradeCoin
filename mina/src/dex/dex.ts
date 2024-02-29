@@ -1,5 +1,7 @@
-import { Dex } from "../DexContract.js";
 import { PublicKey, Mina, AccountUpdate, PrivateKey } from "o1js";
+
+import { Dex } from "../DexContract.js";
+import { sendWaitTx } from "../helpers/transactions.js";
 
 async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
   if (proofsEnabled) {
@@ -26,8 +28,7 @@ export async function deployDex(
     dexApp.deploy({ verificationKey, zkappKey: zkDexAppPK });
   });
 
-  await deploy_dex_txn.prove();
-  await deploy_dex_txn.sign([pk]).send();
+  await sendWaitTx(deploy_dex_txn, [pk]);
 
   return { dexApp: dexApp };
 }

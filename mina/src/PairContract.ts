@@ -14,7 +14,6 @@ import {
   MerkleMapWitness,
   MerkleMap,
   Poseidon,
-  Provable,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";

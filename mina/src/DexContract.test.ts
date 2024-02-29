@@ -1,6 +1,6 @@
 import { Mina, PrivateKey, Field, Poseidon, MerkleTree } from "o1js";
 
-import { PersonalBalance, MyMerkleWitness } from "./DexContract.js";
+import { PoolId, MyMerkleWitness } from "./DexContract.js";
 import { deployDex } from "./dex/dex.js";
 import { log2TokensAddressBalance } from "./helpers/logs.js";
 import { startLocalBlockchainClient } from "./helpers/client.js";
@@ -67,8 +67,9 @@ console.log("creating new user");
 
 const firstId = 0n;
 
-const balanceOne: PersonalBalance = {
-  owner: deployerAddress,
+const balanceOne: PoolId = {
+  PairAddress: deployerAddress,
+  mintingContractAddress: deployerAddress,
   id: Field(firstId),
 };
 
@@ -76,20 +77,21 @@ const w = map.getWitness(firstId);
 const witness = new MyMerkleWitness(w);
 
 const create_user_txn = await Mina.transaction(deployerAddress, () => {
-  dexApp.createUser(witness, balanceOne);
+  dexApp.createPool(witness, balanceOne);
 });
 
 await create_user_txn.prove();
 await create_user_txn.sign([deployerAccount]).send();
 
-map.setLeaf(firstId, Poseidon.hash(PersonalBalance.toFields(balanceOne)));
+map.setLeaf(firstId, Poseidon.hash(PoolId.toFields(balanceOne)));
 
 console.log("creating second user");
 
 const secondId = 1n;
 
-const balanceTwo: PersonalBalance = {
-  owner: secondAddress,
+const balanceTwo: PoolId = {
+  PairAddress: deployerAddress,
+  mintingContractAddress: deployerAddress,
   id: Field(secondId),
 };
 
@@ -99,13 +101,13 @@ const w2 = map.getWitness(secondId);
 const witnessTwo = new MyMerkleWitness(w2);
 
 const create_user_txnTwo = await Mina.transaction(secondAddress, () => {
-  dexApp.createUser(witnessTwo, balanceTwo);
+  dexApp.createPool(witnessTwo, balanceTwo);
 });
 
 await create_user_txnTwo.prove();
 await create_user_txnTwo.sign([secondAccount]).send();
 
-map.setLeaf(secondId, Poseidon.hash(PersonalBalance.toFields(balanceTwo)));
+map.setLeaf(secondId, Poseidon.hash(PoolId.toFields(balanceTwo)));
 
 console.log("deleting first user");
 console.log("local map root", map.getRoot().toString());
@@ -114,7 +116,7 @@ const w3 = map.getWitness(firstId);
 const witnessOne_Two = new MyMerkleWitness(w3);
 
 const delete_user_txn = await Mina.transaction(deployerAddress, () => {
-  dexApp.deleteUser(witnessOne_Two, balanceOne);
+  dexApp.deletePool(witnessOne_Two, balanceOne);
 });
 
 await delete_user_txn.prove();

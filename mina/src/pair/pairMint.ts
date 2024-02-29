@@ -1,14 +1,4 @@
-import {
-  PublicKey,
-  Mina,
-  AccountUpdate,
-  PrivateKey,
-  Signature,
-  MerkleMap,
-  Field,
-  UInt64,
-  Poseidon,
-} from "o1js";
+import { PublicKey, Mina, AccountUpdate, PrivateKey, UInt64 } from "o1js";
 
 import { PairMintContract } from "../PairContractMint.js";
 import { sendWaitTx } from "../helpers/transactions.js";

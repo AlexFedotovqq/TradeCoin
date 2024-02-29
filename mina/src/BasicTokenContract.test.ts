@@ -25,9 +25,7 @@ const deployerAccount1 = Local.testAccounts[1].privateKey;
 const deployerAddress1 = Local.testAccounts[1].publicKey;
 
 const deployerAccount2 = Local.testAccounts[2].privateKey;
-// const deployerAddress2 = Local.testAccounts[2].publicKey;
 
-// const deployerAccount3 = Local.testAccounts[3].privateKey;
 const deployerAddress3 = Local.testAccounts[3].publicKey;
 
 console.log("deployerAccount: " + deployerAddress.toBase58());

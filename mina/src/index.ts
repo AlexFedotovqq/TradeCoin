@@ -1,4 +1,4 @@
 export { BasicTokenContract } from "./BasicTokenContract.js";
-export { Dex } from "./DexContract.js";
-export { deployDex } from "./dex/dex.js";
-export { deployToken } from "./token/token.js";
+export { Dex, PoolId } from "./DexContract.js";
+export { PersonalPairBalance, PairContract } from "./PairContract.js";
+export { PairMintContract } from "./PairContractMint.js";

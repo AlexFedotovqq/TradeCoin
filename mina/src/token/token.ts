@@ -8,6 +8,7 @@ import {
 } from "o1js";
 
 import { BasicTokenContract } from "../BasicTokenContract.js";
+import { sendWaitTx } from "../helpers/transactions.js";
 
 async function compileContractIfProofsEnabled(proofsEnabled: boolean) {
   if (proofsEnabled) {
@@ -34,9 +35,7 @@ export async function deployToken(
     contract.deploy({ verificationKey, zkappKey: zkAppPrivateKey });
   });
 
-  await deploy_txn.prove();
-
-  await deploy_txn.sign([pk]).send();
+  await sendWaitTx(deploy_txn, [pk]);
   return { contract: contract, zkAppPrivateKey: zkAppPrivateKey };
 }
 
@@ -62,8 +61,7 @@ export async function deploy2Tokens(
     tokenY.deploy({ verificationKey, zkappKey: TokenAddressYPrivateKey });
   });
 
-  await deploy_txn.prove();
-  await deploy_txn.sign([pk]).send();
+  await sendWaitTx(deploy_txn, [pk]);
   return {
     tokenX: tokenX,
     tokenY: tokenY,
@@ -91,8 +89,7 @@ export async function mintToken(
     contract.mint(receiverPub, mintAmount, mintSignature);
   });
 
-  await mint_txn.prove();
-  await mint_txn.sign([deployerPk]).send();
+  await sendWaitTx(mint_txn, [deployerPk]);
 }
 
 export async function transferToken(
@@ -108,8 +105,8 @@ export async function transferToken(
     AccountUpdate.fundNewAccount(deployerAddress);
     contract.transfer(zkAppAddress, deployerAddress, sendAmount);
   });
-  await send_txn.prove();
-  await send_txn.sign([deployerPk, zkAppPrivateKey]).send();
+
+  await sendWaitTx(send_txn, [deployerPk, zkAppPrivateKey]);
 }
 
 export async function getBalance(
@@ -130,8 +127,7 @@ export async function getBalance(
       contract.balanceOf(target);
     });
 
-    await balance_txn.prove();
-    await balance_txn.sign([fromPk]).send();
+    await sendWaitTx(balance_txn, [fromPk]);
   }
 }
 
@@ -148,6 +144,5 @@ export async function init2TokensSmartContract(
     tokenY.transfer(pub, zkDexAppAddress, UInt64.zero);
   });
 
-  await send_txn.prove();
-  await send_txn.sign([pk]).send();
+  await sendWaitTx(send_txn, [pk]);
 }

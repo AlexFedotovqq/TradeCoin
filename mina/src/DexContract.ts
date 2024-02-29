@@ -10,12 +10,12 @@ import {
   Struct,
   Poseidon,
   MerkleWitness,
-  Provable,
   MerkleTree,
 } from "o1js";
 
-export class PersonalBalance extends Struct({
-  owner: PublicKey,
+export class PoolId extends Struct({
+  PairAddress: PublicKey,
+  mintingContractAddress: PublicKey,
   id: Field,
 }) {}
 
@@ -47,7 +47,7 @@ export class Dex extends SmartContract {
     this.treeRoot.set(map);
   }
 
-  @method createUser(keyWitness: MyMerkleWitness, balance: PersonalBalance) {
+  @method createPool(keyWitness: MyMerkleWitness, balance: PoolId) {
     const usersTotal = this.usersTotal.getAndRequireEquals();
     const initialRoot = this.treeRoot.getAndRequireEquals();
 
@@ -59,7 +59,7 @@ export class Dex extends SmartContract {
 
     // compute the root after incrementing
     const rootAfter = keyWitness.calculateRoot(
-      Poseidon.hash(PersonalBalance.toFields(balance))
+      Poseidon.hash(PoolId.toFields(balance))
     );
 
     // set the new root
@@ -69,14 +69,14 @@ export class Dex extends SmartContract {
     this.usersTotal.set(usersTotal.add(1));
   }
 
-  @method deleteUser(keyWitness: MyMerkleWitness, balance: PersonalBalance) {
+  @method deletePool(keyWitness: MyMerkleWitness, balance: PoolId) {
     const usersTotal = this.usersTotal.getAndRequireEquals();
     usersTotal.assertGreaterThanOrEqual(UInt64.one);
 
     const initialRoot = this.treeRoot.getAndRequireEquals();
     const key = keyWitness.calculateIndex();
     const rootBefore = keyWitness.calculateRoot(
-      Poseidon.hash(PersonalBalance.toFields(balance))
+      Poseidon.hash(PoolId.toFields(balance))
     );
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
