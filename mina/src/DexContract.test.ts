@@ -2,7 +2,8 @@ import { Mina, PrivateKey, UInt64, Field, Poseidon, MerkleTree } from "o1js";
 
 import { PersonalBalance, MyMerkleWitness } from "./DexContract.js";
 import { deployDex } from "./dex/dex.js";
-import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
+import { log2TokensAddressBalance } from "./helpers/logs.js";
+import { startLocalBlockchainClient } from "./helpers/client.js";
 import {
   deploy2Tokens,
   init2TokensSmartContract,
@@ -11,21 +12,13 @@ import {
 
 const map = new MerkleTree(6);
 
-const proofsEnabled = false;
-const enforceTransactionLimits = true;
+const testAccounts = await startLocalBlockchainClient();
 
-const Local = Mina.LocalBlockchain({
-  proofsEnabled,
-  enforceTransactionLimits,
-});
+const deployerAccount = testAccounts[0].privateKey;
+const deployerAddress = testAccounts[0].publicKey;
 
-Mina.setActiveInstance(Local);
-
-const deployerAccount = Local.testAccounts[0].privateKey;
-const deployerAddress = Local.testAccounts[0].publicKey;
-
-const secondAccount = Local.testAccounts[1].privateKey;
-const secondAddress = Local.testAccounts[1].publicKey;
+const secondAccount = testAccounts[1].privateKey;
+const secondAddress = testAccounts[1].publicKey;
 
 const zkDexAppPrivateKey = PrivateKey.random();
 const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
@@ -35,26 +28,22 @@ const {
   tokenY: tokenY,
   tokenXPK: TokenAddressXPrivateKey,
   tokenYPK: TokenAddressYPrivateKey,
-} = await deploy2Tokens(deployerAddress, deployerAccount, proofsEnabled);
+} = await deploy2Tokens(deployerAddress, deployerAccount);
 
 console.log("deployed 2 Tokens");
-
-const mintAmount = UInt64.from(10_000);
 
 await mintToken(
   TokenAddressXPrivateKey,
   deployerAccount,
   deployerAddress,
-  tokenX,
-  mintAmount
+  tokenX
 );
 
 await mintToken(
   TokenAddressYPrivateKey,
   deployerAccount,
   deployerAddress,
-  tokenY,
-  mintAmount
+  tokenY
 );
 
 console.log("created and minted 2 tokens");

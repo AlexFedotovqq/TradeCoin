@@ -8,7 +8,6 @@ import {
   Field,
   Permissions,
   Struct,
-  MerkleMapWitness,
   Poseidon,
   MerkleWitness,
   Provable,
