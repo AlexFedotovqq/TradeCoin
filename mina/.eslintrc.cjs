@@ -6,18 +6,18 @@ module.exports = {
     jest: true,
   },
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:o1js/recommended',
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:o1js/recommended",
   ],
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: "latest",
   },
-  plugins: ['@typescript-eslint', 'o1js'],
+  plugins: ["@typescript-eslint", "o1js"],
   rules: {
-    'no-constant-condition': 'off',
-    'prefer-const': 'off',
+    "no-constant-condition": "off",
+    "prefer-const": "off",
   },
 };
