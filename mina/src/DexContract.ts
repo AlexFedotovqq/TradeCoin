@@ -10,14 +10,19 @@ import {
   Struct,
   MerkleMapWitness,
   Poseidon,
-  MerkleMap,
+  MerkleWitness,
   Provable,
+  MerkleTree,
 } from "o1js";
 
 export class PersonalBalance extends Struct({
   owner: PublicKey,
   id: Field,
 }) {}
+
+const Height = 6;
+
+export class MyMerkleWitness extends MerkleWitness(Height) {}
 
 export class Dex extends SmartContract {
   @state(Field) treeRoot = State<Field>();
@@ -39,23 +44,24 @@ export class Dex extends SmartContract {
       incrementNonce: proof,
     });
 
-    const map = new MerkleMap().getRoot();
+    const map = new MerkleTree(Height).getRoot();
     this.treeRoot.set(map);
   }
 
-  @method createUser(keyWitness: MerkleMapWitness, balance: PersonalBalance) {
+  @method createUser(keyWitness: MyMerkleWitness, balance: PersonalBalance) {
     const usersTotal = this.usersTotal.getAndRequireEquals();
     const initialRoot = this.treeRoot.getAndRequireEquals();
 
-    const [rootBefore, key] = keyWitness.computeRootAndKey(Field(0));
+    const value = Field(0);
+    const key = keyWitness.calculateIndex();
+    const rootBefore = keyWitness.calculateRoot(value);
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
     // compute the root after incrementing
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(
+    const rootAfter = keyWitness.calculateRoot(
       Poseidon.hash(PersonalBalance.toFields(balance))
     );
-    key.assertEquals(keyAfter);
 
     // set the new root
     this.treeRoot.set(rootAfter);
@@ -64,20 +70,20 @@ export class Dex extends SmartContract {
     this.usersTotal.set(usersTotal.add(1));
   }
 
-  @method deleteUser(keyWitness: MerkleMapWitness, balance: PersonalBalance) {
+  @method deleteUser(keyWitness: MyMerkleWitness, balance: PersonalBalance) {
     const usersTotal = this.usersTotal.getAndRequireEquals();
     usersTotal.assertGreaterThanOrEqual(UInt64.one);
 
     const initialRoot = this.treeRoot.getAndRequireEquals();
-    const [rootBefore, key] = keyWitness.computeRootAndKey(
+    const key = keyWitness.calculateIndex();
+    const rootBefore = keyWitness.calculateRoot(
       Poseidon.hash(PersonalBalance.toFields(balance))
     );
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
     // compute the root after incrementing
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(Field(0));
-    key.assertEquals(keyAfter);
+    const rootAfter = keyWitness.calculateRoot(Field(0));
 
     // set the new root
     this.treeRoot.set(rootAfter);

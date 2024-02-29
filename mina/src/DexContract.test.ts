@@ -1,14 +1,6 @@
-import {
-  Mina,
-  PrivateKey,
-  AccountUpdate,
-  UInt64,
-  MerkleMap,
-  Field,
-  Poseidon,
-} from "o1js";
+import { Mina, PrivateKey, UInt64, Field, Poseidon, MerkleTree } from "o1js";
 
-import { PersonalBalance } from "./DexContract.js";
+import { PersonalBalance, MyMerkleWitness } from "./DexContract.js";
 import { deployDex } from "./dex/dex.js";
 import { log2TokensAddressBalance, logDexBalances } from "./helpers/logs.js";
 import {
@@ -17,7 +9,7 @@ import {
   mintToken,
 } from "./token/token.js";
 
-const map = new MerkleMap();
+const map = new MerkleTree(6);
 
 const proofsEnabled = false;
 const enforceTransactionLimits = true;
@@ -84,14 +76,15 @@ console.log("deployed dex");
 
 console.log("creating new user");
 
-const firstId = Field(0);
+const firstId = 0n;
 
 const balanceOne: PersonalBalance = {
   owner: deployerAddress,
-  id: firstId,
+  id: Field(firstId),
 };
 
-const witness = map.getWitness(firstId);
+const w = map.getWitness(firstId);
+const witness = new MyMerkleWitness(w);
 
 const create_user_txn = await Mina.transaction(deployerAddress, () => {
   dexApp.createUser(witness, balanceOne);
@@ -100,20 +93,21 @@ const create_user_txn = await Mina.transaction(deployerAddress, () => {
 await create_user_txn.prove();
 await create_user_txn.sign([deployerAccount]).send();
 
-map.set(firstId, Poseidon.hash(PersonalBalance.toFields(balanceOne)));
+map.setLeaf(firstId, Poseidon.hash(PersonalBalance.toFields(balanceOne)));
 
 console.log("creating second user");
 
-const secondId = Field(1);
+const secondId = 1n;
 
 const balanceTwo: PersonalBalance = {
   owner: secondAddress,
-  id: secondId,
+  id: Field(secondId),
 };
 
 console.log("local map root", map.getRoot().toString());
 
-const witnessTwo = map.getWitness(secondId);
+const w2 = map.getWitness(secondId);
+const witnessTwo = new MyMerkleWitness(w2);
 
 const create_user_txnTwo = await Mina.transaction(secondAddress, () => {
   dexApp.createUser(witnessTwo, balanceTwo);
@@ -122,12 +116,13 @@ const create_user_txnTwo = await Mina.transaction(secondAddress, () => {
 await create_user_txnTwo.prove();
 await create_user_txnTwo.sign([secondAccount]).send();
 
-map.set(secondId, Poseidon.hash(PersonalBalance.toFields(balanceTwo)));
+map.setLeaf(secondId, Poseidon.hash(PersonalBalance.toFields(balanceTwo)));
 
 console.log("deleting first user");
 console.log("local map root", map.getRoot().toString());
 
-const witnessOne_Two = map.getWitness(firstId);
+const w3 = map.getWitness(firstId);
+const witnessOne_Two = new MyMerkleWitness(w3);
 
 const delete_user_txn = await Mina.transaction(deployerAddress, () => {
   dexApp.deleteUser(witnessOne_Two, balanceOne);
@@ -136,9 +131,9 @@ const delete_user_txn = await Mina.transaction(deployerAddress, () => {
 await delete_user_txn.prove();
 await delete_user_txn.sign([deployerAccount]).send();
 
-map.set(balanceOne.id, Field(0));
+map.setLeaf(0n, Field(0));
 
-console.log(map.getRoot().toString());
+console.log("local map root", map.getRoot().toString());
 
 /* console.log("supplying liquidity X -- base");
 
