@@ -14,26 +14,12 @@ export default function Index() {
         <main>
           <div className="relative px-6 lg:px-8">
             <div className="mx-auto max-w-3xl pt-5 pb-32 mt-4 sm:pb-40">
-              <div>
-                <div>
-                  <HowDoesItWorkinfo />
-                </div>
-                <div>
-                  <Poolinfo />
-                </div>
-                <div>
-                  <Exchangeinfo />
-                </div>
-                <div>
-                  <Applicationinstructioninfo />
-                </div>
-                <div>
-                  <Newsinfo />
-                </div>
-                <div>
-                  <Contactusinfo />
-                </div>
-              </div>
+              <HowDoesItWorkinfo />
+              <Poolinfo />
+              <Exchangeinfo />
+              <Applicationinstructioninfo />
+              <Newsinfo />
+              <Contactusinfo />
             </div>
           </div>
         </main>

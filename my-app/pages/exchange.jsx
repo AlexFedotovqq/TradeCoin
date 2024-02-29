@@ -1,3 +1,6 @@
+import Image from "next/image";
+import { useState } from "react";
+
 import SuccessMessage from "../components/Exchange/SuccessMessage";
 import ExchangeButton from "../components/Exchange/ExchangeButton";
 import TokenASelector from "../components/Exchange/TokenASelector";
@@ -5,15 +8,6 @@ import TokenBSelector from "../components/Exchange/TokenBSelector";
 import WarningTransition from "../components/Exchange/WarningTransition";
 
 import { tokens } from "@/utils/tokens";
-import { classNames } from "@/utils/classNames";
-import Image from "next/image";
-
-import { Dialog, Transition } from "@headlessui/react";
-import { Combobox } from "@headlessui/react";
-import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { XMarkIcon, ExclamationTriangleIcon } from "@heroicons/react/20/solid";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import { Fragment, useState } from "react";
 
 export default function Exchange() {
   const [isLoading, setIsLoading] = useState(false);

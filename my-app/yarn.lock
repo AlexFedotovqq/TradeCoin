@@ -59,7 +59,7 @@
     "@tanstack/react-virtual" "^3.0.0-beta.60"
     client-only "^0.0.1"
 
-"@heroicons/react@^2.0.13":
+"@heroicons/react@2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-2.1.1.tgz#422deb80c4d6caf3371aec6f4bee8361a354dc13"
   integrity sha512-JyyN9Lo66kirbCMuMMRPtJxtKJoIsXKS569ebHGGRKbl8s4CtUfLnyKJxteA+vIKySocO4s1SkTkGS4xtG/yEA==
@@ -240,17 +240,17 @@
   dependencies:
     tslib "^2.4.0"
 
-"@tanstack/query-core@5.13.4":
-  version "5.13.4"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.13.4.tgz#50ecd3f721dfb0859528fbb8863268bee24145f0"
-  integrity sha512-8+rJucXvC/xlr4OrxHhEIob/cTlbT4fgmz1VsvB0D12FRStKaXeLORNGcOhSAynRd2NL74SV/Qq0IIb4DedLcA==
+"@tanstack/query-core@5.22.2":
+  version "5.22.2"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.22.2.tgz#af67d41b0b4a3e846c2325f32540f39ca0d4788d"
+  integrity sha512-z3PwKFUFACMUqe1eyesCIKg3Jv1mysSrYfrEW5ww5DCDUD4zlpTKBvUDaEjsfZzL3ULrFLDM9yVUxI/fega1Qg==
 
-"@tanstack/react-query@5.13.4":
-  version "5.13.4"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.13.4.tgz#1a2b93a7319f3abd13461b5c5c7cf4eac369f567"
-  integrity sha512-3HjvkFFriEQwffUXtKHPiwkfFXUGbs46YATTzzyK1+Pw6Ekd3kwzS50e45qdamWuEXmXxyo5S1zp534LdFG0Rw==
+"@tanstack/react-query@5.22.2":
+  version "5.22.2"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.22.2.tgz#e5fce278fbdd026fc1d561a4505142b9f93549d7"
+  integrity sha512-TaxJDRzJ8/NWRT4lY2jguKCrNI6MRN+67dELzPjNUlvqzTxGANlMp68l7aC7hG8Bd1uHNxHl7ihv7MT50i/43A==
   dependencies:
-    "@tanstack/query-core" "5.13.4"
+    "@tanstack/query-core" "5.22.2"
 
 "@tanstack/react-virtual@^3.0.0-beta.60":
   version "3.0.2"
@@ -269,10 +269,10 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
 
-"@types/node@20.10.4":
-  version "20.10.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.10.4.tgz#b246fd84d55d5b1b71bf51f964bd514409347198"
-  integrity sha512-D08YG6rr8X90YB56tSIuBaddy/UXAA9RKJoFvrsnogAum/0pmjkgi4+2nx96A330FmioegBWmEYQ+syqCFaveg==
+"@types/node@20.11.9":
+  version "20.11.9"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.9.tgz#959d436f20ce2ee3df897c3eaa0617c98fa70efb"
+  integrity sha512-CQXNuMoS/VcoAMISe5pm4JnEd1Br5jildbQEToEMQvutmv+EaQr90ry9raiudgpyDuqFiV9e4rnjSfLNq12M5w==
   dependencies:
     undici-types "~5.26.4"
 
@@ -775,10 +775,10 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-dotenv@^16.3.1:
-  version "16.4.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.1.tgz#1d9931f1d3e5d2959350d1250efab299561f7f11"
-  integrity sha512-CjA3y+Dr3FyFDOAMnxZEGtnW9KBR2M0JvvUtXNW+dYJL5ROWxP9DUHCwgFqpMk0OXCc0ljhaNTr2w/kutYIcHQ==
+dotenv@16.4.5:
+  version "16.4.5"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
+  integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
 
 eastasianwidth@^0.2.0:
   version "0.2.0"
@@ -1876,19 +1876,6 @@ normalize-range@^0.1.2:
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==
 
-o1js@0.15:
-  version "0.15.3"
-  resolved "https://registry.yarnpkg.com/o1js/-/o1js-0.15.3.tgz#5c57b10011004273339c506e1f409052a1a2b18e"
-  integrity sha512-M2oLXAI9/xOE9qSpuE5hh1ZvuqVNI1nbxIITDbaHnxtJKb3UDQZFtmtVCT2PF/da4Pz9H49/+TTcTfy39yOmVw==
-  dependencies:
-    blakejs "1.2.1"
-    cachedir "^2.4.0"
-    detect-gpu "^5.0.5"
-    isomorphic-fetch "^3.0.0"
-    js-sha256 "^0.9.0"
-    reflect-metadata "^0.1.13"
-    tslib "^2.3.0"
-
 o1js@0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/o1js/-/o1js-0.16.2.tgz#46e7bcdcce41a4a01f2b9b884d2dec4a23df1775"
@@ -2568,13 +2555,13 @@ tr46@~0.0.3:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
-tradecoin-mina@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/tradecoin-mina/-/tradecoin-mina-0.0.3.tgz#fa5395d84feafd3ffbad415eaa5387d5db45b3a7"
-  integrity sha512-0hjWIDhdoc8uz3uVFcWYpA7IezsX7DIIUu2rPit+rqCNI6MGKOa/eAPAYp9JLcOxqQirUTgy1ytp7JKtrICs+Q==
+tradecoin-mina@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/tradecoin-mina/-/tradecoin-mina-0.0.4.tgz#04f61446b93045c585ca54f5f062261fce8da9b5"
+  integrity sha512-rsCIQG3H6Na+vl6mEJtG3tkkOlF+BH4y0L6WoM/cgcFCpj81BT7qEe1XIf7ILZ8kbjZHbL0FQJnjHHQdguPTCA==
   dependencies:
-    dotenv "^16.3.1"
-    o1js "0.15"
+    dotenv "16.4.5"
+    o1js "0.16.2"
 
 ts-api-utils@^1.0.1:
   version "1.0.3"
