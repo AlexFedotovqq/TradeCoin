@@ -1,4 +1,4 @@
-import { Mina, PrivateKey, UInt64, Field, Poseidon, MerkleTree } from "o1js";
+import { Mina, PrivateKey, Field, Poseidon, MerkleTree } from "o1js";
 
 import { PersonalBalance, MyMerkleWitness } from "./DexContract.js";
 import { deployDex } from "./dex/dex.js";
@@ -10,9 +10,9 @@ import {
   mintToken,
 } from "./token/token.js";
 
-const map = new MerkleTree(6);
-
 const testAccounts = await startLocalBlockchainClient();
+
+const map = new MerkleTree(6);
 
 const deployerAccount = testAccounts[0].privateKey;
 const deployerAddress = testAccounts[0].publicKey;
