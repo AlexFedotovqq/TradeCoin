@@ -1,4 +1,3 @@
-import React from "react";
 import { Transition, Fragment } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 

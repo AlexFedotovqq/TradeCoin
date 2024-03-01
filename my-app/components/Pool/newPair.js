@@ -1,7 +1,8 @@
 import { Disclosure } from "@headlessui/react";
-import { classNames } from "@/utils/classNames";
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+
+import { classNames } from "@/utils/classNames";
 
 export function AddNewPair() {
   const [open, setOpen] = useState(false);
@@ -16,7 +17,7 @@ export function AddNewPair() {
                   <span
                     className={classNames(
                       open ? "text-white-200" : "text-white",
-                      "text-sm font-medium",
+                      "text-sm font-medium"
                     )}
                   >
                     Add new pair

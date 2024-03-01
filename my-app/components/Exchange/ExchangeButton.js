@@ -1,5 +1,3 @@
-import React from "react";
-
 function ExchangeButton({ isLoading, setIsLoading, swap, loadingText }) {
   return (
     <button

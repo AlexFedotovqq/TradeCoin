@@ -1,5 +1,3 @@
-import React from "react";
-
 const PostFunction = ({ post }) => {
   return (
     <article className="relative isolate flex flex-col gap-8 lg:flex-row">

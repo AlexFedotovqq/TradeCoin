@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Combobox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { XMarkIcon } from "@heroicons/react/20/solid";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+
 import { tokens } from "@/utils/tokens";
 import { classNames } from "@/utils/classNames";
 
@@ -83,7 +83,7 @@ export default function TokenASelector({
                                     "relative cursor-default select-none py-2 pl-4 pr-12",
                                     active
                                       ? "bg-indigo-600 text-white"
-                                      : "text-gray-900",
+                                      : "text-gray-900"
                                   )
                                 }
                               >
@@ -100,7 +100,7 @@ export default function TokenASelector({
                                       <span
                                         className={classNames(
                                           "ml-3 truncate  ",
-                                          selected && "font-semibold",
+                                          selected && "font-semibold"
                                         )}
                                       >
                                         {token.name}
@@ -113,7 +113,7 @@ export default function TokenASelector({
                                           "absolute inset-y-0 right-0 flex items-center pr-4",
                                           active
                                             ? "text-white"
-                                            : "text-indigo-600",
+                                            : "text-indigo-600"
                                         )}
                                       >
                                         <CheckIcon

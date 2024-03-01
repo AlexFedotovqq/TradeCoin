@@ -1,4 +1,3 @@
-import React from "react";
 import { Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
