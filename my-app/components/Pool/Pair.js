@@ -1,19 +1,12 @@
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { signal, effect } from "@preact/signals-react";
-import { Mina, fetchAccount, PublicKey } from "o1js";
+
 import { useState } from "react";
 
 import { classNames } from "@/utils/classNames";
 
 export function Pair() {
-  const Berkeley = Mina.Network(
-    "https://proxy.berkeley.minaexplorer.com/graphql"
-  );
-
-  Mina.setActiveInstance(Berkeley);
-
-  const data = signal([
+  const data = [
     {
       pairAddress: "B62qq1DMusFhTJHrcQPUnxVo1xMJK6wKCcurBfNLhACmsmmrzZAyqVE",
       token0Name: "TradeC0",
@@ -28,23 +21,14 @@ export function Pair() {
       token1Name: "TradeCoin",
       token1Address: "asd",
     },
-  ]);
+  ];
 
-  const withdrawalQuantity = signal(1);
-  const tokenAQuantity = signal(1);
-  const tokenBQuantity = signal(1);
+  const [withdrawalQuantity, setWithdrawalQuantity] = useState(1);
+  const [tokenSupplyQuantity, setTokenSupplyQuantity] = useState(1);
 
-  async function removeLiquidity() {
-    const zkAppAddress = PublicKey.fromBase58(data.value[0].pairAddress);
-    console.log(zkAppAddress.toBase58());
-    console.log(await fetchAccount({ publicKey: zkAppAddress }));
-    //await Dex.compile();
-    const zkAppInstance = new Dex(zkAppAddress);
-    console.log(zkAppInstance);
-    //console.log(zkAppInstance.tokenX.get());
-  }
+  async function removeLiquidity() {}
 
-  function addLiquidity() {}
+  async function addLiquidity() {}
 
   const [copiedAddress, setCopiedAddress] = useState(null);
 
@@ -57,7 +41,7 @@ export function Pair() {
   return (
     <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6 ">
       <ul className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {data?.value?.map((pool) => (
+        {data?.map((pool) => (
           <li
             key={pool.pairAddress}
             className="col-span-1 rounded-lg bg-white shadow-md p-6"
@@ -113,7 +97,7 @@ export function Pair() {
                               "text-sm font-bold"
                             )}
                           >
-                            Add
+                            Supply
                           </span>
                           <span className="ml-5 flex items-center">
                             {open ? (
@@ -141,20 +125,9 @@ export function Pair() {
                             name="number"
                             id="number"
                             onChange={(event) =>
-                              (tokenAQuantity.value = event.target.value)
+                              setTokenSupplyQuantity(event.target.value)
                             }
                             className="block w-full rounded-md border-gray-300 mb-2 py-3 px-4 pl-25 bg-red-50"
-                            placeholder="1"
-                          />
-
-                          <input
-                            type="text"
-                            name="number"
-                            id="number"
-                            onChange={(event) =>
-                              (tokenBQuantity.value = event.target.value)
-                            }
-                            className="block w-full rounded-md border-gray-300 py-3 px-4 pl-25 bg-red-50"
                             placeholder="1"
                           />
                         </div>
@@ -178,7 +151,7 @@ export function Pair() {
                   )}
                 </Disclosure>
               </div>
-              <div className="-ml-px flex w-0 flex-1 justify-center">
+              <div className="flex flex-1 justify-center">
                 <Disclosure as="div">
                   {({ open }) => (
                     <>
@@ -217,13 +190,13 @@ export function Pair() {
                             name="number"
                             id="number"
                             onChange={(event) =>
-                              (withdrawalQuantity.value = event.target.value)
+                              setWithdrawalQuantity(event.target.value)
                             }
-                            className="block w-full rounded-md bg-indigo-50 py-3 px-4 pl-25"
+                            className="block w-full rounded-md bg-indigo-50 py-3 px-4 mb-2 pl-25"
                             placeholder="1"
                           />
                         </div>
-                        <div className="ml-2 mt-2 lg:flex-shrink-0 inline-flex rounded-md shadow">
+                        <div className="ml-2 mt-2 inline-flex justify-center rounded-md shadow lg:flex-shrink-0">
                           <a
                             onClick={() => removeLiquidity(pool.pairAddress)}
                             className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white hover:bg-indigo-700"

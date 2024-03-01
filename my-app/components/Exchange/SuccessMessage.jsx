@@ -1,4 +1,5 @@
-import { Transition, Fragment } from "@headlessui/react";
+import { Fragment } from "react";
+import { Transition } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 
 export default function SuccessMessage({ isSuccess }) {

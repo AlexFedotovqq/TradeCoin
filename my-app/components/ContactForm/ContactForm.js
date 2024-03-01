@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
 import { Contactinfoperson } from "@/components/ContactForm/contactinfoperson";
+import Link from "next/link";
 
 const FORM_ENDPOINT =
   "https://public.herotofu.com/v1/a14d1cd0-afde-11ee-870a-ff8e0d81300a";
@@ -83,12 +85,12 @@ const ContactForm = () => {
             </h1>
             <p className="mt-4 text-base text-white/70 sm:mt-6">{status}</p>
             <div className="mt-10 flex justify-center">
-              <a
+              <Link
                 href="/"
                 className="text-sm font-semibold leading-7 text-white"
               >
                 <span aria-hidden="true">&larr;</span> Back to home
-              </a>
+              </Link>
             </div>
           </div>
         </main>

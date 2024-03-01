@@ -1,8 +1,10 @@
+import Image from "next/image";
+
 const PostFunction = ({ post }) => {
   return (
     <article className="relative isolate flex flex-col gap-8 lg:flex-row">
       <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
-        <img
+        <Image
           src={post.imageUrl}
           alt=""
           className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover object-center"
@@ -34,7 +36,7 @@ const PostFunction = ({ post }) => {
         </div>
         <div className="mt-6 flex border-t border-gray-900/5 pt-6">
           <div className="relative flex items-center gap-x-4">
-            <img
+            <Image
               src={post.author.imageUrl}
               alt=""
               className="h-10 w-10 rounded-full bg-gray-50"

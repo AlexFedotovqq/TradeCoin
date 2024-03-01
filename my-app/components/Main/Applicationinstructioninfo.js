@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export function Applicationinstructioninfo() {
+export function ApplicationInstructionInfo() {
   return (
     <div className="mt-8">
       <h1 className="text-3xl font-bold tracking-tight sm:text-center sm:text-5xl">
