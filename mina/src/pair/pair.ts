@@ -69,13 +69,13 @@ export async function deployPair(
   };
 }
 
-export async function createInitPairTokensrTx(
+export async function createInitPairTokensTx(
   pairSmartContract: PairContract,
   tokenX: PublicKey,
   tokenY: PublicKey,
   zkAppPrivateKey: PrivateKey,
   compile: boolean,
-  txOptions: any
+  txOptions: TxOptions
 ) {
   const zkAppAddress: PublicKey = zkAppPrivateKey.toPublicKey();
   await compileContractIfProofsEnabled(compile);
@@ -85,7 +85,7 @@ export async function createInitPairTokensrTx(
     zkAppAddress.toFields()
   );
 
-  const txn = await Mina.transaction(txOptions.userAddress, () => {
+  const txn = await Mina.transaction(txOptions, () => {
     pairSmartContract.initTokenAddresses(tokenX, tokenY, initSignature);
   });
   return txn;
@@ -96,32 +96,36 @@ export async function initPairTokens(
   userPK: PrivateKey,
   tokenX: PublicKey,
   tokenY: PublicKey,
-  pairSmartContract: PairContract
+  compile: boolean = false,
+  live: boolean = false
 ) {
+  const zkAppAddress = zkAppPrivateKey.toPublicKey();
   const userAddress = userPK.toPublicKey();
 
-  const init_txn = await createInitPairTokensrTx(
+  const pairSmartContract = new PairContract(zkAppAddress);
+  const txOptions = createTxOptions(userAddress, live);
+  const init_txn = await createInitPairTokensTx(
     pairSmartContract,
     tokenX,
     tokenY,
     zkAppPrivateKey,
-    false,
-    { userAddress: userAddress }
+    compile,
+    txOptions
   );
 
-  await sendWaitTx(init_txn, [userPK]);
+  await sendWaitTx(init_txn, [userPK], live);
 }
 
 export async function createUserTx(
   pairSmartContract: PairContract,
   map: MerkleMap,
   id: number,
-  txOptions: any
+  txOptions: TxOptions
 ) {
   const idField = Field(id);
   const witness = map.getWitness(idField);
 
-  const createUserTxn = await Mina.transaction(txOptions.userAddress, () => {
+  const createUserTxn = await Mina.transaction(txOptions, () => {
     pairSmartContract.createPersonalBalance(witness);
   });
   return createUserTxn;

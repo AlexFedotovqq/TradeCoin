@@ -81,7 +81,7 @@ export async function mintToken(
   contract: BasicTokenContract,
   compile: boolean = false,
   live: boolean = false,
-  mintAmount: UInt64 = UInt64.from(10_000_000)
+  mintAmount: UInt64 = UInt64.from(100_000_000_000)
 ) {
   await compileContractIfProofsEnabled(compile);
   const deployerAddress = deployerPk.toPublicKey();

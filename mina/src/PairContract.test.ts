@@ -75,8 +75,7 @@ await initPairTokens(
   zkAppPrivateKey,
   deployerAccount,
   tokenX.address,
-  tokenY.address,
-  pairSmartContract
+  tokenY.address
 );
 
 console.log("initialised tokens in a pair");

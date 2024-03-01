@@ -5,6 +5,9 @@ export { PairMintContract } from "./PairContractMint.js";
 
 export {
   createDeployPairTx,
-  createInitPairTokensrTx,
+  createInitPairTokensTx,
   createUserTx,
 } from "./pair/pair.js";
+
+export { getTokenIdBalance } from "./helpers/token.js";
+export { startBerkeleyClient } from "./helpers/client.js";
