@@ -2,12 +2,17 @@
   "name": "tradecoin-mina",
   "version": "0.0.4",
   "license": "MIT",
+  "description": "TradeCoin is a decentralized protocol for automated token exchange on the Mina blockchain.",
   "keywords": [
     "mina-zkapp",
     "mina-zk-app",
     "mina-dapp",
     "zkapp"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexFedotovqq/TradeCoin"
+  },
   "type": "module",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
