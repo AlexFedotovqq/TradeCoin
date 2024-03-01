@@ -27,15 +27,12 @@ const deployerAddress = testAccounts[0].publicKey;
 const secondAccount = testAccounts[1].privateKey;
 const thirdAccount = testAccounts[2].privateKey;
 
-const zkAppPrivateKey = PrivateKey.random();
-const zkPairAppAddress = zkAppPrivateKey.toPublicKey();
-
 const {
   tokenX: tokenX,
   tokenY: tokenY,
   tokenXPK: TokenAddressXPrivateKey,
   tokenYPK: TokenAddressYPrivateKey,
-} = await deploy2Tokens(deployerAddress, deployerAccount);
+} = await deploy2Tokens(deployerAccount);
 
 console.log("deployed 2 Tokens");
 
@@ -57,6 +54,14 @@ console.log("created and minted 2 tokens");
 
 log2TokensAddressBalance(deployerAddress, tokenX, tokenY);
 
+const {
+  pairSmartContract: pairSmartContract,
+  zkAppPrivateKey: zkAppPrivateKey,
+  zkAppPub: zkPairAppAddress,
+} = await deployPair(deployerAccount);
+
+console.log("deployed pair");
+
 await init2TokensSmartContract(
   deployerAccount,
   tokenX,
@@ -65,13 +70,6 @@ await init2TokensSmartContract(
 );
 
 console.log("inited 2 tokens into smart contracts");
-
-const { pairSmartContract: pairSmartContract } = await deployPair(
-  zkAppPrivateKey,
-  deployerAccount
-);
-
-console.log("deployed pair");
 
 await initPairTokens(
   zkAppPrivateKey,

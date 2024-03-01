@@ -9,7 +9,7 @@ dotenv.config();
 
 startBerkeleyClient();
 
-const zkDexAppPrivateKey = PrivateKey.fromBase58(process.env.zkAppPK ?? "");
+const zkDexAppPrivateKey = PrivateKey.fromBase58(process.env.zkAppPK!);
 const pub = zkDexAppPrivateKey.toPublicKey();
 
 const dex = new Dex(pub);

@@ -11,10 +11,14 @@ import {
 } from "o1js";
 
 import { PairContract, PersonalPairBalance } from "../PairContract.js";
-import { sendWaitTx } from "../helpers/transactions.js";
+import {
+  createTxOptions,
+  sendWaitTx,
+  TxOptions,
+} from "../helpers/transactions.js";
 
-async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
-  if (proofsEnabled) {
+async function compileContractIfProofsEnabled(compile?: boolean) {
+  if (compile) {
     const { verificationKey } = await PairContract.compile();
     console.log("compiled");
     return verificationKey;
@@ -25,14 +29,14 @@ async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
 export async function createDeployPairTx(
   zkAppPK: PrivateKey,
   compile: boolean,
-  txOptions: any
+  txOptions: TxOptions
 ) {
-  const zkAppAddress: PublicKey = zkAppPK.toPublicKey();
   const verificationKey = await compileContractIfProofsEnabled(compile);
+  const zkAppAddress: PublicKey = zkAppPK.toPublicKey();
   const pairSmartContract = new PairContract(zkAppAddress);
 
-  const deploy_txn = await Mina.transaction(txOptions.userAddress, () => {
-    AccountUpdate.fundNewAccount(txOptions.userAddress);
+  const deploy_txn = await Mina.transaction(txOptions, () => {
+    AccountUpdate.fundNewAccount(txOptions.sender);
     pairSmartContract.deploy({ verificationKey, zkappKey: zkAppPK });
   });
   return {
@@ -42,18 +46,27 @@ export async function createDeployPairTx(
 }
 
 export async function deployPair(
-  zkAppPrivateKey: PrivateKey,
   userPK: PrivateKey,
-  proofsEnabled?: boolean
+  compile: boolean = false,
+  live: boolean = false
 ) {
+  await compileContractIfProofsEnabled(compile);
+  const zkAppPrivateKey = PrivateKey.random();
+  const zkAppPub = PublicKey.fromPrivateKey(zkAppPrivateKey);
+
   const userAddress: PublicKey = userPK.toPublicKey();
+  const txOptions = createTxOptions(userAddress, live);
   const { deploy_txn, pairSmartContract } = await createDeployPairTx(
     zkAppPrivateKey,
-    false,
-    { userAddress: userAddress }
+    compile,
+    txOptions
   );
-  await sendWaitTx(deploy_txn, [userPK]);
-  return { pairSmartContract: pairSmartContract };
+  await sendWaitTx(deploy_txn, [userPK], live);
+  return {
+    zkAppPrivateKey: zkAppPrivateKey,
+    zkAppPub: zkAppPub,
+    pairSmartContract: pairSmartContract,
+  };
 }
 
 export async function createInitPairTokensrTx(

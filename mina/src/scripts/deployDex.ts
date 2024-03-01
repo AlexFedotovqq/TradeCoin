@@ -13,7 +13,7 @@ startBerkeleyClient();
 
 const zkDexAppPrivateKey = PrivateKey.random();
 
-const pk = PrivateKey.fromBase58(process.env.pk ?? "");
+const pk = PrivateKey.fromBase58(process.env.pk!);
 
 await deployDex(zkDexAppPrivateKey, pk, compile, live);
 

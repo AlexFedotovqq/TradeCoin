@@ -28,7 +28,7 @@ const {
   tokenY: tokenY,
   tokenXPK: TokenAddressXPrivateKey,
   tokenYPK: TokenAddressYPrivateKey,
-} = await deploy2Tokens(deployerAddress, deployerAccount);
+} = await deploy2Tokens(deployerAccount);
 
 console.log("deployed 2 Tokens");
 

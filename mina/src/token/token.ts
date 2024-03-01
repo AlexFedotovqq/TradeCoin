@@ -8,10 +8,10 @@ import {
 } from "o1js";
 
 import { BasicTokenContract } from "../BasicTokenContract.js";
-import { sendWaitTx } from "../helpers/transactions.js";
+import { sendWaitTx, createTxOptions } from "../helpers/transactions.js";
 
-async function compileContractIfProofsEnabled(proofsEnabled: boolean) {
-  if (proofsEnabled) {
+async function compileContractIfProofsEnabled(compile: boolean) {
+  if (compile) {
     const { verificationKey } = await BasicTokenContract.compile();
     console.log("compiled");
     return verificationKey;
@@ -40,28 +40,32 @@ export async function deployToken(
 }
 
 export async function deploy2Tokens(
-  pubKey: PublicKey,
   pk: PrivateKey,
-  proofsEnabled: boolean = false
+  compile: boolean = false,
+  live: boolean = false
 ) {
+  const deployerAddress: PublicKey = pk.toPublicKey();
+
   const TokenAddressXPrivateKey = PrivateKey.random();
   const TokenAddressX = TokenAddressXPrivateKey.toPublicKey();
 
   const TokenAddressYPrivateKey = PrivateKey.random();
   const TokenAddressY = TokenAddressYPrivateKey.toPublicKey();
 
-  const verificationKey = await compileContractIfProofsEnabled(proofsEnabled);
+  const verificationKey = await compileContractIfProofsEnabled(compile);
 
   const tokenX = new BasicTokenContract(TokenAddressX);
   const tokenY = new BasicTokenContract(TokenAddressY);
 
-  const deploy_txn = await Mina.transaction(pubKey, () => {
-    AccountUpdate.fundNewAccount(pubKey, 2);
+  const txOptions = createTxOptions(deployerAddress, live);
+
+  const deploy_txn = await Mina.transaction(txOptions, () => {
+    AccountUpdate.fundNewAccount(txOptions.sender, 2);
     tokenX.deploy({ verificationKey, zkappKey: TokenAddressXPrivateKey });
     tokenY.deploy({ verificationKey, zkappKey: TokenAddressYPrivateKey });
   });
 
-  await sendWaitTx(deploy_txn, [pk]);
+  await sendWaitTx(deploy_txn, [pk], live);
   return {
     tokenX: tokenX,
     tokenY: tokenY,
@@ -75,8 +79,11 @@ export async function mintToken(
   deployerPk: PrivateKey,
   receiverPub: PublicKey,
   contract: BasicTokenContract,
+  compile: boolean = false,
+  live: boolean = false,
   mintAmount: UInt64 = UInt64.from(10_000_000)
 ) {
+  await compileContractIfProofsEnabled(compile);
   const deployerAddress = deployerPk.toPublicKey();
 
   const mintSignature = Signature.create(
@@ -84,12 +91,14 @@ export async function mintToken(
     mintAmount.toFields().concat(receiverPub.toFields())
   );
 
-  const mint_txn = await Mina.transaction(deployerAddress, () => {
-    AccountUpdate.fundNewAccount(deployerAddress);
+  const txOptions = createTxOptions(deployerAddress, live);
+
+  const mint_txn = await Mina.transaction(txOptions, () => {
+    AccountUpdate.fundNewAccount(txOptions.sender);
     contract.mint(receiverPub, mintAmount, mintSignature);
   });
 
-  await sendWaitTx(mint_txn, [deployerPk]);
+  await sendWaitTx(mint_txn, [deployerPk], live);
 }
 
 export async function transferToken(
