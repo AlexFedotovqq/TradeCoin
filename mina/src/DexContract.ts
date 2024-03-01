@@ -27,7 +27,7 @@ export class Dex extends SmartContract {
   @state(Field) treeRoot = State<Field>();
 
   // state to store maximum number of total users in a merkle tree
-  @state(UInt64) usersTotal = State<UInt64>();
+  @state(UInt64) poolTotal = State<UInt64>();
 
   init() {
     super.init();
@@ -48,7 +48,7 @@ export class Dex extends SmartContract {
   }
 
   @method createPool(keyWitness: MyMerkleWitness, balance: PoolId) {
-    const usersTotal = this.usersTotal.getAndRequireEquals();
+    const usersTotal = this.poolTotal.getAndRequireEquals();
     const initialRoot = this.treeRoot.getAndRequireEquals();
 
     const value = Field(0);
@@ -66,11 +66,11 @@ export class Dex extends SmartContract {
     this.treeRoot.set(rootAfter);
 
     // update user count
-    this.usersTotal.set(usersTotal.add(1));
+    this.poolTotal.set(usersTotal.add(1));
   }
 
   @method deletePool(keyWitness: MyMerkleWitness, balance: PoolId) {
-    const usersTotal = this.usersTotal.getAndRequireEquals();
+    const usersTotal = this.poolTotal.getAndRequireEquals();
     usersTotal.assertGreaterThanOrEqual(UInt64.one);
 
     const initialRoot = this.treeRoot.getAndRequireEquals();
@@ -88,7 +88,7 @@ export class Dex extends SmartContract {
     this.treeRoot.set(rootAfter);
 
     // update user count
-    this.usersTotal.set(usersTotal.sub(1));
+    this.poolTotal.set(usersTotal.sub(1));
   }
 
   /*   @method supplyToken(

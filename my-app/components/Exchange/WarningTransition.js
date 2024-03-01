@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
@@ -5,7 +6,7 @@ export default function WarningTransition({ show, setShow }) {
   return (
     <Transition
       show={show}
-      as={React.Fragment}
+      as={Fragment}
       enter="transform ease-out duration-300 transition"
       enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
       enterTo="translate-y-0 opacity-100 sm:translate-x-0"

@@ -8,17 +8,17 @@ export async function queryContract() {
     const { addressFactory, abiFactory } = getContractInfo();
 
     const customHttpProvider = new ethers.providers.JsonRpcProvider(
-      "https://rpc.xinfin.network",
+      "https://rpc.xinfin.network"
     );
 
     const contract = new ethers.Contract(
       addressFactory,
       abiFactory,
-      customHttpProvider,
+      customHttpProvider
     );
 
     const currentCount = ethers.BigNumber.from(
-      await contract.allPairsLength(),
+      await contract.allPairsLength()
     ).toNumber();
 
     let items = [];
@@ -28,7 +28,7 @@ export async function queryContract() {
       const Pair = new ethers.Contract(
         pairAddress,
         UniswapV2Pair.abi,
-        customHttpProvider,
+        customHttpProvider
       );
 
       const token0 = await Pair.token0();
@@ -42,14 +42,14 @@ export async function queryContract() {
 
       const reserves = await Pair.getReserves();
       const reserves0 = ethers.utils.formatEther(
-        ethers.BigNumber.from(reserves[0]).toString(),
+        ethers.BigNumber.from(reserves[0]).toString()
       );
       const reserves1 = ethers.utils.formatEther(
-        ethers.BigNumber.from(reserves[1]).toString(),
+        ethers.BigNumber.from(reserves[1]).toString()
       );
 
       const supply = ethers.utils.formatEther(
-        ethers.BigNumber.from(await Pair.totalSupply()).toString(),
+        ethers.BigNumber.from(await Pair.totalSupply()).toString()
       );
 
       items.push({
@@ -75,17 +75,17 @@ export async function queryPrices() {
     const { addressFactory, abiFactory } = getContractInfo();
 
     const customHttpProvider = new ethers.providers.JsonRpcProvider(
-      "https://rpc.xinfin.network",
+      "https://rpc.xinfin.network"
     );
 
     const contract = new ethers.Contract(
       addressFactory,
       abiFactory,
-      customHttpProvider,
+      customHttpProvider
     );
 
     const currentCount = ethers.BigNumber.from(
-      await contract.allPairsLength(),
+      await contract.allPairsLength()
     ).toNumber();
 
     let items = [];
@@ -95,7 +95,7 @@ export async function queryPrices() {
       const Pair = new ethers.Contract(
         pairAddress,
         UniswapV2Pair.abi,
-        customHttpProvider,
+        customHttpProvider
       );
 
       const token0 = await Pair.token0();
@@ -103,7 +103,7 @@ export async function queryPrices() {
 
       var price0 = ethers.utils
         .formatEther(
-          ethers.BigNumber.from(await Pair.price0CumulativeLast()).toString(),
+          ethers.BigNumber.from(await Pair.price0CumulativeLast()).toString()
         )
         .split(".")[0];
 
@@ -118,11 +118,11 @@ export async function queryPrices() {
 
       const reserves = await Pair.getReserves();
       const reserves0 = ethers.utils.formatEther(
-        ethers.BigNumber.from(reserves[0]).toString(),
+        ethers.BigNumber.from(reserves[0]).toString()
       );
 
       const reserves1 = ethers.utils.formatEther(
-        ethers.BigNumber.from(reserves[1]).toString(),
+        ethers.BigNumber.from(reserves[1]).toString()
       );
 
       var reserveRatio = (1 + reserves0) / (1 + reserves1);

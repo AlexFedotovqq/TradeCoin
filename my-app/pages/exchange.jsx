@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import SuccessMessage from "../components/Exchange/SuccessMessage";
-import ExchangeButton from "../components/Exchange/ExchangeButton";
-import TokenASelector from "../components/Exchange/TokenASelector";
-import TokenBSelector from "../components/Exchange/TokenBSelector";
-import WarningTransition from "../components/Exchange/WarningTransition";
+import SuccessMessage from "@/components/Exchange/SuccessMessage";
+import ExchangeButton from "@/components/Exchange/ExchangeButton";
+import TokenASelector from "@/components/Exchange/TokenASelector";
+import TokenBSelector from "@/components/Exchange/TokenBSelector";
+import WarningTransition from "@/components/Exchange/WarningTransition";
 
 import { tokens } from "@/utils/tokens";
 

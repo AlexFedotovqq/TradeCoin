@@ -25,7 +25,7 @@ export function createTxOptions(
   live: boolean = true,
   fee: number = 100_000_000
 ) {
-  const txOptions: { sender: PublicKey; fee?: number } = {
+  const txOptions: TxOptions = {
     sender: pubKey,
   };
   if (live) {
@@ -33,3 +33,8 @@ export function createTxOptions(
   }
   return txOptions;
 }
+
+export type TxOptions = {
+  sender: PublicKey;
+  fee?: number;
+};

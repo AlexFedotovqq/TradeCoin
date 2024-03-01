@@ -20,6 +20,8 @@
     "testToken": "tsc && node build/src/BasicTokenContract.test.js",
     "testPair": "tsc && node build/src/PairContract.test.js",
     "testPairMint": "tsc && node build/src/PairContractMint.test.js",
+    "deployDex": "tsc && node build/src/scripts/deployDex.js",
+    "queryDex": "tsc && node build/src/scripts/queryDex.js",
     "compile": "rm -rf build && tsc",
     "pub": "yarn compile & yarn publish",
     "lint": "npx eslint src/* --fix"

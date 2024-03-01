@@ -9,11 +9,11 @@ async function connectWallet(updateDisplayAddress) {
   try {
     const accounts = await window.mina.requestAccounts();
     const displayAddress = `${accounts[0].slice(0, 6)}...${accounts[0].slice(
-      -4,
+      -4
     )}`;
     window.localStorage.setItem(
       LOCAL_STORAGE_KEY,
-      JSON.stringify(displayAddress),
+      JSON.stringify(displayAddress)
     );
     updateDisplayAddress(displayAddress);
   } catch (error) {
@@ -263,7 +263,7 @@ export const WalletButton = () => {
                                                 <button
                                                   onClick={() =>
                                                     disconnectWallet(
-                                                      updateDisplayAddress,
+                                                      updateDisplayAddress
                                                     )
                                                   }
                                                   style={{
