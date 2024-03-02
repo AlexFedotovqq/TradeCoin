@@ -8,10 +8,10 @@ import { BasicTokenContract } from "../../BasicTokenContract.js";
 
 startBerkeleyClient();
 
-const pk = PrivateKey.fromBase58(process.env.pk!);
+const pk = PrivateKey.fromBase58(process.env.pk);
 const pub = PublicKey.fromPrivateKey(pk);
 
-const tokenPK1 = PrivateKey.fromBase58(process.env.tokenPK1!);
+const tokenPK1 = PrivateKey.fromBase58(process.env.tokenPK1);
 const tokenPub1 = PublicKey.fromPrivateKey(tokenPK1);
 
 const contract1 = new BasicTokenContract(tokenPub1);
