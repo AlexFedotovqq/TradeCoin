@@ -26,7 +26,6 @@ export class MyMerkleWitness extends MerkleWitness(Height) {}
 export class Dex extends SmartContract {
   @state(Field) treeRoot = State<Field>();
 
-  // state to store maximum number of total users in a merkle tree
   @state(UInt64) poolTotal = State<UInt64>();
 
   init() {
