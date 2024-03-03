@@ -3,8 +3,7 @@ import { useState } from "react";
 
 import SuccessMessage from "@/components/Exchange/SuccessMessage";
 import ExchangeButton from "@/components/Exchange/ExchangeButton";
-import TokenASelector from "@/components/Exchange/TokenASelector";
-import TokenBSelector from "@/components/Exchange/TokenBSelector";
+import TokenSelector from "@/components/Exchange/TokenSelector";
 import WarningTransition from "@/components/Exchange/WarningTransition";
 
 import { tokens } from "@/utils/tokens";
@@ -108,10 +107,6 @@ export default function Exchange() {
               </button>
 
               <input
-                type="tel"
-                name="phone-number"
-                id="phone-number"
-                autoComplete="tel"
                 onChange={(event) => setSwapAmount(event.target.value)}
                 className="relative w-full items-center justify-center block rounded-md border-0 py-2  px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
                 placeholder="0"
@@ -187,21 +182,23 @@ export default function Exchange() {
       </div>
 
       {/* tokenA */}
-      <TokenASelector
+      <TokenSelector
+        tokens={tokens}
         open={openTokenA}
         setOpen={setOpenTokenA}
-        tokenA={tokenA}
-        setTokenA={setTokenA}
+        token={tokenA}
+        setToken={setTokenA}
         query={query}
         setQuery={setQuery}
       />
 
       {/* tokenB */}
-      <TokenBSelector
+      <TokenSelector
+        tokens={tokens}
         open={openTokenB}
         setOpen={setOpenTokenB}
-        tokenB={tokenB}
-        setTokenB={setTokenB}
+        token={tokenB}
+        setToken={setTokenB}
         query={query}
         setQuery={setQuery}
       />
