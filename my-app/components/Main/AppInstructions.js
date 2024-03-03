@@ -25,7 +25,7 @@ export function AppInstructions() {
         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
           <Link
             href="https://alexfedotovqq.github.io/DocsTradeCoin/#/"
-            className="font-semibold text-gray-900 text-white"
+            className="font-semibold text-white"
           >
             View our Docs
           </Link>
