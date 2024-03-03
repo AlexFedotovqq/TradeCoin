@@ -1,10 +1,10 @@
 import { Fpart } from "@/components/Main/Fpart";
-import { HowDoesItWorkinfo } from "@/components/Main/HowDoesItWorkInfo";
-import { PoolInfo } from "@/components/Main/PoolInfo";
-import { ExchangeInfo } from "@/components/Main/ExchangeInfo";
-import { ApplicationInstructionInfo } from "@/components/Main/ApplicationInstructionInfo";
-import { NewsInfo } from "@/components/Main/NewsInfo";
-import { ContactusInfo } from "@/components/Main/ContactusInfo";
+import { HowDoesItWorkinfo } from "@/components/Main/Howdoesitworkinfo";
+import { PoolInfo } from "@/components/Main/Poolinfo";
+import { ExchangeInfo } from "@/components/Main/Exchangeinfo";
+import { ApplicationInstructionInfo } from "@/components/Main/Applicationinstructioninfo";
+import { NewsInfo } from "@/components/Main/Newsinfo";
+import { ContactusInfo } from "@/components/Main/Contactusinfo";
 
 export default function Index() {
   return (
