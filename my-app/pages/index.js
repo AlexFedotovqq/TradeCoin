@@ -11,18 +11,16 @@ export default function Index() {
     <div>
       <Hero />
       <div className="isolate bg-gradient-to-tl">
-        <main>
-          <div className="relative px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl pt-5 pb-32 mt-4 sm:pb-40">
-              <FAQ />
-              <Pool />
-              <Exchange />
-              <AppInstructions />
-              <News />
-              <ContactUs />
-            </div>
+        <div className="relative px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl pt-5 pb-32 mt-4 sm:pb-40">
+            <FAQ />
+            <Pool />
+            <Exchange />
+            <AppInstructions />
+            <News />
+            <ContactUs />
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );
