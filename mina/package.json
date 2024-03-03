@@ -31,6 +31,7 @@
     "initPairTokens": "tsc && node build/src/scripts/pair/initPair.js",
     "queryPair": "tsc && node build/src/scripts/pair/queryPair.js",
     "deploy2Tokens": "tsc && node build/src/scripts/token/deploy.js",
+    "deployCustomToken": "tsc && node build/src/scripts/token/deployCustomToken.js",
     "mintBasicToken": "tsc && node build/src/scripts/token/mint.js",
     "queryAccount": "tsc && node build/src/scripts/token/queryAccount.js",
     "compile": "rm -rf build && tsc",

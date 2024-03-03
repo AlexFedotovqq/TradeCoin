@@ -68,6 +68,9 @@ export function logTokenInfo(contract: BasicTokenContract) {
     "zkapp tokens:",
     Mina.getBalance(contract.address, contract.token.id).value.toBigInt()
   );
+
+  console.log("token Id", contract.token.id.toBigInt());
+  console.log("tokenOwner", contract.token.tokenOwner.toBase58());
 }
 
 export function logTokenBalance(contract: SmartContract, pub: PublicKey) {

@@ -7,6 +7,7 @@ declare global {
       tokenPK2: string;
       tokenPK3: string;
       tokenPK4: string;
+      tokenPK5: string;
       pairPK: string;
     }
   }

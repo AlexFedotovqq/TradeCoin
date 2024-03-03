@@ -1,3 +1,4 @@
+import { startLocalBlockchainClient } from "./helpers/client.js";
 import { logTokenBalance, logTokenInfo } from "./helpers/logs.js";
 import {
   deployToken,
@@ -6,32 +7,23 @@ import {
   transferToken,
 } from "./token/token.js";
 
-import { Mina } from "o1js";
-
 const proofsEnabled = false;
-const enforceTransactionLimits = true;
 
-const Local = Mina.LocalBlockchain({
-  proofsEnabled,
-  enforceTransactionLimits,
-});
+const testAccounts = await startLocalBlockchainClient(proofsEnabled);
 
-Mina.setActiveInstance(Local);
+const deployerAccount = testAccounts[0].privateKey;
+const deployerAddress = testAccounts[0].publicKey;
 
-const deployerAccount = Local.testAccounts[0].privateKey;
-const deployerAddress = Local.testAccounts[0].publicKey;
+const deployerAccount1 = testAccounts[1].privateKey;
+const deployerAddress1 = testAccounts[1].publicKey;
 
-const deployerAccount1 = Local.testAccounts[1].privateKey;
-const deployerAddress1 = Local.testAccounts[1].publicKey;
+const deployerAccount2 = testAccounts[2].privateKey;
 
-const deployerAccount2 = Local.testAccounts[2].privateKey;
-
-const deployerAddress3 = Local.testAccounts[3].publicKey;
+const deployerAddress3 = testAccounts[3].publicKey;
 
 console.log("deployerAccount: " + deployerAddress.toBase58());
 
 const { contract, zkAppPrivateKey } = await deployToken(
-  deployerAddress,
   deployerAccount,
   proofsEnabled
 );
