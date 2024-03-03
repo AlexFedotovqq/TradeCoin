@@ -12,6 +12,9 @@ import {
   Account,
 } from "o1js";
 
+const tokenSymbol = "";
+const URI = "";
+
 export class BasicTokenContract extends SmartContract {
   @state(UInt64) totalAmountInCirculation = State<UInt64>();
 
@@ -24,6 +27,7 @@ export class BasicTokenContract extends SmartContract {
       ...Permissions.default(),
       editState: permissionToEdit,
       setTokenSymbol: permissionToEdit,
+      setZkappUri: permissionToEdit,
       send: permissionToEdit,
       receive: permissionToEdit,
     });
@@ -32,6 +36,8 @@ export class BasicTokenContract extends SmartContract {
   init() {
     super.init();
     this.totalAmountInCirculation.set(UInt64.zero);
+    this.account.tokenSymbol.set(tokenSymbol);
+    this.account.zkappUri.set(URI);
   }
 
   @method mint(
@@ -79,4 +85,83 @@ export class BasicTokenContract extends SmartContract {
     let balance = account.balance.getAndRequireEquals();
     return balance;
   }
+}
+
+export function createCustomToken(tokenSymbol: string, URI: string) {
+  class BasicTokenContract extends SmartContract {
+    @state(UInt64) totalAmountInCirculation = State<UInt64>();
+
+    deploy(args?: DeployArgs) {
+      super.deploy(args);
+
+      const permissionToEdit = Permissions.proof();
+
+      this.account.permissions.set({
+        ...Permissions.default(),
+        editState: permissionToEdit,
+        setTokenSymbol: permissionToEdit,
+        setZkappUri: permissionToEdit,
+        send: permissionToEdit,
+        receive: permissionToEdit,
+      });
+    }
+
+    init() {
+      super.init();
+      this.totalAmountInCirculation.set(UInt64.zero);
+      this.account.tokenSymbol.set(tokenSymbol);
+      this.account.zkappUri.set(URI);
+    }
+
+    @method mint(
+      receiverAddress: PublicKey,
+      amount: UInt64,
+      adminSignature: Signature
+    ) {
+      let totalAmountInCirculation =
+        this.totalAmountInCirculation.getAndRequireEquals();
+
+      let newTotalAmountInCirculation = totalAmountInCirculation.add(amount);
+
+      adminSignature
+        .verify(
+          this.address,
+          amount.toFields().concat(receiverAddress.toFields())
+        )
+        .assertTrue();
+
+      this.token.mint({
+        address: receiverAddress,
+        amount: amount,
+      });
+
+      this.totalAmountInCirculation.set(newTotalAmountInCirculation);
+    }
+
+    @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
+      this.token.send({ from, to, amount: value });
+    }
+
+    @method transferToUpdate(
+      from: PublicKey,
+      to: AccountUpdate,
+      value: UInt64
+    ) {
+      this.token.send({ from, to, amount: value });
+    }
+
+    transfer(from: PublicKey, to: PublicKey | AccountUpdate, amount: UInt64) {
+      if (to instanceof PublicKey)
+        return this.transferToAddress(from, to, amount);
+      if (to instanceof SmartContract)
+        return this.transferToUpdate(from, to, amount);
+    }
+
+    @method balanceOf(owner: PublicKey): UInt64 {
+      let account = Account(owner, this.token.id);
+      let balance = account.balance.getAndRequireEquals();
+      return balance;
+    }
+  }
+  return BasicTokenContract;
 }

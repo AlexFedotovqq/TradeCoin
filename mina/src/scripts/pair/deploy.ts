@@ -10,7 +10,7 @@ const live = true;
 
 startBerkeleyClient();
 
-const pk = PrivateKey.fromBase58(process.env.pk!);
+const pk = PrivateKey.fromBase58(process.env.pk);
 
 const { zkAppPrivateKey: zkAppPrivateKey, zkAppPub: zkAppPub } =
   await deployPair(pk, compile, live);

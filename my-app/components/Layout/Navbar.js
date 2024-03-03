@@ -8,8 +8,8 @@ const navigation = [
   { name: "TradeCoin", href: "/" },
   { name: "Exchange", href: "/exchange" },
   { name: "Pool", href: "/pool" },
-  { name: "Contact us", href: "/contact" },
   { name: "News", href: "/news" },
+  { name: "Contact us", href: "/contact" },
 ];
 
 const Navbar = () => {
@@ -47,7 +47,6 @@ const Navbar = () => {
                         style={{
                           width: "125px",
                           height: "50px",
-
                           textAlign: "center",
                         }}
                       >

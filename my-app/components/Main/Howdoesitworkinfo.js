@@ -12,11 +12,9 @@ export function HowDoesItWorkinfo() {
           </span>
         </h1>
 
-        <p className="mt-6 text-lg leading-8 text-gray-900 sm:text-center">
-          <strong>
-            TradeCoin provides DeFi tools for token holders & businesses to buy,
-            trade, create, and secure crypto assets with confidence.
-          </strong>
+        <p className="mt-8 text-lg leading-8 text-gray-900 sm:text-center">
+          TradeCoin provides DeFi tools for token holders & businesses to buy,
+          trade, create, and secure crypto assets with confidence.
         </p>
         <div className="mt-8 flex items-center gap-x-4 justify-center">
           <Link
@@ -39,7 +37,7 @@ export function HowDoesItWorkinfo() {
           </a>
         </div>
       </div>
-      <div className="mt-1 relative overflow-hidden  flex items-center justify-center">
+      <div className="mt-1 relative overflow-hidden flex items-center justify-center">
         <Image
           alt=""
           src="/photo1.jpg"

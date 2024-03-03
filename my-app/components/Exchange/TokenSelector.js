@@ -5,22 +5,22 @@ import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
-import { tokens } from "@/utils/tokens";
 import { classNames } from "@/utils/classNames";
 
-export default function TokenASelector({
+export default function TokenSelector({
+  tokens,
   open,
   setOpen,
-  tokenA,
-  setTokenA,
+  token,
+  setToken,
   query,
   setQuery,
 }) {
   const filteredTokens =
     query === ""
       ? tokens
-      : tokens.filter((token) => {
-          return token.name.toLowerCase().includes(query.toLowerCase());
+      : tokens.filter((userInput) => {
+          return userInput.name.toLowerCase().includes(query.toLowerCase());
         });
 
   return (
@@ -58,7 +58,7 @@ export default function TokenASelector({
                     >
                       Tokens
                     </Dialog.Title>
-                    <Combobox as="div" value={tokenA} onChange={setTokenA}>
+                    <Combobox as="div" value={token} onChange={setToken}>
                       <div className="relative mt-2">
                         <Combobox.Input
                           className="rounded-md border-0 bg-white py-1.5 pl-2 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

@@ -12,19 +12,19 @@ const live = true;
 
 startBerkeleyClient();
 
-const zkAppPrivateKey = PrivateKey.fromBase58(process.env.zkAppPK!);
+const zkAppPrivateKey = PrivateKey.fromBase58(process.env.pairPK);
 
 const pk = PrivateKey.fromBase58(process.env.pk!);
 const pub = PublicKey.fromPrivateKey(pk);
 
-const tokenPK1 = PrivateKey.fromBase58(process.env.tokenPK1!);
+const tokenPK1 = PrivateKey.fromBase58(process.env.tokenPK1);
 const tokenPub1 = PublicKey.fromPrivateKey(tokenPK1);
 
 const contract1 = new BasicTokenContract(tokenPub1);
 let tokenBalance = await getTokenIdBalance(pub, contract1.token.id);
 console.log("token balance:", tokenBalance);
 
-const tokenPK2 = PrivateKey.fromBase58(process.env.tokenPK2!);
+const tokenPK2 = PrivateKey.fromBase58(process.env.tokenPK2);
 const tokenPub2 = PublicKey.fromPrivateKey(tokenPK2);
 
 const contract2 = new BasicTokenContract(tokenPub2);

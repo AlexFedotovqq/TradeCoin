@@ -11,7 +11,7 @@ const live = true;
 
 startBerkeleyClient();
 
-const pk = PrivateKey.fromBase58(process.env.pk!);
+const pk = PrivateKey.fromBase58(process.env.pk);
 
 const { tokenXPK: TokenAddressXPrivateKey, tokenYPK: TokenAddressYPrivateKey } =
   await deploy2Tokens(pk, compile, live);

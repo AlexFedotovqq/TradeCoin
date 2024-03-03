@@ -8,14 +8,14 @@ export function ContactusInfo() {
         Contact us
       </h1>
       <p className="mt-6 text-lg leading-8 text-black sm:text-center">
-        <strong>Do you want to</strong>
+        Do you want to
         <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
           {" "}
           contact us?
         </span>
       </p>
       <p className="mt-3 text-lg leading-8 text-gray-900 sm:text-center">
-        <strong>Go to the tab and write to us, we will be very happy</strong>
+        Go to the tab and write to us, we will be very happy
       </p>
 
       <div className="mt-4 relative overflow-hidden  flex items-center justify-center">

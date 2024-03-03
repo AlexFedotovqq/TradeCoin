@@ -215,16 +215,4 @@ export class PairContract extends SmartContract {
     senderUpdate.requireSignature();
     return user;
   }
-
-  /**
-   * Helper which queries app balances of tokenX and tokenY
-   */
-  dexTokensBalance(
-    tokenX: BasicTokenContract,
-    tokenY: BasicTokenContract
-  ): { dexX: UInt64; dexY: UInt64 } {
-    let dexX = tokenX.balanceOf(this.address);
-    let dexY = tokenY.balanceOf(this.address);
-    return { dexX, dexY };
-  }
 }

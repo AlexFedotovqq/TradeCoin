@@ -1,7 +1,8 @@
-import { PublicKey, Mina, SmartContract } from "o1js";
+import { PublicKey, Mina, SmartContract, fetchAccount } from "o1js";
 
 import { BasicTokenContract } from "../BasicTokenContract.js";
 import { Dex } from "../DexContract.js";
+import { PairContract } from "../PairContract.js";
 
 export function logDexBalances(
   pub: PublicKey,
@@ -18,9 +19,24 @@ export function logDexBalances(
   logDexStates(dexApp);
 }
 
-export function logDexStates(dexApp: Dex) {
+export async function logDexStates(dexApp: Dex, live: boolean = false) {
+  if (live) {
+    await fetchAccount({ publicKey: dexApp.address });
+  }
   console.log("total number of pools", dexApp.poolTotal.get().value.toBigInt());
   console.log("tree root state", dexApp.treeRoot.get().toString());
+}
+
+export async function logPairStates(app: PairContract, live: boolean = false) {
+  if (live) {
+    await fetchAccount({ publicKey: app.address });
+  }
+  console.log("token X address", app.tokenX.get().toBase58());
+  console.log("token X reserves", app.reservesX.get().toBigInt());
+  console.log("token Y address", app.tokenY.get().toBase58());
+  console.log("token Y reserves", app.reservesY.get().toBigInt());
+  console.log("tree root state", app.treeRoot.get().toString());
+  console.log("UserId state", app.userId.get().toBigInt());
 }
 
 export function log2TokensAddressBalance(
@@ -52,6 +68,9 @@ export function logTokenInfo(contract: BasicTokenContract) {
     "zkapp tokens:",
     Mina.getBalance(contract.address, contract.token.id).value.toBigInt()
   );
+
+  console.log("token Id", contract.token.id.toBigInt());
+  console.log("tokenOwner", contract.token.tokenOwner.toBase58());
 }
 
 export function logTokenBalance(contract: SmartContract, pub: PublicKey) {
