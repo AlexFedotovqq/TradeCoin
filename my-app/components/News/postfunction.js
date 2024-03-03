@@ -7,6 +7,8 @@ const PostFunction = ({ post }) => {
         <Image
           src={post.imageUrl}
           alt=""
+          width={300}
+          height={300}
           className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover object-center"
         />
         <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-300" />
@@ -39,6 +41,8 @@ const PostFunction = ({ post }) => {
             <Image
               src={post.author.imageUrl}
               alt=""
+              width={300}
+              height={300}
               className="h-10 w-10 rounded-full bg-gray-50"
             />
             <div className="text-sm leading-6">
