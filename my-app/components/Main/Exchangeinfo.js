@@ -15,14 +15,8 @@ export function ExchangeInfo() {
         </span>
       </p>
 
-      <div className="mt-4 relative overflow-hidden  flex items-center justify-center">
-        <Image
-          alt=""
-          src="/photo3.jpg"
-          width="340"
-          height="350"
-          className="justify-center flex items-center"
-        />
+      <div className="mt-4 relative overflow-hidden flex items-center justify-center">
+        <Image alt="" src="/photo3.jpg" width="340" height="350" />
       </div>
       <div className="mt-3 flex items-center gap-x-4 justify-center">
         <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 sm:mb-8 sm:flex sm:justify-center">

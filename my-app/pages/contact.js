@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import ContactForm from "@/components/ContactForm/ContactForm.js";
 
-function Contact() {
+export default function Contact() {
   useEffect(() => {
     if (document) {
       const stylesheet = document.createElement("link");
@@ -15,14 +15,8 @@ function Contact() {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className="relative isolate min-h-screen bg-gray-800 overflow-hidden ">
-          <ContactForm />
-        </div>
-      </header>
+    <div className="relative isolate min-h-screen bg-gray-800 overflow-hidden">
+      <ContactForm />
     </div>
   );
 }
-
-export default Contact;

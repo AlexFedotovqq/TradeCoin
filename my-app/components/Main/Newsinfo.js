@@ -14,13 +14,7 @@ export function NewsInfo() {
         </span>
       </p>
       <div className="mt-3 relative overflow-hidden flex items-center justify-center">
-        <Image
-          alt=""
-          src="/photo6.jpg"
-          width="350"
-          height="350"
-          className="justify-center flex items-center"
-        />
+        <Image alt="news info" src="/photo6.jpg" width="350" height="350" />
       </div>
 
       <div className="mt-5 flex gap-x-4 justify-center">

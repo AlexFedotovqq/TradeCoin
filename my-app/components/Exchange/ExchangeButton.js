@@ -1,4 +1,9 @@
-function ExchangeButton({ isLoading, setIsLoading, swap, loadingText }) {
+export default function ExchangeButton({
+  isLoading,
+  setIsLoading,
+  swap,
+  loadingText,
+}) {
   return (
     <button
       type="submit"
@@ -116,5 +121,3 @@ function ExchangeButton({ isLoading, setIsLoading, swap, loadingText }) {
     </button>
   );
 }
-
-export default ExchangeButton;

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const PostFunction = ({ post }) => {
+export default function PostFunction({ post }) {
   return (
     <article className="relative isolate flex flex-col gap-8 lg:flex-row">
       <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
@@ -59,6 +59,4 @@ const PostFunction = ({ post }) => {
       </div>
     </article>
   );
-};
-
-export default PostFunction;
+}

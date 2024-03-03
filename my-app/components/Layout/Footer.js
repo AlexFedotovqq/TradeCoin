@@ -64,7 +64,7 @@ const navigation = [
   },
 ];
 
-export default function Example() {
+export default function Footer() {
   const router = useRouter();
   if (router.route === "/") {
     return (
@@ -82,11 +82,10 @@ export default function Example() {
               </a>
             ))}
           </div>
-          <div className="mt-8 md:order-1 md:mt-0">
-            <p className="text-center text-xs leading-5 text-gray-900">
-              &copy; Copyright © 2024 TradeCoin. All rights reserved.
-            </p>
-          </div>
+
+          <p className="mt-8 md:order-1 md:mt-0 text-center text-xs leading-5 text-gray-900">
+            &copy; Copyright © 2024 TradeCoin. All rights reserved.
+          </p>
         </div>
       </footer>
     );
@@ -107,11 +106,10 @@ export default function Example() {
             </a>
           ))}
         </div>
-        <div className="mt-8 md:order-1 md:mt-0">
-          <p className="text-center text-xs leading-5 text-white">
-            &copy; Copyright © 2024 TradeCoin. All rights reserved.
-          </p>
-        </div>
+
+        <p className="mt-8 md:order-1 md:mt-0 text-center text-xs leading-5 text-white">
+          &copy; Copyright © 2024 TradeCoin. All rights reserved.
+        </p>
       </div>
     </footer>
   );

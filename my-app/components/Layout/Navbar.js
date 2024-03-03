@@ -12,7 +12,7 @@ const navigation = [
   { name: "Contact us", href: "/contact" },
 ];
 
-const Navbar = () => {
+export default function Navbar() {
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -94,6 +94,4 @@ const Navbar = () => {
       )}
     </Disclosure>
   );
-};
-
-export default Navbar;
+}

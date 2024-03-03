@@ -20,18 +20,15 @@ export function ApplicationInstructionInfo() {
           documentation!
         </span>
       </p>
-      <div className="mt-3 flex items-center gap-x-4 justify-center">
-        <div className=" sm:mb-8 sm:flex sm:justify-center">
-          <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-            <span className="">
-              <Link
-                href="https://alexfedotovqq.github.io/DocsTradeCoin/#/"
-                className="font-semibold text-gray-900 text-white"
-              >
-                View our Docs
-              </Link>
-            </span>
-          </div>
+
+      <div className="mt-3 flex items-center gap-x-4 justify-center sm:mb-8 sm:flex sm:justify-center">
+        <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 bg-gradient-to-br from-pink-400 to-red-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+          <Link
+            href="https://alexfedotovqq.github.io/DocsTradeCoin/#/"
+            className="font-semibold text-gray-900 text-white"
+          >
+            View our Docs
+          </Link>
         </div>
       </div>
     </div>

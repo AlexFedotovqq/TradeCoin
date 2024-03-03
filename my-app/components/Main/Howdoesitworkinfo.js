@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function HowDoesItWorkinfo() {
   return (
-    <>
+    <div>
       <div>
         <h1 className="text-3xl font-bold tracking-tight sm:text-center sm:text-6xl">
           How does it{" "}
@@ -46,6 +46,6 @@ export function HowDoesItWorkinfo() {
           className="justify-center flex items-center"
         />
       </div>
-    </>
+    </div>
   );
 }
