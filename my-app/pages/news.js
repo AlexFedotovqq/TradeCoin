@@ -1,6 +1,6 @@
 import React from "react";
 
-import PostFunction from "../components/News/postfunction";
+import PostFunction from "../components/News/postFunction";
 import posts from "../components/News/postsData";
 
 export default function News() {
