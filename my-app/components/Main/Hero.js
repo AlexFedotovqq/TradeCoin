@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export function Fpart() {
+export function Hero() {
   return (
     <div className="relative overflow-hidden bg-no-repeat bg-cover bg-center bg-[url('/bg3.jpg')]">
       <div className="mx-auto max-w-2xl">

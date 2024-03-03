@@ -1,6 +1,6 @@
 export function Contactinfoperson() {
   return (
-    <>
+    <div>
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
           Contact us
@@ -25,7 +25,7 @@ export function Contactinfoperson() {
               placeholder="First name"
               name="First name"
               required
-              className="focus:outline-none focus:ring relative w-full block  px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
+              className="focus:outline-none focus:ring relative w-full block px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
             />
           </div>
         </div>
@@ -42,7 +42,7 @@ export function Contactinfoperson() {
               type="text"
               placeholder="Last name"
               name="Last name"
-              className=" focus:outline-none focus:ring relative w-full block  px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
+              className="focus:outline-none focus:ring relative w-full block px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
               required
             />
           </div>
@@ -60,7 +60,7 @@ export function Contactinfoperson() {
             type="email"
             placeholder="Email"
             name="email"
-            className="focus:outline-none focus:ring relative w-full block  px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
+            className="focus:outline-none focus:ring relative w-full block px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
             required
           />
         </div>
@@ -78,12 +78,12 @@ export function Contactinfoperson() {
             name="message"
             id="message"
             rows={4}
-            className="focus:outline-none focus:ring relative w-full block  px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
+            className="focus:outline-none focus:ring relative w-full block px-3.5 py-2 text-sm text-gray-600 placeholder-gray-400 bg-white border-0 rounded shadow outline-none sm:text-sm sm:leading-6"
             defaultValue={""}
             required
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
