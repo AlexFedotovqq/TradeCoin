@@ -1,7 +1,3 @@
-import { Mina, fetchAccount, PublicKey } from "o1js";
-
-import { Dex } from "tradecoin-mina";
-
 export default async function handler(req, res) {
   try {
     res.status(200).json({
