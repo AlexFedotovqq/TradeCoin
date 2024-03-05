@@ -30,12 +30,7 @@ const { contract, zkAppPrivateKey } = await deployToken(
 
 console.log("deployed");
 
-await mintToken(
-  zkAppPrivateKey,
-  deployerAccount,
-  zkAppPrivateKey.toPublicKey(),
-  contract
-);
+await mintToken(deployerAccount, zkAppPrivateKey.toPublicKey(), contract);
 
 console.log("minted");
 

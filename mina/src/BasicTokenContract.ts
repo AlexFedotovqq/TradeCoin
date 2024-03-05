@@ -7,16 +7,16 @@ import {
   Permissions,
   UInt64,
   PublicKey,
-  Signature,
   AccountUpdate,
   Account,
 } from "o1js";
 
-const tokenSymbol = "";
-const URI = "";
+const tokenSymbol = "ABC";
+const URI = "https//tradecoin.dev/uri/uri.json";
 
 export class BasicTokenContract extends SmartContract {
-  @state(UInt64) totalAmountInCirculation = State<UInt64>();
+  @state(PublicKey) admin = State<PublicKey>();
+  @state(UInt64) totalSupply = State<UInt64>();
 
   deploy(args?: DeployArgs) {
     super.deploy(args);
@@ -31,38 +31,30 @@ export class BasicTokenContract extends SmartContract {
       send: permissionToEdit,
       receive: permissionToEdit,
     });
+
+    const sender = this.checkUserSignature();
+    this.admin.set(sender);
   }
 
   init() {
     super.init();
-    this.totalAmountInCirculation.set(UInt64.zero);
+    this.totalSupply.set(UInt64.zero);
     this.account.tokenSymbol.set(tokenSymbol);
     this.account.zkappUri.set(URI);
   }
 
-  @method mint(
-    receiverAddress: PublicKey,
-    amount: UInt64,
-    adminSignature: Signature
-  ) {
-    let totalAmountInCirculation =
-      this.totalAmountInCirculation.getAndRequireEquals();
+  @method mint(receiverAddress: PublicKey, amount: UInt64) {
+    this.checkAdminSignature();
+    const totalSupply = this.totalSupply.getAndRequireEquals();
 
-    let newTotalAmountInCirculation = totalAmountInCirculation.add(amount);
-
-    adminSignature
-      .verify(
-        this.address,
-        amount.toFields().concat(receiverAddress.toFields())
-      )
-      .assertTrue();
+    const newTotalSupply = totalSupply.add(amount);
 
     this.token.mint({
       address: receiverAddress,
       amount: amount,
     });
 
-    this.totalAmountInCirculation.set(newTotalAmountInCirculation);
+    this.totalSupply.set(newTotalSupply);
   }
 
   @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
@@ -85,11 +77,25 @@ export class BasicTokenContract extends SmartContract {
     let balance = account.balance.getAndRequireEquals();
     return balance;
   }
+
+  checkUserSignature() {
+    const user = this.sender;
+    const senderUpdate = AccountUpdate.create(user);
+    senderUpdate.requireSignature();
+    return user;
+  }
+
+  checkAdminSignature() {
+    const admin = this.admin.getAndRequireEquals();
+    const senderUpdate = AccountUpdate.create(admin);
+    senderUpdate.requireSignature();
+  }
 }
 
 export function createCustomToken(tokenSymbol: string, URI: string) {
   class BasicTokenContract extends SmartContract {
-    @state(UInt64) totalAmountInCirculation = State<UInt64>();
+    @state(PublicKey) admin = State<PublicKey>();
+    @state(UInt64) totalSupply = State<UInt64>();
 
     deploy(args?: DeployArgs) {
       super.deploy(args);
@@ -104,38 +110,30 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
         send: permissionToEdit,
         receive: permissionToEdit,
       });
+
+      const sender = this.checkUserSignature();
+      this.admin.set(sender);
     }
 
     init() {
       super.init();
-      this.totalAmountInCirculation.set(UInt64.zero);
+      this.totalSupply.set(UInt64.zero);
       this.account.tokenSymbol.set(tokenSymbol);
       this.account.zkappUri.set(URI);
     }
 
-    @method mint(
-      receiverAddress: PublicKey,
-      amount: UInt64,
-      adminSignature: Signature
-    ) {
-      let totalAmountInCirculation =
-        this.totalAmountInCirculation.getAndRequireEquals();
+    @method mint(receiverAddress: PublicKey, amount: UInt64) {
+      this.checkAdminSignature();
+      const totalSupply = this.totalSupply.getAndRequireEquals();
 
-      let newTotalAmountInCirculation = totalAmountInCirculation.add(amount);
-
-      adminSignature
-        .verify(
-          this.address,
-          amount.toFields().concat(receiverAddress.toFields())
-        )
-        .assertTrue();
+      const newTotalSupply = totalSupply.add(amount);
 
       this.token.mint({
         address: receiverAddress,
         amount: amount,
       });
 
-      this.totalAmountInCirculation.set(newTotalAmountInCirculation);
+      this.totalSupply.set(newTotalSupply);
     }
 
     @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
@@ -161,6 +159,19 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
       let account = Account(owner, this.token.id);
       let balance = account.balance.getAndRequireEquals();
       return balance;
+    }
+
+    checkUserSignature() {
+      const user = this.sender;
+      const senderUpdate = AccountUpdate.create(user);
+      senderUpdate.requireSignature();
+      return user;
+    }
+
+    checkAdminSignature() {
+      const admin = this.admin.getAndRequireEquals();
+      const senderUpdate = AccountUpdate.create(admin);
+      senderUpdate.requireSignature();
     }
   }
   return BasicTokenContract;

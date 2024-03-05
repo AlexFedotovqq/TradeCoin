@@ -110,7 +110,6 @@ export async function deploy2Tokens(
 }
 
 export async function mintToken(
-  zkAppPrivateKey: PrivateKey,
   deployerPk: PrivateKey,
   receiverPub: PublicKey,
   contract: BasicTokenContract,
@@ -121,16 +120,11 @@ export async function mintToken(
   await compileContractIfProofsEnabled(compile);
   const deployerAddress = deployerPk.toPublicKey();
 
-  const mintSignature = Signature.create(
-    zkAppPrivateKey,
-    mintAmount.toFields().concat(receiverPub.toFields())
-  );
-
   const txOptions = createTxOptions(deployerAddress, live);
 
   const mint_txn = await Mina.transaction(txOptions, () => {
     AccountUpdate.fundNewAccount(txOptions.sender);
-    contract.mint(receiverPub, mintAmount, mintSignature);
+    contract.mint(receiverPub, mintAmount);
   });
 
   await sendWaitTx(mint_txn, [deployerPk], live);

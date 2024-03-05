@@ -25,28 +25,13 @@ const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
 
 console.log(deployerAddress.toBase58());
 
-const {
-  tokenX: tokenX,
-  tokenY: tokenY,
-  tokenXPK: TokenAddressXPrivateKey,
-  tokenYPK: TokenAddressYPrivateKey,
-} = await deploy2Tokens(deployerAccount);
+const { tokenX: tokenX, tokenY: tokenY } = await deploy2Tokens(deployerAccount);
 
 console.log("deployed 2 Tokens");
 
-await mintToken(
-  TokenAddressXPrivateKey,
-  deployerAccount,
-  deployerAddress,
-  tokenX
-);
+await mintToken(deployerAccount, deployerAddress, tokenX);
 
-await mintToken(
-  TokenAddressYPrivateKey,
-  deployerAccount,
-  deployerAddress,
-  tokenY
-);
+await mintToken(deployerAccount, deployerAddress, tokenY);
 
 console.log("created and minted 2 tokens");
 

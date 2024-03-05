@@ -20,4 +20,4 @@ const tokenPub = PublicKey.fromPrivateKey(tokenPK);
 
 const contract = new BasicTokenContract(tokenPub);
 
-await mintToken(tokenPK, pk, pub, contract, compile, live);
+await mintToken(pk, pub, contract, compile, live);

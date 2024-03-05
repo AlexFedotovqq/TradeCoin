@@ -60,9 +60,7 @@ export function log2TokensAddressBalance(
 }
 
 export function logTokenInfo(contract: BasicTokenContract) {
-  console.log(
-    "totalAmountInCirculation: " + contract.totalAmountInCirculation.get()
-  );
+  console.log("totalSupply: " + contract.totalSupply.get());
 
   console.log(
     "zkapp tokens:",
