@@ -9,7 +9,6 @@ import {
   UInt64,
   PublicKey,
   AccountUpdate,
-  Signature,
   Struct,
   MerkleMapWitness,
   MerkleMap,
@@ -51,27 +50,19 @@ export class PairContract extends SmartContract {
     });
   }
 
-  init() {
-    super.init();
-
-    const map = new MerkleMap().getRoot();
-    this.treeRoot.set(map);
-  }
-
   /**
    * Initialize Token Addresses
    * @param _tokenX X token public key
    * @param _tokenY Y token public key
    */
-  @method initTokenAddresses(
-    _tokenX: PublicKey,
-    _tokenY: PublicKey,
-    adminSignature: Signature
-  ) {
-    this.account.provedState.requireEquals(this.account.provedState.get());
-    this.account.provedState.get().assertFalse();
+  @method initTokenAddresses(_tokenX: PublicKey, _tokenY: PublicKey) {
+    this.checkNotInitialized();
+    this.checkThisSignature();
 
-    adminSignature.verify(this.address, this.address.toFields()).assertTrue();
+    super.init();
+
+    const map = new MerkleMap().getRoot();
+    this.treeRoot.set(map);
 
     this.tokenX.getAndRequireEquals();
     this.tokenY.getAndRequireEquals();
@@ -81,10 +72,10 @@ export class PairContract extends SmartContract {
   }
 
   @method createPersonalBalance(keyWitness: MerkleMapWitness) {
+    this.checkInitialized();
     const user = this.checkUserSignature();
 
     const currentId = this.userId.getAndRequireEquals();
-
     const initialRoot = this.treeRoot.getAndRequireEquals();
     const [rootBefore, key] = keyWitness.computeRootAndKey(Field(0));
     rootBefore.assertEquals(initialRoot);
@@ -113,10 +104,11 @@ export class PairContract extends SmartContract {
     balanceBefore: PersonalPairBalance,
     balanceAfter: PersonalPairBalance
   ) {
+    this.checkInitialized();
+    const user = this.checkUserSignature();
+
     const tokenXPub = this.tokenX.getAndRequireEquals();
     const tokenX = new BasicTokenContract(tokenXPub);
-
-    const user = this.checkUserSignature();
 
     const rootAfter = this.checkMerkleMap(
       keyWitness,
@@ -141,10 +133,11 @@ export class PairContract extends SmartContract {
     balanceBefore: PersonalPairBalance,
     balanceAfter: PersonalPairBalance
   ) {
+    this.checkInitialized();
+    const user = this.checkUserSignature();
+
     const tokenYPub = this.tokenX.getAndRequireEquals();
     const tokenY = new BasicTokenContract(tokenYPub);
-
-    const user = this.checkUserSignature();
 
     const rootAfter = this.checkMerkleMap(
       keyWitness,
@@ -170,6 +163,7 @@ export class PairContract extends SmartContract {
     balanceAfter: PersonalPairBalance,
     tokenPub: PublicKey
   ) {
+    this.checkInitialized();
     const user = this.checkUserSignature();
 
     const rootAfter = this.checkMerkleMap(
@@ -214,5 +208,21 @@ export class PairContract extends SmartContract {
     const senderUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
     return user;
+  }
+
+  checkThisSignature() {
+    const address = this.address;
+    const senderUpdate = AccountUpdate.create(address);
+    senderUpdate.requireSignature();
+  }
+
+  checkInitialized() {
+    this.account.provedState.requireEquals(this.account.provedState.get());
+    this.account.provedState.get().assertTrue();
+  }
+
+  checkNotInitialized() {
+    this.account.provedState.requireEquals(this.account.provedState.get());
+    this.account.provedState.get().assertFalse();
   }
 }

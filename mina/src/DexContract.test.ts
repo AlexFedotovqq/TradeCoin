@@ -23,6 +23,8 @@ const secondAddress = testAccounts[1].publicKey;
 const zkDexAppPrivateKey = PrivateKey.random();
 const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
 
+console.log(deployerAddress.toBase58());
+
 const {
   tokenX: tokenX,
   tokenY: tokenY,
@@ -60,6 +62,8 @@ await init2TokensSmartContract(
 console.log("inited 2 tokens into smart contracts");
 
 const { dexApp: dexApp } = await deployDex(zkDexAppPrivateKey, deployerAccount);
+
+console.log(dexApp.admin.get().toBase58());
 
 console.log("deployed dex");
 

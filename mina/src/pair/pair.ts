@@ -3,7 +3,6 @@ import {
   Mina,
   AccountUpdate,
   PrivateKey,
-  Signature,
   MerkleMap,
   Field,
   UInt64,
@@ -73,20 +72,13 @@ export async function createInitPairTokensTx(
   pairSmartContract: PairContract,
   tokenX: PublicKey,
   tokenY: PublicKey,
-  zkAppPrivateKey: PrivateKey,
   compile: boolean,
   txOptions: TxOptions
 ) {
-  const zkAppAddress: PublicKey = zkAppPrivateKey.toPublicKey();
   await compileContractIfProofsEnabled(compile);
 
-  const initSignature = Signature.create(
-    zkAppPrivateKey,
-    zkAppAddress.toFields()
-  );
-
   const txn = await Mina.transaction(txOptions, () => {
-    pairSmartContract.initTokenAddresses(tokenX, tokenY, initSignature);
+    pairSmartContract.initTokenAddresses(tokenX, tokenY);
   });
   return txn;
 }
@@ -108,12 +100,11 @@ export async function initPairTokens(
     pairSmartContract,
     tokenX,
     tokenY,
-    zkAppPrivateKey,
     compile,
     txOptions
   );
 
-  await sendWaitTx(init_txn, [userPK], live);
+  await sendWaitTx(init_txn, [userPK, zkAppPrivateKey], live);
 }
 
 export async function createUserTx(

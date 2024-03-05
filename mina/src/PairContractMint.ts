@@ -30,16 +30,16 @@ export class PairMintContract extends SmartContract {
   }
 
   @method initOwner(owner: PublicKey) {
-    this.account.provedState.requireEquals(this.account.provedState.get());
-    this.account.provedState.get().assertFalse();
+    this.checkInitialized();
+
+    this.checkThisSignature();
 
     this.owner.getAndRequireEquals();
     this.owner.set(owner);
-
-    this.checkThisSignature();
   }
 
   @method mintLiquidityToken(dl: UInt64, recipient: PublicKey) {
+    this.checkNotInitialized();
     this.checkOwnerSignature();
 
     const liquidity = this.totalSupply.getAndRequireEquals();
@@ -58,5 +58,15 @@ export class PairMintContract extends SmartContract {
     const address = this.address;
     const senderUpdate = AccountUpdate.create(address);
     senderUpdate.requireSignature();
+  }
+
+  checkInitialized() {
+    this.account.provedState.requireEquals(this.account.provedState.get());
+    this.account.provedState.get().assertTrue();
+  }
+
+  checkNotInitialized() {
+    this.account.provedState.requireEquals(this.account.provedState.get());
+    this.account.provedState.get().assertFalse();
   }
 }

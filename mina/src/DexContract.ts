@@ -11,6 +11,8 @@ import {
   Poseidon,
   MerkleWitness,
   MerkleTree,
+  DeployArgs,
+  AccountUpdate,
 } from "o1js";
 
 export class PoolId extends Struct({
@@ -25,11 +27,12 @@ export class MyMerkleWitness extends MerkleWitness(Height) {}
 
 export class Dex extends SmartContract {
   @state(Field) treeRoot = State<Field>();
+  @state(PublicKey) admin = State<PublicKey>();
 
   @state(UInt64) poolTotal = State<UInt64>();
 
-  init() {
-    super.init();
+  deploy(args?: DeployArgs) {
+    super.deploy(args);
 
     const proof = Permissions.proof();
 
@@ -41,6 +44,9 @@ export class Dex extends SmartContract {
       send: proof,
       incrementNonce: proof,
     });
+
+    const sender = this.checkUserSignature();
+    this.admin.set(sender);
 
     const map = new MerkleTree(Height).getRoot();
     this.treeRoot.set(map);
@@ -88,6 +94,13 @@ export class Dex extends SmartContract {
 
     // update user count
     this.poolTotal.set(usersTotal.sub(1));
+  }
+
+  checkUserSignature() {
+    const user = this.sender;
+    const senderUpdate = AccountUpdate.create(user);
+    senderUpdate.requireSignature();
+    return user;
   }
 
   /*   @method supplyToken(
