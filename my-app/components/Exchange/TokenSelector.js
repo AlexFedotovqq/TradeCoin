@@ -19,7 +19,7 @@ export default function TokenSelector({
   const filteredTokens =
     query === ""
       ? tokens
-      : tokens.items.filter((userInput) => {
+      : tokens.filter((userInput) => {
           return userInput.name?.toLowerCase().includes(query.toLowerCase());
         });
 

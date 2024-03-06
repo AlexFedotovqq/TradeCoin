@@ -28,6 +28,5 @@ export default async function handler(req, res) {
       error: "failed to fetch data" + err,
     });
   }
-  console.log(items);
   res.status(200).json({ items: items });
 }

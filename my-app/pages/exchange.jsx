@@ -196,7 +196,7 @@ export default function Exchange() {
       {!isLoading ? (
         <div>
           <TokenSelector
-            tokens={tokens}
+            tokens={tokens.items}
             open={openTokenA}
             setOpen={setOpenTokenA}
             token={tokenA}
@@ -206,7 +206,7 @@ export default function Exchange() {
           />
 
           <TokenSelector
-            tokens={tokens}
+            tokens={tokens.items}
             open={openTokenB}
             setOpen={setOpenTokenB}
             token={tokenB}
