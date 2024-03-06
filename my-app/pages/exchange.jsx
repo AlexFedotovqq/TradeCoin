@@ -6,10 +6,12 @@ import ExchangeButton from "@/components/Exchange/ExchangeButton";
 import TokenSelector from "@/components/Exchange/TokenSelector";
 import WarningTransition from "@/components/Exchange/WarningTransition";
 
-import { tokens } from "@/utils/tokens";
+import { useTokensPage } from "@/hooks/tokens";
 
 export default function Exchange() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: tokens, isLoading } = useTokensPage(1);
+
+  const [isLoadingSwap, setIsLoadingSwap] = useState(false);
   const [loadingText, setLoadingText] = useState("");
 
   // tx status
@@ -23,8 +25,18 @@ export default function Exchange() {
   const [openTokenA, setOpenTokenA] = useState(false);
   const [openTokenB, setOpenTokenB] = useState(false);
 
-  const [tokenA, setTokenA] = useState(tokens[0]);
-  const [tokenB, setTokenB] = useState(tokens[1]);
+  const [tokenA, setTokenA] = useState({
+    id: 1,
+    name: "TradeC0",
+    address: "41377a640a0bf48d4c5ab79f63d2e4885659b82a29",
+    imageUrl: "/TradeC0.jpg",
+  });
+  const [tokenB, setTokenB] = useState({
+    id: 2,
+    name: "TradeC1",
+    address: "4191447b0204cf766eaf5f3f44d31370c870ec3f45",
+    imageUrl: "/TradeC1.jpg",
+  });
 
   const [swapAmount, setSwapAmount] = useState(0);
 
@@ -174,34 +186,36 @@ export default function Exchange() {
           </div>
 
           <ExchangeButton
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
+            isLoading={isLoadingSwap}
+            setIsLoading={setIsLoadingSwap}
             swap={swap}
           />
         </div>
       </div>
 
-      {/* tokenA */}
-      <TokenSelector
-        tokens={tokens}
-        open={openTokenA}
-        setOpen={setOpenTokenA}
-        token={tokenA}
-        setToken={setTokenA}
-        query={query}
-        setQuery={setQuery}
-      />
+      {!isLoading ? (
+        <div>
+          <TokenSelector
+            tokens={tokens}
+            open={openTokenA}
+            setOpen={setOpenTokenA}
+            token={tokenA}
+            setToken={setTokenA}
+            query={query}
+            setQuery={setQuery}
+          />
 
-      {/* tokenB */}
-      <TokenSelector
-        tokens={tokens}
-        open={openTokenB}
-        setOpen={setOpenTokenB}
-        token={tokenB}
-        setToken={setTokenB}
-        query={query}
-        setQuery={setQuery}
-      />
+          <TokenSelector
+            tokens={tokens}
+            open={openTokenB}
+            setOpen={setOpenTokenB}
+            token={tokenB}
+            setToken={setTokenB}
+            query={query}
+            setQuery={setQuery}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

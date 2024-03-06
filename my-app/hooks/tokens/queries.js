@@ -1,0 +1,28 @@
+export const fetchTokensPage = async (id) => {
+  try {
+    return await fetcher(`/api/tokens/page/${id}`);
+  } catch (error) {
+    console.error("Error fetching token:", error);
+    throw error;
+  }
+};
+
+export const fetcher = async (input, params = {}) => {
+  const response = await fetch(input, {
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    ...params,
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  const data = await response.json();
+
+  return data;
+};

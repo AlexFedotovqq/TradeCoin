@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import {
   WalletIcon,
@@ -6,7 +7,6 @@ import {
   RssIcon,
   DocumentTextIcon,
 } from "@heroicons/react/24/solid";
-import Link from "next/link";
 
 const links = [
   {
