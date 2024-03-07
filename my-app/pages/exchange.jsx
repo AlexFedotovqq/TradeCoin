@@ -82,47 +82,54 @@ export default function Exchange() {
               Exchange cryptocurrency
             </label>
             <div className="flex justify-center mt-2.5 items-center">
-              <button
-                type="submit"
-                onClick={() => setOpenTokenA(true)}
-                className="relative inline-flex items-center justify-center right-2 rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-              >
-                <Image
-                  className="h-6 w-6 rounded-full"
-                  width={400}
-                  height={400}
-                  src={tokenA.imageUrl}
-                  alt="tokenA"
-                />
-
-                <span className="ml-2">{tokenA.name}</span>
-                <svg
-                  fill="#000000"
-                  width="20px"
-                  height="25px"
-                  viewBox="-8.5 0 32 32"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  stroke="#000000"
+              <div className="flex flex-col items-center justify-center sm:flex-row sm:items-center sm:justify-start">
+                <button
+                  type="submit"
+                  onClick={() => setOpenTokenA(true)}
+                  className="relative inline-flex items-center justify-center rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 mb-2 sm:mb-0"
                 >
-                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                  <Image
+                    className="h-6 w-6 rounded-full"
+                    width={400}
+                    height={400}
+                    src={tokenA.imageUrl}
+                    alt="tokenA"
                   />
-                  <g id="SVGRepo_iconCarrier">
-                    <title>angle-down</title>
-                    <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path>{" "}
-                  </g>
-                </svg>
-              </button>
+                  <span className="ml-2">{tokenA.name}</span>
+                  <svg
+                    width="24px"
+                    height="24px"
+                    viewBox="-2.88 -2.88 29.76 29.76"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 rounded-full text-gray-900"
+                  >
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      stroke="#11182"
+                      strokeWidth="0.144"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M10 6L7 3M7 3L4 6M7 3V17M14 18L17 21M17 21L20 18M17 21V7"
+                        stroke="#111827"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      ></path>
+                    </g>
+                  </svg>
+                </button>
 
-              <input
-                onChange={(event) => setSwapAmount(event.target.value)}
-                className="relative w-full items-center justify-center block rounded-md border-0 py-2  px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-5"
-                placeholder="0"
-              />
+                <input
+                  onChange={(event) => setSwapAmount(event.target.value)}
+                  className="relative block rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm sm:leading-5 ml-0 sm:ml-4"
+                  placeholder="0"
+                />
+              </div>
             </div>
 
             <label
@@ -148,26 +155,31 @@ export default function Exchange() {
                     src={tokenB.imageUrl}
                     alt="tokenB"
                   />
-
                   <span className="ml-2">{tokenB.name}</span>
                   <svg
-                    fill="#000000"
-                    width="20px"
-                    height="25px"
-                    viewBox="-8.5 0 32 32"
-                    version="1.1"
+                    width="24px"
+                    height="24px"
+                    viewBox="-2.88 -2.88 29.76 29.76"
+                    fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    stroke="#000000"
+                    className="h-6 w-6 rounded-full text-gray-900"
                   >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0" />
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                     <g
                       id="SVGRepo_tracerCarrier"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                    />
+                      stroke="#11182"
+                      strokeWidth="0.144"
+                    ></g>
                     <g id="SVGRepo_iconCarrier">
-                      <title>angle-down</title>
-                      <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path>{" "}
+                      <path
+                        d="M10 6L7 3M7 3L4 6M7 3V17M14 18L17 21M17 21L20 18M17 21V7"
+                        stroke="#111827"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      ></path>
                     </g>
                   </svg>
                 </button>
