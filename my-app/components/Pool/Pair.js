@@ -1,27 +1,12 @@
+import { useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 
-import { useState } from "react";
-
+import { usePoolsPage } from "@/hooks/pools";
 import { classNames } from "@/utils/classNames";
 
 export function Pair() {
-  const data = [
-    {
-      pairAddress: "B62qq1DMusFhTJHrcQPUnxVo1xMJK6wKCcurBfNLhACmsmmrzZAyqVE",
-      token0Name: "TradeC0",
-      token0Address: "B62qmETvJ7c1pWa7sA933UQeR8TrnMXx9iPnKQxLX2kaqVQKSaDPtjG",
-      token1Name: "TradeC1",
-      token1Address: "B62qo2kpW6HBz77vB7914P5pjDYavHNkjbTTQiQVtmNJTmrrYiFAojj",
-    },
-    {
-      pairAddress: "12",
-      token0Name: "TradeC0",
-      token0Address: "asd",
-      token1Name: "TradeCoin",
-      token1Address: "asd",
-    },
-  ];
+  const { data: pools } = usePoolsPage(1);
 
   const [withdrawalQuantity, setWithdrawalQuantity] = useState(1);
   const [tokenSupplyQuantity, setTokenSupplyQuantity] = useState(1);
@@ -41,7 +26,7 @@ export function Pair() {
   return (
     <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6 ">
       <ul className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {data?.map((pool) => (
+        {pools?.items.map((pool) => (
           <li
             key={pool.pairAddress}
             className="col-span-1 rounded-lg bg-white shadow-md p-6"
