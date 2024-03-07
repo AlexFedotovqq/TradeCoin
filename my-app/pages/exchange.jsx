@@ -82,11 +82,12 @@ export default function Exchange() {
               Exchange cryptocurrency
             </label>
             <div className="flex justify-center mt-2.5 items-center">
-              <div className="flex flex-col items-center justify-center sm:flex-row sm:items-center sm:justify-start">
+              <div className="flex flex-col sm:flex-row items-center justify-center">
                 <button
                   type="submit"
                   onClick={() => setOpenTokenA(true)}
                   className="relative inline-flex items-center justify-center rounded-md border border-transparent bg-white px-3 py-1.5 text-base font-medium text-gray-900 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 mb-2 sm:mb-0"
+                  style={{ width: "140px", height: "37px" }}
                 >
                   <Image
                     className="h-6 w-6 rounded-full"
@@ -128,6 +129,7 @@ export default function Exchange() {
                   onChange={(event) => setSwapAmount(event.target.value)}
                   className="relative block rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm sm:leading-5 ml-0 sm:ml-4"
                   placeholder="0"
+                  style={{ width: "140px", height: "37px" }}
                 />
               </div>
             </div>
