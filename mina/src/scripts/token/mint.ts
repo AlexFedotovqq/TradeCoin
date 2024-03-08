@@ -15,7 +15,7 @@ startBerkeleyClient();
 const pk = PrivateKey.fromBase58(process.env.pk);
 const pub = PublicKey.fromPrivateKey(pk);
 
-const tokenPK = PrivateKey.fromBase58(process.env.tokenPK1);
+const tokenPK = PrivateKey.fromBase58(process.env.Trade1PK);
 const tokenPub = PublicKey.fromPrivateKey(tokenPK);
 
 const contract = new BasicTokenContract(tokenPub);

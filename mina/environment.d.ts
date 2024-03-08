@@ -3,12 +3,14 @@ declare global {
     interface ProcessEnv {
       zkAppPK: string;
       pk: string;
-      tokenPK1: string;
-      tokenPK2: string;
-      tokenPK3: string;
-      tokenPK4: string;
+      Trade1PK: string;
+      Trade2PK: string;
+      TradePK: string;
+      DspytPK: string;
       tokenPK5: string;
       pairPK: string;
+      KV_REST_API_TOKEN: string;
+      KV_REST_API_URL: string;
     }
   }
 }

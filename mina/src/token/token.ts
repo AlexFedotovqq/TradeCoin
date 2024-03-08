@@ -1,11 +1,4 @@
-import {
-  PublicKey,
-  Mina,
-  AccountUpdate,
-  PrivateKey,
-  UInt64,
-  Signature,
-} from "o1js";
+import { PublicKey, Mina, AccountUpdate, PrivateKey, UInt64 } from "o1js";
 
 import {
   BasicTokenContract,
@@ -49,7 +42,7 @@ export async function deployToken(
 export async function deployCustomToken(
   pk: PrivateKey,
   symbol: string = "TRADE",
-  uri: string = "https://tradecoin.dev",
+  uri: string = "https://tradecoin.dev/uri/uri.json",
   compile: boolean = false,
   live: boolean = false
 ) {
