@@ -12,7 +12,6 @@ import {
 
 export class PairMintContract extends SmartContract {
   @state(PublicKey) owner = State<PublicKey>();
-
   @state(UInt64) totalSupply = State<UInt64>();
 
   deploy(args?: DeployArgs) {
@@ -31,7 +30,6 @@ export class PairMintContract extends SmartContract {
 
   @method initOwner(owner: PublicKey) {
     this.checkInitialized();
-
     this.checkThisSignature();
 
     this.owner.getAndRequireEquals();

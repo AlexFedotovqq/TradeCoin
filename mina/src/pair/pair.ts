@@ -222,6 +222,9 @@ export function increaseXBalance(balance: PersonalPairBalance, dx: UInt64) {
     id: balance.id,
     tokenXAmount: balance.tokenXAmount.add(dx),
     tokenYAmount: balance.tokenYAmount,
+    hash: function (): Field {
+      return Poseidon.hash(PersonalPairBalance.toFields(this));
+    },
   };
   return newBalance;
 }
@@ -232,6 +235,9 @@ export function increaseYBalance(balance: PersonalPairBalance, dy: UInt64) {
     id: balance.id,
     tokenXAmount: balance.tokenXAmount,
     tokenYAmount: balance.tokenYAmount.add(dy),
+    hash: function (): Field {
+      return Poseidon.hash(PersonalPairBalance.toFields(this));
+    },
   };
   return newBalance;
 }
@@ -242,6 +248,9 @@ export function supplyBalance(balance: PersonalPairBalance, dl: UInt64) {
     id: balance.id,
     tokenXAmount: balance.tokenXAmount.sub(dl),
     tokenYAmount: balance.tokenYAmount.sub(dl),
+    hash: function (): Field {
+      return Poseidon.hash(PersonalPairBalance.toFields(this));
+    },
   };
   return newBalance;
 }

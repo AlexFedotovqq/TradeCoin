@@ -4,6 +4,16 @@ export { PersonalPairBalance, PairContract } from "./PairContract.js";
 export { PairMintContract } from "./PairContractMint.js";
 
 export {
+  TokenMetadata,
+  createTokenMetadataObject,
+  setVercelTokenMetadata,
+  getVercelTokenMetadata,
+  getVercelClient,
+  getAllKeys,
+  getAllTokenKeys,
+} from "./database/vercel.js";
+
+export {
   createDeployPairTx,
   createInitPairTokensTx,
   createUserTx,

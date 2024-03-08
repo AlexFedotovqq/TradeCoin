@@ -100,6 +100,8 @@ firstUserBalance = await supplyY(
 
 console.log("supplied Y");
 
+console.log(pairSmartContract.reservesY.get().toBigInt());
+
 console.log("supplying more Y");
 
 firstUserBalance = await supplyY(
@@ -112,6 +114,8 @@ firstUserBalance = await supplyY(
 
 console.log("supplied Y");
 
+console.log(pairSmartContract.reservesY.get().toBigInt());
+
 console.log("supplying X");
 
 firstUserBalance = await supplyX(
@@ -123,6 +127,8 @@ firstUserBalance = await supplyX(
 );
 
 console.log("supplied X");
+
+console.log(pairSmartContract.reservesX.get().toBigInt());
 
 console.log("deploying pair minting contract");
 

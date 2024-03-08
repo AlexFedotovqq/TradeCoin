@@ -23,7 +23,11 @@ export class PersonalPairBalance extends Struct({
   id: Field,
   tokenXAmount: UInt64,
   tokenYAmount: UInt64,
-}) {}
+}) {
+  hash(): Field {
+    return Poseidon.hash(PersonalPairBalance.toFields(this));
+  }
+}
 
 export class PairContract extends SmartContract {
   @state(Field) treeRoot = State<Field>();
@@ -89,9 +93,7 @@ export class PairContract extends SmartContract {
     });
 
     // compute the root after incrementing
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(
-      Poseidon.hash(PersonalPairBalance.toFields(Balance))
-    );
+    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(Balance.hash());
     key.assertEquals(keyAfter);
 
     this.userId.set(currentId.add(1));
@@ -122,7 +124,7 @@ export class PairContract extends SmartContract {
     tokenX.transfer(user, this.address, dx);
 
     const reservesX = this.reservesX.getAndRequireEquals();
-    reservesX.add(dx);
+    this.reservesX.set(reservesX.add(dx));
 
     this.treeRoot.set(rootAfter);
   }
@@ -190,14 +192,14 @@ export class PairContract extends SmartContract {
   ) {
     const initialRoot = this.treeRoot.getAndRequireEquals();
     const [rootBefore, key] = keyWitness.computeRootAndKey(
-      Poseidon.hash(PersonalPairBalance.toFields(balanceBefore))
+      balanceBefore.hash()
     );
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balanceBefore.id);
 
     // compute the root after incrementing
     const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(
-      Poseidon.hash(PersonalPairBalance.toFields(balanceAfter))
+      balanceAfter.hash()
     );
     key.assertEquals(keyAfter);
     return rootAfter;
