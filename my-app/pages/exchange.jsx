@@ -105,14 +105,14 @@ export default function Exchange() {
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 rounded-full text-gray-900"
                   >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0" />
                     <g
                       id="SVGRepo_tracerCarrier"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       stroke="#11182"
                       strokeWidth="0.144"
-                    ></g>
+                    />
                     <g id="SVGRepo_iconCarrier">
                       <path
                         d="M10 6L7 3M7 3L4 6M7 3V17M14 18L17 21M17 21L20 18M17 21V7"
@@ -120,7 +120,7 @@ export default function Exchange() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                      ></path>
+                      />
                     </g>
                   </svg>
                 </button>

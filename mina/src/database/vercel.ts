@@ -1,11 +1,14 @@
 import { Field, PublicKey } from "o1js";
-import { VercelKV } from "@vercel/kv";
+import { createClient, VercelKV } from "@vercel/kv";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export type TokenMetadata = {
   name: string;
   description: string;
-  id: Field;
-  address: PublicKey;
+  id: string | number;
+  address: string;
 };
 
 export async function setVercelToken(
@@ -17,7 +20,11 @@ export async function setVercelToken(
   const value = {
     ...token,
   };
-  await client.set(key, value);
+  try {
+    await client.set(key, value);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getVercelToken(
@@ -26,5 +33,14 @@ export async function getVercelToken(
   client: VercelKV
 ) {
   const key = `${appId}: ${tokenId}`;
-  await client.get(key);
+  const result = await client.get(key);
+  return result;
+}
+
+export function getVercelClient() {
+  const client = createClient({
+    url: process.env.KV_REST_API_URL as string,
+    token: process.env.KV_REST_API_TOKEN as string,
+  });
+  return client;
 }

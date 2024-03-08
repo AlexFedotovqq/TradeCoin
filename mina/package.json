@@ -34,6 +34,7 @@
     "deployCustomToken": "tsc && node build/src/scripts/token/deployCustomToken.js",
     "mintBasicToken": "tsc && node build/src/scripts/token/mint.js",
     "queryAccount": "tsc && node build/src/scripts/token/queryAccount.js",
+    "vercel": "tsc && node build/src/scripts/vercel/addToken.js",
     "compile": "rm -rf build && tsc",
     "pub": "yarn compile & yarn publish",
     "lint": "npx eslint src/* --fix"
