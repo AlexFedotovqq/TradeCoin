@@ -8,7 +8,7 @@ import {
   supplyY,
   mintLiquidityToken,
 } from "./pair/pair.js";
-import { deployPairMint } from "./pair/pairMint.js";
+import { deployPairMint, initOwner } from "./pair/pairMint.js";
 import { startLocalBlockchainClient } from "./helpers/client.js";
 import { log2TokensAddressBalance } from "./helpers/logs.js";
 import {
@@ -25,7 +25,10 @@ const deployerAccount = testAccounts[0].privateKey;
 const deployerAddress = testAccounts[0].publicKey;
 
 const secondAccount = testAccounts[1].privateKey;
+const secondAddress = testAccounts[1].publicKey;
+
 const thirdAccount = testAccounts[2].privateKey;
+const thirdAddress = testAccounts[2].publicKey;
 
 const { tokenX: tokenX, tokenY: tokenY } = await deploy2Tokens(deployerAccount);
 
@@ -65,6 +68,29 @@ await initPairTokens(
 
 console.log("initialised tokens in a pair");
 
+console.log("deploying pair minting contract");
+
+const zkPairMintPrivateKey = PrivateKey.random();
+
+const { pairSmartContractMint: pairSmartContractMint } = await deployPairMint(
+  zkPairMintPrivateKey,
+  deployerAccount
+);
+console.log("deployed pair minting contract");
+
+await init2TokensSmartContract(
+  deployerAccount,
+  tokenX,
+  tokenY,
+  pairSmartContractMint.address
+);
+
+console.log("initialised tokens in a pairMint");
+
+await initOwner(zkPairMintPrivateKey, zkPairAppAddress, pairSmartContractMint);
+
+console.log(pairSmartContractMint.owner.get().toBase58());
+
 console.log("creating a user");
 
 let firstUserBalance = await createUser(
@@ -76,69 +102,66 @@ let firstUserBalance = await createUser(
 
 console.log("created a user");
 
-console.log("creating another user");
+console.log("creating another user - user 2");
 
 await createUser(map, 1, pairSmartContract, secondAccount);
 
-console.log("created a user");
+console.log("created a second user", secondAddress.toBase58());
 
 console.log("creating another user - user 3");
 
 await createUser(map, 2, pairSmartContract, thirdAccount);
 
-console.log("created a third user");
+console.log("created a third user", thirdAddress.toBase58());
 
 console.log("supplying Y");
+
+const dy = UInt64.one;
 
 firstUserBalance = await supplyY(
   map,
   firstUserBalance,
-  UInt64.one,
+  dy,
   pairSmartContract,
+  pairSmartContractMint.address,
   deployerAccount
 );
 
 console.log("supplied Y");
 
-console.log(pairSmartContract.reservesY.get().toBigInt());
+console.log("reserves Y", pairSmartContractMint.reservesY.get().toBigInt());
 
 console.log("supplying more Y");
 
 firstUserBalance = await supplyY(
   map,
   firstUserBalance,
-  UInt64.one,
+  dy,
   pairSmartContract,
+  pairSmartContractMint.address,
   deployerAccount
 );
 
 console.log("supplied Y");
 
-console.log(pairSmartContract.reservesY.get().toBigInt());
+console.log("reserves Y", pairSmartContractMint.reservesY.get().toBigInt());
 
 console.log("supplying X");
+
+const dx = UInt64.one;
 
 firstUserBalance = await supplyX(
   map,
   firstUserBalance,
-  UInt64.one,
+  dx,
   pairSmartContract,
+  pairSmartContractMint.address,
   deployerAccount
 );
 
 console.log("supplied X");
 
-console.log(pairSmartContract.reservesX.get().toBigInt());
-
-console.log("deploying pair minting contract");
-
-const zkPairMintPrivateKey = PrivateKey.random();
-
-const { pairSmartContractMint: pairSmartContractMint } = await deployPairMint(
-  zkPairMintPrivateKey,
-  deployerAccount
-);
-console.log("deployed pair minting contract");
+console.log("reserves X", pairSmartContractMint.reservesX.get().toBigInt());
 
 console.log("minting liquidity");
 

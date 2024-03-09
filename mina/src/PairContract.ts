@@ -15,7 +15,6 @@ import {
   Poseidon,
 } from "o1js";
 
-import { BasicTokenContract } from "./BasicTokenContract.js";
 import { PairMintContract } from "./PairContractMint.js";
 
 export class PersonalPairBalance extends Struct({
@@ -24,20 +23,27 @@ export class PersonalPairBalance extends Struct({
   tokenXAmount: UInt64,
   tokenYAmount: UInt64,
 }) {
+  increaseX(dx: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.add(dx);
+  }
+  increaseY(dy: UInt64) {
+    this.tokenYAmount = this.tokenYAmount.add(dy);
+  }
+  supply(dl: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.sub(dl);
+    this.tokenYAmount = this.tokenYAmount.sub(dl);
+  }
   hash(): Field {
     return Poseidon.hash(PersonalPairBalance.toFields(this));
   }
 }
 
 export class PairContract extends SmartContract {
-  @state(Field) treeRoot = State<Field>();
-
+  @state(PublicKey) admin = State<PublicKey>();
   @state(PublicKey) tokenX = State<PublicKey>();
   @state(PublicKey) tokenY = State<PublicKey>();
 
-  @state(UInt64) reservesX = State<UInt64>();
-  @state(UInt64) reservesY = State<UInt64>();
-
+  @state(Field) treeRoot = State<Field>();
   @state(Field) userId = State<Field>();
 
   deploy(args?: DeployArgs) {
@@ -52,6 +58,9 @@ export class PairContract extends SmartContract {
       send: permissionToEdit,
       receive: permissionToEdit,
     });
+
+    const sender = this.checkUserSignature();
+    this.admin.set(sender);
   }
 
   /**
@@ -61,7 +70,7 @@ export class PairContract extends SmartContract {
    */
   @method initTokenAddresses(_tokenX: PublicKey, _tokenY: PublicKey) {
     this.checkNotInitialized();
-    this.checkThisSignature();
+    this.checkAdminSignature();
 
     super.init();
 
@@ -77,10 +86,12 @@ export class PairContract extends SmartContract {
 
   @method createPersonalBalance(keyWitness: MerkleMapWitness) {
     this.checkInitialized();
+    this.checkAdminSignature();
     const user = this.checkUserSignature();
 
     const currentId = this.userId.getAndRequireEquals();
     const initialRoot = this.treeRoot.getAndRequireEquals();
+
     const [rootBefore, key] = keyWitness.computeRootAndKey(Field(0));
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(currentId);
@@ -103,28 +114,23 @@ export class PairContract extends SmartContract {
   @method supplyTokenX(
     dx: UInt64,
     keyWitness: MerkleMapWitness,
-    balanceBefore: PersonalPairBalance,
-    balanceAfter: PersonalPairBalance
+    balance: PersonalPairBalance,
+    tokenPub: PublicKey
   ) {
     this.checkInitialized();
-    const user = this.checkUserSignature();
+    this.checkAdminSignature();
+    this.checkUserSignature();
 
     const tokenXPub = this.tokenX.getAndRequireEquals();
-    const tokenX = new BasicTokenContract(tokenXPub);
 
-    const rootAfter = this.checkMerkleMap(
-      keyWitness,
-      balanceBefore,
-      balanceAfter
-    );
+    this.checkMerkleMap(keyWitness, balance);
 
-    const dXbalance = balanceAfter.tokenXAmount.sub(balanceBefore.tokenXAmount);
-    dXbalance.assertEquals(dx);
+    const pairMintContract = new PairMintContract(tokenPub);
+    const res = pairMintContract.supplyTokenX(tokenXPub, dx);
+    res.assertTrue();
 
-    tokenX.transfer(user, this.address, dx);
-
-    const reservesX = this.reservesX.getAndRequireEquals();
-    this.reservesX.set(reservesX.add(dx));
+    balance.increaseX(dx);
+    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(balance.hash());
 
     this.treeRoot.set(rootAfter);
   }
@@ -132,28 +138,23 @@ export class PairContract extends SmartContract {
   @method supplyTokenY(
     dy: UInt64,
     keyWitness: MerkleMapWitness,
-    balanceBefore: PersonalPairBalance,
-    balanceAfter: PersonalPairBalance
+    balance: PersonalPairBalance,
+    tokenPub: PublicKey
   ) {
     this.checkInitialized();
-    const user = this.checkUserSignature();
+    this.checkAdminSignature();
+    this.checkUserSignature();
 
     const tokenYPub = this.tokenX.getAndRequireEquals();
-    const tokenY = new BasicTokenContract(tokenYPub);
 
-    const rootAfter = this.checkMerkleMap(
-      keyWitness,
-      balanceBefore,
-      balanceAfter
-    );
+    this.checkMerkleMap(keyWitness, balance);
 
-    const dYbalance = balanceAfter.tokenYAmount.sub(balanceBefore.tokenYAmount);
-    dYbalance.assertEquals(dy);
+    const pairMintContract = new PairMintContract(tokenPub);
+    const res = pairMintContract.supplyTokenY(tokenYPub, dy);
+    res.assertTrue();
 
-    tokenY.transfer(user, this.address, dy);
-
-    const reservesY = this.reservesY.getAndRequireEquals();
-    this.reservesY.set(reservesY.add(dy));
+    balance.increaseY(dy);
+    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(balance.hash());
 
     this.treeRoot.set(rootAfter);
   }
@@ -161,34 +162,28 @@ export class PairContract extends SmartContract {
   @method mintLiquidityToken(
     dl: UInt64,
     keyWitness: MerkleMapWitness,
-    balanceBefore: PersonalPairBalance,
-    balanceAfter: PersonalPairBalance,
+    balance: PersonalPairBalance,
     tokenPub: PublicKey
   ) {
     this.checkInitialized();
+    this.checkAdminSignature();
     const user = this.checkUserSignature();
 
-    const rootAfter = this.checkMerkleMap(
-      keyWitness,
-      balanceBefore,
-      balanceAfter
-    );
-
-    const dYbalance = balanceBefore.tokenYAmount.sub(balanceAfter.tokenYAmount);
-    dYbalance.assertEquals(dl);
-    const dXbalance = balanceBefore.tokenXAmount.sub(balanceAfter.tokenXAmount);
-    dXbalance.assertEquals(dl);
+    this.checkMerkleMap(keyWitness, balance);
 
     const pairMintContract = new PairMintContract(tokenPub);
-    pairMintContract.mintLiquidityToken(dl, user);
+    const res = pairMintContract.mintLiquidityToken(dl, user);
+    res.assertTrue();
+
+    balance.supply(dl);
+    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(balance.hash());
 
     this.treeRoot.set(rootAfter);
   }
 
   checkMerkleMap(
     keyWitness: MerkleMapWitness,
-    balanceBefore: PersonalPairBalance,
-    balanceAfter: PersonalPairBalance
+    balanceBefore: PersonalPairBalance
   ) {
     const initialRoot = this.treeRoot.getAndRequireEquals();
     const [rootBefore, key] = keyWitness.computeRootAndKey(
@@ -196,13 +191,6 @@ export class PairContract extends SmartContract {
     );
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balanceBefore.id);
-
-    // compute the root after incrementing
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(
-      balanceAfter.hash()
-    );
-    key.assertEquals(keyAfter);
-    return rootAfter;
   }
 
   checkUserSignature() {
@@ -210,6 +198,12 @@ export class PairContract extends SmartContract {
     const senderUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
     return user;
+  }
+
+  checkAdminSignature() {
+    const admin = this.admin.getAndRequireEquals();
+    const senderUpdate = AccountUpdate.create(admin);
+    senderUpdate.requireSignature();
   }
 
   checkThisSignature() {

@@ -152,139 +152,79 @@ export async function createUser(
 
 export async function supplyX(
   map: MerkleMap,
-  balancePairBefore: PersonalPairBalance,
+  balance: PersonalPairBalance,
   dx: UInt64,
   pairSmartContract: PairContract,
+  pairMintingAddress: PublicKey,
   userPK: PrivateKey
 ) {
   const userAddress: PublicKey = userPK.toPublicKey();
 
-  const idField = Field(balancePairBefore.id);
+  const idField = Field(balance.id);
   const witness = map.getWitness(idField);
 
-  const balancePairAfter = increaseXBalance(balancePairBefore, dx);
-
   const supplyXTxn = await Mina.transaction(userAddress, () => {
-    pairSmartContract.supplyTokenX(
-      dx,
-      witness,
-      balancePairBefore,
-      balancePairAfter
-    );
+    pairSmartContract.supplyTokenX(dx, witness, balance, pairMintingAddress);
   });
 
   await sendWaitTx(supplyXTxn, [userPK]);
 
-  map.set(
-    idField,
-    Poseidon.hash(PersonalPairBalance.toFields(balancePairAfter))
-  );
-
-  return balancePairAfter;
+  balance.increaseX(dx);
+  map.set(idField, balance.hash());
+  return balance;
 }
 
 export async function supplyY(
   map: MerkleMap,
-  balancePairBefore: PersonalPairBalance,
+  balance: PersonalPairBalance,
   dy: UInt64,
   pairSmartContract: PairContract,
+  pairMintingAddress: PublicKey,
   userPK: PrivateKey
 ) {
   const userAddress: PublicKey = userPK.toPublicKey();
 
-  const idField = Field(balancePairBefore.id);
+  const idField = Field(balance.id);
   const witness = map.getWitness(idField);
 
-  const balancePairAfter = increaseYBalance(balancePairBefore, dy);
-
   const supplyYTxn = await Mina.transaction(userAddress, () => {
-    pairSmartContract.supplyTokenY(
-      dy,
-      witness,
-      balancePairBefore,
-      balancePairAfter
-    );
+    pairSmartContract.supplyTokenY(dy, witness, balance, pairMintingAddress);
   });
 
   await sendWaitTx(supplyYTxn, [userPK]);
 
-  map.set(
-    idField,
-    Poseidon.hash(PersonalPairBalance.toFields(balancePairAfter))
-  );
-
-  return balancePairAfter;
-}
-
-export function increaseXBalance(balance: PersonalPairBalance, dx: UInt64) {
-  const newBalance: PersonalPairBalance = {
-    owner: balance.owner,
-    id: balance.id,
-    tokenXAmount: balance.tokenXAmount.add(dx),
-    tokenYAmount: balance.tokenYAmount,
-    hash: function (): Field {
-      return Poseidon.hash(PersonalPairBalance.toFields(this));
-    },
-  };
-  return newBalance;
-}
-
-export function increaseYBalance(balance: PersonalPairBalance, dy: UInt64) {
-  const newBalance: PersonalPairBalance = {
-    owner: balance.owner,
-    id: balance.id,
-    tokenXAmount: balance.tokenXAmount,
-    tokenYAmount: balance.tokenYAmount.add(dy),
-    hash: function (): Field {
-      return Poseidon.hash(PersonalPairBalance.toFields(this));
-    },
-  };
-  return newBalance;
-}
-
-export function supplyBalance(balance: PersonalPairBalance, dl: UInt64) {
-  const newBalance: PersonalPairBalance = {
-    owner: balance.owner,
-    id: balance.id,
-    tokenXAmount: balance.tokenXAmount.sub(dl),
-    tokenYAmount: balance.tokenYAmount.sub(dl),
-    hash: function (): Field {
-      return Poseidon.hash(PersonalPairBalance.toFields(this));
-    },
-  };
-  return newBalance;
+  balance.increaseY(dy);
+  map.set(idField, balance.hash());
+  return balance;
 }
 
 export async function mintLiquidityToken(
   map: MerkleMap,
-  balancePairBefore: PersonalPairBalance,
+  balance: PersonalPairBalance,
   dl: UInt64,
   pairSmartContract: PairContract,
   userPK: PrivateKey,
-  pairAddress: PublicKey
+  pairMintingAddress: PublicKey
 ) {
   const userAddress: PublicKey = userPK.toPublicKey();
 
-  const idField = Field(balancePairBefore.id);
+  const idField = Field(balance.id);
   const witness = map.getWitness(idField);
-
-  const balancePairAfter = supplyBalance(balancePairBefore, dl);
 
   const mintLiqTxn = await Mina.transaction(userAddress, () => {
     AccountUpdate.fundNewAccount(userAddress);
     pairSmartContract.mintLiquidityToken(
       dl,
       witness,
-      balancePairBefore,
-      balancePairAfter,
-      pairAddress
+      balance,
+      pairMintingAddress
     );
   });
 
   await sendWaitTx(mintLiqTxn, [userPK]);
 
-  map.set(
-    idField,
-    Poseidon.hash(PersonalPairBalance.toFields(balancePairAfter))
-  );
+  balance.increaseX(dl);
+  balance.increaseY(dl);
+
+  map.set(idField, balance.hash());
 }

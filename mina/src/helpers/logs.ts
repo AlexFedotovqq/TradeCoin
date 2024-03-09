@@ -32,9 +32,7 @@ export async function logPairStates(app: PairContract, live: boolean = false) {
     await fetchAccount({ publicKey: app.address });
   }
   console.log("token X address", app.tokenX.get().toBase58());
-  console.log("token X reserves", app.reservesX.get().toBigInt());
   console.log("token Y address", app.tokenY.get().toBase58());
-  console.log("token Y reserves", app.reservesY.get().toBigInt());
   console.log("tree root state", app.treeRoot.get().toString());
   console.log("UserId state", app.userId.get().toBigInt());
 }
