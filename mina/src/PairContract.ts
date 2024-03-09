@@ -130,7 +130,7 @@ export class PairContract extends SmartContract {
     res.assertTrue();
 
     balance.increaseX(dx);
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(balance.hash());
+    const [rootAfter] = keyWitness.computeRootAndKey(balance.hash());
 
     this.treeRoot.set(rootAfter);
   }
@@ -154,7 +154,7 @@ export class PairContract extends SmartContract {
     res.assertTrue();
 
     balance.increaseY(dy);
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(balance.hash());
+    const [rootAfter] = keyWitness.computeRootAndKey(balance.hash());
 
     this.treeRoot.set(rootAfter);
   }
@@ -176,7 +176,7 @@ export class PairContract extends SmartContract {
     res.assertTrue();
 
     balance.supply(dl);
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(balance.hash());
+    const [rootAfter] = keyWitness.computeRootAndKey(balance.hash());
 
     this.treeRoot.set(rootAfter);
   }
