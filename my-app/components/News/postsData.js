@@ -1,5 +1,35 @@
 const posts = [
   {
+    title: "📢 Exciting news! 📢",
+    href: "https://twitter.com/_TradeCoin_/status/1766573326799917385",
+    description:
+      "Just deployed a pair contract for 2 new tokens (tokenX & tokenY) with initial supply of 1 billion each.",
+    imageUrl: "/news/exciting.jpg",
+    date: "Mar 09, 2024",
+    datetime: "2024-03-09",
+    category: { title: "Exciting" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title: "📢 Exciting news! 📢",
+    href: "https://twitter.com/_TradeCoin_/status/1762960757862375602",
+    description:
+      "Initialized tokens tokenX and tokenY into smart contracts. Deployed a pair & initialized tokens within it. Created users & supplied tokens. Deployed pair minting contract & minted liquidity",
+    imageUrl: "/news/exciting.jpg",
+    date: "Feb 28, 2024",
+    datetime: "2024-02-28",
+    category: { title: "Exciting" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
     title: "📢 Updated documentation  📢",
     href: "https://twitter.com/_TradeCoin_/status/1756341365753921609",
     description: "Added information about wallet settings ⚒️",
