@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Disclosure } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-
+import Image from "next/image";
 import { usePoolsPage } from "@/hooks/pools";
 import { classNames } from "@/utils/classNames";
 
@@ -24,23 +24,37 @@ export function Pair() {
   };
 
   return (
-    <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6 ">
-      <ul className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="mt-5 overflow-hidden rounded-lg bg-gray-700 shadow p-6">
+      <ul className="grid grid-cols-1 gap-6 lg:grid-cols-2 ">
         {pools?.items.map((pool) => (
           <li
             key={pool.pairAddress}
             className="col-span-1 rounded-lg bg-white shadow-md p-6"
           >
-            <div className="w-full space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                {pool.token0Name.length > 15
-                  ? `${pool.token0Name.substring(0, 15)}...`
-                  : pool.token0Name}
-              </h3>
-              <div className="flex items-center space-x-2">
-                <p className="text-sm text-gray-500" title={pool.token0Address}>
+            <div className="w-full flex flex-col items-center space-y-4">
+              <div className="flex items-center space-x-4">
+                <Image
+                  src="/TradeC0.jpg"
+                  alt="Pool Token 0"
+                  className="h-6 w-6 flex-shrink-0 rounded-full"
+                  width={400}
+                  height={400}
+                />
+                <h3 className="text-lg font-semibold text-gray-900 ">
+                  {pool.token0Name.length > 15
+                    ? `${pool.token0Name.substring(0, 15)}...`
+                    : pool.token0Name}
+                </h3>
+              </div>
+              <div className="flex items-center  space-x-2">
+                <a
+                  href={`https://tradecoin.dev/uri/TRADE0.json/`}
+                  className="text-sm text-gray-500"
+                  title={pool.token0Address}
+                >
                   {pool.token0Address.substring(0, 15)}...
-                </p>
+                </a>
+
                 <button
                   className="text-blue-500 cursor-pointer"
                   onClick={() => copyToClipboard(pool.token0Address)}
@@ -48,11 +62,20 @@ export function Pair() {
                   Copy
                 </button>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {pool.token1Name.length > 15
-                  ? `${pool.token1Name.substring(0, 15)}...`
-                  : pool.token1Name}
-              </h3>
+              <div className="flex items-center space-x-4">
+                <Image
+                  src="/TradeC1.jpg"
+                  alt="Pool Token 0"
+                  className="h-6 w-6 flex-shrink-0 rounded-full"
+                  width={400}
+                  height={400}
+                />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {pool.token1Name.length > 15
+                    ? `${pool.token1Name.substring(0, 15)}...`
+                    : pool.token1Name}
+                </h3>
+              </div>
               <div className="flex items-center space-x-2">
                 <p className="text-sm text-gray-500" title={pool.token1Address}>
                   {pool.token1Address.substring(0, 15)}...
@@ -69,8 +92,8 @@ export function Pair() {
               </p>
             </div>
 
-            <div className="mt-4 flex space-x-4">
-              <div className="flex flex-1 justify-center">
+            <div className="mt-4 flex space-x-4 ">
+              <div className="flex flex-1 justify-center ">
                 <Disclosure as="div" key="Add new pair">
                   {({ open }) => (
                     <>
