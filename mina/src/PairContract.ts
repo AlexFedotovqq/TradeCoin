@@ -103,7 +103,6 @@ export class PairContract extends SmartContract {
       tokenYAmount: UInt64.zero,
     });
 
-    // compute the root after incrementing
     const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(Balance.hash());
     key.assertEquals(keyAfter);
 

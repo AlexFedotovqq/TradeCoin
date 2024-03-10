@@ -2573,11 +2573,12 @@ tr46@~0.0.3:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
-tradecoin-mina@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/tradecoin-mina/-/tradecoin-mina-0.0.4.tgz#04f61446b93045c585ca54f5f062261fce8da9b5"
-  integrity sha512-rsCIQG3H6Na+vl6mEJtG3tkkOlF+BH4y0L6WoM/cgcFCpj81BT7qEe1XIf7ILZ8kbjZHbL0FQJnjHHQdguPTCA==
+tradecoin-mina@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/tradecoin-mina/-/tradecoin-mina-0.0.6.tgz#07c808a2c60a9ef86444a869cfda14e23f2a42d0"
+  integrity sha512-CRs2mVWhPoXV9hXFdeDzoUoTNdlZZUCgUvZpnSzVHqmsHmAXSEhHD9EVACdVtCb0ksCzM9kTjOTopp5Ec0e97w==
   dependencies:
+    "@vercel/kv" "^1.0.1"
     dotenv "16.4.5"
     o1js "0.16.2"
 
