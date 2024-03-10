@@ -63,7 +63,7 @@ export default function TokenSelector({
                         <Combobox.Input
                           className="rounded-md border-0 bg-white py-1.5 pl-2 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           onChange={(event) => setQuery(event.target.value)}
-                          displayValue={(token) => token?.name}
+                          displayValue={(token) => token?.symbol}
                         />
                         <Combobox.Button className="absolute inset-y-0  pl-64 flex items-center rounded-r-md px-2 focus:outline-none">
                           <ChevronUpDownIcon
@@ -91,8 +91,8 @@ export default function TokenSelector({
                                   <>
                                     <div className="flex items-center">
                                       <Image
-                                        src={token.imageUrl}
-                                        alt={token.name}
+                                        src={token.image}
+                                        alt={token.symbol}
                                         className="h-6 w-6 flex-shrink-0 rounded-full"
                                         width={400}
                                         height={400}
@@ -103,7 +103,7 @@ export default function TokenSelector({
                                           selected && "font-semibold"
                                         )}
                                       >
-                                        {token.name}
+                                        {token.symbol}
                                       </span>
                                     </div>
 

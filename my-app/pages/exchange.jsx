@@ -9,7 +9,7 @@ import WarningTransition from "@/components/Exchange/WarningTransition";
 import { useTokensPage } from "@/hooks/tokens";
 
 export default function Exchange() {
-  const { data: tokens, isLoading } = useTokensPage(1);
+  const { data: tokens, isLoading } = useTokensPage(0);
 
   const [isLoadingSwap, setIsLoadingSwap] = useState(false);
   const [loadingText, setLoadingText] = useState("");
@@ -26,16 +26,14 @@ export default function Exchange() {
   const [openTokenB, setOpenTokenB] = useState(false);
 
   const [tokenA, setTokenA] = useState({
-    id: 1,
-    name: "TradeC0",
-    address: "41377a640a0bf48d4c5ab79f63d2e4885659b82a29",
-    imageUrl: "/TradeC0.jpg",
+    symbol: "TRADE0",
+    //address: "41377a640a0bf48d4c5ab79f63d2e4885659b82a29",
+    image: "/TradeC0.jpg",
   });
   const [tokenB, setTokenB] = useState({
-    id: 2,
-    name: "TradeC1",
-    address: "4191447b0204cf766eaf5f3f44d31370c870ec3f45",
-    imageUrl: "/TradeC1.jpg",
+    symbol: "TRADE1",
+    // address: "4191447b0204cf766eaf5f3f44d31370c870ec3f45",
+    image: "/TradeC1.jpg",
   });
 
   const [swapAmount, setSwapAmount] = useState(0);
@@ -93,10 +91,10 @@ export default function Exchange() {
                     className="h-6 w-6 rounded-full"
                     width={400}
                     height={400}
-                    src={tokenA.imageUrl}
+                    src={tokenA.image}
                     alt="tokenA"
                   />
-                  <span className="ml-2">{tokenA.name}</span>
+                  <span className="ml-2">{tokenA.symbol}</span>
                   <svg
                     width="24px"
                     height="24px"
@@ -154,10 +152,10 @@ export default function Exchange() {
                     className="h-6 w-6 rounded-full"
                     width={400}
                     height={400}
-                    src={tokenB.imageUrl}
+                    src={tokenB.image}
                     alt="tokenB"
                   />
-                  <span className="ml-2">{tokenB.name}</span>
+                  <span className="ml-2">{tokenB.symbol}</span>
                   <svg
                     width="24px"
                     height="24px"
@@ -166,14 +164,14 @@ export default function Exchange() {
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 rounded-full text-gray-900"
                   >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0" />
                     <g
                       id="SVGRepo_tracerCarrier"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       stroke="#11182"
                       strokeWidth="0.144"
-                    ></g>
+                    />
                     <g id="SVGRepo_iconCarrier">
                       <path
                         d="M10 6L7 3M7 3L4 6M7 3V17M14 18L17 21M17 21L20 18M17 21V7"
@@ -181,7 +179,7 @@ export default function Exchange() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                      ></path>
+                      />
                     </g>
                   </svg>
                 </button>
@@ -191,10 +189,10 @@ export default function Exchange() {
           <div className="rounded-2xl mt-5 bg-gray-600 p-1">
             <div className="flex justify-center items-center">
               <span className="relative text-white  items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium">
-                {swapAmount} {tokenA.name} =
+                {swapAmount} {tokenA.symbol} =
               </span>
               <span className="relative right-5 text-white inline-flex items-center justify-center rounded-md border border-transparent px-3 py-1.5 text-base font-medium">
-                {tokenB.name}
+                {tokenB.symbol}
               </span>
             </div>
           </div>
@@ -218,7 +216,6 @@ export default function Exchange() {
             query={query}
             setQuery={setQuery}
           />
-
           <TokenSelector
             tokens={tokens.items}
             open={openTokenB}
