@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Combobox } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
@@ -73,7 +73,7 @@ export default function TokenSelector({
                   <Combobox as="div" value={token} onChange={setToken}>
                     <div className="relative mt-2">
                       <Combobox.Input
-                        className="block w-full pl-3 pr-10 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                        className="block w-full pl-3 pr-10 py-2 text-base leading-6 max-h-60 rounded-md border border-gray-300 bg-white divide-y divide-gray-200 overflow-auto focus:outline-none sm:text-sm"
                         onChange={(event) => {
                           setQuery(event.target.value);
                           setIsLoading(true);
@@ -82,8 +82,8 @@ export default function TokenSelector({
                         placeholder="Search for a token..."
                       />
                       <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <ChevronDownIcon
-                          className="h-5 w-5 text-gray-400"
+                        <MagnifyingGlassIcon
+                          className="h-5 w-5 text-gray-600"
                           aria-hidden="true"
                         />
                       </span>
