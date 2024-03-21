@@ -1,6 +1,36 @@
 const posts = [
   {
     title: "📢 Exciting news! 📢",
+    href: "https://twitter.com/_TradeCoin_/status/1769886995273113763",
+    description:
+      "We are happy to share some statistical data with you 🔍            We've had 6,000 views on Twitter in the last 30 days 📌 Over the past 12 days, 49 visitors have visited our site, and there have also been 210 page clicks!",
+    imageUrl: "/news/exciting.jpg",
+    date: "Mar 19, 2024",
+    datetime: "2024-03-19",
+    category: { title: "Exciting" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title: "📢 Update 📢",
+    href: "https://twitter.com/_TradeCoin_/status/1768761424422068445",
+    description:
+      "The interface for choosing tokens has become more convenient, technologically advanced and attractive ⚒️",
+    imageUrl: "/news/update.jpg",
+    date: "Mar 15, 2024",
+    datetime: "2024-03-15",
+    category: { title: "Update" },
+    author: {
+      name: "TradeCoin",
+      href: "https://twitter.com/_TradeCoin_",
+      imageUrl: "/logo2.jpg",
+    },
+  },
+  {
+    title: "📢 Exciting news! 📢",
     href: "https://twitter.com/_TradeCoin_/status/1766573326799917385",
     description:
       "Just deployed a pair contract for 2 new tokens (tokenX & tokenY) with initial supply of 1 billion each.",
