@@ -17,26 +17,20 @@ async function compileContractIfProofsEnabled(compile: boolean) {
 
 export async function deployToken(
   pk: PrivateKey,
+  zkAppPrivateKey: PrivateKey,
   compile: boolean,
   live: boolean = false
 ) {
   const pubKey: PublicKey = pk.toPublicKey();
-
-  const zkAppPrivateKey = PrivateKey.random();
   const zkAppAddress = zkAppPrivateKey.toPublicKey();
   const contract = new BasicTokenContract(zkAppAddress);
-
   const verificationKey = await compileContractIfProofsEnabled(compile);
-
   const txOptions = createTxOptions(pubKey, live);
-
   const deploy_txn = await Mina.transaction(txOptions, () => {
     AccountUpdate.fundNewAccount(txOptions.sender);
     contract.deploy({ verificationKey, zkappKey: zkAppPrivateKey });
   });
-
   await sendWaitTx(deploy_txn, [pk], live);
-  return { contract: contract, zkAppPrivateKey: zkAppPrivateKey };
 }
 
 export async function deployCustomToken(
@@ -112,54 +106,27 @@ export async function mintToken(
 ) {
   await compileContractIfProofsEnabled(compile);
   const deployerAddress = deployerPk.toPublicKey();
-
   const txOptions = createTxOptions(deployerAddress, live);
-
   const mint_txn = await Mina.transaction(txOptions, () => {
     AccountUpdate.fundNewAccount(txOptions.sender);
     contract.mint(receiverPub, mintAmount);
   });
-
   await sendWaitTx(mint_txn, [deployerPk], live);
 }
 
 export async function transferToken(
   zkAppPrivateKey: PrivateKey,
-  deployerPk: PrivateKey,
+  senderPK: PrivateKey,
+  receiverPub: PublicKey,
   contract: BasicTokenContract,
   sendAmount: UInt64 = UInt64.from(1)
 ) {
-  const deployerAddress = deployerPk.toPublicKey();
-  const zkAppAddress = zkAppPrivateKey.toPublicKey();
-
-  const send_txn = await Mina.transaction(deployerAddress, () => {
-    AccountUpdate.fundNewAccount(deployerAddress);
-    contract.transfer(zkAppAddress, deployerAddress, sendAmount);
+  const senderPub: PublicKey = senderPK.toPublicKey();
+  const send_txn = await Mina.transaction(senderPub, () => {
+    AccountUpdate.fundNewAccount(senderPub);
+    contract.transfer(senderPub, receiverPub, sendAmount);
   });
-
-  await sendWaitTx(send_txn, [deployerPk, zkAppPrivateKey]);
-}
-
-export async function getBalance(
-  fromPk: PrivateKey,
-  target: PublicKey,
-  contract: BasicTokenContract
-) {
-  const deployerAddress = fromPk.toPublicKey();
-  try {
-    const balance_txn = await Mina.transaction(deployerAddress, () => {
-      contract.balanceOf(target);
-    });
-    await balance_txn.prove();
-    await balance_txn.sign([fromPk]).send();
-  } catch (e) {
-    const balance_txn = await Mina.transaction(deployerAddress, () => {
-      AccountUpdate.fundNewAccount(deployerAddress);
-      contract.balanceOf(target);
-    });
-
-    await sendWaitTx(balance_txn, [fromPk]);
-  }
+  await sendWaitTx(send_txn, [senderPK, zkAppPrivateKey]);
 }
 
 export async function init2TokensSmartContract(

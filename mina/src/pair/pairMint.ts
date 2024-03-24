@@ -13,48 +13,53 @@ async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
 }
 
 export async function deployPairMint(
-  zkAppPK: PrivateKey,
   pk: PrivateKey,
+  zkAppPK: PrivateKey,
+  pairSmartContractMint: PairMintContract,
   proofsEnabled?: boolean
 ) {
   const userAddress: PublicKey = pk.toPublicKey();
-  const zkDexAppAddress: PublicKey = zkAppPK.toPublicKey();
   const verificationKey = await compileContractIfProofsEnabled(proofsEnabled);
-
-  const pairSmartContractMint = new PairMintContract(zkDexAppAddress);
-
   const deploy_txn = await Mina.transaction(userAddress, () => {
     AccountUpdate.fundNewAccount(userAddress);
     pairSmartContractMint.deploy({ verificationKey, zkappKey: zkAppPK });
   });
-
   await sendWaitTx(deploy_txn, [pk]);
-
-  return { pairSmartContractMint: pairSmartContractMint };
 }
 
-export async function initOwner(
-  pk: PrivateKey,
+export async function setOwner(
+  zkAppPK: PrivateKey,
   owner: PublicKey,
   pairSmartContractMint: PairMintContract
 ) {
-  const userAddress: PublicKey = pk.toPublicKey();
+  const userAddress: PublicKey = zkAppPK.toPublicKey();
   const txn = await Mina.transaction(userAddress, () => {
     pairSmartContractMint.initOwner(owner);
   });
+  await sendWaitTx(txn, [zkAppPK]);
+}
 
-  await sendWaitTx(txn, [pk]);
+export async function setAdmin(
+  zkOwnerPK: PrivateKey,
+  admin: PublicKey,
+  pairSmartContractMint: PairMintContract
+) {
+  const userAddress: PublicKey = zkOwnerPK.toPublicKey();
+  const txn = await Mina.transaction(userAddress, () => {
+    pairSmartContractMint.setAdmin(admin);
+  });
+  await sendWaitTx(txn, [zkOwnerPK]);
 }
 
 export async function mint(
-  pk: PrivateKey,
+  adminPK: PrivateKey,
+  recipientAddress: PublicKey,
   pairSmartContractMint: PairMintContract
 ) {
-  const userAddress: PublicKey = pk.toPublicKey();
-  const txn = await Mina.transaction(userAddress, () => {
-    AccountUpdate.fundNewAccount(userAddress);
-    pairSmartContractMint.mintLiquidityToken(UInt64.one, userAddress);
+  const adminAddress: PublicKey = adminPK.toPublicKey();
+  const txn = await Mina.transaction(adminAddress, () => {
+    AccountUpdate.fundNewAccount(adminAddress);
+    pairSmartContractMint.mintLiquidityToken(UInt64.one, recipientAddress);
   });
-
-  await sendWaitTx(txn, [pk]);
+  await sendWaitTx(txn, [adminPK]);
 }

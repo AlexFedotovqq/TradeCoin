@@ -19,5 +19,5 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["./src", "environment.d.ts"]
+  "include": ["./src", "./tests", "environment.d.ts"]
 }

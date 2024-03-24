@@ -1,16 +1,16 @@
 import { Mina, PrivateKey, Field, Poseidon, MerkleTree } from "o1js";
 
-import { PoolId, MyMerkleWitness } from "./DexContract.js";
-import { deployDex } from "./dex/dex.js";
-import { log2TokensAddressBalance } from "./helpers/logs.js";
-import { startLocalBlockchainClient } from "./helpers/client.js";
+import { PoolId, MyMerkleWitness } from "../src/DexContract.js";
+import { deployDex } from "../src/dex/dex.js";
+import { log2TokensAddressBalance } from "../src/helpers/logs.js";
+import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import {
   deploy2Tokens,
   init2TokensSmartContract,
   mintToken,
-} from "./token/token.js";
+} from "../src/token/token.js";
 
-const testAccounts = await startLocalBlockchainClient();
+const testAccounts = startLocalBlockchainClient();
 
 const map = new MerkleTree(6);
 

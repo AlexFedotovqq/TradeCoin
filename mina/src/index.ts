@@ -8,7 +8,6 @@ export {
   createTokenMetadataObject,
   setVercelTokenMetadata,
   getVercelTokenMetadata,
-  getVercelClient,
   getAllKeys,
   getAllTokenKeys,
 } from "./database/vercel.js";

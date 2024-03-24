@@ -11,11 +11,8 @@ export function logDexBalances(
   dexApp: Dex
 ) {
   log2TokensAddressBalance(pub, tokenX, tokenY);
-
   log2TokensAddressBalance(dexApp.address, tokenX, tokenY);
-
   logTokenBalance(dexApp, pub);
-
   logDexStates(dexApp);
 }
 
@@ -47,24 +44,16 @@ export function log2TokensAddressBalance(
     pub,
     tokenX.token.id
   ).value.toBigInt();
-
   const pubTokenYBalance = Mina.getBalance(
     pub,
     tokenY.token.id
   ).value.toBigInt();
-
   console.log(pubAddress + " tokenX : ", pubTokenXBalance);
   console.log(pubAddress + " tokenY : ", pubTokenYBalance);
 }
 
 export function logTokenInfo(contract: BasicTokenContract) {
   console.log("totalSupply: " + contract.totalSupply.get());
-
-  console.log(
-    "zkapp tokens:",
-    Mina.getBalance(contract.address, contract.token.id).value.toBigInt()
-  );
-
   console.log("token Id", contract.token.id.toBigInt());
   console.log("tokenOwner", contract.token.tokenOwner.toBase58());
 }

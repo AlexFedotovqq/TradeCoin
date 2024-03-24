@@ -12,7 +12,7 @@ export default function Contact() {
 
       document.head.appendChild(stylesheet);
     }
-  }, []);
+  });
 
   return (
     <div className="relative isolate min-h-screen bg-gray-800 overflow-hidden">

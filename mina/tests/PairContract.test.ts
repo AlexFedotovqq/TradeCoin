@@ -7,17 +7,18 @@ import {
   supplyX,
   supplyY,
   mintLiquidityToken,
-} from "./pair/pair.js";
-import { deployPairMint, initOwner } from "./pair/pairMint.js";
-import { startLocalBlockchainClient } from "./helpers/client.js";
-import { log2TokensAddressBalance } from "./helpers/logs.js";
+} from "../src/pair/pair.js";
+import { deployPairMint, setOwner } from "../src/pair/pairMint.js";
+import { startLocalBlockchainClient } from "../src/helpers/client.js";
+import { log2TokensAddressBalance } from "../src/helpers/logs.js";
 import {
   deploy2Tokens,
   init2TokensSmartContract,
   mintToken,
-} from "./token/token.js";
+} from "../src/token/token.js";
+import { PairMintContract } from "../src/PairContractMint.js";
 
-const testAccounts = await startLocalBlockchainClient();
+const testAccounts = startLocalBlockchainClient();
 
 const map = new MerkleMap();
 
@@ -70,12 +71,18 @@ console.log("initialised tokens in a pair");
 
 console.log("deploying pair minting contract");
 
-const zkPairMintPrivateKey = PrivateKey.random();
+const zkPairMintPrivateKey: PrivateKey = PrivateKey.random();
 
-const { pairSmartContractMint: pairSmartContractMint } = await deployPairMint(
-  zkPairMintPrivateKey,
-  deployerAccount
+const pairSmartContractMint = new PairMintContract(
+  zkAppPrivateKey.toPublicKey()
 );
+
+await deployPairMint(
+  deployerAccount,
+  zkPairMintPrivateKey,
+  pairSmartContractMint
+);
+
 console.log("deployed pair minting contract");
 
 await init2TokensSmartContract(
@@ -87,7 +94,7 @@ await init2TokensSmartContract(
 
 console.log("initialised tokens in a pairMint");
 
-await initOwner(zkPairMintPrivateKey, zkPairAppAddress, pairSmartContractMint);
+await setOwner(zkPairMintPrivateKey, zkPairAppAddress, pairSmartContractMint);
 
 console.log(pairSmartContractMint.owner.get().toBase58());
 
