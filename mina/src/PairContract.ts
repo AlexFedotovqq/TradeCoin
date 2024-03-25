@@ -154,7 +154,7 @@ export class PairContract extends SmartContract {
     const isAdmin = localAdminSignature.verify(admin, balance.toFields());
     isAdmin.assertTrue("not admin");
     this.checkMerkleMap(keyWitness, balance);
-    const tokenYPub = this.tokenX.getAndRequireEquals();
+    const tokenYPub = this.tokenY.getAndRequireEquals();
     const tokenTx = new TokenTx({
       sender: sender,
       tokenPub: tokenYPub,

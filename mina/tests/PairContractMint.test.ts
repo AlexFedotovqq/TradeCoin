@@ -37,7 +37,6 @@ describe("Pair Mint Contract", () => {
   const zkAppInstance = new PairMintContract(zkAppPrivateKey.toPublicKey());
 
   it("deploying token", async () => {
-    console.log("deployerAccount: " + deployerAddress.toBase58());
     await deployPairMint(
       deployerAccount,
       zkAppPrivateKey,

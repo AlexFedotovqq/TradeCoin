@@ -10,7 +10,6 @@ import {
 } from "../src/pair/pair.js";
 import { deployPairMint, setOwner, setAdmin } from "../src/pair/pairMint.js";
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
-import { log2TokensAddressBalance } from "../src/helpers/logs.js";
 import {
   deploy2Tokens,
   init2TokensSmartContract,
@@ -69,8 +68,6 @@ describe("Pair Contract", () => {
   it("created and minted 2 tokens", async () => {
     await mintToken(deployerAccount, deployerAddress, tokenX);
     await mintToken(deployerAccount, deployerAddress, tokenY);
-
-    //log2TokensAddressBalance(deployerAddress, tokenX, tokenY);
   });
 
   it("deployed pair", async () => {

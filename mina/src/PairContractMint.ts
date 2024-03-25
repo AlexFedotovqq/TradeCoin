@@ -13,7 +13,6 @@ import {
   Struct,
   Signature,
   Poseidon,
-  Provable,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
@@ -77,7 +76,6 @@ export class PairMintContract extends SmartContract {
     const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
     isAdmin.assertTrue("not admin signature");
     const liquidity = this.totalSupply.getAndRequireEquals();
-    Provable.log(liquidity);
     this.token.mint({
       address: tokenTxDetails.sender,
       amount: tokenTxDetails.dToken,
