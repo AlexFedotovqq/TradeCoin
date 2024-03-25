@@ -9,6 +9,7 @@ import {
   mintToken,
 } from "../src/token/token.js";
 import { BasicTokenContract } from "../src/BasicTokenContract.js";
+import { Dex } from "../src/DexContract.js";
 
 describe("Dex Contract", () => {
   const testAccounts = startLocalBlockchainClient();
@@ -33,37 +34,33 @@ describe("Dex Contract", () => {
 
   const zkDexAppPrivateKey = PrivateKey.random();
   const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
+  const dexApp = new Dex(zkDexAppAddress);
 
   it("deployed 2 tokens", async () => {
     await deploy2Tokens(deployerAccount, tokenXPrivateKey, tokenYPrivateKey);
   });
+
+  it("created and minted 2 tokens", async () => {
+    await mintToken(deployerAccount, deployerAddress, tokenX);
+    await mintToken(deployerAccount, deployerAddress, tokenY);
+  });
+
+  it("deployed dex", async () => {
+    await deployDex(zkDexAppPrivateKey, deployerAccount, dexApp);
+  });
+
+  it("inited 2 tokens into Dex", async () => {
+    await init2TokensSmartContract(
+      deployerAccount,
+      tokenX,
+      tokenY,
+      zkDexAppAddress
+    );
+  });
 });
 
-/* await mintToken(deployerAccount, deployerAddress, tokenX);
-
-await mintToken(deployerAccount, deployerAddress, tokenY);
-
-console.log("created and minted 2 tokens");
-
-log2TokensAddressBalance(deployerAddress, tokenX, tokenY);
-
-await init2TokensSmartContract(
-  deployerAccount,
-  tokenX,
-  tokenY,
-  zkDexAppAddress
-);
-
-console.log("inited 2 tokens into smart contracts");
-
-const { dexApp: dexApp } = await deployDex(zkDexAppPrivateKey, deployerAccount);
-
-console.log(dexApp.admin.get().toBase58());
-
-console.log("deployed dex");
-
+/*
 console.log("creating new user");
-
 const firstId = 0n;
 
 const balanceOne: PoolId = {

@@ -21,10 +21,15 @@ describe("Basic Token Contract", () => {
 
   const zkAppPrivateKey: PrivateKey = PrivateKey.random();
 
-  const zkAppInstance = new BasicTokenContract(zkAppPrivateKey.toPublicKey());
+  const zkAppInstance: BasicTokenContract = new BasicTokenContract(
+    zkAppPrivateKey.toPublicKey()
+  );
 
   it("deploying token", async () => {
     await deployToken(deployerAccount, zkAppPrivateKey, proofsEnabled);
+    expect(zkAppInstance.admin.get().toBase58()).toBe(
+      deployerAddress.toBase58()
+    );
   });
 
   it("minting token", async () => {

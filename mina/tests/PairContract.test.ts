@@ -63,11 +63,8 @@ describe("Pair Contract", () => {
 
   let firstUserBalance: PersonalPairBalance;
 
-  it("deployed 2 tokens", async () => {
+  it("deployed and minted tokens", async () => {
     await deploy2Tokens(deployerAccount, tokenXPrivateKey, tokenYPrivateKey);
-  });
-
-  it("created and minted 2 tokens", async () => {
     await mintToken(deployerAccount, deployerAddress, tokenX);
     await mintToken(deployerAccount, deployerAddress, tokenY);
   });
@@ -76,7 +73,7 @@ describe("Pair Contract", () => {
     await deployPair(deployerAccount, pairPK, pairSC);
   });
 
-  it("inited 2 tokens into pair smart contract", async () => {
+  it("inited 2 tokens into a pair smart contract", async () => {
     await init2TokensSmartContract(
       deployerAccount,
       tokenX,
@@ -95,11 +92,8 @@ describe("Pair Contract", () => {
     );
   });
 
-  it("deploying pair minting contract", async () => {
+  it("deploying pair minting contract and initing tokens", async () => {
     await deployPairMint(deployerAccount, pairMintPK, pairMintSC);
-  });
-
-  it("deploying pair minting contract", async () => {
     await init2TokensSmartContract(
       deployerAccount,
       tokenX,
@@ -126,14 +120,17 @@ describe("Pair Contract", () => {
       0,
       pairSC
     );
+    expect(pairSC.root.get().toString()).toBe(map.getRoot().toString());
   });
 
   it("creating another user - user 2", async () => {
     await createUser(adminAccount, secondUserAccount, map, 1, pairSC);
+    expect(pairSC.root.get().toString()).toBe(map.getRoot().toString());
   });
 
   it("creating another user - user 3", async () => {
     await createUser(adminAccount, thirdUserAccount, map, 2, pairSC);
+    expect(pairSC.root.get().toString()).toBe(map.getRoot().toString());
   });
 
   it("supplying Y", async () => {

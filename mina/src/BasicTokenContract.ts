@@ -20,9 +20,7 @@ export class BasicTokenContract extends SmartContract {
 
   deploy(args?: DeployArgs) {
     super.deploy(args);
-
     const permissionToEdit = Permissions.proof();
-
     this.account.permissions.set({
       ...Permissions.default(),
       editState: permissionToEdit,
@@ -31,9 +29,6 @@ export class BasicTokenContract extends SmartContract {
       send: permissionToEdit,
       receive: permissionToEdit,
     });
-
-    const sender = this.checkUserSignature();
-    this.admin.set(sender);
   }
 
   init() {
@@ -41,19 +36,18 @@ export class BasicTokenContract extends SmartContract {
     this.totalSupply.set(UInt64.zero);
     this.account.tokenSymbol.set(tokenSymbol);
     this.account.zkappUri.set(URI);
+    const sender = this.checkUserSignature();
+    this.admin.set(sender);
   }
 
   @method mint(receiverAddress: PublicKey, amount: UInt64) {
     this.checkAdminSignature();
     const totalSupply = this.totalSupply.getAndRequireEquals();
-
     const newTotalSupply = totalSupply.add(amount);
-
     this.token.mint({
       address: receiverAddress,
       amount: amount,
     });
-
     this.totalSupply.set(newTotalSupply);
   }
 
@@ -72,21 +66,17 @@ export class BasicTokenContract extends SmartContract {
       return this.transferToUpdate(from, to, amount);
   }
 
-  @method balanceOf(owner: PublicKey): UInt64 {
-    let account = Account(owner, this.token.id);
-    let balance = account.balance.getAndRequireEquals();
-    return balance;
-  }
-
-  checkUserSignature() {
+  private checkUserSignature() {
     const user = this.sender;
     const senderUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
     return user;
   }
 
-  checkAdminSignature() {
+  private checkAdminSignature() {
+    const user = this.sender;
     const admin = this.admin.getAndRequireEquals();
+    user.assertEquals(admin);
     const senderUpdate = AccountUpdate.create(admin);
     senderUpdate.requireSignature();
   }

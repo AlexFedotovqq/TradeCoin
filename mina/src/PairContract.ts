@@ -47,7 +47,7 @@ export class PairContract extends SmartContract {
   @state(PublicKey) tokenX = State<PublicKey>();
   @state(PublicKey) tokenY = State<PublicKey>();
 
-  @state(Field) treeRoot = State<Field>();
+  @state(Field) root = State<Field>();
   @state(Field) userId = State<Field>();
 
   deploy(args?: DeployArgs) {
@@ -71,7 +71,7 @@ export class PairContract extends SmartContract {
     this.checkThisSignature();
     super.init();
     const map = new MerkleMap().getRoot();
-    this.treeRoot.set(map);
+    this.root.set(map);
     this.tokenX.getAndRequireEquals();
     this.tokenY.getAndRequireEquals();
     this.admin.getAndRequireEquals();
@@ -98,7 +98,7 @@ export class PairContract extends SmartContract {
     const isAdmin = adminSignature.verify(admin, Balance.toFields());
     isAdmin.assertTrue("not admin");
 
-    const initialRoot = this.treeRoot.getAndRequireEquals();
+    const initialRoot = this.root.getAndRequireEquals();
     const [rootBefore, key] = keyWitness.computeRootAndKey(Field(0));
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(currentId);
@@ -106,7 +106,7 @@ export class PairContract extends SmartContract {
     key.assertEquals(keyAfter);
 
     this.userId.set(currentId.add(1));
-    this.treeRoot.set(rootAfter);
+    this.root.set(rootAfter);
   }
 
   @method supplyTokenX(
@@ -134,7 +134,7 @@ export class PairContract extends SmartContract {
     res.assertTrue();
     balance.increaseX(dx);
     const [rootAfter] = keyWitness.computeRootAndKey(balance.hash());
-    this.treeRoot.set(rootAfter);
+    this.root.set(rootAfter);
   }
 
   @method supplyTokenY(
@@ -162,7 +162,7 @@ export class PairContract extends SmartContract {
     res.assertTrue();
     balance.increaseY(dy);
     const [rootAfter] = keyWitness.computeRootAndKey(balance.hash());
-    this.treeRoot.set(rootAfter);
+    this.root.set(rootAfter);
   }
 
   @method mintLiquidityToken(
@@ -189,14 +189,14 @@ export class PairContract extends SmartContract {
     res.assertTrue();
     balance.supply(dl);
     const [rootAfter] = keyWitness.computeRootAndKey(balance.hash());
-    this.treeRoot.set(rootAfter);
+    this.root.set(rootAfter);
   }
 
   private checkMerkleMap(
     keyWitness: MerkleMapWitness,
     balanceBefore: PersonalPairBalance
   ) {
-    const initialRoot = this.treeRoot.getAndRequireEquals();
+    const initialRoot = this.root.getAndRequireEquals();
     const [rootBefore, key] = keyWitness.computeRootAndKey(
       balanceBefore.hash()
     );
