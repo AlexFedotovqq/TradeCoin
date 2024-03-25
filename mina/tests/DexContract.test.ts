@@ -1,14 +1,13 @@
-import { Mina, PrivateKey, Field, Poseidon, MerkleTree } from "o1js";
+import { PublicKey, PrivateKey, Field, MerkleTree } from "o1js";
 
-import { PoolId, MyMerkleWitness } from "../src/DexContract.js";
-import { deployDex } from "../src/dex/dex.js";
+import { deployPair } from "../src/pair/pair.js";
+import { deployPairMint } from "../src/pair/pairMint.js";
+import { createPool, deployDex, createPoolIdStruct } from "../src/dex/dex.js";
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
-import {
-  deploy2Tokens,
-  init2TokensSmartContract,
-  mintToken,
-} from "../src/token/token.js";
+import { deploy2Tokens, mintToken } from "../src/token/token.js";
 import { BasicTokenContract } from "../src/BasicTokenContract.js";
+import { PairMintContract } from "../src/PairContractMint.js";
+import { PairContract } from "../src/PairContract.js";
 import { Dex } from "../src/DexContract.js";
 
 describe("Dex Contract", () => {
@@ -21,6 +20,12 @@ describe("Dex Contract", () => {
 
   const dexAdminAccount = testAccounts[1].privateKey;
   const dexAdminAddress = testAccounts[1].publicKey;
+
+  const pairAdminAccount = testAccounts[2].privateKey;
+  const pairAdminAddress = testAccounts[2].publicKey;
+
+  const pairMintAdminAccount = testAccounts[3].privateKey;
+  const pairMintAdminAddress = testAccounts[3].publicKey;
 
   const tokenXPrivateKey: PrivateKey = PrivateKey.random();
   const tokenYPrivateKey: PrivateKey = PrivateKey.random();
@@ -36,13 +41,28 @@ describe("Dex Contract", () => {
   const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
   const dexApp = new Dex(zkDexAppAddress);
 
-  it("deployed 2 tokens", async () => {
-    await deploy2Tokens(deployerAccount, tokenXPrivateKey, tokenYPrivateKey);
-  });
+  const pairPK: PrivateKey = PrivateKey.random();
+  const pairPub: PublicKey = pairPK.toPublicKey();
+  const pairSC: PairContract = new PairContract(pairPub);
 
-  it("created and minted 2 tokens", async () => {
+  const pairMintPK: PrivateKey = PrivateKey.random();
+  const pairMintPub: PublicKey = pairMintPK.toPublicKey();
+  const pairMintSC: PairMintContract = new PairMintContract(pairMintPub);
+
+  it("deployed and minted 2 tokens", async () => {
+    await deploy2Tokens(deployerAccount, tokenXPrivateKey, tokenYPrivateKey);
     await mintToken(deployerAccount, deployerAddress, tokenX);
     await mintToken(deployerAccount, deployerAddress, tokenY);
+  });
+
+  it("deployed pair contract", async () => {
+    await deployPair(pairAdminAccount, pairPK, pairSC);
+    expect(pairSC.admin.get().toBase58()).toBe(pairAdminAddress.toBase58());
+  });
+
+  it("deployed pair mint contract", async () => {
+    await deployPairMint(pairMintAdminAccount, pairMintPK, pairMintSC);
+    expect(pairSC.admin.get().toBase58()).toBe(pairAdminAddress.toBase58());
   });
 
   it("deployed dex", async () => {
@@ -50,78 +70,19 @@ describe("Dex Contract", () => {
     expect(dexApp.admin.get().toBase58()).toBe(dexAdminAddress.toBase58());
   });
 
-  it("inited 2 tokens into Dex", async () => {
-    await init2TokensSmartContract(
+  it("creating new pool", async () => {
+    const firstId = Field(0n);
+    const poolIdStruct = createPoolIdStruct(pairPub, pairMintPub, firstId);
+    await createPool(
+      dexAdminAccount,
       deployerAccount,
-      tokenX,
-      tokenY,
-      zkDexAppAddress
+      dexApp,
+      map,
+      poolIdStruct
     );
+    expect(dexApp.root.get().toString()).toBe(map.getRoot().toString());
   });
 });
-
-/*
-console.log("creating new user");
-const firstId = 0n;
-
-const balanceOne: PoolId = {
-  PairAddress: deployerAddress,
-  mintingContractAddress: deployerAddress,
-  id: Field(firstId),
-};
-
-const w = map.getWitness(firstId);
-const witness = new MyMerkleWitness(w);
-
-const create_user_txn = await Mina.transaction(deployerAddress, () => {
-  dexApp.createPool(witness, balanceOne);
-});
-
-await create_user_txn.prove();
-await create_user_txn.sign([deployerAccount]).send();
-
-map.setLeaf(firstId, Poseidon.hash(PoolId.toFields(balanceOne)));
-
-console.log("creating second user");
-
-const secondId = 1n;
-
-const balanceTwo: PoolId = {
-  PairAddress: deployerAddress,
-  mintingContractAddress: deployerAddress,
-  id: Field(secondId),
-};
-
-console.log("local map root", map.getRoot().toString());
-
-const w2 = map.getWitness(secondId);
-const witnessTwo = new MyMerkleWitness(w2);
-
-const create_user_txnTwo = await Mina.transaction(secondAddress, () => {
-  dexApp.createPool(witnessTwo, balanceTwo);
-});
-
-await create_user_txnTwo.prove();
-await create_user_txnTwo.sign([secondAccount]).send();
-
-map.setLeaf(secondId, Poseidon.hash(PoolId.toFields(balanceTwo)));
-
-console.log("deleting first user");
-console.log("local map root", map.getRoot().toString());
-
-const w3 = map.getWitness(firstId);
-const witnessOne_Two = new MyMerkleWitness(w3);
-
-const delete_user_txn = await Mina.transaction(deployerAddress, () => {
-  dexApp.deletePool(witnessOne_Two, balanceOne);
-});
-
-await delete_user_txn.prove();
-await delete_user_txn.sign([deployerAccount]).send();
-
-map.setLeaf(0n, Field(0));
-
-console.log("local map root", map.getRoot().toString()); */
 
 /* console.log("supplying liquidity X -- base");
 

@@ -18,7 +18,7 @@ import {
 
 export class PoolId extends Struct({
   PairAddress: PublicKey,
-  mintingContractAddress: PublicKey,
+  PairMintingAddress: PublicKey,
   id: Field,
 }) {
   toFields(): Field[] {

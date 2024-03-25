@@ -8,7 +8,6 @@ import {
   UInt64,
   PublicKey,
   AccountUpdate,
-  Account,
 } from "o1js";
 
 const tokenSymbol = "ABC";
