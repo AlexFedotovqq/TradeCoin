@@ -34,27 +34,15 @@ export async function deployPairMint(
 }
 
 export async function setOwner(
-  zkAppPK: PrivateKey,
+  adminPK: PrivateKey,
   ownerPub: PublicKey,
   pairSmartContractMint: PairMintContract
 ) {
-  const userAddress: PublicKey = zkAppPK.toPublicKey();
-  const txn = await Mina.transaction(userAddress, () => {
-    pairSmartContractMint.initOwner(ownerPub);
+  const adminAddress: PublicKey = adminPK.toPublicKey();
+  const txn = await Mina.transaction(adminAddress, () => {
+    pairSmartContractMint.setOwner(ownerPub);
   });
-  await sendWaitTx(txn, [zkAppPK]);
-}
-
-export async function setAdmin(
-  zkOwnerPK: PrivateKey,
-  admin: PublicKey,
-  pairSmartContractMint: PairMintContract
-) {
-  const userAddress: PublicKey = zkOwnerPK.toPublicKey();
-  const txn = await Mina.transaction(userAddress, () => {
-    pairSmartContractMint.setAdmin(admin);
-  });
-  await sendWaitTx(txn, [zkOwnerPK]);
+  await sendWaitTx(txn, [adminPK]);
 }
 
 export async function mintLP(

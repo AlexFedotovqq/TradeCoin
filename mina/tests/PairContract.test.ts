@@ -8,7 +8,7 @@ import {
   supplyY,
   mintLiquidityToken,
 } from "../src/pair/pair.js";
-import { deployPairMint, setOwner, setAdmin } from "../src/pair/pairMint.js";
+import { deployPairMint, setOwner } from "../src/pair/pairMint.js";
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import {
   deploy2Tokens,
@@ -93,23 +93,19 @@ describe("Pair Contract", () => {
   });
 
   it("deploying pair minting contract and initing tokens", async () => {
-    await deployPairMint(deployerAccount, pairMintPK, pairMintSC);
+    await deployPairMint(adminMintAccount, pairMintPK, pairMintSC);
     await init2TokensSmartContract(
       deployerAccount,
       tokenX,
       tokenY,
       pairMintSC.address
     );
+    expect(pairMintSC.admin.get().toBase58()).toBe(adminMintAddress.toBase58());
   });
 
   it("setting pair contract as an owner for pair mint contract", async () => {
-    await setOwner(pairMintPK, pairPub, pairMintSC);
+    await setOwner(adminMintAccount, pairPub, pairMintSC);
     expect(pairMintSC.owner.get().toBase58()).toBe(pairPub.toBase58());
-  });
-
-  it("setting an admin for pair mint contract", async () => {
-    await setAdmin(pairPK, adminMintAddress, pairMintSC);
-    expect(pairMintSC.admin.get().toBase58()).toBe(adminMintAddress.toBase58());
   });
 
   it("creating a user", async () => {

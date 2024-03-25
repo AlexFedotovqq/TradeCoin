@@ -49,20 +49,19 @@ export class PairMintContract extends SmartContract {
     });
   }
 
-  @method initOwner(owner: PublicKey): Bool {
-    this.checkNotInitialized();
-    this.checkThisSignature();
+  init() {
     super.init();
-    this.owner.getAndRequireEquals();
-    this.owner.set(owner);
-    return Bool(true);
+    this.totalSupply.set(UInt64.zero);
+    this.reservesX.set(UInt64.zero);
+    this.reservesY.set(UInt64.zero);
+    const sender = this.checkUserSignature();
+    this.admin.set(sender);
   }
 
-  @method setAdmin(admin: PublicKey): Bool {
-    this.checkInitialized();
-    this.checkOwnerSignature();
-    this.admin.getAndRequireEquals();
-    this.admin.set(admin);
+  @method setOwner(owner: PublicKey): Bool {
+    this.checkAdminSignature();
+    this.owner.getAndRequireEquals();
+    this.owner.set(owner);
     return Bool(true);
   }
 
@@ -70,7 +69,6 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenTx
   ): Bool {
-    this.checkInitialized();
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
     const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
@@ -88,7 +86,6 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenTx
   ): Bool {
-    this.checkInitialized();
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
     const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
@@ -104,7 +101,6 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenTx
   ): Bool {
-    this.checkInitialized();
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
     const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
@@ -123,29 +119,11 @@ export class PairMintContract extends SmartContract {
     return user;
   }
 
-  private checkOwnerSignature() {
-    const owner = this.owner.getAndRequireEquals();
+  private checkAdminSignature() {
+    const admin = this.admin.getAndRequireEquals();
     const sender = this.sender;
-    sender.assertEquals(owner);
-    const senderUpdate = AccountUpdate.create(owner);
+    sender.assertEquals(admin);
+    const senderUpdate = AccountUpdate.create(admin);
     senderUpdate.requireSignature();
-  }
-
-  private checkThisSignature() {
-    const address = this.address;
-    const sender = this.sender;
-    sender.assertEquals(address);
-    const senderUpdate = AccountUpdate.create(address);
-    senderUpdate.requireSignature();
-  }
-
-  private checkInitialized() {
-    this.account.provedState.requireEquals(this.account.provedState.get());
-    this.account.provedState.get().assertTrue();
-  }
-
-  private checkNotInitialized() {
-    this.account.provedState.requireEquals(this.account.provedState.get());
-    this.account.provedState.get().assertFalse();
   }
 }
