@@ -9,27 +9,38 @@ import {
   init2TokensSmartContract,
   mintToken,
 } from "../src/token/token.js";
+import { BasicTokenContract } from "../src/BasicTokenContract.js";
 
-const testAccounts = startLocalBlockchainClient();
+describe("Dex Contract", () => {
+  const testAccounts = startLocalBlockchainClient();
 
-const map = new MerkleTree(6);
+  const map = new MerkleTree(6);
 
-const deployerAccount = testAccounts[0].privateKey;
-const deployerAddress = testAccounts[0].publicKey;
+  const deployerAccount = testAccounts[0].privateKey;
+  const deployerAddress = testAccounts[0].publicKey;
 
-const secondAccount = testAccounts[1].privateKey;
-const secondAddress = testAccounts[1].publicKey;
+  const secondAccount = testAccounts[1].privateKey;
+  const secondAddress = testAccounts[1].publicKey;
 
-const zkDexAppPrivateKey = PrivateKey.random();
-const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
+  const tokenXPrivateKey: PrivateKey = PrivateKey.random();
+  const tokenYPrivateKey: PrivateKey = PrivateKey.random();
 
-console.log(deployerAddress.toBase58());
+  const tokenX: BasicTokenContract = new BasicTokenContract(
+    tokenXPrivateKey.toPublicKey()
+  );
+  const tokenY: BasicTokenContract = new BasicTokenContract(
+    tokenYPrivateKey.toPublicKey()
+  );
 
-const { tokenX: tokenX, tokenY: tokenY } = await deploy2Tokens(deployerAccount);
+  const zkDexAppPrivateKey = PrivateKey.random();
+  const zkDexAppAddress = zkDexAppPrivateKey.toPublicKey();
 
-console.log("deployed 2 Tokens");
+  it("deployed 2 tokens", async () => {
+    await deploy2Tokens(deployerAccount, tokenXPrivateKey, tokenYPrivateKey);
+  });
+});
 
-await mintToken(deployerAccount, deployerAddress, tokenX);
+/* await mintToken(deployerAccount, deployerAddress, tokenX);
 
 await mintToken(deployerAccount, deployerAddress, tokenY);
 
@@ -113,7 +124,7 @@ await delete_user_txn.sign([deployerAccount]).send();
 
 map.setLeaf(0n, Field(0));
 
-console.log("local map root", map.getRoot().toString());
+console.log("local map root", map.getRoot().toString()); */
 
 /* console.log("supplying liquidity X -- base");
 

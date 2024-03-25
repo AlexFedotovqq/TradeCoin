@@ -9,9 +9,27 @@ import {
   PublicKey,
   AccountUpdate,
   Bool,
+  Field,
+  Struct,
+  Signature,
+  Poseidon,
+  Provable,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
+
+export class TokenTx extends Struct({
+  sender: PublicKey,
+  tokenPub: PublicKey,
+  dToken: UInt64,
+}) {
+  toFields(): Field[] {
+    return TokenTx.toFields(this);
+  }
+  hash(): Field {
+    return Poseidon.hash(TokenTx.toFields(this));
+  }
+}
 
 export class PairMintContract extends SmartContract {
   @state(PublicKey) owner = State<PublicKey>();
@@ -49,34 +67,54 @@ export class PairMintContract extends SmartContract {
     return Bool(true);
   }
 
-  @method mintLiquidityToken(dl: UInt64, recipient: PublicKey): Bool {
+  @method mintLiquidityToken(
+    adminSignature: Signature,
+    tokenTxDetails: TokenTx
+  ): Bool {
     this.checkInitialized();
-    this.checkAdminSignature();
+    this.checkUserSignature();
+    const admin = this.admin.getAndRequireEquals();
+    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    isAdmin.assertTrue("not admin signature");
     const liquidity = this.totalSupply.getAndRequireEquals();
-    this.token.mint({ address: recipient, amount: dl });
-    this.totalSupply.set(liquidity.add(dl));
+    Provable.log(liquidity);
+    this.token.mint({
+      address: tokenTxDetails.sender,
+      amount: tokenTxDetails.dToken,
+    });
+    this.totalSupply.set(liquidity.add(tokenTxDetails.dToken));
     return Bool(true);
   }
 
-  @method supplyTokenX(tokenXPub: PublicKey, dx: UInt64): Bool {
+  @method supplyTokenX(
+    adminSignature: Signature,
+    tokenTxDetails: TokenTx
+  ): Bool {
     this.checkInitialized();
-    this.checkAdminSignature();
-    const sender = this.checkUserSignature();
-    const tokenX = new BasicTokenContract(tokenXPub);
-    tokenX.transfer(sender, this.address, dx);
+    this.checkUserSignature();
+    const admin = this.admin.getAndRequireEquals();
+    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    isAdmin.assertTrue("not admin signature");
+    const tokenX = new BasicTokenContract(tokenTxDetails.tokenPub);
+    tokenX.transfer(tokenTxDetails.sender, this.address, tokenTxDetails.dToken);
     const reservesX = this.reservesX.getAndRequireEquals();
-    this.reservesX.set(reservesX.add(dx));
+    this.reservesX.set(reservesX.add(tokenTxDetails.dToken));
     return Bool(true);
   }
 
-  @method supplyTokenY(tokenYPub: PublicKey, dy: UInt64): Bool {
+  @method supplyTokenY(
+    adminSignature: Signature,
+    tokenTxDetails: TokenTx
+  ): Bool {
     this.checkInitialized();
-    this.checkAdminSignature();
-    const sender = this.checkUserSignature();
-    const tokenY = new BasicTokenContract(tokenYPub);
-    tokenY.transfer(sender, this.address, dy);
+    this.checkUserSignature();
+    const admin = this.admin.getAndRequireEquals();
+    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    isAdmin.assertTrue("not admin signature");
+    const tokenY = new BasicTokenContract(tokenTxDetails.tokenPub);
+    tokenY.transfer(tokenTxDetails.sender, this.address, tokenTxDetails.dToken);
     const reservesY = this.reservesY.getAndRequireEquals();
-    this.reservesY.set(reservesY.add(dy));
+    this.reservesY.set(reservesY.add(tokenTxDetails.dToken));
     return Bool(true);
   }
 
@@ -92,14 +130,6 @@ export class PairMintContract extends SmartContract {
     const sender = this.sender;
     sender.assertEquals(owner);
     const senderUpdate = AccountUpdate.create(owner);
-    senderUpdate.requireSignature();
-  }
-
-  private checkAdminSignature() {
-    const admin = this.admin.getAndRequireEquals();
-    const sender = this.sender;
-    sender.assertEquals(admin);
-    const senderUpdate = AccountUpdate.create(admin);
     senderUpdate.requireSignature();
   }
 

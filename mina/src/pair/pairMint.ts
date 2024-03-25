@@ -1,6 +1,13 @@
-import { PublicKey, Mina, AccountUpdate, PrivateKey, UInt64 } from "o1js";
+import {
+  PublicKey,
+  Mina,
+  AccountUpdate,
+  PrivateKey,
+  UInt64,
+  Signature,
+} from "o1js";
 
-import { PairMintContract } from "../PairContractMint.js";
+import { PairMintContract, TokenTx } from "../PairContractMint.js";
 import { sendWaitTx } from "../helpers/transactions.js";
 
 async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
@@ -29,12 +36,12 @@ export async function deployPairMint(
 
 export async function setOwner(
   zkAppPK: PrivateKey,
-  owner: PublicKey,
+  ownerPub: PublicKey,
   pairSmartContractMint: PairMintContract
 ) {
   const userAddress: PublicKey = zkAppPK.toPublicKey();
   const txn = await Mina.transaction(userAddress, () => {
-    pairSmartContractMint.initOwner(owner);
+    pairSmartContractMint.initOwner(ownerPub);
   });
   await sendWaitTx(txn, [zkAppPK]);
 }
@@ -51,15 +58,25 @@ export async function setAdmin(
   await sendWaitTx(txn, [zkOwnerPK]);
 }
 
-export async function mint(
+export async function mintLP(
+  pk: PrivateKey,
   adminPK: PrivateKey,
-  recipientAddress: PublicKey,
+  dl: UInt64,
   pairSmartContractMint: PairMintContract
 ) {
-  const adminAddress: PublicKey = adminPK.toPublicKey();
-  const txn = await Mina.transaction(adminAddress, () => {
-    AccountUpdate.fundNewAccount(adminAddress);
-    pairSmartContractMint.mintLiquidityToken(UInt64.one, recipientAddress);
+  const userAddress: PublicKey = pk.toPublicKey();
+  const balance = new TokenTx({
+    sender: userAddress,
+    tokenPub: pairSmartContractMint.address,
+    dToken: dl,
   });
-  await sendWaitTx(txn, [adminPK]);
+  const adminSignature: Signature = Signature.create(
+    adminPK,
+    balance.toFields()
+  );
+  const txn = await Mina.transaction(userAddress, () => {
+    AccountUpdate.fundNewAccount(userAddress);
+    pairSmartContractMint.mintLiquidityToken(adminSignature, balance);
+  });
+  await sendWaitTx(txn, [pk]);
 }

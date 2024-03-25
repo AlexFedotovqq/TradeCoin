@@ -62,17 +62,15 @@ export async function deployCustomToken(
 }
 
 export async function deploy2Tokens(
-  pk: PrivateKey,
+  senderPK: PrivateKey,
+  TokenXPrivateKey: PrivateKey,
+  TokenYPrivateKey: PrivateKey,
   compile: boolean = false,
   live: boolean = false
 ) {
-  const pubKey: PublicKey = pk.toPublicKey();
-
-  const TokenAddressXPrivateKey = PrivateKey.random();
-  const TokenAddressX = TokenAddressXPrivateKey.toPublicKey();
-
-  const TokenAddressYPrivateKey = PrivateKey.random();
-  const TokenAddressY = TokenAddressYPrivateKey.toPublicKey();
+  const pubKey: PublicKey = senderPK.toPublicKey();
+  const TokenAddressX = TokenXPrivateKey.toPublicKey();
+  const TokenAddressY = TokenYPrivateKey.toPublicKey();
 
   const verificationKey = await compileContractIfProofsEnabled(compile);
 
@@ -83,17 +81,11 @@ export async function deploy2Tokens(
 
   const deploy_txn = await Mina.transaction(txOptions, () => {
     AccountUpdate.fundNewAccount(txOptions.sender, 2);
-    tokenX.deploy({ verificationKey, zkappKey: TokenAddressXPrivateKey });
-    tokenY.deploy({ verificationKey, zkappKey: TokenAddressYPrivateKey });
+    tokenX.deploy({ verificationKey, zkappKey: TokenXPrivateKey });
+    tokenY.deploy({ verificationKey, zkappKey: TokenYPrivateKey });
   });
 
-  await sendWaitTx(deploy_txn, [pk], live);
-  return {
-    tokenX: tokenX,
-    tokenY: tokenY,
-    tokenXPK: TokenAddressXPrivateKey,
-    tokenYPK: TokenAddressYPrivateKey,
-  };
+  await sendWaitTx(deploy_txn, [senderPK], live);
 }
 
 export async function mintToken(
@@ -141,6 +133,5 @@ export async function init2TokensSmartContract(
     tokenX.transfer(pub, zkDexAppAddress, UInt64.zero);
     tokenY.transfer(pub, zkDexAppAddress, UInt64.zero);
   });
-
   await sendWaitTx(send_txn, [pk]);
 }

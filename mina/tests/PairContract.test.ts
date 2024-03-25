@@ -1,4 +1,4 @@
-import { PrivateKey, UInt64, MerkleMap } from "o1js";
+import { PrivateKey, UInt64, MerkleMap, PublicKey } from "o1js";
 
 import {
   deployPair,
@@ -8,7 +8,7 @@ import {
   supplyY,
   mintLiquidityToken,
 } from "../src/pair/pair.js";
-import { deployPairMint, setOwner } from "../src/pair/pairMint.js";
+import { deployPairMint, setOwner, setAdmin } from "../src/pair/pairMint.js";
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import { log2TokensAddressBalance } from "../src/helpers/logs.js";
 import {
@@ -16,168 +16,184 @@ import {
   init2TokensSmartContract,
   mintToken,
 } from "../src/token/token.js";
+import { BasicTokenContract } from "../src/BasicTokenContract.js";
 import { PairMintContract } from "../src/PairContractMint.js";
+import { PairContract, PersonalPairBalance } from "../src/PairContract.js";
 
-const testAccounts = startLocalBlockchainClient();
+describe("Pair Contract", () => {
+  const testAccounts = startLocalBlockchainClient();
 
-const map = new MerkleMap();
+  const map = new MerkleMap();
 
-const deployerAccount = testAccounts[0].privateKey;
-const deployerAddress = testAccounts[0].publicKey;
+  const deployerAccount = testAccounts[0].privateKey;
+  const deployerAddress = testAccounts[0].publicKey;
 
-const secondAccount = testAccounts[1].privateKey;
-const secondAddress = testAccounts[1].publicKey;
+  const firstUserAccount = testAccounts[1].privateKey;
+  const firstUserAddress = testAccounts[1].publicKey;
 
-const thirdAccount = testAccounts[2].privateKey;
-const thirdAddress = testAccounts[2].publicKey;
+  const secondUserAccount = testAccounts[2].privateKey;
+  const secondUserAddress = testAccounts[2].publicKey;
 
-const { tokenX: tokenX, tokenY: tokenY } = await deploy2Tokens(deployerAccount);
+  const thirdUserAccount = testAccounts[3].privateKey;
+  const thirdUserAddress = testAccounts[3].publicKey;
 
-console.log("deployed 2 Tokens");
+  const adminAccount = testAccounts[4].privateKey;
+  const adminAddress = testAccounts[4].publicKey;
 
-await mintToken(deployerAccount, deployerAddress, tokenX);
+  const adminMintAccount = testAccounts[5].privateKey;
+  const adminMintAddress = testAccounts[5].publicKey;
 
-await mintToken(deployerAccount, deployerAddress, tokenY);
+  const tokenXPrivateKey: PrivateKey = PrivateKey.random();
+  const tokenYPrivateKey: PrivateKey = PrivateKey.random();
 
-console.log("created and minted 2 tokens");
+  const tokenX: BasicTokenContract = new BasicTokenContract(
+    tokenXPrivateKey.toPublicKey()
+  );
+  const tokenY: BasicTokenContract = new BasicTokenContract(
+    tokenYPrivateKey.toPublicKey()
+  );
 
-log2TokensAddressBalance(deployerAddress, tokenX, tokenY);
+  const pairPK: PrivateKey = PrivateKey.random();
+  const pairPub: PublicKey = pairPK.toPublicKey();
+  const pairSC: PairContract = new PairContract(pairPub);
 
-const {
-  pairSmartContract: pairSmartContract,
-  zkAppPrivateKey: zkAppPrivateKey,
-  zkAppPub: zkPairAppAddress,
-} = await deployPair(deployerAccount);
+  const pairMintPK: PrivateKey = PrivateKey.random();
+  const pairMintSC = new PairMintContract(pairMintPK.toPublicKey());
 
-console.log("deployed pair");
+  let firstUserBalance: PersonalPairBalance;
 
-await init2TokensSmartContract(
-  deployerAccount,
-  tokenX,
-  tokenY,
-  zkPairAppAddress
-);
+  it("deployed 2 tokens", async () => {
+    await deploy2Tokens(deployerAccount, tokenXPrivateKey, tokenYPrivateKey);
+  });
 
-console.log("inited 2 tokens into smart contracts");
+  it("created and minted 2 tokens", async () => {
+    await mintToken(deployerAccount, deployerAddress, tokenX);
+    await mintToken(deployerAccount, deployerAddress, tokenY);
 
-await initPairTokens(
-  zkAppPrivateKey,
-  deployerAccount,
-  tokenX.address,
-  tokenY.address
-);
+    //log2TokensAddressBalance(deployerAddress, tokenX, tokenY);
+  });
 
-console.log("initialised tokens in a pair");
+  it("deployed pair", async () => {
+    await deployPair(deployerAccount, pairPK, pairSC);
+  });
 
-console.log("deploying pair minting contract");
+  it("inited 2 tokens into pair smart contract", async () => {
+    await init2TokensSmartContract(
+      deployerAccount,
+      tokenX,
+      tokenY,
+      pairSC.address
+    );
+  });
 
-const zkPairMintPrivateKey: PrivateKey = PrivateKey.random();
+  it("initialised tokens in a pair", async () => {
+    await initPairTokens(
+      pairPK,
+      pairSC,
+      tokenX.address,
+      tokenY.address,
+      adminAddress
+    );
+  });
 
-const pairSmartContractMint = new PairMintContract(
-  zkAppPrivateKey.toPublicKey()
-);
+  it("deploying pair minting contract", async () => {
+    await deployPairMint(deployerAccount, pairMintPK, pairMintSC);
+  });
 
-await deployPairMint(
-  deployerAccount,
-  zkPairMintPrivateKey,
-  pairSmartContractMint
-);
+  it("deploying pair minting contract", async () => {
+    await init2TokensSmartContract(
+      deployerAccount,
+      tokenX,
+      tokenY,
+      pairMintSC.address
+    );
+  });
 
-console.log("deployed pair minting contract");
+  it("setting pair contract as an owner for pair mint contract", async () => {
+    await setOwner(pairMintPK, pairPub, pairMintSC);
+    expect(pairMintSC.owner.get().toBase58()).toBe(pairPub.toBase58());
+  });
 
-await init2TokensSmartContract(
-  deployerAccount,
-  tokenX,
-  tokenY,
-  pairSmartContractMint.address
-);
+  it("setting an admin for pair mint contract", async () => {
+    await setAdmin(pairPK, adminMintAddress, pairMintSC);
+    expect(pairMintSC.admin.get().toBase58()).toBe(adminMintAddress.toBase58());
+  });
 
-console.log("initialised tokens in a pairMint");
+  it("creating a user", async () => {
+    firstUserBalance = await createUser(
+      adminAccount,
+      firstUserAccount,
+      map,
+      0,
+      pairSC
+    );
+  });
 
-await setOwner(zkPairMintPrivateKey, zkPairAppAddress, pairSmartContractMint);
+  it("creating another user - user 2", async () => {
+    await createUser(adminAccount, secondUserAccount, map, 1, pairSC);
+  });
 
-console.log(pairSmartContractMint.owner.get().toBase58());
+  it("creating another user - user 3", async () => {
+    await createUser(adminAccount, thirdUserAccount, map, 2, pairSC);
+  });
 
-console.log("creating a user");
+  it("supplying Y", async () => {
+    const dy = UInt64.one;
+    firstUserBalance = await supplyY(
+      adminAccount,
+      adminMintAccount,
+      deployerAccount,
+      map,
+      firstUserBalance,
+      dy,
+      pairSC,
+      pairMintSC.address
+    );
+    expect(pairMintSC.reservesY.get().toString()).toBe("1");
+  });
 
-let firstUserBalance = await createUser(
-  map,
-  0,
-  pairSmartContract,
-  deployerAccount
-);
+  it("supplying more Y", async () => {
+    const dy = UInt64.one;
+    firstUserBalance = await supplyY(
+      adminAccount,
+      adminMintAccount,
+      deployerAccount,
+      map,
+      firstUserBalance,
+      dy,
+      pairSC,
+      pairMintSC.address
+    );
+    expect(pairMintSC.reservesY.get().toString()).toBe("2");
+  });
 
-console.log("created a user");
+  it("supplying X", async () => {
+    const dx = UInt64.one;
+    firstUserBalance = await supplyX(
+      adminAccount,
+      adminMintAccount,
+      deployerAccount,
+      map,
+      firstUserBalance,
+      dx,
+      pairSC,
+      pairMintSC.address
+    );
+    expect(pairMintSC.reservesX.get().toString()).toBe("1");
+  });
 
-console.log("creating another user - user 2");
-
-await createUser(map, 1, pairSmartContract, secondAccount);
-
-console.log("created a second user", secondAddress.toBase58());
-
-console.log("creating another user - user 3");
-
-await createUser(map, 2, pairSmartContract, thirdAccount);
-
-console.log("created a third user", thirdAddress.toBase58());
-
-console.log("supplying Y");
-
-const dy = UInt64.one;
-
-firstUserBalance = await supplyY(
-  map,
-  firstUserBalance,
-  dy,
-  pairSmartContract,
-  pairSmartContractMint.address,
-  deployerAccount
-);
-
-console.log("supplied Y");
-
-console.log("reserves Y", pairSmartContractMint.reservesY.get().toBigInt());
-
-console.log("supplying more Y");
-
-firstUserBalance = await supplyY(
-  map,
-  firstUserBalance,
-  dy,
-  pairSmartContract,
-  pairSmartContractMint.address,
-  deployerAccount
-);
-
-console.log("supplied Y");
-
-console.log("reserves Y", pairSmartContractMint.reservesY.get().toBigInt());
-
-console.log("supplying X");
-
-const dx = UInt64.one;
-
-firstUserBalance = await supplyX(
-  map,
-  firstUserBalance,
-  dx,
-  pairSmartContract,
-  pairSmartContractMint.address,
-  deployerAccount
-);
-
-console.log("supplied X");
-
-console.log("reserves X", pairSmartContractMint.reservesX.get().toBigInt());
-
-console.log("minting liquidity");
-
-await mintLiquidityToken(
-  map,
-  firstUserBalance,
-  UInt64.one,
-  pairSmartContract,
-  deployerAccount,
-  pairSmartContractMint.address
-);
-console.log("minted liquidity");
+  it("minting liquidity", async () => {
+    const dl = UInt64.one;
+    await mintLiquidityToken(
+      adminAccount,
+      adminMintAccount,
+      deployerAccount,
+      map,
+      firstUserBalance,
+      dl,
+      pairSC,
+      pairMintSC.address
+    );
+    expect(pairMintSC.reservesX.get().toString()).toBe("1");
+  });
+});

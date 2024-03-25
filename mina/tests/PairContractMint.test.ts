@@ -1,4 +1,4 @@
-import { PrivateKey } from "o1js";
+import { PrivateKey, UInt64 } from "o1js";
 
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import { getTokenIdBalance } from "../src/helpers/token.js";
@@ -6,7 +6,7 @@ import {
   deployPairMint,
   setOwner,
   setAdmin,
-  mint,
+  mintLP,
 } from "../src/pair/pairMint.js";
 import { PairMintContract } from "../src/PairContractMint.js";
 
@@ -29,6 +29,9 @@ describe("Pair Mint Contract", () => {
 
   const userAccount1 = testAccounts[4].privateKey;
   const userAddress1 = testAccounts[4].publicKey;
+
+  const userAccount2 = testAccounts[5].privateKey;
+  const userAddress2 = testAccounts[5].publicKey;
 
   const zkAppPrivateKey: PrivateKey = PrivateKey.random();
   const zkAppInstance = new PairMintContract(zkAppPrivateKey.toPublicKey());
@@ -55,7 +58,8 @@ describe("Pair Mint Contract", () => {
   });
 
   it("mint liquidity token", async () => {
-    await mint(adminAccount, userAddress, zkAppInstance);
+    const dl = UInt64.one;
+    await mintLP(userAccount, adminAccount, dl, zkAppInstance);
     const balance = await getTokenIdBalance(
       userAddress,
       zkAppInstance.token.id
@@ -65,15 +69,14 @@ describe("Pair Mint Contract", () => {
 
   it("fails to mint liquidity token", async () => {
     try {
-      await mint(userAccount, userAddress1, zkAppInstance);
+      const dl = UInt64.one;
+      await mintLP(userAccount2, userAccount1, dl, zkAppInstance);
     } catch (e) {
       const errorMessage = String(e);
-      expect(errorMessage.substring(0, 28)).toBe(
-        "Error: Field.assertEquals():"
-      );
+      expect(errorMessage.substring(0, 26)).toBe("Error: not admin signature");
     }
     const balance = await getTokenIdBalance(
-      userAddress1,
+      userAddress2,
       zkAppInstance.token.id
     );
     expect(balance).toBe("0");
