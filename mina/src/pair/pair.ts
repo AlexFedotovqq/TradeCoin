@@ -19,7 +19,7 @@ import {
   sendWaitTx,
   TxOptions,
 } from "../helpers/transactions.js";
-import { TokenTx } from "../PairContractMint.js";
+import { TokenPairMintTx } from "../PairContractMint.js";
 
 async function compileContractIfProofsEnabled(compile?: boolean) {
   if (compile) {
@@ -169,7 +169,7 @@ export async function supplyX(
     balance.toFields()
   );
   const tokenX = pairSmartContract.tokenX.get();
-  const tokenTx: TokenTx = new TokenTx({
+  const tokenTx: TokenPairMintTx = new TokenPairMintTx({
     sender: userAddress,
     tokenPub: tokenX,
     dToken: dx,
@@ -212,7 +212,7 @@ export async function supplyY(
     balance.toFields()
   );
   const tokenY = pairSmartContract.tokenY.get();
-  const tokenTx = new TokenTx({
+  const tokenTx = new TokenPairMintTx({
     sender: userAddress,
     tokenPub: tokenY,
     dToken: dy,
@@ -254,7 +254,7 @@ export async function mintLiquidityToken(
     localAdminPK,
     balance.toFields()
   );
-  const tokenTx = new TokenTx({
+  const tokenTx = new TokenPairMintTx({
     sender: userAddress,
     tokenPub: pairMintingAddress,
     dToken: dl,

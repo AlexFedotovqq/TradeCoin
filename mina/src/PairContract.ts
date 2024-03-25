@@ -16,7 +16,7 @@ import {
   Signature,
 } from "o1js";
 
-import { PairMintContract, TokenTx } from "./PairContractMint.js";
+import { PairMintContract, TokenPairMintTx } from "./PairContractMint.js";
 
 export class PersonalPairBalance extends Struct({
   owner: PublicKey,
@@ -126,7 +126,7 @@ export class PairContract extends SmartContract {
 
     this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
     const tokenXPub = this.tokenX.getAndRequireEquals();
-    const tokenTx = new TokenTx({
+    const tokenTx = new TokenPairMintTx({
       sender: sender,
       tokenPub: tokenXPub,
       dToken: tokenPairTx.dToken,
@@ -152,7 +152,7 @@ export class PairContract extends SmartContract {
     isAdmin.assertTrue("not admin");
     this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
     const tokenYPub = this.tokenY.getAndRequireEquals();
-    const tokenTx = new TokenTx({
+    const tokenTx = new TokenPairMintTx({
       sender: sender,
       tokenPub: tokenYPub,
       dToken: tokenPairTx.dToken,
@@ -179,7 +179,7 @@ export class PairContract extends SmartContract {
     );
     isAdmin.assertTrue("not admin");
     this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
-    const tokenTx = new TokenTx({
+    const tokenTx = new TokenPairMintTx({
       sender: sender,
       tokenPub: tokenPairTx.tokenPub,
       dToken: tokenPairTx.dToken,

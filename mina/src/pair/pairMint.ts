@@ -7,7 +7,7 @@ import {
   Signature,
 } from "o1js";
 
-import { PairMintContract, TokenTx } from "../PairContractMint.js";
+import { PairMintContract, TokenPairMintTx } from "../PairContractMint.js";
 import { sendWaitTx } from "../helpers/transactions.js";
 
 async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
@@ -52,7 +52,7 @@ export async function mintLP(
   pairSmartContractMint: PairMintContract
 ) {
   const userAddress: PublicKey = pk.toPublicKey();
-  const balance = new TokenTx({
+  const balance: TokenPairMintTx = new TokenPairMintTx({
     sender: userAddress,
     tokenPub: pairSmartContractMint.address,
     dToken: dl,
@@ -75,7 +75,7 @@ export async function burnLP(
   pairSmartContractMint: PairMintContract
 ) {
   const userAddress: PublicKey = pk.toPublicKey();
-  const balance = new TokenTx({
+  const balance: TokenPairMintTx = new TokenPairMintTx({
     sender: userAddress,
     tokenPub: pairSmartContractMint.address,
     dToken: dl,

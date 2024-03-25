@@ -17,16 +17,16 @@ import {
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
 
-export class TokenTx extends Struct({
+export class TokenPairMintTx extends Struct({
   sender: PublicKey,
   tokenPub: PublicKey,
   dToken: UInt64,
 }) {
   toFields(): Field[] {
-    return TokenTx.toFields(this);
+    return TokenPairMintTx.toFields(this);
   }
   hash(): Field {
-    return Poseidon.hash(TokenTx.toFields(this));
+    return Poseidon.hash(TokenPairMintTx.toFields(this));
   }
 }
 
@@ -67,7 +67,7 @@ export class PairMintContract extends SmartContract {
 
   @method mintLiquidityToken(
     adminSignature: Signature,
-    tokenTxDetails: TokenTx
+    tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
@@ -84,7 +84,7 @@ export class PairMintContract extends SmartContract {
 
   @method burnLiquidityToken(
     adminSignature: Signature,
-    tokenTxDetails: TokenTx
+    tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
@@ -101,7 +101,7 @@ export class PairMintContract extends SmartContract {
 
   @method supplyTokenX(
     adminSignature: Signature,
-    tokenTxDetails: TokenTx
+    tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
@@ -116,7 +116,7 @@ export class PairMintContract extends SmartContract {
 
   @method withdrawTokenX(
     adminSignature: Signature,
-    tokenTxDetails: TokenTx
+    tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
@@ -131,7 +131,7 @@ export class PairMintContract extends SmartContract {
 
   @method supplyTokenY(
     adminSignature: Signature,
-    tokenTxDetails: TokenTx
+    tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
@@ -146,7 +146,7 @@ export class PairMintContract extends SmartContract {
 
   @method withdrawTokenY(
     adminSignature: Signature,
-    tokenTxDetails: TokenTx
+    tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
