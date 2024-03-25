@@ -62,16 +62,20 @@ export class PairContract extends SmartContract {
     });
   }
 
+  init() {
+    super.init();
+    const map = new MerkleMap().getRoot();
+    this.root.set(map);
+    const sender = this.checkUserSignature();
+    this.admin.set(sender);
+  }
+
   @method initContract(
     _tokenX: PublicKey,
     _tokenY: PublicKey,
     admin: PublicKey
   ) {
-    this.checkNotInitialized();
-    this.checkThisSignature();
-    super.init();
-    const map = new MerkleMap().getRoot();
-    this.root.set(map);
+    this.checkAdminSignature();
     this.tokenX.getAndRequireEquals();
     this.tokenY.getAndRequireEquals();
     this.admin.getAndRequireEquals();
@@ -84,7 +88,6 @@ export class PairContract extends SmartContract {
     adminSignature: Signature,
     keyWitness: MerkleMapWitness
   ) {
-    this.checkInitialized();
     const user = this.checkUserSignature();
 
     const currentId = this.userId.getAndRequireEquals();
@@ -117,7 +120,6 @@ export class PairContract extends SmartContract {
     balance: PersonalPairBalance,
     tokenPub: PublicKey
   ) {
-    this.checkInitialized();
     const sender = this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
     const isAdmin = localAdminSignature.verify(admin, balance.toFields());
@@ -145,7 +147,6 @@ export class PairContract extends SmartContract {
     balance: PersonalPairBalance,
     tokenPub: PublicKey
   ) {
-    this.checkInitialized();
     const sender = this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
     const isAdmin = localAdminSignature.verify(admin, balance.toFields());
@@ -173,7 +174,6 @@ export class PairContract extends SmartContract {
     balance: PersonalPairBalance,
     tokenPub: PublicKey
   ) {
-    this.checkInitialized();
     const sender = this.checkUserSignature();
     const admin = this.admin.getAndRequireEquals();
     const isAdmin = localAdminSignature.verify(admin, balance.toFields());
@@ -211,21 +211,11 @@ export class PairContract extends SmartContract {
     return user;
   }
 
-  private checkThisSignature() {
-    const address = this.address;
+  private checkAdminSignature() {
+    const admin = this.admin.getAndRequireEquals();
     const sender = this.sender;
-    sender.assertEquals(address);
-    const senderUpdate = AccountUpdate.create(address);
+    sender.assertEquals(admin);
+    const senderUpdate = AccountUpdate.create(sender);
     senderUpdate.requireSignature();
-  }
-
-  private checkInitialized() {
-    this.account.provedState.requireEquals(this.account.provedState.get());
-    this.account.provedState.get().assertTrue();
-  }
-
-  private checkNotInitialized() {
-    this.account.provedState.requireEquals(this.account.provedState.get());
-    this.account.provedState.get().assertFalse();
   }
 }

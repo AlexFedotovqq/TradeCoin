@@ -70,7 +70,8 @@ describe("Pair Contract", () => {
   });
 
   it("deployed pair", async () => {
-    await deployPair(deployerAccount, pairPK, pairSC);
+    await deployPair(adminAccount, pairPK, pairSC);
+    expect(pairSC.admin.get().toBase58()).toBe(adminAddress.toBase58());
   });
 
   it("inited 2 tokens into a pair smart contract", async () => {
@@ -82,14 +83,8 @@ describe("Pair Contract", () => {
     );
   });
 
-  it("initialised tokens in a pair", async () => {
-    await initPairTokens(
-      pairPK,
-      pairSC,
-      tokenX.address,
-      tokenY.address,
-      adminAddress
-    );
+  it("initialised tokens in a pair smart contract", async () => {
+    await initPairTokens(adminAccount, pairSC, tokenX.address, tokenY.address);
   });
 
   it("deploying pair minting contract and initing tokens", async () => {

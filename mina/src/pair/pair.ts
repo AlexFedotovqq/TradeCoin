@@ -77,25 +77,24 @@ export async function createInitContractTx(
 }
 
 export async function initPairTokens(
-  zkAppPrivateKey: PrivateKey,
+  adminPK: PrivateKey,
   pairSmartContract: PairContract,
   tokenX: PublicKey,
   tokenY: PublicKey,
-  admin: PublicKey,
   compile: boolean = false,
   live: boolean = false
 ) {
-  const zkAppPub = zkAppPrivateKey.toPublicKey();
-  const txOptions = createTxOptions(zkAppPub, live);
+  const adminPub = adminPK.toPublicKey();
+  const txOptions = createTxOptions(adminPub, live);
   const init_txn = await createInitContractTx(
     pairSmartContract,
     tokenX,
     tokenY,
-    admin,
+    adminPub,
     compile,
     txOptions
   );
-  await sendWaitTx(init_txn, [zkAppPrivateKey], live);
+  await sendWaitTx(init_txn, [adminPK], live);
 }
 
 export async function createUserTx(
