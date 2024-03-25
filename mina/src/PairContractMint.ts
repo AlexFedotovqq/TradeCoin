@@ -82,6 +82,23 @@ export class PairMintContract extends SmartContract {
     return Bool(true);
   }
 
+  @method burnLiquidityToken(
+    adminSignature: Signature,
+    tokenTxDetails: TokenTx
+  ): Bool {
+    this.checkUserSignature();
+    const admin = this.admin.getAndRequireEquals();
+    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    isAdmin.assertTrue("not admin signature");
+    const liquidity = this.totalSupply.getAndRequireEquals();
+    this.token.burn({
+      address: tokenTxDetails.sender,
+      amount: tokenTxDetails.dToken,
+    });
+    this.totalSupply.set(liquidity.sub(tokenTxDetails.dToken));
+    return Bool(true);
+  }
+
   @method supplyTokenX(
     adminSignature: Signature,
     tokenTxDetails: TokenTx
@@ -97,6 +114,21 @@ export class PairMintContract extends SmartContract {
     return Bool(true);
   }
 
+  @method withdrawTokenX(
+    adminSignature: Signature,
+    tokenTxDetails: TokenTx
+  ): Bool {
+    this.checkUserSignature();
+    const admin = this.admin.getAndRequireEquals();
+    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    isAdmin.assertTrue("not admin signature");
+    const tokenX = new BasicTokenContract(tokenTxDetails.tokenPub);
+    tokenX.transfer(this.address, tokenTxDetails.sender, tokenTxDetails.dToken);
+    const reservesX = this.reservesX.getAndRequireEquals();
+    this.reservesX.set(reservesX.sub(tokenTxDetails.dToken));
+    return Bool(true);
+  }
+
   @method supplyTokenY(
     adminSignature: Signature,
     tokenTxDetails: TokenTx
@@ -109,6 +141,21 @@ export class PairMintContract extends SmartContract {
     tokenY.transfer(tokenTxDetails.sender, this.address, tokenTxDetails.dToken);
     const reservesY = this.reservesY.getAndRequireEquals();
     this.reservesY.set(reservesY.add(tokenTxDetails.dToken));
+    return Bool(true);
+  }
+
+  @method withdrawTokenY(
+    adminSignature: Signature,
+    tokenTxDetails: TokenTx
+  ): Bool {
+    this.checkUserSignature();
+    const admin = this.admin.getAndRequireEquals();
+    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    isAdmin.assertTrue("not admin signature");
+    const tokenY = new BasicTokenContract(tokenTxDetails.tokenPub);
+    tokenY.transfer(this.address, tokenTxDetails.sender, tokenTxDetails.dToken);
+    const reservesY = this.reservesY.getAndRequireEquals();
+    this.reservesY.set(reservesY.sub(tokenTxDetails.dToken));
     return Bool(true);
   }
 

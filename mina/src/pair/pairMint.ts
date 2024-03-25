@@ -67,3 +67,25 @@ export async function mintLP(
   });
   await sendWaitTx(txn, [pk]);
 }
+
+export async function burnLP(
+  pk: PrivateKey,
+  adminPK: PrivateKey,
+  dl: UInt64,
+  pairSmartContractMint: PairMintContract
+) {
+  const userAddress: PublicKey = pk.toPublicKey();
+  const balance = new TokenTx({
+    sender: userAddress,
+    tokenPub: pairSmartContractMint.address,
+    dToken: dl,
+  });
+  const adminSignature: Signature = Signature.create(
+    adminPK,
+    balance.toFields()
+  );
+  const txn = await Mina.transaction(userAddress, () => {
+    pairSmartContractMint.burnLiquidityToken(adminSignature, balance);
+  });
+  await sendWaitTx(txn, [pk]);
+}
