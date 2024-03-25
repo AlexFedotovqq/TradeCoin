@@ -13,29 +13,35 @@ import {
   MerkleTree,
   DeployArgs,
   AccountUpdate,
+  Signature,
 } from "o1js";
 
 export class PoolId extends Struct({
   PairAddress: PublicKey,
   mintingContractAddress: PublicKey,
   id: Field,
-}) {}
+}) {
+  toFields(): Field[] {
+    return PoolId.toFields(this);
+  }
+  hash(): Field {
+    return Poseidon.hash(PoolId.toFields(this));
+  }
+}
 
 const Height = 6;
 
 export class MyMerkleWitness extends MerkleWitness(Height) {}
 
 export class Dex extends SmartContract {
-  @state(Field) treeRoot = State<Field>();
+  @state(Field) root = State<Field>();
   @state(PublicKey) admin = State<PublicKey>();
-
-  @state(UInt64) poolTotal = State<UInt64>();
+  @state(UInt64) poolsTotal = State<UInt64>();
+  // 4 states empty
 
   deploy(args?: DeployArgs) {
     super.deploy(args);
-
     const proof = Permissions.proof();
-
     this.account.permissions.set({
       ...Permissions.default(),
       access: proof,
@@ -44,17 +50,28 @@ export class Dex extends SmartContract {
       send: proof,
       incrementNonce: proof,
     });
-
-    const sender = this.checkUserSignature();
-    this.admin.set(sender);
-
-    const map = new MerkleTree(Height).getRoot();
-    this.treeRoot.set(map);
   }
 
-  @method createPool(keyWitness: MyMerkleWitness, balance: PoolId) {
-    const usersTotal = this.poolTotal.getAndRequireEquals();
-    const initialRoot = this.treeRoot.getAndRequireEquals();
+  init() {
+    super.init();
+    const sender = this.checkUserSignature();
+    this.admin.set(sender);
+    const map = new MerkleTree(Height).getRoot();
+    this.root.set(map);
+  }
+
+  @method createPool(
+    adminSignature: Signature,
+    keyWitness: MyMerkleWitness,
+    balance: PoolId
+  ) {
+    this.checkUserSignature();
+    const admin = this.admin.getAndRequireEquals();
+    const isAdmin = adminSignature.verify(admin, balance.toFields());
+    isAdmin.assertTrue("not admin");
+
+    const poolsTotal = this.poolsTotal.getAndRequireEquals();
+    const initialRoot = this.root.getAndRequireEquals();
 
     const value = Field(0);
     const key = keyWitness.calculateIndex();
@@ -62,38 +79,33 @@ export class Dex extends SmartContract {
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
-    // compute the root after incrementing
-    const rootAfter = keyWitness.calculateRoot(
-      Poseidon.hash(PoolId.toFields(balance))
-    );
-
-    // set the new root
-    this.treeRoot.set(rootAfter);
-
-    // update user count
-    this.poolTotal.set(usersTotal.add(1));
+    const rootAfter = keyWitness.calculateRoot(balance.hash());
+    this.root.set(rootAfter);
+    this.poolsTotal.set(poolsTotal.add(1));
   }
 
-  @method deletePool(keyWitness: MyMerkleWitness, balance: PoolId) {
-    const usersTotal = this.poolTotal.getAndRequireEquals();
-    usersTotal.assertGreaterThanOrEqual(UInt64.one);
+  @method deletePool(
+    adminSignature: Signature,
+    keyWitness: MyMerkleWitness,
+    balance: PoolId
+  ) {
+    this.checkUserSignature();
+    const admin = this.admin.getAndRequireEquals();
+    const isAdmin = adminSignature.verify(admin, balance.toFields());
+    isAdmin.assertTrue("not admin");
 
-    const initialRoot = this.treeRoot.getAndRequireEquals();
+    const poolsTotal = this.poolsTotal.getAndRequireEquals();
+    poolsTotal.assertGreaterThanOrEqual(UInt64.one);
+
+    const initialRoot = this.root.getAndRequireEquals();
     const key = keyWitness.calculateIndex();
-    const rootBefore = keyWitness.calculateRoot(
-      Poseidon.hash(PoolId.toFields(balance))
-    );
+    const rootBefore = keyWitness.calculateRoot(balance.hash());
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
-    // compute the root after incrementing
     const rootAfter = keyWitness.calculateRoot(Field(0));
-
-    // set the new root
-    this.treeRoot.set(rootAfter);
-
-    // update user count
-    this.poolTotal.set(usersTotal.sub(1));
+    this.root.set(rootAfter);
+    this.poolsTotal.set(poolsTotal.sub(1));
   }
 
   checkUserSignature() {
@@ -213,5 +225,3 @@ export class Dex extends SmartContract {
  */
   // add Y for X
 }
-
-// some ideas: add ability to withdraw using a key

@@ -19,8 +19,8 @@ describe("Dex Contract", () => {
   const deployerAccount = testAccounts[0].privateKey;
   const deployerAddress = testAccounts[0].publicKey;
 
-  const secondAccount = testAccounts[1].privateKey;
-  const secondAddress = testAccounts[1].publicKey;
+  const dexAdminAccount = testAccounts[1].privateKey;
+  const dexAdminAddress = testAccounts[1].publicKey;
 
   const tokenXPrivateKey: PrivateKey = PrivateKey.random();
   const tokenYPrivateKey: PrivateKey = PrivateKey.random();
@@ -46,7 +46,8 @@ describe("Dex Contract", () => {
   });
 
   it("deployed dex", async () => {
-    await deployDex(zkDexAppPrivateKey, deployerAccount, dexApp);
+    await deployDex(zkDexAppPrivateKey, dexAdminAccount, dexApp);
+    expect(dexApp.admin.get().toBase58()).toBe(dexAdminAddress.toBase58());
   });
 
   it("inited 2 tokens into Dex", async () => {

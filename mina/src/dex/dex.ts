@@ -13,17 +13,17 @@ async function compileContractIfProofsEnabled(compile?: boolean) {
 
 export async function deployDex(
   zkDexAppPK: PrivateKey,
-  pk: PrivateKey,
+  dexAdminPK: PrivateKey,
   dexApp: Dex,
   compile?: boolean,
   live?: boolean
 ) {
-  const deployerAddress: PublicKey = pk.toPublicKey();
+  const deployerAddress: PublicKey = dexAdminPK.toPublicKey();
   const verificationKey = await compileContractIfProofsEnabled(compile);
   const txOptions = createTxOptions(deployerAddress, live);
   const deploy_dex_txn = await Mina.transaction(txOptions, () => {
     AccountUpdate.fundNewAccount(txOptions.sender);
     dexApp.deploy({ verificationKey, zkappKey: zkDexAppPK });
   });
-  await sendWaitTx(deploy_dex_txn, [pk], live);
+  await sendWaitTx(deploy_dex_txn, [dexAdminPK], live);
 }
