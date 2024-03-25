@@ -1,8 +1,7 @@
 import { PrivateKey } from "o1js";
 
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
-import { logTokenBalance, logTokenInfo } from "../src/helpers/logs.js";
-import { getTokenIdBalance } from "../src/helpers/token.js";
+import { getTokenIdBalance, getTokenInfo } from "../src/helpers/token.js";
 import { deployToken, mintToken, transferToken } from "../src/token/token.js";
 import { BasicTokenContract } from "../src/BasicTokenContract.js";
 
@@ -25,7 +24,6 @@ describe("Basic Token Contract", () => {
   const zkAppInstance = new BasicTokenContract(zkAppPrivateKey.toPublicKey());
 
   it("deploying token", async () => {
-    console.log("deployerAccount: " + deployerAddress.toBase58());
     await deployToken(deployerAccount, zkAppPrivateKey, proofsEnabled);
   });
 
@@ -38,7 +36,7 @@ describe("Basic Token Contract", () => {
     expect(balance).toBe("100000000000");
   });
 
-  it("check balance for empty account", async () => {
+  it("check balance for an empty account", async () => {
     const balance = await getTokenIdBalance(
       deployerAddress,
       zkAppInstance.token.id
@@ -46,8 +44,10 @@ describe("Basic Token Contract", () => {
     expect(balance).toBe("0");
   });
 
-  it("logs contract token info", async () => {
-    logTokenInfo(zkAppInstance);
+  it("contract token info matches contract instance", async () => {
+    const { tokenId, tokenOwner } = getTokenInfo(zkAppInstance);
+    expect(tokenId).toBe(zkAppInstance.token.id.toString());
+    expect(tokenOwner).toBe(zkAppInstance.address.toBase58());
   });
 
   it("transfer token", async () => {
@@ -62,13 +62,5 @@ describe("Basic Token Contract", () => {
       zkAppInstance.token.id
     );
     expect(balance).toBe("1");
-  });
-
-  it("logs token info for address with no tokens", async () => {
-    logTokenBalance(zkAppInstance, deployerAddress);
-  });
-
-  it("logs token info for address with tokens", async () => {
-    logTokenBalance(zkAppInstance, deployerAddress1);
   });
 });

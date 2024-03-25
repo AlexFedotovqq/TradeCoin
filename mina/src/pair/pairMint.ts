@@ -13,7 +13,6 @@ import { sendWaitTx } from "../helpers/transactions.js";
 async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
   if (proofsEnabled) {
     const { verificationKey } = await PairMintContract.compile();
-    console.log("compiled");
     return verificationKey;
   }
   return undefined;

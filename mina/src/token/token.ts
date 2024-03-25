@@ -9,7 +9,6 @@ import { sendWaitTx, createTxOptions } from "../helpers/transactions.js";
 async function compileContractIfProofsEnabled(compile: boolean) {
   if (compile) {
     const { verificationKey } = await BasicTokenContract.compile();
-    console.log("compiled");
     return verificationKey;
   }
   return undefined;

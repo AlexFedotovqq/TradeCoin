@@ -2,7 +2,6 @@ import { Mina, PrivateKey, Field, Poseidon, MerkleTree } from "o1js";
 
 import { PoolId, MyMerkleWitness } from "../src/DexContract.js";
 import { deployDex } from "../src/dex/dex.js";
-import { log2TokensAddressBalance } from "../src/helpers/logs.js";
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import {
   deploy2Tokens,

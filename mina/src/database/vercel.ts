@@ -36,7 +36,7 @@ export async function setVercelTokenMetadata(
   try {
     await client.set(key, value);
   } catch (error) {
-    console.log(error);
+    throw new Error(String(error));
   }
 }
 

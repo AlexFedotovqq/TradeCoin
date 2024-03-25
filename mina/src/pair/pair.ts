@@ -20,7 +20,6 @@ import { TokenTx } from "../PairContractMint.js";
 async function compileContractIfProofsEnabled(compile?: boolean) {
   if (compile) {
     const { verificationKey } = await PairContract.compile();
-    console.log("compiled");
     return verificationKey;
   }
   return undefined;

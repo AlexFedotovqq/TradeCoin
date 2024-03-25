@@ -14,7 +14,6 @@ import {
   MerkleMap,
   Poseidon,
   Signature,
-  Provable,
 } from "o1js";
 
 import { PairMintContract, TokenTx } from "./PairContractMint.js";
@@ -120,9 +119,7 @@ export class PairContract extends SmartContract {
   ) {
     this.checkInitialized();
     const sender = this.checkUserSignature();
-    Provable.log(sender);
     const admin = this.admin.getAndRequireEquals();
-    Provable.log(admin);
     const isAdmin = localAdminSignature.verify(admin, balance.toFields());
     isAdmin.assertTrue("not admin");
     this.checkMerkleMap(keyWitness, balance);

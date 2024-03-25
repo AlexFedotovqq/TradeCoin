@@ -1,4 +1,4 @@
-import { PrivateKey, UInt64, MerkleMap, PublicKey } from "o1js";
+import { PrivateKey, UInt64, MerkleMap, PublicKey, SmartContract } from "o1js";
 
 import {
   deployPair,
@@ -57,7 +57,9 @@ describe("Pair Contract", () => {
   const pairSC: PairContract = new PairContract(pairPub);
 
   const pairMintPK: PrivateKey = PrivateKey.random();
-  const pairMintSC = new PairMintContract(pairMintPK.toPublicKey());
+  const pairMintSC: PairMintContract = new PairMintContract(
+    pairMintPK.toPublicKey()
+  );
 
   let firstUserBalance: PersonalPairBalance;
 

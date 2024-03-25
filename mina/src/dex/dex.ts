@@ -6,7 +6,6 @@ import { createTxOptions, sendWaitTx } from "../helpers/transactions.js";
 async function compileContractIfProofsEnabled(compile?: boolean) {
   if (compile) {
     const { verificationKey } = await Dex.compile();
-    console.log("compiled");
     return verificationKey;
   }
   return undefined;
