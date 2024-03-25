@@ -9,7 +9,11 @@ import {
   Signature,
 } from "o1js";
 
-import { PairContract, PersonalPairBalance } from "../PairContract.js";
+import {
+  PairContract,
+  PersonalPairBalance,
+  TokenPairTx,
+} from "../PairContract.js";
 import {
   createTxOptions,
   sendWaitTx,
@@ -65,13 +69,12 @@ export async function createInitContractTx(
   pairSmartContract: PairContract,
   tokenX: PublicKey,
   tokenY: PublicKey,
-  admin: PublicKey,
   compile: boolean,
   txOptions: TxOptions
 ) {
   await compileContractIfProofsEnabled(compile);
   const txn = await Mina.transaction(txOptions, () => {
-    pairSmartContract.initContract(tokenX, tokenY, admin);
+    pairSmartContract.initContract(tokenX, tokenY);
   });
   return txn;
 }
@@ -90,7 +93,6 @@ export async function initPairTokens(
     pairSmartContract,
     tokenX,
     tokenY,
-    adminPub,
     compile,
     txOptions
   );
@@ -167,7 +169,7 @@ export async function supplyX(
     balance.toFields()
   );
   const tokenX = pairSmartContract.tokenX.get();
-  const tokenTx = new TokenTx({
+  const tokenTx: TokenTx = new TokenTx({
     sender: userAddress,
     tokenPub: tokenX,
     dToken: dx,
@@ -176,15 +178,15 @@ export async function supplyX(
     adminPK,
     tokenTx.toFields()
   );
+  const tokenPairTx: TokenPairTx = new TokenPairTx({
+    pairAdminSignature: localAdminSignature,
+    balance: balance,
+    keyWitness: witness,
+    tokenPub: pairMintingAddress,
+    dToken: dx,
+  });
   const supplyXTxn = await Mina.transaction(userAddress, () => {
-    pairSmartContract.supplyTokenX(
-      dx,
-      adminSignature,
-      localAdminSignature,
-      witness,
-      balance,
-      pairMintingAddress
-    );
+    pairSmartContract.supplyTokenX(tokenPairTx, adminSignature);
   });
   await sendWaitTx(supplyXTxn, [userPK]);
   balance.increaseX(dx);
@@ -219,15 +221,15 @@ export async function supplyY(
     adminPK,
     tokenTx.toFields()
   );
+  const tokenPairTx: TokenPairTx = new TokenPairTx({
+    pairAdminSignature: localAdminSignature,
+    balance: balance,
+    keyWitness: witness,
+    tokenPub: pairMintingAddress,
+    dToken: dy,
+  });
   const supplyYTxn = await Mina.transaction(userAddress, () => {
-    pairSmartContract.supplyTokenY(
-      dy,
-      adminSignature,
-      localAdminSignature,
-      witness,
-      balance,
-      pairMintingAddress
-    );
+    pairSmartContract.supplyTokenY(tokenPairTx, adminSignature);
   });
   await sendWaitTx(supplyYTxn, [userPK]);
   balance.increaseY(dy);
@@ -261,16 +263,16 @@ export async function mintLiquidityToken(
     adminPK,
     tokenTx.toFields()
   );
+  const tokenPairTx: TokenPairTx = new TokenPairTx({
+    pairAdminSignature: localAdminSignature,
+    balance: balance,
+    keyWitness: witness,
+    tokenPub: pairMintingAddress,
+    dToken: dl,
+  });
   const mintLiqTxn = await Mina.transaction(userAddress, () => {
     AccountUpdate.fundNewAccount(userAddress);
-    pairSmartContract.mintLiquidityToken(
-      dl,
-      adminSignature,
-      localAdminSignature,
-      witness,
-      balance,
-      pairMintingAddress
-    );
+    pairSmartContract.mintLiquidityToken(tokenPairTx, adminSignature);
   });
   await sendWaitTx(mintLiqTxn, [userPK]);
   balance.increaseX(dl);
