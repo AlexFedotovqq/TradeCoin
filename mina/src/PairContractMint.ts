@@ -31,11 +31,12 @@ export class TokenPairMintTx extends Struct({
 }
 
 export class PairMintContract extends SmartContract {
-  @state(PublicKey) owner = State<PublicKey>();
   @state(PublicKey) admin = State<PublicKey>();
   @state(UInt64) reservesX = State<UInt64>();
   @state(UInt64) reservesY = State<UInt64>();
-  @state(UInt64) totalSupply = State<UInt64>();
+  @state(UInt64) reservesLPX = State<UInt64>();
+  @state(UInt64) reservesLPY = State<UInt64>();
+  @state(UInt64) totalSupplyLP = State<UInt64>();
 
   deploy(args?: DeployArgs) {
     super.deploy(args);
@@ -51,18 +52,11 @@ export class PairMintContract extends SmartContract {
 
   init() {
     super.init();
-    this.totalSupply.set(UInt64.zero);
+    this.totalSupplyLP.set(UInt64.zero);
     this.reservesX.set(UInt64.zero);
     this.reservesY.set(UInt64.zero);
     const sender: PublicKey = this.checkUserSignature();
     this.admin.set(sender);
-  }
-
-  @method setOwner(owner: PublicKey): Bool {
-    this.checkAdminSignature();
-    this.owner.getAndRequireEquals();
-    this.owner.set(owner);
-    return Bool(true);
   }
 
   @method mintLiquidityToken(
@@ -76,12 +70,17 @@ export class PairMintContract extends SmartContract {
       tokenTxDetails.toFields()
     );
     isAdmin.assertTrue("not admin signature");
-    const liquidity: UInt64 = this.totalSupply.getAndRequireEquals();
+    const dToken = tokenTxDetails.dToken;
+    const liquidity: UInt64 = this.totalSupplyLP.getAndRequireEquals();
+    const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
+    const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
     this.token.mint({
       address: tokenTxDetails.sender,
-      amount: tokenTxDetails.dToken,
+      amount: dToken,
     });
-    this.totalSupply.set(liquidity.add(tokenTxDetails.dToken));
+    this.reservesLPX.set(reservesLPX.add(dToken));
+    this.reservesLPY.set(reservesLPY.add(dToken));
+    this.totalSupplyLP.set(liquidity.add(dToken));
     return Bool(true);
   }
 
@@ -96,12 +95,17 @@ export class PairMintContract extends SmartContract {
       tokenTxDetails.toFields()
     );
     isAdmin.assertTrue("not admin signature");
-    const liquidity: UInt64 = this.totalSupply.getAndRequireEquals();
+    const dToken = tokenTxDetails.dToken;
+    const liquidity: UInt64 = this.totalSupplyLP.getAndRequireEquals();
+    const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
+    const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
     this.token.burn({
       address: tokenTxDetails.sender,
       amount: tokenTxDetails.dToken,
     });
-    this.totalSupply.set(liquidity.sub(tokenTxDetails.dToken));
+    this.reservesLPX.set(reservesLPX.sub(dToken));
+    this.reservesLPY.set(reservesLPY.sub(dToken));
+    this.totalSupplyLP.set(liquidity.sub(dToken));
     return Bool(true);
   }
 
@@ -185,18 +189,33 @@ export class PairMintContract extends SmartContract {
     return Bool(true);
   }
 
+  @method swapXforY(
+    adminSignature: Signature,
+    tokenTxDetails: TokenPairMintTx
+  ) {
+    this.checkUserSignature();
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(
+      admin,
+      tokenTxDetails.toFields()
+    );
+    isAdmin.assertTrue("not admin signature");
+    const dToken = tokenTxDetails.dToken;
+    const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
+    const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
+    const bNumerator: UInt64 = reservesLPY.mul(dToken);
+    const bDenominator: UInt64 = reservesLPX.add(dToken);
+    const b = bNumerator.div(bDenominator);
+    b.assertGreaterThan(UInt64.zero, "swap amount is 0");
+    this.reservesLPX.set(reservesLPX.sub(b));
+    this.reservesLPY.set(reservesLPY.add(b));
+    return b;
+  }
+
   private checkUserSignature(): PublicKey {
     const user: PublicKey = this.sender;
     const senderUpdate: AccountUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
     return user;
-  }
-
-  private checkAdminSignature() {
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const sender: PublicKey = this.sender;
-    sender.assertEquals(admin);
-    const senderUpdate: AccountUpdate = AccountUpdate.create(admin);
-    senderUpdate.requireSignature();
   }
 }

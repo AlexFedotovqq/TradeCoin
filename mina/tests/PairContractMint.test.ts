@@ -2,12 +2,7 @@ import { PrivateKey, UInt64 } from "o1js";
 
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import { getTokenIdBalance } from "../src/helpers/token.js";
-import {
-  deployPairMint,
-  setOwner,
-  mintLP,
-  burnLP,
-} from "../src/pair/pairMint.js";
+import { deployPairMint, mintLP, burnLP } from "../src/pair/pairMint.js";
 import { PairMintContract } from "../src/PairContractMint.js";
 
 const proofsEnabled = false;
@@ -43,11 +38,6 @@ describe("Pair Mint Contract", () => {
     expect(zkAppInstance.admin.get().toBase58()).toBe(adminAddress.toBase58());
   });
 
-  it("set contract owner", async () => {
-    await setOwner(adminAccount, ownerAddress, zkAppInstance);
-    expect(zkAppInstance.owner.get().toBase58()).toBe(ownerAddress.toBase58());
-  });
-
   it("mint liquidity token", async () => {
     const dl = UInt64.one;
     await mintLP(userAccount, adminAccount, dl, zkAppInstance);
@@ -56,7 +46,7 @@ describe("Pair Mint Contract", () => {
       zkAppInstance.token.id
     );
     expect(balance).toBe("1");
-    expect(zkAppInstance.totalSupply.get().toString()).toBe("1");
+    expect(zkAppInstance.totalSupplyLP.get().toString()).toBe("1");
   });
 
   it("fails to mint liquidity token", async () => {
@@ -82,6 +72,6 @@ describe("Pair Mint Contract", () => {
       zkAppInstance.token.id
     );
     expect(balance).toBe("0");
-    expect(zkAppInstance.totalSupply.get().toString()).toBe("0");
+    expect(zkAppInstance.totalSupplyLP.get().toString()).toBe("0");
   });
 });

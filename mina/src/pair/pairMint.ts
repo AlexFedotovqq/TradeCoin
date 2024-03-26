@@ -33,18 +33,6 @@ export async function deployPairMint(
   await sendWaitTx(deploy_txn, [pk]);
 }
 
-export async function setOwner(
-  adminPK: PrivateKey,
-  ownerPub: PublicKey,
-  pairSmartContractMint: PairMintContract
-) {
-  const adminAddress: PublicKey = adminPK.toPublicKey();
-  const txn = await Mina.transaction(adminAddress, () => {
-    pairSmartContractMint.setOwner(ownerPub);
-  });
-  await sendWaitTx(txn, [adminPK]);
-}
-
 export async function mintLP(
   pk: PrivateKey,
   adminPK: PrivateKey,

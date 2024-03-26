@@ -28,8 +28,14 @@ export class PersonalPairBalance extends Struct({
   increaseX(dx: UInt64) {
     this.tokenXAmount = this.tokenXAmount.add(dx);
   }
+  decreaseX(dx: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.sub(dx);
+  }
   increaseY(dy: UInt64) {
     this.tokenYAmount = this.tokenYAmount.add(dy);
+  }
+  decreaseY(dx: UInt64) {
+    this.tokenYAmount = this.tokenYAmount.sub(dx);
   }
   supply(dl: UInt64) {
     this.tokenXAmount = this.tokenXAmount.sub(dl);
@@ -166,6 +172,35 @@ export class PairContract extends SmartContract {
     const res: Bool = pairMintContract.supplyTokenY(adminSignature, tokenTx);
     res.assertTrue();
     tokenPairTx.balance.increaseY(tokenPairTx.dToken);
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
+      tokenPairTx.balance.hash()
+    );
+    this.root.set(rootAfter);
+  }
+
+  @method swapXforY(tokenPairTx: TokenPairTx, adminSignature: Signature) {
+    const sender: PublicKey = this.checkUserSignature();
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
+      admin,
+      tokenPairTx.balance.toFields()
+    );
+    isAdmin.assertTrue("not admin");
+
+    this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+    const tokenXPub: PublicKey = this.tokenX.getAndRequireEquals();
+    const tokenTx: TokenPairMintTx = new TokenPairMintTx({
+      sender: sender,
+      tokenPub: tokenXPub,
+      dToken: tokenPairTx.dToken,
+    });
+    const pairMintContract: PairMintContract = new PairMintContract(
+      tokenPairTx.tokenPub
+    );
+    const res: UInt64 = pairMintContract.swapXforY(adminSignature, tokenTx);
+
+    tokenPairTx.balance.increaseY(res);
+    tokenPairTx.balance.decreaseX(tokenPairTx.dToken);
     const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
       tokenPairTx.balance.hash()
     );
