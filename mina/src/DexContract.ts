@@ -14,6 +14,7 @@ import {
   DeployArgs,
   AccountUpdate,
   Signature,
+  Bool,
 } from "o1js";
 
 export class PoolId extends Struct({
@@ -54,9 +55,9 @@ export class Dex extends SmartContract {
 
   init() {
     super.init();
-    const sender = this.checkUserSignature();
+    const sender: PublicKey = this.checkUserSignature();
     this.admin.set(sender);
-    const map = new MerkleTree(Height).getRoot();
+    const map: Field = new MerkleTree(Height).getRoot();
     this.root.set(map);
   }
 
@@ -66,20 +67,20 @@ export class Dex extends SmartContract {
     balance: PoolId
   ) {
     this.checkUserSignature();
-    const admin = this.admin.getAndRequireEquals();
-    const isAdmin = adminSignature.verify(admin, balance.toFields());
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(admin, balance.toFields());
     isAdmin.assertTrue("not admin");
 
-    const poolsTotal = this.poolsTotal.getAndRequireEquals();
-    const initialRoot = this.root.getAndRequireEquals();
+    const poolsTotal: UInt64 = this.poolsTotal.getAndRequireEquals();
+    const initialRoot: Field = this.root.getAndRequireEquals();
 
-    const value = Field(0);
-    const key = keyWitness.calculateIndex();
-    const rootBefore = keyWitness.calculateRoot(value);
+    const value: Field = Field(0);
+    const key: Field = keyWitness.calculateIndex();
+    const rootBefore: Field = keyWitness.calculateRoot(value);
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
-    const rootAfter = keyWitness.calculateRoot(balance.hash());
+    const rootAfter: Field = keyWitness.calculateRoot(balance.hash());
     this.root.set(rootAfter);
     this.poolsTotal.set(poolsTotal.add(1));
   }
@@ -90,27 +91,27 @@ export class Dex extends SmartContract {
     balance: PoolId
   ) {
     this.checkUserSignature();
-    const admin = this.admin.getAndRequireEquals();
-    const isAdmin = adminSignature.verify(admin, balance.toFields());
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(admin, balance.toFields());
     isAdmin.assertTrue("not admin");
 
-    const poolsTotal = this.poolsTotal.getAndRequireEquals();
+    const poolsTotal: UInt64 = this.poolsTotal.getAndRequireEquals();
     poolsTotal.assertGreaterThanOrEqual(UInt64.one);
 
-    const initialRoot = this.root.getAndRequireEquals();
-    const key = keyWitness.calculateIndex();
-    const rootBefore = keyWitness.calculateRoot(balance.hash());
+    const initialRoot: Field = this.root.getAndRequireEquals();
+    const key: Field = keyWitness.calculateIndex();
+    const rootBefore: Field = keyWitness.calculateRoot(balance.hash());
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
-    const rootAfter = keyWitness.calculateRoot(Field(0));
+    const rootAfter: Field = keyWitness.calculateRoot(Field(0));
     this.root.set(rootAfter);
     this.poolsTotal.set(poolsTotal.sub(1));
   }
 
   checkUserSignature() {
-    const user = this.sender;
-    const senderUpdate = AccountUpdate.create(user);
+    const user: PublicKey = this.sender;
+    const senderUpdate: AccountUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
     return user;
   }

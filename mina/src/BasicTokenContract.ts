@@ -35,14 +35,14 @@ export class BasicTokenContract extends SmartContract {
     this.totalSupply.set(UInt64.zero);
     this.account.tokenSymbol.set(tokenSymbol);
     this.account.zkappUri.set(URI);
-    const sender = this.checkUserSignature();
+    const sender: PublicKey = this.checkUserSignature();
     this.admin.set(sender);
   }
 
   @method mint(receiverAddress: PublicKey, amount: UInt64) {
     this.checkAdminSignature();
-    const totalSupply = this.totalSupply.getAndRequireEquals();
-    const newTotalSupply = totalSupply.add(amount);
+    const totalSupply: UInt64 = this.totalSupply.getAndRequireEquals();
+    const newTotalSupply: UInt64 = totalSupply.add(amount);
     this.token.mint({
       address: receiverAddress,
       amount: amount,
@@ -66,17 +66,17 @@ export class BasicTokenContract extends SmartContract {
   }
 
   private checkUserSignature() {
-    const user = this.sender;
-    const senderUpdate = AccountUpdate.create(user);
+    const user: PublicKey = this.sender;
+    const senderUpdate: AccountUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
     return user;
   }
 
   private checkAdminSignature() {
-    const user = this.sender;
-    const admin = this.admin.getAndRequireEquals();
+    const user: PublicKey = this.sender;
+    const admin: PublicKey = this.admin.getAndRequireEquals();
     user.assertEquals(admin);
-    const senderUpdate = AccountUpdate.create(admin);
+    const senderUpdate: AccountUpdate = AccountUpdate.create(admin);
     senderUpdate.requireSignature();
   }
 }

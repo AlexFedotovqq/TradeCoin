@@ -54,7 +54,7 @@ export class PairMintContract extends SmartContract {
     this.totalSupply.set(UInt64.zero);
     this.reservesX.set(UInt64.zero);
     this.reservesY.set(UInt64.zero);
-    const sender = this.checkUserSignature();
+    const sender: PublicKey = this.checkUserSignature();
     this.admin.set(sender);
   }
 
@@ -70,10 +70,13 @@ export class PairMintContract extends SmartContract {
     tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
-    const admin = this.admin.getAndRequireEquals();
-    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(
+      admin,
+      tokenTxDetails.toFields()
+    );
     isAdmin.assertTrue("not admin signature");
-    const liquidity = this.totalSupply.getAndRequireEquals();
+    const liquidity: UInt64 = this.totalSupply.getAndRequireEquals();
     this.token.mint({
       address: tokenTxDetails.sender,
       amount: tokenTxDetails.dToken,
@@ -87,10 +90,13 @@ export class PairMintContract extends SmartContract {
     tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
-    const admin = this.admin.getAndRequireEquals();
-    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(
+      admin,
+      tokenTxDetails.toFields()
+    );
     isAdmin.assertTrue("not admin signature");
-    const liquidity = this.totalSupply.getAndRequireEquals();
+    const liquidity: UInt64 = this.totalSupply.getAndRequireEquals();
     this.token.burn({
       address: tokenTxDetails.sender,
       amount: tokenTxDetails.dToken,
@@ -104,12 +110,17 @@ export class PairMintContract extends SmartContract {
     tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
-    const admin = this.admin.getAndRequireEquals();
-    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(
+      admin,
+      tokenTxDetails.toFields()
+    );
     isAdmin.assertTrue("not admin signature");
-    const tokenX = new BasicTokenContract(tokenTxDetails.tokenPub);
+    const tokenX: BasicTokenContract = new BasicTokenContract(
+      tokenTxDetails.tokenPub
+    );
     tokenX.transfer(tokenTxDetails.sender, this.address, tokenTxDetails.dToken);
-    const reservesX = this.reservesX.getAndRequireEquals();
+    const reservesX: UInt64 = this.reservesX.getAndRequireEquals();
     this.reservesX.set(reservesX.add(tokenTxDetails.dToken));
     return Bool(true);
   }
@@ -119,12 +130,17 @@ export class PairMintContract extends SmartContract {
     tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
-    const admin = this.admin.getAndRequireEquals();
-    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(
+      admin,
+      tokenTxDetails.toFields()
+    );
     isAdmin.assertTrue("not admin signature");
-    const tokenX = new BasicTokenContract(tokenTxDetails.tokenPub);
+    const tokenX: BasicTokenContract = new BasicTokenContract(
+      tokenTxDetails.tokenPub
+    );
     tokenX.transfer(this.address, tokenTxDetails.sender, tokenTxDetails.dToken);
-    const reservesX = this.reservesX.getAndRequireEquals();
+    const reservesX: UInt64 = this.reservesX.getAndRequireEquals();
     this.reservesX.set(reservesX.sub(tokenTxDetails.dToken));
     return Bool(true);
   }
@@ -134,12 +150,17 @@ export class PairMintContract extends SmartContract {
     tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
-    const admin = this.admin.getAndRequireEquals();
-    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(
+      admin,
+      tokenTxDetails.toFields()
+    );
     isAdmin.assertTrue("not admin signature");
-    const tokenY = new BasicTokenContract(tokenTxDetails.tokenPub);
+    const tokenY: BasicTokenContract = new BasicTokenContract(
+      tokenTxDetails.tokenPub
+    );
     tokenY.transfer(tokenTxDetails.sender, this.address, tokenTxDetails.dToken);
-    const reservesY = this.reservesY.getAndRequireEquals();
+    const reservesY: UInt64 = this.reservesY.getAndRequireEquals();
     this.reservesY.set(reservesY.add(tokenTxDetails.dToken));
     return Bool(true);
   }
@@ -149,28 +170,33 @@ export class PairMintContract extends SmartContract {
     tokenTxDetails: TokenPairMintTx
   ): Bool {
     this.checkUserSignature();
-    const admin = this.admin.getAndRequireEquals();
-    const isAdmin = adminSignature.verify(admin, tokenTxDetails.toFields());
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(
+      admin,
+      tokenTxDetails.toFields()
+    );
     isAdmin.assertTrue("not admin signature");
-    const tokenY = new BasicTokenContract(tokenTxDetails.tokenPub);
+    const tokenY: BasicTokenContract = new BasicTokenContract(
+      tokenTxDetails.tokenPub
+    );
     tokenY.transfer(this.address, tokenTxDetails.sender, tokenTxDetails.dToken);
-    const reservesY = this.reservesY.getAndRequireEquals();
+    const reservesY: UInt64 = this.reservesY.getAndRequireEquals();
     this.reservesY.set(reservesY.sub(tokenTxDetails.dToken));
     return Bool(true);
   }
 
-  private checkUserSignature() {
-    const user = this.sender;
-    const senderUpdate = AccountUpdate.create(user);
+  private checkUserSignature(): PublicKey {
+    const user: PublicKey = this.sender;
+    const senderUpdate: AccountUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
     return user;
   }
 
   private checkAdminSignature() {
-    const admin = this.admin.getAndRequireEquals();
-    const sender = this.sender;
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const sender: PublicKey = this.sender;
     sender.assertEquals(admin);
-    const senderUpdate = AccountUpdate.create(admin);
+    const senderUpdate: AccountUpdate = AccountUpdate.create(admin);
     senderUpdate.requireSignature();
   }
 }
