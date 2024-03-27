@@ -55,7 +55,9 @@ describe("Pair Mint Contract", () => {
       await mintLP(userAccount2, userAccount1, dl, zkAppInstance);
     } catch (e) {
       const errorMessage = String(e);
-      expect(errorMessage.substring(0, 26)).toBe("Error: not admin signature");
+      expect(errorMessage.substring(0, 35)).toBe(
+        "Error: mint LP: not admin signature"
+      );
     }
     const balance = await getTokenIdBalance(
       userAddress2,

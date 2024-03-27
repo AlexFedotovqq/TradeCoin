@@ -90,34 +90,11 @@ let txBaseX = await Mina.transaction(deployerAddress, () => {
   dexApp.supplyTokenX(UInt64.from(10), balance, witness);
 });
 
-await txBaseX.prove();
-await txBaseX.sign([deployerAccount]).send();
-
 console.log("supplying liquidity Y -- base");
-
-const XYbalances: PairBalances = {
-  tokenXAmount: UInt64.zero,
-  tokenYAmount: UInt64.zero,
-  incrementX(amount: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.add(amount);
-  },
-  decrementX(amount: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.sub(amount);
-  },
-  incrementY(amount: UInt64) {
-    this.tokenYAmount = this.tokenYAmount.add(amount);
-  },
-  decrementY(amount: UInt64) {
-    this.tokenYAmount = this.tokenYAmount.sub(amount);
-  },
-};
 
 let txBaseY = await Mina.transaction(deployerAddress, () => {
   dexApp.supplyTokenY(UInt64.from(10), XYbalances);
 });
-
-await txBaseY.prove();
-await txBaseY.sign([deployerAccount]).send();
 
 console.log("minting liquidity");
 
@@ -126,31 +103,15 @@ let txBaseMint = await Mina.transaction(deployerAddress, () => {
   dexApp.mintLiquidityToken(UInt64.from(20));
 });
 
-await txBaseMint.prove();
-await txBaseMint.sign([deployerAccount]).send();
-
-logDexBalances(deployerAddress, tokenX, tokenY, dexApp);
-
 console.log("swap"); */
 /* 
 let txSwap = await Mina.transaction(deployerAddress, () => {
   dexApp.swapXforY(UInt64.from(4));
 });
 
-await txSwap.prove();
-
-await txSwap.sign([deployerAccount, zkDexAppPrivateKey]).send();
-
-logDexBalances(deployerAddress, tokenX, tokenY, dexApp);
-
 console.log("burn liquidity");
 
 let txBurn = await Mina.transaction(deployerAddress, () => {
   dexApp.redeem(UInt64.from(4));
 });
-
-await txBurn.prove();
-await txBurn.sign([deployerAccount, zkDexAppPrivateKey]).send();
-
-logDexBalances(deployerAddress, tokenX, tokenY, dexApp);
  */

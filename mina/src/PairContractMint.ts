@@ -63,13 +63,8 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = adminSignature.verify(
-      admin,
-      tokenTxDetails.toFields()
-    );
-    isAdmin.assertTrue("not admin signature");
+    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    isAdmin.assertTrue("mint LP: not admin signature");
     const dToken = tokenTxDetails.dToken;
     const liquidity: UInt64 = this.totalSupplyLP.getAndRequireEquals();
     const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
@@ -88,13 +83,8 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = adminSignature.verify(
-      admin,
-      tokenTxDetails.toFields()
-    );
-    isAdmin.assertTrue("not admin signature");
+    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    isAdmin.assertTrue("burn LP: not admin signature");
     const dToken = tokenTxDetails.dToken;
     const liquidity: UInt64 = this.totalSupplyLP.getAndRequireEquals();
     const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
@@ -113,13 +103,8 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = adminSignature.verify(
-      admin,
-      tokenTxDetails.toFields()
-    );
-    isAdmin.assertTrue("not admin signature");
+    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    isAdmin.assertTrue("supply X: not admin signature");
     const tokenX: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
     );
@@ -133,13 +118,8 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = adminSignature.verify(
-      admin,
-      tokenTxDetails.toFields()
-    );
-    isAdmin.assertTrue("not admin signature");
+    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    isAdmin.assertTrue("withdraw X: not admin signature");
     const tokenX: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
     );
@@ -153,13 +133,8 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = adminSignature.verify(
-      admin,
-      tokenTxDetails.toFields()
-    );
-    isAdmin.assertTrue("not admin signature");
+    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    isAdmin.assertTrue("supply X: not admin signature");
     const tokenY: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
     );
@@ -173,13 +148,8 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = adminSignature.verify(
-      admin,
-      tokenTxDetails.toFields()
-    );
-    isAdmin.assertTrue("not admin signature");
+    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    isAdmin.assertTrue("withdraw Y: not admin signature");
     const tokenY: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
     );
@@ -193,13 +163,8 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ) {
-    this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = adminSignature.verify(
-      admin,
-      tokenTxDetails.toFields()
-    );
-    isAdmin.assertTrue("not admin signature");
+    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    isAdmin.assertTrue("swap XY: not admin signature");
     const dToken = tokenTxDetails.dToken;
     const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
     const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
@@ -212,10 +177,41 @@ export class PairMintContract extends SmartContract {
     return b;
   }
 
+  @method swapYforX(
+    adminSignature: Signature,
+    tokenTxDetails: TokenPairMintTx
+  ) {
+    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    isAdmin.assertTrue("swap YX: not admin signature");
+    const dToken = tokenTxDetails.dToken;
+    const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
+    const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
+    const bNumerator: UInt64 = reservesLPX.mul(dToken);
+    const bDenominator: UInt64 = reservesLPY.add(dToken);
+    const b = bNumerator.div(bDenominator);
+    b.assertGreaterThan(UInt64.zero, "swap amount is 0");
+    this.reservesLPY.set(reservesLPY.sub(b));
+    this.reservesLPX.set(reservesLPX.add(b));
+    return b;
+  }
+
   private checkUserSignature(): PublicKey {
     const user: PublicKey = this.sender;
     const senderUpdate: AccountUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
     return user;
+  }
+
+  private checkSignatures(
+    adminSignature: Signature,
+    tokenTxDetails: TokenPairMintTx
+  ): Bool {
+    this.checkUserSignature();
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = adminSignature.verify(
+      admin,
+      tokenTxDetails.toFields()
+    );
+    return isAdmin;
   }
 }
