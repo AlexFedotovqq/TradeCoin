@@ -6,7 +6,7 @@ export function FAQ() {
     <div>
       <h1 className="text-3xl font-bold tracking-tight sm:text-center sm:text-6xl">
         How does it{" "}
-        <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 ">
+        <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 p-1">
           Work?
         </span>
       </h1>

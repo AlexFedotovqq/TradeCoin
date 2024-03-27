@@ -9,7 +9,7 @@ export function Pool() {
       </h1>
       <p className="mt-6 text-lg leading-8 text-black sm:text-center">
         What is an
-        <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center">
+        <span className="font-extrabold  text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-red-600 sm:text-center ">
           {" "}
           Automated Market Maker?
         </span>
