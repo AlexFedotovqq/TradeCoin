@@ -8,12 +8,13 @@ import {
   UInt64,
   PublicKey,
   AccountUpdate,
+  TokenContract,
 } from "o1js";
 
 const tokenSymbol = "ABC";
 const URI = "https//tradecoin.dev/uri/uri.json";
 
-export class BasicTokenContract extends SmartContract {
+export class BasicTokenContract extends TokenContract {
   @state(PublicKey) admin = State<PublicKey>();
   @state(UInt64) totalSupply = State<UInt64>();
 
@@ -64,6 +65,8 @@ export class BasicTokenContract extends SmartContract {
     if (to instanceof SmartContract)
       return this.transferToUpdate(from, to, amount);
   }
+
+  @method approveBase() {}
 
   private checkUserSignature() {
     const user: PublicKey = this.sender;

@@ -207,6 +207,35 @@ export class PairContract extends SmartContract {
     this.root.set(rootAfter);
   }
 
+  @method swapYforX(tokenPairTx: TokenPairTx, adminSignature: Signature) {
+    const sender: PublicKey = this.checkUserSignature();
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
+      admin,
+      tokenPairTx.balance.toFields()
+    );
+    isAdmin.assertTrue("not admin");
+
+    this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+    const tokenYPub: PublicKey = this.tokenY.getAndRequireEquals();
+    const tokenTx: TokenPairMintTx = new TokenPairMintTx({
+      sender: sender,
+      tokenPub: tokenYPub,
+      dToken: tokenPairTx.dToken,
+    });
+    const pairMintContract: PairMintContract = new PairMintContract(
+      tokenPairTx.tokenPub
+    );
+    const res: UInt64 = pairMintContract.swapXforY(adminSignature, tokenTx);
+
+    tokenPairTx.balance.increaseX(res);
+    tokenPairTx.balance.decreaseY(tokenPairTx.dToken);
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
+      tokenPairTx.balance.hash()
+    );
+    this.root.set(rootAfter);
+  }
+
   @method mintLiquidityToken(
     tokenPairTx: TokenPairTx,
     adminSignature: Signature
