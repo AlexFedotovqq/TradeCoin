@@ -13,9 +13,6 @@ describe("Pair Mint Contract", () => {
   const adminAccount = testAccounts[0].privateKey;
   const adminAddress = testAccounts[0].publicKey;
 
-  const ownerAccount = testAccounts[1].privateKey;
-  const ownerAddress = testAccounts[1].publicKey;
-
   const userAccount = testAccounts[2].privateKey;
   const userAddress = testAccounts[2].publicKey;
 
@@ -43,7 +40,7 @@ describe("Pair Mint Contract", () => {
     await mintLP(userAccount, adminAccount, dl, zkAppInstance);
     const balance = await getTokenIdBalance(
       userAddress,
-      zkAppInstance.token.id
+      zkAppInstance.deriveTokenId()
     );
     expect(balance).toBe("1");
     expect(zkAppInstance.totalSupplyLP.get().toString()).toBe("1");
@@ -61,7 +58,7 @@ describe("Pair Mint Contract", () => {
     }
     const balance = await getTokenIdBalance(
       userAddress2,
-      zkAppInstance.token.id
+      zkAppInstance.deriveTokenId()
     );
     expect(balance).toBe("0");
   });
@@ -71,7 +68,7 @@ describe("Pair Mint Contract", () => {
     await burnLP(userAccount, adminAccount, dl, zkAppInstance);
     const balance = await getTokenIdBalance(
       userAddress,
-      zkAppInstance.token.id
+      zkAppInstance.deriveTokenId()
     );
     expect(balance).toBe("0");
     expect(zkAppInstance.totalSupplyLP.get().toString()).toBe("0");

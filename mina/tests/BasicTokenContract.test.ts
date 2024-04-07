@@ -36,7 +36,7 @@ describe("Basic Token Contract", () => {
     await mintToken(deployerAccount, deployerAddress1, zkAppInstance);
     const balance = await getTokenIdBalance(
       deployerAddress1,
-      zkAppInstance.token.id
+      zkAppInstance.deriveTokenId()
     );
     expect(balance).toBe("100000000000");
   });
@@ -44,14 +44,14 @@ describe("Basic Token Contract", () => {
   it("check balance for an empty account", async () => {
     const balance = await getTokenIdBalance(
       deployerAddress,
-      zkAppInstance.token.id
+      zkAppInstance.deriveTokenId()
     );
     expect(balance).toBe("0");
   });
 
   it("contract token info matches contract instance", async () => {
     const { tokenId, tokenOwner } = getTokenInfo(zkAppInstance);
-    expect(tokenId).toBe(zkAppInstance.token.id.toString());
+    expect(tokenId).toBe(zkAppInstance.deriveTokenId().toString());
     expect(tokenOwner).toBe(zkAppInstance.address.toBase58());
   });
 
@@ -64,7 +64,7 @@ describe("Basic Token Contract", () => {
     );
     const balance = await getTokenIdBalance(
       deployerAddress2,
-      zkAppInstance.token.id
+      zkAppInstance.deriveTokenId()
     );
     expect(balance).toBe("1");
   });

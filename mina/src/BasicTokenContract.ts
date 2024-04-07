@@ -11,8 +11,8 @@ import {
   TokenContract,
 } from "o1js";
 
-const tokenSymbol = "ABC";
-const URI = "https//tradecoin.dev/uri/uri.json";
+const tokenSymbol: string = "ABC";
+const URI: string = "https//tradecoin.dev/uri/uri.json";
 
 export class BasicTokenContract extends TokenContract {
   @state(PublicKey) admin = State<PublicKey>();
@@ -44,7 +44,7 @@ export class BasicTokenContract extends TokenContract {
     this.checkAdminSignature();
     const totalSupply: UInt64 = this.totalSupply.getAndRequireEquals();
     const newTotalSupply: UInt64 = totalSupply.add(amount);
-    this.token.mint({
+    this.internal.mint({
       address: receiverAddress,
       amount: amount,
     });
@@ -52,11 +52,11 @@ export class BasicTokenContract extends TokenContract {
   }
 
   @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
-    this.token.send({ from, to, amount: value });
+    this.internal.send({ from, to, amount: value });
   }
 
   @method transferToUpdate(from: PublicKey, to: AccountUpdate, value: UInt64) {
-    this.token.send({ from, to, amount: value });
+    this.internal.send({ from, to, amount: value });
   }
 
   transfer(from: PublicKey, to: PublicKey | AccountUpdate, amount: UInt64) {
@@ -85,7 +85,7 @@ export class BasicTokenContract extends TokenContract {
 }
 
 export function createCustomToken(tokenSymbol: string, URI: string) {
-  class BasicTokenContract extends SmartContract {
+  class BasicTokenContract extends TokenContract {
     @state(PublicKey) admin = State<PublicKey>();
     @state(UInt64) totalSupply = State<UInt64>();
 
@@ -107,15 +107,15 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
       this.totalSupply.set(UInt64.zero);
       this.account.tokenSymbol.set(tokenSymbol);
       this.account.zkappUri.set(URI);
-      const sender = this.checkUserSignature();
+      const sender: PublicKey = this.checkUserSignature();
       this.admin.set(sender);
     }
 
     @method mint(receiverAddress: PublicKey, amount: UInt64) {
       this.checkAdminSignature();
-      const totalSupply = this.totalSupply.getAndRequireEquals();
-      const newTotalSupply = totalSupply.add(amount);
-      this.token.mint({
+      const totalSupply: UInt64 = this.totalSupply.getAndRequireEquals();
+      const newTotalSupply: UInt64 = totalSupply.add(amount);
+      this.internal.mint({
         address: receiverAddress,
         amount: amount,
       });
@@ -123,7 +123,7 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
     }
 
     @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
-      this.token.send({ from, to, amount: value });
+      this.internal.send({ from, to, amount: value });
     }
 
     @method transferToUpdate(
@@ -131,7 +131,7 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
       to: AccountUpdate,
       value: UInt64
     ) {
-      this.token.send({ from, to, amount: value });
+      this.internal.send({ from, to, amount: value });
     }
 
     transfer(from: PublicKey, to: PublicKey | AccountUpdate, amount: UInt64) {
@@ -141,18 +141,20 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
         return this.transferToUpdate(from, to, amount);
     }
 
+    @method approveBase() {}
+
     checkUserSignature() {
-      const user = this.sender;
-      const senderUpdate = AccountUpdate.create(user);
+      const user: PublicKey = this.sender;
+      const senderUpdate: AccountUpdate = AccountUpdate.create(user);
       senderUpdate.requireSignature();
       return user;
     }
 
     checkAdminSignature() {
-      const user = this.sender;
-      const admin = this.admin.getAndRequireEquals();
+      const user: PublicKey = this.sender;
+      const admin: PublicKey = this.admin.getAndRequireEquals();
       user.assertEquals(admin);
-      const senderUpdate = AccountUpdate.create(admin);
+      const senderUpdate: AccountUpdate = AccountUpdate.create(admin);
       senderUpdate.requireSignature();
     }
   }

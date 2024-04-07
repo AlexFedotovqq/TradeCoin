@@ -1,5 +1,4 @@
 import {
-  SmartContract,
   state,
   State,
   method,
@@ -13,6 +12,7 @@ import {
   Struct,
   Signature,
   Poseidon,
+  TokenContract,
 } from "o1js";
 
 import { BasicTokenContract } from "./BasicTokenContract.js";
@@ -30,7 +30,7 @@ export class TokenPairMintTx extends Struct({
   }
 }
 
-export class PairMintContract extends SmartContract {
+export class PairMintContract extends TokenContract {
   @state(PublicKey) admin = State<PublicKey>();
   @state(UInt64) reservesX = State<UInt64>();
   @state(UInt64) reservesY = State<UInt64>();
@@ -63,13 +63,13 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("mint LP: not admin signature");
-    const dToken = tokenTxDetails.dToken;
+    const dToken: UInt64 = tokenTxDetails.dToken;
     const liquidity: UInt64 = this.totalSupplyLP.getAndRequireEquals();
     const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
     const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
-    this.token.mint({
+    this.internal.mint({
       address: tokenTxDetails.sender,
       amount: dToken,
     });
@@ -83,13 +83,13 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("burn LP: not admin signature");
-    const dToken = tokenTxDetails.dToken;
+    const dToken: UInt64 = tokenTxDetails.dToken;
     const liquidity: UInt64 = this.totalSupplyLP.getAndRequireEquals();
     const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
     const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
-    this.token.burn({
+    this.internal.burn({
       address: tokenTxDetails.sender,
       amount: tokenTxDetails.dToken,
     });
@@ -103,7 +103,7 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("supply X: not admin signature");
     const tokenX: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
@@ -118,7 +118,7 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("withdraw X: not admin signature");
     const tokenX: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
@@ -133,7 +133,7 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("supply X: not admin signature");
     const tokenY: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
@@ -148,7 +148,7 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ): Bool {
-    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("withdraw Y: not admin signature");
     const tokenY: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
@@ -163,14 +163,14 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ) {
-    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("swap XY: not admin signature");
-    const dToken = tokenTxDetails.dToken;
+    const dToken: UInt64 = tokenTxDetails.dToken;
     const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
     const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
     const bNumerator: UInt64 = reservesLPY.mul(dToken);
     const bDenominator: UInt64 = reservesLPX.add(dToken);
-    const b = bNumerator.div(bDenominator);
+    const b: UInt64 = bNumerator.div(bDenominator);
     b.assertGreaterThan(UInt64.zero, "swap amount is 0");
     this.reservesLPX.set(reservesLPX.sub(b));
     this.reservesLPY.set(reservesLPY.add(b));
@@ -181,14 +181,14 @@ export class PairMintContract extends SmartContract {
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
   ) {
-    const isAdmin = this.checkSignatures(adminSignature, tokenTxDetails);
+    const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("swap YX: not admin signature");
-    const dToken = tokenTxDetails.dToken;
+    const dToken: UInt64 = tokenTxDetails.dToken;
     const reservesLPX: UInt64 = this.reservesLPX.getAndRequireEquals();
     const reservesLPY: UInt64 = this.reservesLPY.getAndRequireEquals();
     const bNumerator: UInt64 = reservesLPX.mul(dToken);
     const bDenominator: UInt64 = reservesLPY.add(dToken);
-    const b = bNumerator.div(bDenominator);
+    const b: UInt64 = bNumerator.div(bDenominator);
     b.assertGreaterThan(UInt64.zero, "swap amount is 0");
     this.reservesLPY.set(reservesLPY.sub(b));
     this.reservesLPX.set(reservesLPX.add(b));
@@ -214,4 +214,6 @@ export class PairMintContract extends SmartContract {
     );
     return isAdmin;
   }
+
+  @method approveBase() {}
 }

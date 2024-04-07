@@ -226,7 +226,7 @@ export class PairContract extends SmartContract {
     const pairMintContract: PairMintContract = new PairMintContract(
       tokenPairTx.tokenPub
     );
-    const res: UInt64 = pairMintContract.swapXforY(adminSignature, tokenTx);
+    const res: UInt64 = pairMintContract.swapYforX(adminSignature, tokenTx);
 
     tokenPairTx.balance.increaseX(res);
     tokenPairTx.balance.decreaseY(tokenPairTx.dToken);
