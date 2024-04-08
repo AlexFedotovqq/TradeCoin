@@ -1,10 +1,22 @@
-import { PublicKey, Mina, AccountUpdate, PrivateKey, UInt64 } from "o1js";
+import {
+  PublicKey,
+  Mina,
+  AccountUpdate,
+  PrivateKey,
+  UInt64,
+  VerificationKey,
+  Transaction,
+} from "o1js";
 
 import {
   BasicTokenContract,
   createCustomToken,
 } from "../BasicTokenContract.js";
-import { sendWaitTx, createTxOptions } from "../helpers/transactions.js";
+import {
+  sendWaitTx,
+  createTxOptions,
+  TxOptions,
+} from "../helpers/transactions.js";
 
 async function compileContractIfProofsEnabled(compile: boolean) {
   if (compile) {
@@ -21,11 +33,12 @@ export async function deployToken(
   live: boolean = false
 ) {
   const pubKey: PublicKey = pk.toPublicKey();
-  const zkAppAddress = zkAppPrivateKey.toPublicKey();
-  const contract = new BasicTokenContract(zkAppAddress);
-  const verificationKey = await compileContractIfProofsEnabled(compile);
-  const txOptions = createTxOptions(pubKey, live);
-  const deploy_txn = await Mina.transaction(txOptions, () => {
+  const zkAppAddress: PublicKey = zkAppPrivateKey.toPublicKey();
+  const contract: BasicTokenContract = new BasicTokenContract(zkAppAddress);
+  const verificationKey: VerificationKey | undefined =
+    await compileContractIfProofsEnabled(compile);
+  const txOptions: TxOptions = createTxOptions(pubKey, live);
+  const deploy_txn: Transaction = await Mina.transaction(txOptions, () => {
     AccountUpdate.fundNewAccount(txOptions.sender);
     contract.deploy({ verificationKey, zkappKey: zkAppPrivateKey });
   });

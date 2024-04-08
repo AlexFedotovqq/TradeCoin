@@ -1,4 +1,4 @@
-import { Mina } from "o1js";
+import { Mina, PublicKey, PrivateKey } from "o1js";
 
 export function startBerkeleyClient(
   endpoint: string = "https://mina-berkeley-graphql.aurowallet.com/graphql"
@@ -10,13 +10,19 @@ export function startBerkeleyClient(
 export function startLocalBlockchainClient(
   proofsEnabled: boolean = false,
   enforceTransactionLimits: boolean = true
-) {
+): {
+  publicKey: PublicKey;
+  privateKey: PrivateKey;
+}[] {
   const Local = Mina.LocalBlockchain({
     proofsEnabled: proofsEnabled,
     enforceTransactionLimits: enforceTransactionLimits,
   });
 
   Mina.setActiveInstance(Local);
-  const accounts = Local.testAccounts;
+  const accounts: {
+    publicKey: PublicKey;
+    privateKey: PrivateKey;
+  }[] = Local.testAccounts;
   return accounts;
 }

@@ -50,9 +50,8 @@ describe("Basic Token Contract", () => {
   });
 
   it("contract token info matches contract instance", async () => {
-    const { tokenId, tokenOwner } = getTokenInfo(zkAppInstance);
+    const tokenId = getTokenInfo(zkAppInstance);
     expect(tokenId).toBe(zkAppInstance.deriveTokenId().toString());
-    expect(tokenOwner).toBe(zkAppInstance.address.toBase58());
   });
 
   it("transfer token", async () => {

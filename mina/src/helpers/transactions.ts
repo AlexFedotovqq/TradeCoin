@@ -1,23 +1,21 @@
-import { PublicKey, PrivateKey, Mina } from "o1js";
+import { PublicKey, PrivateKey, Transaction, PendingTransaction } from "o1js";
 
 export async function sendWaitTx(
-  tx: Mina.Transaction,
+  tx: Transaction,
   pks: PrivateKey[],
   live: boolean = false
-) {
+): Promise<PendingTransaction> {
   await tx.prove();
   tx.sign(pks);
-
-  let pendingTx = await tx.send();
-
+  const pendingTx: PendingTransaction = await tx.send();
   if (live) {
-    console.log(`Got pending transaction with hash ${pendingTx.hash()}`);
-
     await pendingTx.wait();
-    if (!pendingTx.isSuccess) {
+    if (pendingTx.status !== "pending") {
       throw new Error("tx not successful");
     }
+    return pendingTx;
   }
+  return pendingTx;
 }
 
 export function createTxOptions(
