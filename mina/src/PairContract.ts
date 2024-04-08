@@ -41,6 +41,10 @@ export class PersonalPairBalance extends Struct({
     this.tokenXAmount = this.tokenXAmount.sub(dl);
     this.tokenYAmount = this.tokenYAmount.sub(dl);
   }
+  burn(dl: UInt64) {
+    this.tokenXAmount = this.tokenXAmount.add(dl);
+    this.tokenYAmount = this.tokenYAmount.add(dl);
+  }
   toFields(): Field[] {
     return PersonalPairBalance.toFields(this);
   }
@@ -262,6 +266,38 @@ export class PairContract extends SmartContract {
     );
     res.assertTrue();
     tokenPairTx.balance.supply(tokenPairTx.dToken);
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
+      tokenPairTx.balance.hash()
+    );
+    this.root.set(rootAfter);
+  }
+
+  @method burnLiquidityToken(
+    tokenPairTx: TokenPairTx,
+    adminSignature: Signature
+  ) {
+    const sender: PublicKey = this.checkUserSignature();
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
+      admin,
+      tokenPairTx.balance.toFields()
+    );
+    isAdmin.assertTrue("not admin");
+    this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+    const tokenTx: TokenPairMintTx = new TokenPairMintTx({
+      sender: sender,
+      tokenPub: tokenPairTx.tokenPub,
+      dToken: tokenPairTx.dToken,
+    });
+    const pairMintContract: PairMintContract = new PairMintContract(
+      tokenPairTx.tokenPub
+    );
+    const res: Bool = pairMintContract.burnLiquidityToken(
+      adminSignature,
+      tokenTx
+    );
+    res.assertTrue();
+    tokenPairTx.balance.burn(tokenPairTx.dToken);
     const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
       tokenPairTx.balance.hash()
     );

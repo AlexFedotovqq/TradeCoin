@@ -36,7 +36,7 @@ describe("Pair Mint Contract", () => {
   });
 
   it("mint liquidity token", async () => {
-    const dl = UInt64.one;
+    const dl: UInt64 = UInt64.one;
     await mintLP(userAccount, adminAccount, dl, zkAppInstance);
     const balance = await getTokenIdBalance(
       userAddress,
@@ -48,15 +48,15 @@ describe("Pair Mint Contract", () => {
 
   it("fails to mint liquidity token", async () => {
     try {
-      const dl = UInt64.one;
+      const dl: UInt64 = UInt64.one;
       await mintLP(userAccount2, userAccount1, dl, zkAppInstance);
     } catch (e) {
-      const errorMessage = String(e);
+      const errorMessage: string = String(e);
       expect(errorMessage.substring(0, 35)).toBe(
         "Error: mint LP: not admin signature"
       );
     }
-    const balance = await getTokenIdBalance(
+    const balance: string = await getTokenIdBalance(
       userAddress2,
       zkAppInstance.deriveTokenId()
     );
@@ -64,9 +64,9 @@ describe("Pair Mint Contract", () => {
   });
 
   it("burn liquidity token", async () => {
-    const dl = UInt64.one;
+    const dl: UInt64 = UInt64.one;
     await burnLP(userAccount, adminAccount, dl, zkAppInstance);
-    const balance = await getTokenIdBalance(
+    const balance: string = await getTokenIdBalance(
       userAddress,
       zkAppInstance.deriveTokenId()
     );

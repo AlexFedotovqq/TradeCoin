@@ -1,4 +1,4 @@
-import { PrivateKey, UInt64, MerkleMap, PublicKey, SmartContract } from "o1js";
+import { PrivateKey, UInt64, MerkleMap, PublicKey } from "o1js";
 
 import {
   deployPair,
@@ -22,7 +22,7 @@ import { PairContract, PersonalPairBalance } from "../src/PairContract.js";
 describe("Pair Contract", () => {
   const testAccounts = startLocalBlockchainClient();
 
-  const map = new MerkleMap();
+  const map: MerkleMap = new MerkleMap();
 
   const deployerAccount = testAccounts[0].privateKey;
   const deployerAddress = testAccounts[0].publicKey;
@@ -120,7 +120,7 @@ describe("Pair Contract", () => {
   });
 
   it("supplying Y", async () => {
-    const dy = UInt64.one;
+    const dy: UInt64 = UInt64.one;
     firstUserBalance = await supplyY(
       adminAccount,
       adminMintAccount,
@@ -135,7 +135,7 @@ describe("Pair Contract", () => {
   });
 
   it("supplying more Y", async () => {
-    const dy = UInt64.one;
+    const dy: UInt64 = UInt64.one;
     firstUserBalance = await supplyY(
       adminAccount,
       adminMintAccount,
@@ -150,7 +150,7 @@ describe("Pair Contract", () => {
   });
 
   it("supplying X", async () => {
-    const dx = UInt64.one;
+    const dx: UInt64 = UInt64.one;
     firstUserBalance = await supplyX(
       adminAccount,
       adminMintAccount,
@@ -165,7 +165,7 @@ describe("Pair Contract", () => {
   });
 
   it("minting liquidity", async () => {
-    const dl = UInt64.one;
+    const dl: UInt64 = UInt64.one;
     await mintLiquidityToken(
       adminAccount,
       adminMintAccount,
