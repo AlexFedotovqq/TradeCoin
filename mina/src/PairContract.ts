@@ -62,6 +62,10 @@ export class TokenPairTx extends Struct({
 }) {}
 
 export class PairContract extends SmartContract {
+  events = {
+    "token-X": PublicKey,
+    "token-Y": PublicKey,
+  };
   @state(PublicKey) admin = State<PublicKey>();
   @state(PublicKey) tokenX = State<PublicKey>();
   @state(PublicKey) tokenY = State<PublicKey>();
@@ -95,6 +99,8 @@ export class PairContract extends SmartContract {
     this.tokenY.getAndRequireEquals();
     this.tokenX.set(_tokenX);
     this.tokenY.set(_tokenY);
+    this.emitEvent("token-X", _tokenX);
+    this.emitEvent("token-Y", _tokenY);
   }
 
   @method createPersonalBalance(

@@ -51,6 +51,17 @@ export class BasicTokenContract extends TokenContract {
     this.totalSupply.set(newTotalSupply);
   }
 
+  @method burn(address: PublicKey, amount: UInt64) {
+    this.checkAdminSignature();
+    const totalSupply: UInt64 = this.totalSupply.getAndRequireEquals();
+    const newTotalSupply: UInt64 = totalSupply.sub(amount);
+    this.internal.burn({
+      address: address,
+      amount: amount,
+    });
+    this.totalSupply.set(newTotalSupply);
+  }
+
   @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
     this.internal.send({ from, to, amount: value });
   }
