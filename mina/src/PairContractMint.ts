@@ -62,7 +62,7 @@ export class PairMintContract extends TokenContract {
   @method mintLiquidityToken(
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
-  ): Bool {
+  ): UInt64 {
     const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("mint LP: not admin signature");
     const dToken: UInt64 = tokenTxDetails.dToken;
@@ -76,13 +76,13 @@ export class PairMintContract extends TokenContract {
     this.reservesLPX.set(reservesLPX.add(dToken));
     this.reservesLPY.set(reservesLPY.add(dToken));
     this.totalSupplyLP.set(liquidity.add(dToken));
-    return Bool(true);
+    return dToken;
   }
 
   @method burnLiquidityToken(
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
-  ): Bool {
+  ): UInt64 {
     const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("burn LP: not admin signature");
     const dToken: UInt64 = tokenTxDetails.dToken;
@@ -96,73 +96,77 @@ export class PairMintContract extends TokenContract {
     this.reservesLPX.set(reservesLPX.sub(dToken));
     this.reservesLPY.set(reservesLPY.sub(dToken));
     this.totalSupplyLP.set(liquidity.sub(dToken));
-    return Bool(true);
+    return dToken;
   }
 
   @method supplyTokenX(
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
-  ): Bool {
+  ): UInt64 {
     const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("supply X: not admin signature");
+    const dToken: UInt64 = tokenTxDetails.dToken;
     const tokenX: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
     );
-    tokenX.transfer(tokenTxDetails.sender, this.address, tokenTxDetails.dToken);
+    tokenX.transfer(tokenTxDetails.sender, this.address, dToken);
     const reservesX: UInt64 = this.reservesX.getAndRequireEquals();
-    this.reservesX.set(reservesX.add(tokenTxDetails.dToken));
-    return Bool(true);
+    this.reservesX.set(reservesX.add(dToken));
+    return dToken;
   }
 
   @method withdrawTokenX(
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
-  ): Bool {
+  ): UInt64 {
     const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("withdraw X: not admin signature");
+    const dToken: UInt64 = tokenTxDetails.dToken;
     const tokenX: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
     );
-    tokenX.transfer(this.address, tokenTxDetails.sender, tokenTxDetails.dToken);
+    tokenX.transfer(this.address, tokenTxDetails.sender, dToken);
     const reservesX: UInt64 = this.reservesX.getAndRequireEquals();
-    this.reservesX.set(reservesX.sub(tokenTxDetails.dToken));
-    return Bool(true);
+    this.reservesX.set(reservesX.sub(dToken));
+    return dToken;
   }
 
   @method supplyTokenY(
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
-  ): Bool {
+  ): UInt64 {
     const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("supply X: not admin signature");
+    const dToken: UInt64 = tokenTxDetails.dToken;
     const tokenY: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
     );
-    tokenY.transfer(tokenTxDetails.sender, this.address, tokenTxDetails.dToken);
+    tokenY.transfer(tokenTxDetails.sender, this.address, dToken);
     const reservesY: UInt64 = this.reservesY.getAndRequireEquals();
-    this.reservesY.set(reservesY.add(tokenTxDetails.dToken));
-    return Bool(true);
+    this.reservesY.set(reservesY.add(dToken));
+    return dToken;
   }
 
   @method withdrawTokenY(
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
-  ): Bool {
+  ): UInt64 {
     const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("withdraw Y: not admin signature");
+    const dToken: UInt64 = tokenTxDetails.dToken;
     const tokenY: BasicTokenContract = new BasicTokenContract(
       tokenTxDetails.tokenPub
     );
-    tokenY.transfer(this.address, tokenTxDetails.sender, tokenTxDetails.dToken);
+    tokenY.transfer(this.address, tokenTxDetails.sender, dToken);
     const reservesY: UInt64 = this.reservesY.getAndRequireEquals();
-    this.reservesY.set(reservesY.sub(tokenTxDetails.dToken));
-    return Bool(true);
+    this.reservesY.set(reservesY.sub(dToken));
+    return dToken;
   }
 
   @method swapXforY(
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
-  ) {
+  ): UInt64 {
     const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("swap XY: not admin signature");
     const dToken: UInt64 = tokenTxDetails.dToken;
@@ -180,7 +184,7 @@ export class PairMintContract extends TokenContract {
   @method swapYforX(
     adminSignature: Signature,
     tokenTxDetails: TokenPairMintTx
-  ) {
+  ): UInt64 {
     const isAdmin: Bool = this.checkSignatures(adminSignature, tokenTxDetails);
     isAdmin.assertTrue("swap YX: not admin signature");
     const dToken: UInt64 = tokenTxDetails.dToken;

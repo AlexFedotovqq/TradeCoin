@@ -63,8 +63,8 @@ export class TokenPairTx extends Struct({
 
 export class PairContract extends SmartContract {
   events = {
-    "token-X": PublicKey,
-    "token-Y": PublicKey,
+    "created-balance": Field,
+    "updated-root": Field,
   };
   @state(PublicKey) admin = State<PublicKey>();
   @state(PublicKey) tokenX = State<PublicKey>();
@@ -93,14 +93,21 @@ export class PairContract extends SmartContract {
     this.admin.set(sender);
   }
 
-  @method initContract(_tokenX: PublicKey, _tokenY: PublicKey) {
+  @method initContract(_tokenX: PublicKey, _tokenY: PublicKey): boolean {
     this.checkAdminSignature();
-    this.tokenX.getAndRequireEquals();
-    this.tokenY.getAndRequireEquals();
+
+    const tokenX: PublicKey = this.tokenX.getAndRequireEquals();
+    const tokenY: PublicKey = this.tokenY.getAndRequireEquals();
+
+    const tokenXIsEmpty: Bool = tokenX.isEmpty();
+    tokenXIsEmpty.assertTrue("tokenX is initialised");
+
+    const tokenYIsEmpty: Bool = tokenY.isEmpty();
+    tokenYIsEmpty.assertTrue("tokenY is initialised");
+
     this.tokenX.set(_tokenX);
     this.tokenY.set(_tokenY);
-    this.emitEvent("token-X", _tokenX);
-    this.emitEvent("token-Y", _tokenY);
+    return true;
   }
 
   @method createPersonalBalance(
@@ -116,198 +123,243 @@ export class PairContract extends SmartContract {
       tokenXAmount: UInt64.zero,
       tokenYAmount: UInt64.zero,
     });
+
     const admin: PublicKey = this.admin.getAndRequireEquals();
     const isAdmin: Bool = adminSignature.verify(admin, Balance.toFields());
     isAdmin.assertTrue("not admin");
 
     const initialRoot: Field = this.root.getAndRequireEquals();
     const [rootBefore, key] = keyWitness.computeRootAndKey(Field(0));
-    rootBefore.assertEquals(initialRoot);
-    key.assertEquals(currentId);
-    const [rootAfter, keyAfter] = keyWitness.computeRootAndKey(Balance.hash());
-    key.assertEquals(keyAfter);
+    rootBefore.assertEquals(initialRoot, "root not matches");
+    key.assertEquals(currentId, "key not matches");
+
+    const BalanceHash: Field = Balance.hash();
+    const [rootAfter] = keyWitness.computeRootAndKey(BalanceHash);
 
     this.userId.set(currentId.add(1));
     this.root.set(rootAfter);
+    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-root", rootAfter);
     return Balance;
   }
 
-  @method supplyTokenX(tokenPairTx: TokenPairTx, adminSignature: Signature) {
+  @method supplyTokenX(
+    tokenPairTx: TokenPairTx,
+    adminSignature: Signature
+  ): UInt64 {
     const sender: PublicKey = this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
-      admin,
-      tokenPairTx.balance.toFields()
-    );
-    isAdmin.assertTrue("not admin");
+    this.verifyAdminTokenPairTxSignature(tokenPairTx);
 
     this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+
     const tokenXPub: PublicKey = this.tokenX.getAndRequireEquals();
+    const dToken: UInt64 = tokenPairTx.dToken;
     const tokenTx: TokenPairMintTx = new TokenPairMintTx({
       sender: sender,
       tokenPub: tokenXPub,
-      dToken: tokenPairTx.dToken,
+      dToken: dToken,
     });
+
     const pairMintContract: PairMintContract = new PairMintContract(
       tokenPairTx.tokenPub
     );
-    const res: Bool = pairMintContract.supplyTokenX(adminSignature, tokenTx);
-    res.assertTrue();
+    const res: UInt64 = pairMintContract.supplyTokenX(adminSignature, tokenTx);
+    const isCorrect: Bool = res.equals(dToken);
+    isCorrect.assertTrue("tokenX amount not supplied correctly");
 
-    tokenPairTx.balance.increaseX(tokenPairTx.dToken);
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
-      tokenPairTx.balance.hash()
-    );
+    tokenPairTx.balance.increaseX(dToken);
+    const BalanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
     this.root.set(rootAfter);
+    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-root", rootAfter);
+    return dToken;
   }
 
-  @method supplyTokenY(tokenPairTx: TokenPairTx, adminSignature: Signature) {
+  @method supplyTokenY(
+    tokenPairTx: TokenPairTx,
+    adminSignature: Signature
+  ): UInt64 {
     const sender: PublicKey = this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
-      admin,
-      tokenPairTx.balance.toFields()
-    );
-    isAdmin.assertTrue("not admin");
+    this.verifyAdminTokenPairTxSignature(tokenPairTx);
+
     this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+
     const tokenYPub: PublicKey = this.tokenY.getAndRequireEquals();
+    const dToken: UInt64 = tokenPairTx.dToken;
     const tokenTx: TokenPairMintTx = new TokenPairMintTx({
       sender: sender,
       tokenPub: tokenYPub,
-      dToken: tokenPairTx.dToken,
+      dToken: dToken,
     });
+
     const pairMintContract: PairMintContract = new PairMintContract(
       tokenPairTx.tokenPub
     );
-    const res: Bool = pairMintContract.supplyTokenY(adminSignature, tokenTx);
-    res.assertTrue();
-    tokenPairTx.balance.increaseY(tokenPairTx.dToken);
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
-      tokenPairTx.balance.hash()
-    );
+    const res: UInt64 = pairMintContract.supplyTokenY(adminSignature, tokenTx);
+    const isCorrect: Bool = res.equals(dToken);
+    isCorrect.assertTrue("tokenY amount not supplied correctly");
+
+    tokenPairTx.balance.increaseY(dToken);
+
+    const BalanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
     this.root.set(rootAfter);
+    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-root", rootAfter);
+    return dToken;
   }
 
-  @method swapXforY(tokenPairTx: TokenPairTx, adminSignature: Signature) {
+  @method swapXforY(
+    tokenPairTx: TokenPairTx,
+    adminSignature: Signature
+  ): UInt64 {
     const sender: PublicKey = this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
-      admin,
-      tokenPairTx.balance.toFields()
-    );
-    isAdmin.assertTrue("not admin");
+    this.verifyAdminTokenPairTxSignature(tokenPairTx);
 
     this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+
     const tokenXPub: PublicKey = this.tokenX.getAndRequireEquals();
+    const dToken: UInt64 = tokenPairTx.dToken;
     const tokenTx: TokenPairMintTx = new TokenPairMintTx({
       sender: sender,
       tokenPub: tokenXPub,
-      dToken: tokenPairTx.dToken,
+      dToken: dToken,
     });
+
     const pairMintContract: PairMintContract = new PairMintContract(
       tokenPairTx.tokenPub
     );
     const res: UInt64 = pairMintContract.swapXforY(adminSignature, tokenTx);
+    const isCorrect: Bool = res.equals(dToken);
+    isCorrect.assertTrue("swapped not correct amount");
 
-    tokenPairTx.balance.increaseY(res);
-    tokenPairTx.balance.decreaseX(tokenPairTx.dToken);
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
-      tokenPairTx.balance.hash()
-    );
+    tokenPairTx.balance.increaseY(dToken);
+    tokenPairTx.balance.decreaseX(dToken);
+
+    const BalanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
     this.root.set(rootAfter);
+    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-root", rootAfter);
+    return dToken;
   }
 
-  @method swapYforX(tokenPairTx: TokenPairTx, adminSignature: Signature) {
+  @method swapYforX(
+    tokenPairTx: TokenPairTx,
+    adminSignature: Signature
+  ): UInt64 {
     const sender: PublicKey = this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
-      admin,
-      tokenPairTx.balance.toFields()
-    );
-    isAdmin.assertTrue("not admin");
+    this.verifyAdminTokenPairTxSignature(tokenPairTx);
 
     this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+
     const tokenYPub: PublicKey = this.tokenY.getAndRequireEquals();
+    const dToken: UInt64 = tokenPairTx.dToken;
     const tokenTx: TokenPairMintTx = new TokenPairMintTx({
       sender: sender,
       tokenPub: tokenYPub,
-      dToken: tokenPairTx.dToken,
+      dToken: dToken,
     });
+
     const pairMintContract: PairMintContract = new PairMintContract(
       tokenPairTx.tokenPub
     );
     const res: UInt64 = pairMintContract.swapYforX(adminSignature, tokenTx);
+    const isCorrect: Bool = res.equals(dToken);
+    isCorrect.assertTrue("swapped not correct amount");
 
-    tokenPairTx.balance.increaseX(res);
-    tokenPairTx.balance.decreaseY(tokenPairTx.dToken);
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
-      tokenPairTx.balance.hash()
-    );
+    tokenPairTx.balance.increaseX(dToken);
+    tokenPairTx.balance.decreaseY(dToken);
+
+    const BalanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
     this.root.set(rootAfter);
+    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-root", rootAfter);
+    return dToken;
   }
 
   @method mintLiquidityToken(
     tokenPairTx: TokenPairTx,
     adminSignature: Signature
-  ) {
+  ): UInt64 {
     const sender: PublicKey = this.checkUserSignature();
-    const admin: PublicKey = this.admin.getAndRequireEquals();
-    const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
-      admin,
-      tokenPairTx.balance.toFields()
-    );
-    isAdmin.assertTrue("not admin");
+    this.verifyAdminTokenPairTxSignature(tokenPairTx);
+
     this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+
+    const dToken: UInt64 = tokenPairTx.dToken;
     const tokenTx: TokenPairMintTx = new TokenPairMintTx({
       sender: sender,
       tokenPub: tokenPairTx.tokenPub,
-      dToken: tokenPairTx.dToken,
+      dToken: dToken,
     });
+
     const pairMintContract: PairMintContract = new PairMintContract(
       tokenPairTx.tokenPub
     );
-    const res: Bool = pairMintContract.mintLiquidityToken(
+
+    const res: UInt64 = pairMintContract.mintLiquidityToken(
       adminSignature,
       tokenTx
     );
-    res.assertTrue();
-    tokenPairTx.balance.supply(tokenPairTx.dToken);
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
-      tokenPairTx.balance.hash()
-    );
+    const isCorrect: Bool = res.equals(dToken);
+    isCorrect.assertTrue("minted correct LP token amount");
+
+    tokenPairTx.balance.supply(dToken);
+
+    const BalanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
     this.root.set(rootAfter);
+    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-root", rootAfter);
+    return dToken;
   }
 
   @method burnLiquidityToken(
     tokenPairTx: TokenPairTx,
     adminSignature: Signature
-  ) {
+  ): UInt64 {
     const sender: PublicKey = this.checkUserSignature();
+    this.verifyAdminTokenPairTxSignature(tokenPairTx);
+
+    this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+
+    const dToken: UInt64 = tokenPairTx.dToken;
+    const tokenTx: TokenPairMintTx = new TokenPairMintTx({
+      sender: sender,
+      tokenPub: tokenPairTx.tokenPub,
+      dToken: dToken,
+    });
+
+    const pairMintContract: PairMintContract = new PairMintContract(
+      tokenPairTx.tokenPub
+    );
+    const res: UInt64 = pairMintContract.burnLiquidityToken(
+      adminSignature,
+      tokenTx
+    );
+    const isCorrect: Bool = res.equals(dToken);
+    isCorrect.assertTrue("burned not correct LP amount");
+
+    tokenPairTx.balance.burn(dToken);
+
+    const BalanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
+    this.root.set(rootAfter);
+    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-root", rootAfter);
+    return dToken;
+  }
+
+  private verifyAdminTokenPairTxSignature(tokenPairTx: TokenPairTx) {
     const admin: PublicKey = this.admin.getAndRequireEquals();
     const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
       admin,
       tokenPairTx.balance.toFields()
     );
     isAdmin.assertTrue("not admin");
-    this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
-    const tokenTx: TokenPairMintTx = new TokenPairMintTx({
-      sender: sender,
-      tokenPub: tokenPairTx.tokenPub,
-      dToken: tokenPairTx.dToken,
-    });
-    const pairMintContract: PairMintContract = new PairMintContract(
-      tokenPairTx.tokenPub
-    );
-    const res: Bool = pairMintContract.burnLiquidityToken(
-      adminSignature,
-      tokenTx
-    );
-    res.assertTrue();
-    tokenPairTx.balance.burn(tokenPairTx.dToken);
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(
-      tokenPairTx.balance.hash()
-    );
-    this.root.set(rootAfter);
   }
 
   private checkMerkleMap(
@@ -318,11 +370,11 @@ export class PairContract extends SmartContract {
     const [rootBefore, key] = keyWitness.computeRootAndKey(
       balanceBefore.hash()
     );
-    rootBefore.assertEquals(initialRoot);
-    key.assertEquals(balanceBefore.id);
+    rootBefore.assertEquals(initialRoot, "root not matching");
+    key.assertEquals(balanceBefore.id, "key not matching");
   }
 
-  private checkUserSignature() {
+  private checkUserSignature(): PublicKey {
     const user: PublicKey = this.sender;
     const senderUpdate: AccountUpdate = AccountUpdate.create(user);
     senderUpdate.requireSignature();
@@ -332,7 +384,8 @@ export class PairContract extends SmartContract {
   private checkAdminSignature() {
     const admin: PublicKey = this.admin.getAndRequireEquals();
     const sender: PublicKey = this.sender;
-    sender.assertEquals(admin);
+    const isAdmin: Bool = sender.equals(admin);
+    isAdmin.assertTrue("not admin");
     const senderUpdate: AccountUpdate = AccountUpdate.create(sender);
     senderUpdate.requireSignature();
   }

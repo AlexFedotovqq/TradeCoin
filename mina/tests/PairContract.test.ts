@@ -87,6 +87,19 @@ describe("Pair Contract", () => {
     await initPairTokens(adminAccount, pairSC, tokenX.address, tokenY.address);
   });
 
+  it("fails to initialise tokens in a pair smart contract", async () => {
+    try {
+      await initPairTokens(
+        adminAccount,
+        pairSC,
+        tokenX.address,
+        tokenY.address
+      );
+    } catch (e) {
+      expect(String(e).substring(0, 28)).toBe("Error: tokenX is initialised");
+    }
+  });
+
   it("deploying pair minting contract and initing tokens", async () => {
     await deployPairMint(adminMintAccount, pairMintPK, pairMintSC);
     await init2TokensSmartContract(
