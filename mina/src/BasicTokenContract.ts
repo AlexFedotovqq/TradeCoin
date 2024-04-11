@@ -1,5 +1,5 @@
 import {
-  SmartContract,
+  Bool,
   state,
   State,
   method,
@@ -21,13 +21,12 @@ export class BasicTokenContract extends TokenContract {
   deploy(args?: DeployArgs) {
     super.deploy(args);
     const permissionToEdit = Permissions.proof();
+
     this.account.permissions.set({
       ...Permissions.default(),
       editState: permissionToEdit,
       setTokenSymbol: permissionToEdit,
       setZkappUri: permissionToEdit,
-      send: permissionToEdit,
-      receive: permissionToEdit,
     });
   }
 
@@ -62,19 +61,14 @@ export class BasicTokenContract extends TokenContract {
     this.totalSupply.set(newTotalSupply);
   }
 
+  transfer(from: PublicKey, to: PublicKey, amount: UInt64) {
+    if (to instanceof PublicKey) {
+      return this.transferToAddress(from, to, amount);
+    }
+  }
+
   @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
     this.internal.send({ from, to, amount: value });
-  }
-
-  @method transferToUpdate(from: PublicKey, to: AccountUpdate, value: UInt64) {
-    this.internal.send({ from, to, amount: value });
-  }
-
-  transfer(from: PublicKey, to: PublicKey | AccountUpdate, amount: UInt64) {
-    if (to instanceof PublicKey)
-      return this.transferToAddress(from, to, amount);
-    if (to instanceof SmartContract)
-      return this.transferToUpdate(from, to, amount);
   }
 
   @method approveBase() {}
@@ -89,7 +83,8 @@ export class BasicTokenContract extends TokenContract {
   private checkAdminSignature() {
     const user: PublicKey = this.sender;
     const admin: PublicKey = this.admin.getAndRequireEquals();
-    user.assertEquals(admin);
+    const isAdmin: Bool = user.equals(admin);
+    isAdmin.assertEquals(true, "not admin");
     const senderUpdate: AccountUpdate = AccountUpdate.create(admin);
     senderUpdate.requireSignature();
   }
@@ -103,13 +98,12 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
     deploy(args?: DeployArgs) {
       super.deploy(args);
       const permissionToEdit = Permissions.proof();
+
       this.account.permissions.set({
         ...Permissions.default(),
         editState: permissionToEdit,
         setTokenSymbol: permissionToEdit,
         setZkappUri: permissionToEdit,
-        send: permissionToEdit,
-        receive: permissionToEdit,
       });
     }
 
@@ -144,23 +138,14 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
       this.totalSupply.set(newTotalSupply);
     }
 
+    transfer(from: PublicKey, to: PublicKey, amount: UInt64) {
+      if (to instanceof PublicKey) {
+        return this.transferToAddress(from, to, amount);
+      }
+    }
+
     @method transferToAddress(from: PublicKey, to: PublicKey, value: UInt64) {
       this.internal.send({ from, to, amount: value });
-    }
-
-    @method transferToUpdate(
-      from: PublicKey,
-      to: AccountUpdate,
-      value: UInt64
-    ) {
-      this.internal.send({ from, to, amount: value });
-    }
-
-    transfer(from: PublicKey, to: PublicKey | AccountUpdate, amount: UInt64) {
-      if (to instanceof PublicKey)
-        return this.transferToAddress(from, to, amount);
-      if (to instanceof SmartContract)
-        return this.transferToUpdate(from, to, amount);
     }
 
     @method approveBase() {}
@@ -175,7 +160,8 @@ export function createCustomToken(tokenSymbol: string, URI: string) {
     checkAdminSignature() {
       const user: PublicKey = this.sender;
       const admin: PublicKey = this.admin.getAndRequireEquals();
-      user.assertEquals(admin);
+      const isAdmin: Bool = user.equals(admin);
+      isAdmin.assertEquals(true, "not admin");
       const senderUpdate: AccountUpdate = AccountUpdate.create(admin);
       senderUpdate.requireSignature();
     }

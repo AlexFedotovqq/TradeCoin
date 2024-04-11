@@ -2,7 +2,13 @@ import { PrivateKey } from "o1js";
 
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import { getTokenIdBalance, getTokenInfo } from "../src/helpers/token.js";
-import { deployToken, mintToken, transferToken } from "../src/token/token.js";
+import {
+  burnToken,
+  deployToken,
+  deployCustomToken,
+  mintToken,
+  transferToken,
+} from "../src/token/token.js";
 import { BasicTokenContract } from "../src/BasicTokenContract.js";
 
 const proofsEnabled = false;
@@ -10,14 +16,17 @@ const proofsEnabled = false;
 describe("Basic Token Contract", () => {
   const testAccounts = startLocalBlockchainClient(proofsEnabled);
 
-  const deployerAccount = testAccounts[0].privateKey;
-  const deployerAddress = testAccounts[0].publicKey;
+  const adminAccount = testAccounts[0].privateKey;
+  const adminAddress = testAccounts[0].publicKey;
 
-  const deployerAccount1 = testAccounts[1].privateKey;
-  const deployerAddress1 = testAccounts[1].publicKey;
+  const adminAccount1 = testAccounts[1].privateKey;
+  const adminAddres1 = testAccounts[1].publicKey;
 
-  const deployerAccount2 = testAccounts[2].privateKey;
-  const deployerAddress2 = testAccounts[2].publicKey;
+  const userAccount1 = testAccounts[2].privateKey;
+  const userAddress1 = testAccounts[2].publicKey;
+
+  const userAccount2 = testAccounts[3].privateKey;
+  const userAddress2 = testAccounts[3].publicKey;
 
   const zkAppPrivateKey: PrivateKey = PrivateKey.random();
 
@@ -26,43 +35,55 @@ describe("Basic Token Contract", () => {
   );
 
   it("deploying token", async () => {
-    await deployToken(deployerAccount, zkAppPrivateKey, proofsEnabled);
-    expect(zkAppInstance.admin.get().toBase58()).toBe(
-      deployerAddress.toBase58()
-    );
+    await deployToken(adminAccount, zkAppPrivateKey, proofsEnabled);
+    expect(zkAppInstance.admin.get().toBase58()).toBe(adminAddress.toBase58());
+  });
+
+  it("deploying custom token", async () => {
+    const { contract } = await deployCustomToken(adminAccount1);
+    expect(contract.admin.get().toBase58()).toBe(adminAddres1.toBase58());
   });
 
   it("minting token", async () => {
-    await mintToken(deployerAccount, deployerAddress1, zkAppInstance);
-    const balance = await getTokenIdBalance(
-      deployerAddress1,
+    await mintToken(adminAccount, userAddress1, zkAppInstance);
+    const balance: string = await getTokenIdBalance(
+      userAddress1,
       zkAppInstance.deriveTokenId()
     );
     expect(balance).toBe("100000000000");
   });
 
-  it("check balance for an empty account", async () => {
-    const balance = await getTokenIdBalance(
-      deployerAddress,
+  it("burning token", async () => {
+    await burnToken(adminAccount, userAccount1, zkAppInstance);
+    const balance: string = await getTokenIdBalance(
+      userAddress1,
       zkAppInstance.deriveTokenId()
     );
-    expect(balance).toBe("0");
+    expect(balance).toBe("99999999999");
   });
 
-  it("contract token info matches contract instance", async () => {
-    const tokenId = getTokenInfo(zkAppInstance);
+  it("contract token id matches contract instance id", async () => {
+    const tokenId: string = getTokenInfo(zkAppInstance);
     expect(tokenId).toBe(zkAppInstance.deriveTokenId().toString());
   });
 
-  it("transfer token", async () => {
+  it("transfer token to a user", async () => {
+    await transferToken(userAccount1, userAddress2, zkAppInstance);
+    const balance: string = await getTokenIdBalance(
+      userAddress2,
+      zkAppInstance.deriveTokenId()
+    );
+    expect(balance).toBe("1");
+  });
+
+  it("transfer token to a contract", async () => {
     await transferToken(
-      zkAppPrivateKey,
-      deployerAccount1,
-      deployerAddress2,
+      userAccount2,
+      zkAppPrivateKey.toPublicKey(),
       zkAppInstance
     );
-    const balance = await getTokenIdBalance(
-      deployerAddress2,
+    const balance: string = await getTokenIdBalance(
+      zkAppPrivateKey.toPublicKey(),
       zkAppInstance.deriveTokenId()
     );
     expect(balance).toBe("1");

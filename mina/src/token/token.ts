@@ -101,7 +101,7 @@ export async function deploy2Tokens(
 }
 
 export async function mintToken(
-  deployerPk: PrivateKey,
+  adminPk: PrivateKey,
   receiverPub: PublicKey,
   contract: BasicTokenContract,
   compile: boolean = false,
@@ -109,17 +109,34 @@ export async function mintToken(
   mintAmount: UInt64 = UInt64.from(100_000_000_000)
 ) {
   await compileContractIfProofsEnabled(compile);
-  const deployerAddress = deployerPk.toPublicKey();
+  const deployerAddress = adminPk.toPublicKey();
   const txOptions = createTxOptions(deployerAddress, live);
   const mint_txn = await Mina.transaction(txOptions, () => {
     AccountUpdate.fundNewAccount(txOptions.sender);
     contract.mint(receiverPub, mintAmount);
   });
-  await sendWaitTx(mint_txn, [deployerPk], live);
+  await sendWaitTx(mint_txn, [adminPk], live);
+}
+
+export async function burnToken(
+  adminPk: PrivateKey,
+  receiverPK: PrivateKey,
+  contract: BasicTokenContract,
+  compile: boolean = false,
+  live: boolean = false,
+  mintAmount: UInt64 = UInt64.from(1)
+) {
+  await compileContractIfProofsEnabled(compile);
+  const adminAddress = adminPk.toPublicKey();
+  const receiverPub = receiverPK.toPublicKey();
+  const txOptions = createTxOptions(adminAddress, live);
+  const mint_txn = await Mina.transaction(txOptions, () => {
+    contract.burn(receiverPub, mintAmount);
+  });
+  await sendWaitTx(mint_txn, [adminPk, receiverPK], live);
 }
 
 export async function transferToken(
-  zkAppPrivateKey: PrivateKey,
   senderPK: PrivateKey,
   receiverPub: PublicKey,
   contract: BasicTokenContract,
@@ -130,7 +147,7 @@ export async function transferToken(
     AccountUpdate.fundNewAccount(senderPub);
     contract.transfer(senderPub, receiverPub, sendAmount);
   });
-  await sendWaitTx(send_txn, [senderPK, zkAppPrivateKey]);
+  await sendWaitTx(send_txn, [senderPK]);
 }
 
 export async function init2TokensSmartContract(
