@@ -83,35 +83,3 @@ describe("Dex Contract", () => {
     expect(dexApp.root.get().toString()).toBe(map.getRoot().toString());
   });
 });
-
-/* console.log("supplying liquidity X -- base");
-
-let txBaseX = await Mina.transaction(deployerAddress, () => {
-  dexApp.supplyTokenX(UInt64.from(10), balance, witness);
-});
-
-console.log("supplying liquidity Y -- base");
-
-let txBaseY = await Mina.transaction(deployerAddress, () => {
-  dexApp.supplyTokenY(UInt64.from(10), XYbalances);
-});
-
-console.log("minting liquidity");
-
-let txBaseMint = await Mina.transaction(deployerAddress, () => {
-  AccountUpdate.fundNewAccount(deployerAddress);
-  dexApp.mintLiquidityToken(UInt64.from(20));
-});
-
-console.log("swap"); */
-/* 
-let txSwap = await Mina.transaction(deployerAddress, () => {
-  dexApp.swapXforY(UInt64.from(4));
-});
-
-console.log("burn liquidity");
-
-let txBurn = await Mina.transaction(deployerAddress, () => {
-  dexApp.redeem(UInt64.from(4));
-});
- */
