@@ -1,4 +1,4 @@
-import { PrivateKey, UInt64 } from "o1js";
+import { PrivateKey, PublicKey, UInt64 } from "o1js";
 
 import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import { getTokenIdBalance } from "../src/helpers/token.js";
@@ -13,17 +13,18 @@ describe("Pair Mint Contract", () => {
   const adminAccount = testAccounts[0].privateKey;
   const adminAddress = testAccounts[0].publicKey;
 
-  const userAccount = testAccounts[2].privateKey;
-  const userAddress = testAccounts[2].publicKey;
+  const userAccount = testAccounts[1].privateKey;
+  const userAddress = testAccounts[1].publicKey;
 
-  const userAccount1 = testAccounts[3].privateKey;
-  const userAddress1 = testAccounts[3].publicKey;
+  const userAccount1 = testAccounts[2].privateKey;
+  const userAddress1 = testAccounts[2].publicKey;
 
-  const userAccount2 = testAccounts[4].privateKey;
-  const userAddress2 = testAccounts[4].publicKey;
+  const userAccount2 = testAccounts[3].privateKey;
+  const userAddress2 = testAccounts[3].publicKey;
 
   const zkAppPrivateKey: PrivateKey = PrivateKey.random();
-  const zkAppInstance = new PairMintContract(zkAppPrivateKey.toPublicKey());
+  const zkAppPub: PublicKey = zkAppPrivateKey.toPublicKey();
+  const zkAppInstance: PairMintContract = new PairMintContract(zkAppPub);
 
   it("deploying token", async () => {
     await deployPairMint(
@@ -46,7 +47,7 @@ describe("Pair Mint Contract", () => {
     expect(zkAppInstance.totalSupplyLP.get().toString()).toBe("1");
   });
 
-  it("fails to mint liquidity token", async () => {
+  it("fails to mint liquidity token: not admin", async () => {
     try {
       const dl: UInt64 = UInt64.one;
       await mintLP(userAccount2, userAccount1, dl, zkAppInstance);
@@ -63,7 +64,7 @@ describe("Pair Mint Contract", () => {
     expect(balance).toBe("0");
   });
 
-  it("burn liquidity token", async () => {
+  it("burns liquidity token", async () => {
     const dl: UInt64 = UInt64.one;
     await burnLP(userAccount, adminAccount, dl, zkAppInstance);
     const balance: string = await getTokenIdBalance(
