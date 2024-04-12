@@ -64,6 +64,7 @@ export class TokenPairTx extends Struct({
 export class PairContract extends SmartContract {
   events = {
     "created-balance": Field,
+    "updated-balance": Field,
     "updated-root": Field,
   };
   @state(PublicKey) admin = State<PublicKey>();
@@ -133,12 +134,12 @@ export class PairContract extends SmartContract {
     rootBefore.assertEquals(initialRoot, "root not matches");
     key.assertEquals(currentId, "key not matches");
 
-    const BalanceHash: Field = Balance.hash();
-    const [rootAfter] = keyWitness.computeRootAndKey(BalanceHash);
+    const balanceHash: Field = Balance.hash();
+    const [rootAfter] = keyWitness.computeRootAndKey(balanceHash);
 
     this.userId.set(currentId.add(1));
     this.root.set(rootAfter);
-    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("created-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return Balance;
   }
@@ -168,10 +169,10 @@ export class PairContract extends SmartContract {
     isCorrect.assertTrue("tokenX amount not supplied correctly");
 
     tokenPairTx.balance.increaseX(dToken);
-    const BalanceHash: Field = tokenPairTx.balance.hash();
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
+    const balanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
-    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
   }
@@ -202,10 +203,10 @@ export class PairContract extends SmartContract {
 
     tokenPairTx.balance.increaseY(dToken);
 
-    const BalanceHash: Field = tokenPairTx.balance.hash();
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
+    const balanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
-    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
   }
@@ -237,10 +238,10 @@ export class PairContract extends SmartContract {
     tokenPairTx.balance.increaseY(dToken);
     tokenPairTx.balance.decreaseX(dToken);
 
-    const BalanceHash: Field = tokenPairTx.balance.hash();
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
+    const balanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
-    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
   }
@@ -272,10 +273,10 @@ export class PairContract extends SmartContract {
     tokenPairTx.balance.increaseX(dToken);
     tokenPairTx.balance.decreaseY(dToken);
 
-    const BalanceHash: Field = tokenPairTx.balance.hash();
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
+    const balanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
-    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
   }
@@ -309,10 +310,10 @@ export class PairContract extends SmartContract {
 
     tokenPairTx.balance.supply(dToken);
 
-    const BalanceHash: Field = tokenPairTx.balance.hash();
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
+    const balanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
-    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
   }
@@ -345,10 +346,10 @@ export class PairContract extends SmartContract {
 
     tokenPairTx.balance.burn(dToken);
 
-    const BalanceHash: Field = tokenPairTx.balance.hash();
-    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(BalanceHash);
+    const balanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
-    this.emitEvent("created-balance", BalanceHash);
+    this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
   }
