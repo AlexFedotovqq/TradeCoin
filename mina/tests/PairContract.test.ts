@@ -15,18 +15,20 @@ import {
   deploy2Tokens,
   init2TokensSmartContract,
   mintToken,
+  transferToken,
 } from "../src/token/token.js";
 import { BasicTokenContract } from "../src/BasicTokenContract.js";
 import { PairMintContract } from "../src/PairContractMint.js";
 import { PairContract, PersonalPairBalance } from "../src/PairContract.js";
+import { getTokenIdBalance } from "../src/index.js";
 
 describe("Pair Contract", () => {
   const testAccounts = startLocalBlockchainClient();
 
   const map: MerkleMap = new MerkleMap();
 
-  const deployerAccount = testAccounts[0].privateKey;
-  const deployerAddress = testAccounts[0].publicKey;
+  const tokensAdminAccount = testAccounts[0].privateKey;
+  const tokensAdminAddress = testAccounts[0].publicKey;
 
   const firstUserAccount = testAccounts[1].privateKey;
   const firstUserAddress = testAccounts[1].publicKey;
@@ -61,9 +63,43 @@ describe("Pair Contract", () => {
   let firstUserBalance: PersonalPairBalance;
 
   it("deployed and minted tokens", async () => {
-    await deploy2Tokens(deployerAccount, tokenXPrivateKey, tokenYPrivateKey);
-    await mintToken(deployerAccount, deployerAddress, tokenX);
-    await mintToken(deployerAccount, deployerAddress, tokenY);
+    await deploy2Tokens(tokensAdminAccount, tokenXPrivateKey, tokenYPrivateKey);
+    await mintToken(tokensAdminAccount, tokensAdminAddress, tokenX);
+    await mintToken(tokensAdminAccount, tokensAdminAddress, tokenY);
+    const balanceX: string = await getTokenIdBalance(
+      tokensAdminAddress,
+      tokenX.deriveTokenId()
+    );
+    const balanceY: string = await getTokenIdBalance(
+      tokensAdminAddress,
+      tokenX.deriveTokenId()
+    );
+    expect(balanceX).toBe("100000000000");
+    expect(balanceY).toBe("100000000000");
+
+    const sendAmount: UInt64 = UInt64.from(100_000);
+    await transferToken(
+      tokensAdminAccount,
+      firstUserAddress,
+      tokenX,
+      sendAmount
+    );
+    await transferToken(
+      tokensAdminAccount,
+      firstUserAddress,
+      tokenY,
+      sendAmount
+    );
+    const user1BalanceX: string = await getTokenIdBalance(
+      firstUserAddress,
+      tokenX.deriveTokenId()
+    );
+    const user1BalanceY: string = await getTokenIdBalance(
+      firstUserAddress,
+      tokenY.deriveTokenId()
+    );
+    expect(user1BalanceX).toBe("100000");
+    expect(user1BalanceY).toBe("100000");
   });
 
   it("deployed pair", async () => {
@@ -73,7 +109,7 @@ describe("Pair Contract", () => {
 
   it("inited 2 tokens into a pair smart contract", async () => {
     await init2TokensSmartContract(
-      deployerAccount,
+      tokensAdminAccount,
       tokenX,
       tokenY,
       pairContract.address
@@ -105,7 +141,7 @@ describe("Pair Contract", () => {
   it("deploying pair minting contract and initing tokens", async () => {
     await deployPairMint(adminMintAccount, pairMintPK, pairMintSC);
     await init2TokensSmartContract(
-      deployerAccount,
+      tokensAdminAccount,
       tokenX,
       tokenY,
       pairMintSC.address
@@ -134,12 +170,12 @@ describe("Pair Contract", () => {
     expect(pairContract.root.get().toString()).toBe(map.getRoot().toString());
   });
 
-  it("supplies Y", async () => {
+  it("supplies Y - user 1", async () => {
     const dy: UInt64 = UInt64.one;
     firstUserBalance = await supplyY(
       adminAccount,
       adminMintAccount,
-      deployerAccount,
+      firstUserAccount,
       map,
       firstUserBalance,
       dy,
@@ -149,12 +185,12 @@ describe("Pair Contract", () => {
     expect(pairMintSC.reservesY.get().toString()).toBe("1");
   });
 
-  it("supplies more Y", async () => {
+  it("supplies Y to user 1 from tokensAdmin", async () => {
     const dy: UInt64 = UInt64.one;
     firstUserBalance = await supplyY(
       adminAccount,
       adminMintAccount,
-      deployerAccount,
+      tokensAdminAccount,
       map,
       firstUserBalance,
       dy,
@@ -169,7 +205,7 @@ describe("Pair Contract", () => {
     firstUserBalance = await supplyX(
       adminAccount,
       adminMintAccount,
-      deployerAccount,
+      tokensAdminAccount,
       map,
       firstUserBalance,
       dx,
@@ -184,7 +220,7 @@ describe("Pair Contract", () => {
     await mintLiquidityToken(
       adminAccount,
       adminMintAccount,
-      deployerAccount,
+      tokensAdminAccount,
       map,
       firstUserBalance,
       dl,
@@ -199,7 +235,7 @@ describe("Pair Contract", () => {
     await burnLiquidityToken(
       adminAccount,
       adminMintAccount,
-      deployerAccount,
+      tokensAdminAccount,
       map,
       firstUserBalance,
       dl,
