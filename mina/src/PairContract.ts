@@ -38,12 +38,12 @@ export class PersonalPairBalance extends Struct({
     this.tokenYAmount = this.tokenYAmount.sub(dx);
   }
   supply(dl: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.sub(dl);
-    this.tokenYAmount = this.tokenYAmount.sub(dl);
+    this.decreaseX(dl);
+    this.decreaseY(dl);
   }
   burn(dl: UInt64) {
-    this.tokenXAmount = this.tokenXAmount.add(dl);
-    this.tokenYAmount = this.tokenYAmount.add(dl);
+    this.increaseX(dl);
+    this.increaseY(dl);
   }
   toFields(): Field[] {
     return PersonalPairBalance.toFields(this);

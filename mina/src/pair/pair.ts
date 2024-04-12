@@ -275,7 +275,47 @@ export async function mintLiquidityToken(
     pairSmartContract.mintLiquidityToken(tokenPairTx, adminSignature);
   });
   await sendWaitTx(mintLiqTxn, [userPK]);
-  balance.increaseX(dl);
-  balance.increaseY(dl);
+  balance.supply(dl);
+  map.set(idField, balance.hash());
+}
+
+export async function burnLiquidityToken(
+  localAdminPK: PrivateKey,
+  adminPK: PrivateKey,
+  userPK: PrivateKey,
+  map: MerkleMap,
+  balance: PersonalPairBalance,
+  dl: UInt64,
+  pairSmartContract: PairContract,
+  pairMintingAddress: PublicKey
+) {
+  const userAddress: PublicKey = userPK.toPublicKey();
+  const idField = Field(balance.id);
+  const witness = map.getWitness(idField);
+  const localAdminSignature: Signature = Signature.create(
+    localAdminPK,
+    balance.toFields()
+  );
+  const tokenTx = new TokenPairMintTx({
+    sender: userAddress,
+    tokenPub: pairMintingAddress,
+    dToken: dl,
+  });
+  const adminSignature: Signature = Signature.create(
+    adminPK,
+    tokenTx.toFields()
+  );
+  const tokenPairTx: TokenPairTx = new TokenPairTx({
+    pairAdminSignature: localAdminSignature,
+    balance: balance,
+    keyWitness: witness,
+    tokenPub: pairMintingAddress,
+    dToken: dl,
+  });
+  const mintLiqTxn = await Mina.transaction(userAddress, () => {
+    pairSmartContract.burnLiquidityToken(tokenPairTx, adminSignature);
+  });
+  await sendWaitTx(mintLiqTxn, [userPK]);
+  balance.burn(dl);
   map.set(idField, balance.hash());
 }
