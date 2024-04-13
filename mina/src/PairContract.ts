@@ -165,8 +165,8 @@ export class PairContract extends SmartContract {
       tokenPairTx.tokenPub
     );
     const res: UInt64 = pairMintContract.supplyTokenX(adminSignature, tokenTx);
-    const isCorrect: Bool = res.equals(dToken);
-    isCorrect.assertTrue("tokenX amount not supplied correctly");
+    const isTxCorrect: Bool = res.equals(dToken);
+    isTxCorrect.assertTrue("tokenX amount not supplied correctly");
 
     tokenPairTx.balance.increaseX(dToken);
     const balanceHash: Field = tokenPairTx.balance.hash();
@@ -198,14 +198,15 @@ export class PairContract extends SmartContract {
       tokenPairTx.tokenPub
     );
     const res: UInt64 = pairMintContract.supplyTokenY(adminSignature, tokenTx);
-    const isCorrect: Bool = res.equals(dToken);
-    isCorrect.assertTrue("tokenY amount not supplied correctly");
+    const isTxCorrect: Bool = res.equals(dToken);
+    isTxCorrect.assertTrue("tokenY amount not supplied correctly");
 
     tokenPairTx.balance.increaseY(dToken);
 
     const balanceHash: Field = tokenPairTx.balance.hash();
     const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
+
     this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
@@ -232,8 +233,8 @@ export class PairContract extends SmartContract {
       tokenPairTx.tokenPub
     );
     const res: UInt64 = pairMintContract.swapXforY(adminSignature, tokenTx);
-    const isCorrect: Bool = res.equals(dToken);
-    isCorrect.assertTrue("swapped not correct amount");
+    const isTxCorrect: Bool = res.equals(dToken);
+    isTxCorrect.assertTrue("swapped not correct amount");
 
     tokenPairTx.balance.increaseY(dToken);
     tokenPairTx.balance.decreaseX(dToken);
@@ -241,6 +242,7 @@ export class PairContract extends SmartContract {
     const balanceHash: Field = tokenPairTx.balance.hash();
     const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
+
     this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
@@ -267,8 +269,8 @@ export class PairContract extends SmartContract {
       tokenPairTx.tokenPub
     );
     const res: UInt64 = pairMintContract.swapYforX(adminSignature, tokenTx);
-    const isCorrect: Bool = res.equals(dToken);
-    isCorrect.assertTrue("swapped not correct amount");
+    const isTxCorrect: Bool = res.equals(dToken);
+    isTxCorrect.assertTrue("swapped not correct amount");
 
     tokenPairTx.balance.increaseX(dToken);
     tokenPairTx.balance.decreaseY(dToken);
@@ -276,6 +278,7 @@ export class PairContract extends SmartContract {
     const balanceHash: Field = tokenPairTx.balance.hash();
     const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
+
     this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
@@ -305,14 +308,15 @@ export class PairContract extends SmartContract {
       adminSignature,
       tokenTx
     );
-    const isCorrect: Bool = res.equals(dToken);
-    isCorrect.assertTrue("minted correct LP token amount");
+    const isTxCorrect: Bool = res.equals(dToken);
+    isTxCorrect.assertTrue("minted correct LP token amount");
 
     tokenPairTx.balance.supply(dToken);
 
     const balanceHash: Field = tokenPairTx.balance.hash();
     const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
+
     this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
@@ -341,20 +345,21 @@ export class PairContract extends SmartContract {
       adminSignature,
       tokenTx
     );
-    const isCorrect: Bool = res.equals(dToken);
-    isCorrect.assertTrue("burned not correct LP amount");
+    const isTxCorrect: Bool = res.equals(dToken);
+    isTxCorrect.assertTrue("burned not correct LP amount");
 
     tokenPairTx.balance.burn(dToken);
 
     const balanceHash: Field = tokenPairTx.balance.hash();
     const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
+
     this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
   }
 
-  private verifyAdminTokenPairTxSignature(tokenPairTx: TokenPairTx) {
+  private verifyAdminTokenPairTxSignature(tokenPairTx: TokenPairTx): void {
     const admin: PublicKey = this.admin.getAndRequireEquals();
     const isAdmin: Bool = tokenPairTx.pairAdminSignature.verify(
       admin,
@@ -366,7 +371,7 @@ export class PairContract extends SmartContract {
   private checkMerkleMap(
     keyWitness: MerkleMapWitness,
     balanceBefore: PersonalPairBalance
-  ) {
+  ): void {
     const initialRoot: Field = this.root.getAndRequireEquals();
     const [rootBefore, key] = keyWitness.computeRootAndKey(
       balanceBefore.hash()
@@ -382,7 +387,7 @@ export class PairContract extends SmartContract {
     return user;
   }
 
-  private checkAdminSignature() {
+  private checkAdminSignature(): void {
     const admin: PublicKey = this.admin.getAndRequireEquals();
     const sender: PublicKey = this.sender;
     const isAdmin: Bool = sender.equals(admin);

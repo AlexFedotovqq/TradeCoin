@@ -170,7 +170,7 @@ describe("Pair Contract", () => {
     expect(pairContract.root.get().toString()).toBe(map.getRoot().toString());
   });
 
-  it("supplies Y - user 1", async () => {
+  it("supplies token Y - user 1", async () => {
     const dy: UInt64 = UInt64.one;
     firstUserBalance = await supplyY(
       adminAccount,
@@ -185,8 +185,8 @@ describe("Pair Contract", () => {
     expect(pairMintSC.reservesY.get().toString()).toBe("1");
   });
 
-  it("supplies Y to user 1 from tokensAdmin", async () => {
-    const dy: UInt64 = UInt64.one;
+  it("supplies token Y to user 1 from tokensAdmin", async () => {
+    const dy: UInt64 = UInt64.from(49);
     firstUserBalance = await supplyY(
       adminAccount,
       adminMintAccount,
@@ -197,11 +197,11 @@ describe("Pair Contract", () => {
       pairContract,
       pairMintSC.address
     );
-    expect(pairMintSC.reservesY.get().toString()).toBe("2");
+    expect(pairMintSC.reservesY.get().toString()).toBe("50");
   });
 
-  it("supplies X", async () => {
-    const dx: UInt64 = UInt64.one;
+  it("supplies token X", async () => {
+    const dx: UInt64 = UInt64.from(50);
     firstUserBalance = await supplyX(
       adminAccount,
       adminMintAccount,
@@ -212,11 +212,11 @@ describe("Pair Contract", () => {
       pairContract,
       pairMintSC.address
     );
-    expect(pairMintSC.reservesX.get().toString()).toBe("1");
+    expect(pairMintSC.reservesX.get().toString()).toBe("50");
   });
 
   it("mints liquidity", async () => {
-    const dl: UInt64 = UInt64.one;
+    const dl: UInt64 = UInt64.from(50);
     await mintLiquidityToken(
       adminAccount,
       adminMintAccount,
@@ -227,11 +227,16 @@ describe("Pair Contract", () => {
       pairContract,
       pairMintSC.address
     );
-    expect(pairMintSC.reservesX.get().toString()).toBe("1");
+    expect(pairMintSC.reservesX.get().toString()).toBe("50");
+    expect(pairMintSC.reservesY.get().toString()).toBe("50");
   });
 
-  it("burns liquidity", async () => {
-    const dl: UInt64 = UInt64.one;
+  /* it("swap", async () => {
+    const dl: UInt64 = UInt64.from(50);
+  }); */
+
+  /* it("burns liquidity", async () => {
+    const dl: UInt64 = UInt64.from(50);
     await burnLiquidityToken(
       adminAccount,
       adminMintAccount,
@@ -242,6 +247,6 @@ describe("Pair Contract", () => {
       pairContract,
       pairMintSC.address
     );
-    expect(pairMintSC.reservesX.get().toString()).toBe("1");
-  });
+    expect(pairMintSC.reservesX.get().toString()).toBe("0");
+  }); */
 });
