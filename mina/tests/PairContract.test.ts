@@ -235,7 +235,7 @@ describe("Pair Contract", () => {
     const dl: UInt64 = UInt64.from(50);
   }); */
 
-  /* it("burns liquidity", async () => {
+  it("burns liquidity", async () => {
     const dl: UInt64 = UInt64.from(50);
     await burnLiquidityToken(
       adminAccount,
@@ -247,6 +247,6 @@ describe("Pair Contract", () => {
       pairContract,
       pairMintSC.address
     );
-    expect(pairMintSC.reservesX.get().toString()).toBe("0");
-  }); */
+    expect(pairMintSC.reservesX.get().toString()).toBe("50");
+  });
 });
