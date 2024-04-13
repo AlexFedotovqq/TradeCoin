@@ -177,6 +177,42 @@ export class PairContract extends SmartContract {
     return dToken;
   }
 
+  @method withdrawTokenX(
+    tokenPairTx: TokenPairTx,
+    adminSignature: Signature
+  ): UInt64 {
+    const sender: PublicKey = this.checkUserSignature();
+    this.verifyAdminTokenPairTxSignature(tokenPairTx);
+
+    this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+
+    const tokenXPub: PublicKey = this.tokenX.getAndRequireEquals();
+    const dToken: UInt64 = tokenPairTx.dToken;
+
+    const pairMintContract: PairMintContract = new PairMintContract(
+      tokenPairTx.tokenPub
+    );
+    const tokenTx: TokenPairMintTx = new TokenPairMintTx({
+      sender: sender,
+      tokenPub: tokenXPub,
+      dToken: dToken,
+    });
+    const res: UInt64 = pairMintContract.withdrawTokenX(
+      adminSignature,
+      tokenTx
+    );
+    const isTxCorrect: Bool = res.equals(dToken);
+    isTxCorrect.assertTrue("tokenX amount not supplied correctly");
+
+    tokenPairTx.balance.decreaseX(dToken);
+    const balanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
+    this.root.set(rootAfter);
+    this.emitEvent("updated-balance", balanceHash);
+    this.emitEvent("updated-root", rootAfter);
+    return dToken;
+  }
+
   @method supplyTokenY(
     tokenPairTx: TokenPairTx,
     adminSignature: Signature
@@ -207,6 +243,42 @@ export class PairContract extends SmartContract {
     const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
     this.root.set(rootAfter);
 
+    this.emitEvent("updated-balance", balanceHash);
+    this.emitEvent("updated-root", rootAfter);
+    return dToken;
+  }
+
+  @method withdrawTokenY(
+    tokenPairTx: TokenPairTx,
+    adminSignature: Signature
+  ): UInt64 {
+    const sender: PublicKey = this.checkUserSignature();
+    this.verifyAdminTokenPairTxSignature(tokenPairTx);
+
+    this.checkMerkleMap(tokenPairTx.keyWitness, tokenPairTx.balance);
+
+    const tokenYPub: PublicKey = this.tokenY.getAndRequireEquals();
+    const dToken: UInt64 = tokenPairTx.dToken;
+
+    const pairMintContract: PairMintContract = new PairMintContract(
+      tokenPairTx.tokenPub
+    );
+    const tokenTx: TokenPairMintTx = new TokenPairMintTx({
+      sender: sender,
+      tokenPub: tokenYPub,
+      dToken: dToken,
+    });
+    const res: UInt64 = pairMintContract.withdrawTokenX(
+      adminSignature,
+      tokenTx
+    );
+    const isTxCorrect: Bool = res.equals(dToken);
+    isTxCorrect.assertTrue("tokenX amount not supplied correctly");
+
+    tokenPairTx.balance.decreaseY(dToken);
+    const balanceHash: Field = tokenPairTx.balance.hash();
+    const [rootAfter] = tokenPairTx.keyWitness.computeRootAndKey(balanceHash);
+    this.root.set(rootAfter);
     this.emitEvent("updated-balance", balanceHash);
     this.emitEvent("updated-root", rootAfter);
     return dToken;
