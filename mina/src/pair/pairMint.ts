@@ -7,8 +7,12 @@ import {
   Signature,
 } from "o1js";
 
-import { PairMintContract, TokenPairMintTx } from "../PairContractMint.js";
+import {
+  TxTokenPairMintContract,
+  getTxTokenPairMintContractStruct,
+} from "./TxTokenPairMintContract.js";
 import { sendWaitTx } from "../helpers/transactions.js";
+import { PairMintContract } from "../PairContractMint.js";
 
 async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
   if (proofsEnabled) {
@@ -19,61 +23,61 @@ async function compileContractIfProofsEnabled(proofsEnabled?: boolean) {
 }
 
 export async function deployPairMint(
-  pk: PrivateKey,
+  pkSender: PrivateKey,
   zkAppPK: PrivateKey,
   pairSmartContractMint: PairMintContract,
   proofsEnabled?: boolean
 ) {
-  const userAddress: PublicKey = pk.toPublicKey();
+  const pubSender: PublicKey = pkSender.toPublicKey();
   const verificationKey = await compileContractIfProofsEnabled(proofsEnabled);
-  const deploy_txn = await Mina.transaction(userAddress, () => {
-    AccountUpdate.fundNewAccount(userAddress);
+  const deploy_txn = await Mina.transaction(pubSender, () => {
+    AccountUpdate.fundNewAccount(pubSender);
     pairSmartContractMint.deploy({ verificationKey, zkappKey: zkAppPK });
   });
-  await sendWaitTx(deploy_txn, [pk]);
+  await sendWaitTx(deploy_txn, [pkSender]);
 }
 
 export async function mintLP(
-  pk: PrivateKey,
+  pkSender: PrivateKey,
   adminPK: PrivateKey,
   dl: UInt64,
   pairSmartContractMint: PairMintContract
 ) {
-  const userAddress: PublicKey = pk.toPublicKey();
-  const balance: TokenPairMintTx = new TokenPairMintTx({
-    sender: userAddress,
-    tokenPub: pairSmartContractMint.address,
-    dToken: dl,
-  });
+  const pubSender: PublicKey = pkSender.toPublicKey();
+  const balance: TxTokenPairMintContract = getTxTokenPairMintContractStruct(
+    pubSender,
+    dl,
+    pairSmartContractMint.address
+  );
   const adminSignature: Signature = Signature.create(
     adminPK,
     balance.toFields()
   );
-  const txn = await Mina.transaction(userAddress, () => {
-    AccountUpdate.fundNewAccount(userAddress);
+  const txn = await Mina.transaction(pubSender, () => {
+    AccountUpdate.fundNewAccount(pubSender);
     pairSmartContractMint.mintLiquidityToken(adminSignature, balance);
   });
-  await sendWaitTx(txn, [pk]);
+  await sendWaitTx(txn, [pkSender]);
 }
 
 export async function burnLP(
-  pk: PrivateKey,
+  pkSender: PrivateKey,
   adminPK: PrivateKey,
   dl: UInt64,
   pairSmartContractMint: PairMintContract
 ) {
-  const userAddress: PublicKey = pk.toPublicKey();
-  const balance: TokenPairMintTx = new TokenPairMintTx({
-    sender: userAddress,
-    tokenPub: pairSmartContractMint.address,
-    dToken: dl,
-  });
+  const pubSender: PublicKey = pkSender.toPublicKey();
+  const balance: TxTokenPairMintContract = getTxTokenPairMintContractStruct(
+    pubSender,
+    dl,
+    pairSmartContractMint.address
+  );
   const adminSignature: Signature = Signature.create(
     adminPK,
     balance.toFields()
   );
-  const txn = await Mina.transaction(userAddress, () => {
+  const txn = await Mina.transaction(pubSender, () => {
     pairSmartContractMint.burnLiquidityToken(adminSignature, balance);
   });
-  await sendWaitTx(txn, [pk]);
+  await sendWaitTx(txn, [pkSender]);
 }

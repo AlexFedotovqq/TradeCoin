@@ -8,19 +8,18 @@ import {
   UInt64,
   Signature,
   Transaction,
+  MerkleMapWitness,
 } from "o1js";
 
-import {
-  PairContract,
-  PersonalPairBalance,
-  TokenPairTx,
-} from "../PairContract.js";
+import { PersonalPairBalance } from "./PersonalPairBalance.js";
+import { TxTokenPairContract } from "./TxTokenPair.js";
+import { TxTokenPairMintContract } from "./TxTokenPairMintContract.js";
 import {
   createTxOptions,
   sendWaitTx,
   TxOptions,
 } from "../helpers/transactions.js";
-import { TokenPairMintTx } from "../PairContractMint.js";
+import { PairContract } from "../PairContract.js";
 
 async function compileContractIfProofsEnabled(compile?: boolean) {
   if (compile) {
@@ -153,170 +152,219 @@ export async function createUser(
 }
 
 export async function supplyX(
-  localpkAdmin: PrivateKey,
-  pkAdmin: PrivateKey,
+  pkAdminPairContract: PrivateKey,
+  pkAdminPairMintContract: PrivateKey,
   pkSender: PrivateKey,
+  userBalance: PersonalPairBalance,
   map: MerkleMap,
-  balance: PersonalPairBalance,
   dx: UInt64,
   pairSmartContract: PairContract,
   pairMintingAddress: PublicKey
 ) {
   const userAddress: PublicKey = pkSender.toPublicKey();
-  const idField = Field(balance.id);
+  const idField = Field(userBalance.id);
   const witness = map.getWitness(idField);
-  const localAdminSignature: Signature = Signature.create(
-    localpkAdmin,
-    balance.toFields()
+  const signatureAdminPairContract: Signature = Signature.create(
+    pkAdminPairContract,
+    userBalance.toFields()
   );
   const tokenX = pairSmartContract.tokenX.get();
-  const tokenTx: TokenPairMintTx = new TokenPairMintTx({
+  const tokenTx: TxTokenPairMintContract = new TxTokenPairMintContract({
     sender: userAddress,
     tokenPub: tokenX,
     dToken: dx,
   });
-  const adminSignature: Signature = Signature.create(
-    pkAdmin,
+  const signatureAdminPairMintContract: Signature = Signature.create(
+    pkAdminPairMintContract,
     tokenTx.toFields()
   );
-  const tokenPairTx: TokenPairTx = new TokenPairTx({
-    pairAdminSignature: localAdminSignature,
-    balance: balance,
+  const txTokenPairContract: TxTokenPairContract = new TxTokenPairContract({
+    signatureAdminPairContract: signatureAdminPairContract,
+    userBalance: userBalance,
     keyWitness: witness,
     tokenPub: pairMintingAddress,
     dToken: dx,
   });
   const supplyXTxn = await Mina.transaction(userAddress, () => {
-    pairSmartContract.supplyTokenX(tokenPairTx, adminSignature);
+    pairSmartContract.supplyTokenX(
+      signatureAdminPairMintContract,
+      txTokenPairContract
+    );
   });
   await sendWaitTx(supplyXTxn, [pkSender]);
-  balance.increaseX(dx);
-  map.set(idField, balance.hash());
-  return balance;
+  userBalance.increaseX(dx);
+  map.set(idField, userBalance.hash());
+  return userBalance;
 }
 
 export async function supplyY(
-  localpkAdmin: PrivateKey,
-  pkAdmin: PrivateKey,
+  pkAdminPairContract: PrivateKey,
+  pkAdminPairMintContract: PrivateKey,
   pkSender: PrivateKey,
+  userBalance: PersonalPairBalance,
   map: MerkleMap,
-  balance: PersonalPairBalance,
   dy: UInt64,
   pairSmartContract: PairContract,
   pairMintingAddress: PublicKey
 ) {
   const userAddress: PublicKey = pkSender.toPublicKey();
-  const idField = Field(balance.id);
+  const idField = Field(userBalance.id);
   const witness = map.getWitness(idField);
-  const localAdminSignature: Signature = Signature.create(
-    localpkAdmin,
-    balance.toFields()
+  const signatureAdminPairContract: Signature = Signature.create(
+    pkAdminPairContract,
+    userBalance.toFields()
   );
   const tokenY = pairSmartContract.tokenY.get();
-  const tokenTx = new TokenPairMintTx({
+  const tokenTx = new TxTokenPairMintContract({
     sender: userAddress,
     tokenPub: tokenY,
     dToken: dy,
   });
-  const adminSignature: Signature = Signature.create(
-    pkAdmin,
+  const signatureAdminPairMintContract: Signature = Signature.create(
+    pkAdminPairMintContract,
     tokenTx.toFields()
   );
-  const tokenPairTx: TokenPairTx = new TokenPairTx({
-    pairAdminSignature: localAdminSignature,
-    balance: balance,
+  const txTokenPairContract: TxTokenPairContract = new TxTokenPairContract({
+    signatureAdminPairContract: signatureAdminPairContract,
+    userBalance: userBalance,
     keyWitness: witness,
     tokenPub: pairMintingAddress,
     dToken: dy,
   });
   const supplyYTxn = await Mina.transaction(userAddress, () => {
-    pairSmartContract.supplyTokenY(tokenPairTx, adminSignature);
+    pairSmartContract.supplyTokenY(
+      signatureAdminPairMintContract,
+      txTokenPairContract
+    );
   });
   await sendWaitTx(supplyYTxn, [pkSender]);
-  balance.increaseY(dy);
-  map.set(idField, balance.hash());
-  return balance;
+  userBalance.increaseY(dy);
+  map.set(idField, userBalance.hash());
+  return userBalance;
 }
 
 export async function mintLiquidityToken(
-  localpkAdmin: PrivateKey,
-  pkAdmin: PrivateKey,
-  pkSender: PrivateKey,
-  map: MerkleMap,
-  balance: PersonalPairBalance,
-  dl: UInt64,
-  pairSmartContract: PairContract,
-  pairMintingAddress: PublicKey
+  TxPairContractDetailsPrivate: TxPairContractDetailsPrivate,
+  signatureAdminPairMintContract: Signature,
+  TxTokenPairContract: TxTokenPairContract
 ) {
-  const userAddress: PublicKey = pkSender.toPublicKey();
-  const idField = Field(balance.id);
-  const witness = map.getWitness(idField);
-  const localAdminSignature: Signature = Signature.create(
-    localpkAdmin,
-    balance.toFields()
+  const txPairContractDetailsPublic: TxPairContractDetailsPublic =
+    getTxDetailsPublic(TxPairContractDetailsPrivate);
+  const mintLPTxn: Transaction = await mintLiquidityTokenTx(
+    signatureAdminPairMintContract,
+    TxTokenPairContract,
+    txPairContractDetailsPublic
   );
-  const tokenTx = new TokenPairMintTx({
-    sender: userAddress,
-    tokenPub: pairMintingAddress,
-    dToken: dl,
-  });
-  const adminSignature: Signature = Signature.create(
-    pkAdmin,
-    tokenTx.toFields()
+  await sendWaitTx(mintLPTxn, [TxPairContractDetailsPrivate.pkSender]);
+}
+
+export async function mintLiquidityTokenTx(
+  signatureAdminPairMintContract: Signature,
+  TxTokenPairContract: TxTokenPairContract,
+  txPairSmartContractDetails: TxPairContractDetailsPublic
+) {
+  const mintLiqTxn = await Mina.transaction(
+    txPairSmartContractDetails.pubSender,
+    () => {
+      AccountUpdate.fundNewAccount(txPairSmartContractDetails.pubSender);
+      txPairSmartContractDetails.scPair.mintLiquidityToken(
+        signatureAdminPairMintContract,
+        TxTokenPairContract
+      );
+    }
   );
-  const tokenPairTx: TokenPairTx = new TokenPairTx({
-    pairAdminSignature: localAdminSignature,
-    balance: balance,
-    keyWitness: witness,
-    tokenPub: pairMintingAddress,
-    dToken: dl,
-  });
-  const mintLiqTxn = await Mina.transaction(userAddress, () => {
-    AccountUpdate.fundNewAccount(userAddress);
-    pairSmartContract.mintLiquidityToken(tokenPairTx, adminSignature);
-  });
-  await sendWaitTx(mintLiqTxn, [pkSender]);
-  balance.supply(dl);
-  map.set(idField, balance.hash());
+  return mintLiqTxn;
 }
 
 export async function burnLiquidityToken(
-  localpkAdmin: PrivateKey,
-  pkAdmin: PrivateKey,
-  pkSender: PrivateKey,
-  map: MerkleMap,
-  balance: PersonalPairBalance,
-  dl: UInt64,
-  pairSmartContract: PairContract,
-  pairMintingAddress: PublicKey
+  TxPairContractDetailsPrivate: TxPairContractDetailsPrivate,
+  signatureAdminPairMintContract: Signature,
+  TxTokenPairContract: TxTokenPairContract
 ) {
-  const userAddress: PublicKey = pkSender.toPublicKey();
-  const idField = Field(balance.id);
-  const witness = map.getWitness(idField);
-  const localAdminSignature: Signature = Signature.create(
-    localpkAdmin,
-    balance.toFields()
+  const txPairContractDetailsPublic: TxPairContractDetailsPublic =
+    getTxDetailsPublic(TxPairContractDetailsPrivate);
+  const burnLPTxn: Transaction = await burnLiquidityTokenTx(
+    signatureAdminPairMintContract,
+    TxTokenPairContract,
+    txPairContractDetailsPublic
   );
-  const tokenTx = new TokenPairMintTx({
-    sender: userAddress,
-    tokenPub: pairMintingAddress,
-    dToken: dl,
-  });
-  const adminSignature: Signature = Signature.create(
-    pkAdmin,
-    tokenTx.toFields()
-  );
-  const tokenPairTx: TokenPairTx = new TokenPairTx({
-    pairAdminSignature: localAdminSignature,
-    balance: balance,
-    keyWitness: witness,
-    tokenPub: pairMintingAddress,
-    dToken: dl,
-  });
-  const mintLiqTxn = await Mina.transaction(userAddress, () => {
-    pairSmartContract.burnLiquidityToken(tokenPairTx, adminSignature);
-  });
-  await sendWaitTx(mintLiqTxn, [pkSender]);
-  balance.burn(dl);
-  map.set(idField, balance.hash());
+  await sendWaitTx(burnLPTxn, [TxPairContractDetailsPrivate.pkSender]);
 }
+
+export async function burnLiquidityTokenTx(
+  signatureAdminPairMintContract: Signature,
+  TxTokenPairContract: TxTokenPairContract,
+  txPairSmartContractDetails: TxPairContractDetailsPublic
+) {
+  const mintLiqTxn = await Mina.transaction(
+    txPairSmartContractDetails.pubSender,
+    () => {
+      txPairSmartContractDetails.scPair.burnLiquidityToken(
+        signatureAdminPairMintContract,
+        TxTokenPairContract
+      );
+    }
+  );
+  return mintLiqTxn;
+}
+
+export function getSignatureAdminPairMintContract(
+  pkAdminPairMintContract: PrivateKey,
+  tokenPairMintTx: TxTokenPairMintContract
+) {
+  const signatureAdminPairMintContract: Signature = Signature.create(
+    pkAdminPairMintContract,
+    tokenPairMintTx.toFields()
+  );
+  return signatureAdminPairMintContract;
+}
+
+export function getSignatureAdminPairContract(
+  pkAdminPairtContract: PrivateKey,
+  userBalance: PersonalPairBalance
+) {
+  const signatureAdminPairContract: Signature = Signature.create(
+    pkAdminPairtContract,
+    userBalance.toFields()
+  );
+  return signatureAdminPairContract;
+}
+
+export function getWitnessFromBalanceId(
+  idBalanceField: Field,
+  map: MerkleMap
+): MerkleMapWitness {
+  const witness = map.getWitness(idBalanceField);
+  return witness;
+}
+
+export function getTxDetailsPublic(
+  TxPairContractDetailsPrivate: TxPairContractDetailsPrivate
+): TxPairContractDetailsPublic {
+  const txDetails: TxPairContractDetailsPublic = {
+    pubSender: TxPairContractDetailsPrivate.pkSender.toPublicKey(),
+    scPair: TxPairContractDetailsPrivate.scPair,
+  };
+  return txDetails;
+}
+
+export function getTxDetailsPrivate(
+  pkSender: PrivateKey,
+  scPair: PairContract
+): TxPairContractDetailsPrivate {
+  const txDetails: TxPairContractDetailsPrivate = {
+    pkSender: pkSender,
+    scPair: scPair,
+  };
+  return txDetails;
+}
+
+export type TxPairContractDetailsPublic = {
+  pubSender: PublicKey;
+  scPair: PairContract;
+};
+
+export type TxPairContractDetailsPrivate = {
+  pkSender: PrivateKey;
+  scPair: PairContract;
+};

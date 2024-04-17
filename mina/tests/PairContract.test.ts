@@ -1,5 +1,13 @@
-import { PrivateKey, UInt64, MerkleMap, PublicKey } from "o1js";
+import {
+  PrivateKey,
+  UInt64,
+  MerkleMap,
+  PublicKey,
+  Signature,
+  MerkleMapWitness,
+} from "o1js";
 
+import { startLocalBlockchainClient } from "../src/helpers/client.js";
 import {
   deployPair,
   initPairTokens,
@@ -8,9 +16,14 @@ import {
   supplyY,
   mintLiquidityToken,
   burnLiquidityToken,
+  getTxDetailsPrivate,
+  getSignatureAdminPairMintContract,
+  getSignatureAdminPairContract,
+  getWitnessFromBalanceId,
+  TxPairContractDetailsPrivate,
 } from "../src/pair/pair.js";
 import { deployPairMint } from "../src/pair/pairMint.js";
-import { startLocalBlockchainClient } from "../src/helpers/client.js";
+import { PersonalPairBalance } from "../src/pair/PersonalPairBalance.js";
 import {
   deploy2Tokens,
   init2TokensSmartContract,
@@ -19,8 +32,16 @@ import {
 } from "../src/token/token.js";
 import { BasicTokenContract } from "../src/BasicTokenContract.js";
 import { PairMintContract } from "../src/PairContractMint.js";
-import { PairContract, PersonalPairBalance } from "../src/PairContract.js";
+import { PairContract } from "../src/PairContract.js";
 import { getTokenIdBalance } from "../src/index.js";
+import {
+  TxTokenPairMintContract,
+  getTxTokenPairMintContractStruct,
+} from "../src/pair/TxTokenPairMintContract.js";
+import {
+  TxTokenPairContract,
+  getTxTokenPairContractStruct,
+} from "../src/pair/TxTokenPair.js";
 
 describe("Pair Contract", () => {
   const testAccounts = startLocalBlockchainClient();
@@ -30,8 +51,8 @@ describe("Pair Contract", () => {
   const tokensAdminAccount = testAccounts[0].privateKey;
   const tokensAdminAddress = testAccounts[0].publicKey;
 
-  const firstUserAccount = testAccounts[1].privateKey;
-  const firstUserAddress = testAccounts[1].publicKey;
+  const pkFirstUser = testAccounts[1].privateKey;
+  const pubFirstUser = testAccounts[1].publicKey;
 
   const secondUserAccount = testAccounts[2].privateKey;
   const secondUserAddress = testAccounts[2].publicKey;
@@ -39,11 +60,11 @@ describe("Pair Contract", () => {
   const thirdUserAccount = testAccounts[3].privateKey;
   const thirdUserAddress = testAccounts[3].publicKey;
 
-  const adminAccount = testAccounts[4].privateKey;
-  const adminAddress = testAccounts[4].publicKey;
+  const pkAdmin = testAccounts[4].privateKey;
+  const pubAdmin = testAccounts[4].publicKey;
 
-  const adminMintAccount = testAccounts[5].privateKey;
-  const adminMintAddress = testAccounts[5].publicKey;
+  const pkAdminMint = testAccounts[5].privateKey;
+  const pubAdminMint = testAccounts[5].publicKey;
 
   const tokenXPrivateKey: PrivateKey = PrivateKey.random();
   const tokenXPub: PublicKey = tokenXPrivateKey.toPublicKey();
@@ -52,13 +73,13 @@ describe("Pair Contract", () => {
   const tokenX: BasicTokenContract = new BasicTokenContract(tokenXPub);
   const tokenY: BasicTokenContract = new BasicTokenContract(tokenYPub);
 
-  const pairPK: PrivateKey = PrivateKey.random();
-  const pairPub: PublicKey = pairPK.toPublicKey();
-  const pairContract: PairContract = new PairContract(pairPub);
+  const pkPair: PrivateKey = PrivateKey.random();
+  const pubPair: PublicKey = pkPair.toPublicKey();
+  const scPair: PairContract = new PairContract(pubPair);
 
-  const pairMintPK: PrivateKey = PrivateKey.random();
-  const pairMintPub: PublicKey = pairMintPK.toPublicKey();
-  const pairMintSC: PairMintContract = new PairMintContract(pairMintPub);
+  const pkPairMint: PrivateKey = PrivateKey.random();
+  const pubPairMint: PublicKey = pkPairMint.toPublicKey();
+  const scPairMint: PairMintContract = new PairMintContract(pubPairMint);
 
   let firstUserBalance: PersonalPairBalance;
 
@@ -78,24 +99,14 @@ describe("Pair Contract", () => {
     expect(balanceY).toBe("100000000000");
 
     const sendAmount: UInt64 = UInt64.from(100_000);
-    await transferToken(
-      tokensAdminAccount,
-      firstUserAddress,
-      tokenX,
-      sendAmount
-    );
-    await transferToken(
-      tokensAdminAccount,
-      firstUserAddress,
-      tokenY,
-      sendAmount
-    );
+    await transferToken(tokensAdminAccount, pubFirstUser, tokenX, sendAmount);
+    await transferToken(tokensAdminAccount, pubFirstUser, tokenY, sendAmount);
     const user1BalanceX: string = await getTokenIdBalance(
-      firstUserAddress,
+      pubFirstUser,
       tokenX.deriveTokenId()
     );
     const user1BalanceY: string = await getTokenIdBalance(
-      firstUserAddress,
+      pubFirstUser,
       tokenY.deriveTokenId()
     );
     expect(user1BalanceX).toBe("100000");
@@ -103,150 +114,189 @@ describe("Pair Contract", () => {
   });
 
   it("deployed pair", async () => {
-    await deployPair(adminAccount, pairPK, pairContract);
-    expect(pairContract.admin.get().toBase58()).toBe(adminAddress.toBase58());
+    await deployPair(pkAdmin, pkPair, scPair);
+    expect(scPair.admin.get().toBase58()).toBe(pubAdmin.toBase58());
   });
 
   it("inited 2 tokens into a pair smart contract", async () => {
-    await init2TokensSmartContract(
-      tokensAdminAccount,
-      tokenX,
-      tokenY,
-      pairContract.address
-    );
+    await init2TokensSmartContract(tokensAdminAccount, tokenX, tokenY, pubPair);
   });
 
   it("initialised tokens in a pair smart contract", async () => {
-    await initPairTokens(
-      adminAccount,
-      pairContract,
-      tokenX.address,
-      tokenY.address
-    );
+    await initPairTokens(pkAdmin, scPair, tokenX.address, tokenY.address);
   });
 
   it("fails to initialise tokens in a pair smart contract", async () => {
     try {
-      await initPairTokens(
-        adminAccount,
-        pairContract,
-        tokenX.address,
-        tokenY.address
-      );
+      await initPairTokens(pkAdmin, scPair, tokenX.address, tokenY.address);
     } catch (e) {
       expect(String(e).substring(0, 28)).toBe("Error: tokenX is initialised");
     }
   });
 
   it("deploying pair minting contract and initing tokens", async () => {
-    await deployPairMint(adminMintAccount, pairMintPK, pairMintSC);
+    await deployPairMint(pkAdminMint, pkPairMint, scPairMint);
     await init2TokensSmartContract(
       tokensAdminAccount,
       tokenX,
       tokenY,
-      pairMintSC.address
+      pubPairMint
     );
-    expect(pairMintSC.admin.get().toBase58()).toBe(adminMintAddress.toBase58());
+    expect(scPairMint.admin.get().toBase58()).toBe(pubAdminMint.toBase58());
   });
 
   it("creates a user - user 1", async () => {
-    firstUserBalance = await createUser(
-      adminAccount,
-      firstUserAccount,
-      map,
-      0,
-      pairContract
-    );
-    expect(pairContract.root.get().toString()).toBe(map.getRoot().toString());
+    firstUserBalance = await createUser(pkAdmin, pkFirstUser, map, 0, scPair);
+    expect(scPair.root.get().toString()).toBe(map.getRoot().toString());
   });
 
   it("creates a user - user 2", async () => {
-    await createUser(adminAccount, secondUserAccount, map, 1, pairContract);
-    expect(pairContract.root.get().toString()).toBe(map.getRoot().toString());
+    await createUser(pkAdmin, secondUserAccount, map, 1, scPair);
+    expect(scPair.root.get().toString()).toBe(map.getRoot().toString());
   });
 
   it("creates a user - user 3", async () => {
-    await createUser(adminAccount, thirdUserAccount, map, 2, pairContract);
-    expect(pairContract.root.get().toString()).toBe(map.getRoot().toString());
+    await createUser(pkAdmin, thirdUserAccount, map, 2, scPair);
+    expect(scPair.root.get().toString()).toBe(map.getRoot().toString());
   });
 
   it("supplies token Y - user 1", async () => {
     const dy: UInt64 = UInt64.one;
     firstUserBalance = await supplyY(
-      adminAccount,
-      adminMintAccount,
-      firstUserAccount,
-      map,
+      pkAdmin,
+      pkAdminMint,
+      pkFirstUser,
       firstUserBalance,
+      map,
       dy,
-      pairContract,
-      pairMintSC.address
+      scPair,
+      pubPairMint
     );
-    expect(pairMintSC.reservesY.get().toString()).toBe("1");
+    expect(scPairMint.reservesY.get().toString()).toBe("1");
   });
 
   it("supplies token Y to user 1 from tokensAdmin", async () => {
     const dy: UInt64 = UInt64.from(49);
     firstUserBalance = await supplyY(
-      adminAccount,
-      adminMintAccount,
+      pkAdmin,
+      pkAdminMint,
       tokensAdminAccount,
-      map,
       firstUserBalance,
+      map,
       dy,
-      pairContract,
-      pairMintSC.address
+      scPair,
+      pubPairMint
     );
-    expect(pairMintSC.reservesY.get().toString()).toBe("50");
+    expect(scPairMint.reservesY.get().toString()).toBe("50");
   });
 
   it("supplies token X", async () => {
     const dx: UInt64 = UInt64.from(50);
     firstUserBalance = await supplyX(
-      adminAccount,
-      adminMintAccount,
+      pkAdmin,
+      pkAdminMint,
       tokensAdminAccount,
-      map,
       firstUserBalance,
+      map,
       dx,
-      pairContract,
-      pairMintSC.address
+      scPair,
+      pubPairMint
     );
-    expect(pairMintSC.reservesX.get().toString()).toBe("50");
+    expect(scPairMint.reservesX.get().toString()).toBe("50");
   });
 
-  it("mints liquidity", async () => {
+  it("mints initial liquidity", async () => {
     const dl: UInt64 = UInt64.from(50);
-    await mintLiquidityToken(
-      adminAccount,
-      adminMintAccount,
-      tokensAdminAccount,
-      map,
-      firstUserBalance,
+    const dx: UInt64 = dl;
+    const dy: UInt64 = dl;
+    const txPairContractDetailsPrivate: TxPairContractDetailsPrivate =
+      getTxDetailsPrivate(pkFirstUser, scPair);
+
+    const txToken: TxTokenPairMintContract = getTxTokenPairMintContractStruct(
+      pubFirstUser,
       dl,
-      pairContract,
-      pairMintSC.address
+      pubPairMint
     );
-    expect(pairMintSC.reservesX.get().toString()).toBe("50");
-    expect(pairMintSC.reservesY.get().toString()).toBe("50");
-  });
+    const sigAdminPairMintContract: Signature =
+      getSignatureAdminPairMintContract(pkAdminMint, txToken);
 
-  /* it("swap", async () => {
-    const dl: UInt64 = UInt64.from(50);
-  }); */
+    const sigAdminPairContract: Signature = getSignatureAdminPairContract(
+      pkAdmin,
+      firstUserBalance
+    );
+
+    const witness: MerkleMapWitness = getWitnessFromBalanceId(
+      firstUserBalance.id,
+      map
+    );
+
+    const txTokenPairContractStruct: TxTokenPairContract =
+      getTxTokenPairContractStruct(
+        sigAdminPairContract,
+        witness,
+        firstUserBalance,
+        dl,
+        pubPairMint
+      );
+
+    await mintLiquidityToken(
+      txPairContractDetailsPrivate,
+      sigAdminPairMintContract,
+      txTokenPairContractStruct
+    );
+    expect(scPairMint.totalSupplyLP.get().toString()).toBe("50");
+    expect(scPairMint.reservesX.get().toString()).toBe("50");
+    expect(scPairMint.reservesY.get().toString()).toBe("50");
+
+    firstUserBalance.supply(dx, dy);
+    map.set(firstUserBalance.id, firstUserBalance.hash());
+    expect(map.getRoot().toString()).toBe(scPair.root.get().toString());
+  });
 
   it("burns liquidity", async () => {
     const dl: UInt64 = UInt64.from(50);
-    await burnLiquidityToken(
-      adminAccount,
-      adminMintAccount,
-      tokensAdminAccount,
-      map,
-      firstUserBalance,
+
+    const dx: UInt64 = dl;
+    const dy: UInt64 = dl;
+    const txPairContractDetailsPrivate: TxPairContractDetailsPrivate =
+      getTxDetailsPrivate(pkFirstUser, scPair);
+
+    const txToken: TxTokenPairMintContract = getTxTokenPairMintContractStruct(
+      pubFirstUser,
       dl,
-      pairContract,
-      pairMintSC.address
+      pubPairMint
     );
-    expect(pairMintSC.reservesX.get().toString()).toBe("50");
+    const sigAdminPairMintContract: Signature =
+      getSignatureAdminPairMintContract(pkAdminMint, txToken);
+
+    const sigAdminPairContract: Signature = getSignatureAdminPairContract(
+      pkAdmin,
+      firstUserBalance
+    );
+
+    const witness: MerkleMapWitness = getWitnessFromBalanceId(
+      firstUserBalance.id,
+      map
+    );
+
+    const txTokenPairContractStruct: TxTokenPairContract =
+      getTxTokenPairContractStruct(
+        sigAdminPairContract,
+        witness,
+        firstUserBalance,
+        dl,
+        pubPairMint
+      );
+
+    await burnLiquidityToken(
+      txPairContractDetailsPrivate,
+      sigAdminPairMintContract,
+      txTokenPairContractStruct
+    );
+    expect(scPairMint.totalSupplyLP.get().toString()).toBe("0");
+
+    firstUserBalance.burn(dx, dy);
+    map.set(firstUserBalance.id, firstUserBalance.hash());
+    expect(map.getRoot().toString()).toBe(scPair.root.get().toString());
   });
 });
