@@ -20,7 +20,7 @@ import {
   getSignatureAdminPairMintContract,
   getSignatureAdminPairContract,
   getWitnessFromBalanceId,
-  TxPairContractDetailsPrivate,
+  TxPairContractDetailsPkSender,
 } from "../src/pair/pair.js";
 import { deployPairMint } from "../src/pair/pairMint.js";
 import { PersonalPairBalance } from "../src/pair/PersonalPairBalance.js";
@@ -114,7 +114,10 @@ describe("Pair Contract", () => {
   });
 
   it("deployed pair", async () => {
-    await deployPair(pkAdmin, pkPair, scPair);
+    const txPairContractDetailsPkSender: TxPairContractDetailsPkSender =
+      getTxDetailsPrivate(pkAdmin, scPair);
+
+    await deployPair(pkPair, txPairContractDetailsPkSender);
     expect(scPair.admin.get().toBase58()).toBe(pubAdmin.toBase58());
   });
 
@@ -209,7 +212,7 @@ describe("Pair Contract", () => {
     const dl: UInt64 = UInt64.from(50);
     const dx: UInt64 = dl;
     const dy: UInt64 = dl;
-    const txPairContractDetailsPrivate: TxPairContractDetailsPrivate =
+    const txPairContractDetailsPkSender: TxPairContractDetailsPkSender =
       getTxDetailsPrivate(pkFirstUser, scPair);
 
     const txToken: TxTokenPairMintContract = getTxTokenPairMintContractStruct(
@@ -240,7 +243,7 @@ describe("Pair Contract", () => {
       );
 
     await mintLiquidityToken(
-      txPairContractDetailsPrivate,
+      txPairContractDetailsPkSender,
       sigAdminPairMintContract,
       txTokenPairContractStruct
     );
@@ -258,7 +261,7 @@ describe("Pair Contract", () => {
 
     const dx: UInt64 = dl;
     const dy: UInt64 = dl;
-    const txPairContractDetailsPrivate: TxPairContractDetailsPrivate =
+    const txPairContractDetailsPkSender: TxPairContractDetailsPkSender =
       getTxDetailsPrivate(pkFirstUser, scPair);
 
     const txToken: TxTokenPairMintContract = getTxTokenPairMintContractStruct(
@@ -289,7 +292,7 @@ describe("Pair Contract", () => {
       );
 
     await burnLiquidityToken(
-      txPairContractDetailsPrivate,
+      txPairContractDetailsPkSender,
       sigAdminPairMintContract,
       txTokenPairContractStruct
     );

@@ -9,6 +9,7 @@ import {
   Signature,
   Transaction,
   MerkleMapWitness,
+  VerificationKey,
 } from "o1js";
 
 import { PersonalPairBalance } from "./PersonalPairBalance.js";
@@ -21,7 +22,9 @@ import {
 } from "../helpers/transactions.js";
 import { PairContract } from "../PairContract.js";
 
-async function compileContractIfProofsEnabled(compile?: boolean) {
+async function compileContractIfProofsEnabled(
+  compile?: boolean
+): Promise<VerificationKey | undefined> {
   if (compile) {
     const { verificationKey } = await PairContract.compile();
     return verificationKey;
@@ -35,7 +38,8 @@ export async function createDeployPairTx(
   compile: boolean,
   txOptions: TxOptions
 ) {
-  const verificationKey = await compileContractIfProofsEnabled(compile);
+  const verificationKey: VerificationKey | undefined =
+    await compileContractIfProofsEnabled(compile);
   const txn: Transaction = await Mina.transaction(txOptions, () => {
     AccountUpdate.fundNewAccount(txOptions.sender);
     pairSmartContract.deploy({
@@ -47,22 +51,26 @@ export async function createDeployPairTx(
 }
 
 export async function deployPair(
-  pkSender: PrivateKey,
   pkPairSmartContract: PrivateKey,
-  pairSmartContract: PairContract,
+  TxPairContractDetailsPrivate: TxPairContractDetailsPkSender,
   compile: boolean = false,
   live: boolean = false
 ) {
   await compileContractIfProofsEnabled(compile);
-  const userAddress: PublicKey = pkSender.toPublicKey();
-  const txOptions: TxOptions = createTxOptions(userAddress, live);
+
+  const txPairContractDetailsPublic: TxPairContractDetailsPubSender =
+    getTxDetailsPublic(TxPairContractDetailsPrivate);
+  const txOptions: TxOptions = createTxOptions(
+    txPairContractDetailsPublic.pubSender,
+    live
+  );
   const txn: Transaction = await createDeployPairTx(
     pkPairSmartContract,
-    pairSmartContract,
+    txPairContractDetailsPublic.scPair,
     compile,
     txOptions
   );
-  await sendWaitTx(txn, [pkSender], live);
+  await sendWaitTx(txn, [TxPairContractDetailsPrivate.pkSender], live);
 }
 
 export async function createInitContractTx(
@@ -244,11 +252,11 @@ export async function supplyY(
 }
 
 export async function mintLiquidityToken(
-  TxPairContractDetailsPrivate: TxPairContractDetailsPrivate,
+  TxPairContractDetailsPrivate: TxPairContractDetailsPkSender,
   signatureAdminPairMintContract: Signature,
   TxTokenPairContract: TxTokenPairContract
 ) {
-  const txPairContractDetailsPublic: TxPairContractDetailsPublic =
+  const txPairContractDetailsPublic: TxPairContractDetailsPubSender =
     getTxDetailsPublic(TxPairContractDetailsPrivate);
   const mintLPTxn: Transaction = await mintLiquidityTokenTx(
     signatureAdminPairMintContract,
@@ -261,7 +269,7 @@ export async function mintLiquidityToken(
 export async function mintLiquidityTokenTx(
   signatureAdminPairMintContract: Signature,
   TxTokenPairContract: TxTokenPairContract,
-  txPairSmartContractDetails: TxPairContractDetailsPublic
+  txPairSmartContractDetails: TxPairContractDetailsPubSender
 ) {
   const mintLiqTxn = await Mina.transaction(
     txPairSmartContractDetails.pubSender,
@@ -277,11 +285,11 @@ export async function mintLiquidityTokenTx(
 }
 
 export async function burnLiquidityToken(
-  TxPairContractDetailsPrivate: TxPairContractDetailsPrivate,
+  TxPairContractDetailsPrivate: TxPairContractDetailsPkSender,
   signatureAdminPairMintContract: Signature,
   TxTokenPairContract: TxTokenPairContract
 ) {
-  const txPairContractDetailsPublic: TxPairContractDetailsPublic =
+  const txPairContractDetailsPublic: TxPairContractDetailsPubSender =
     getTxDetailsPublic(TxPairContractDetailsPrivate);
   const burnLPTxn: Transaction = await burnLiquidityTokenTx(
     signatureAdminPairMintContract,
@@ -294,7 +302,7 @@ export async function burnLiquidityToken(
 export async function burnLiquidityTokenTx(
   signatureAdminPairMintContract: Signature,
   TxTokenPairContract: TxTokenPairContract,
-  txPairSmartContractDetails: TxPairContractDetailsPublic
+  txPairSmartContractDetails: TxPairContractDetailsPubSender
 ) {
   const mintLiqTxn = await Mina.transaction(
     txPairSmartContractDetails.pubSender,
@@ -339,9 +347,9 @@ export function getWitnessFromBalanceId(
 }
 
 export function getTxDetailsPublic(
-  TxPairContractDetailsPrivate: TxPairContractDetailsPrivate
-): TxPairContractDetailsPublic {
-  const txDetails: TxPairContractDetailsPublic = {
+  TxPairContractDetailsPrivate: TxPairContractDetailsPkSender
+): TxPairContractDetailsPubSender {
+  const txDetails: TxPairContractDetailsPubSender = {
     pubSender: TxPairContractDetailsPrivate.pkSender.toPublicKey(),
     scPair: TxPairContractDetailsPrivate.scPair,
   };
@@ -351,20 +359,20 @@ export function getTxDetailsPublic(
 export function getTxDetailsPrivate(
   pkSender: PrivateKey,
   scPair: PairContract
-): TxPairContractDetailsPrivate {
-  const txDetails: TxPairContractDetailsPrivate = {
+): TxPairContractDetailsPkSender {
+  const txDetails: TxPairContractDetailsPkSender = {
     pkSender: pkSender,
     scPair: scPair,
   };
   return txDetails;
 }
 
-export type TxPairContractDetailsPublic = {
+export type TxPairContractDetailsPubSender = {
   pubSender: PublicKey;
   scPair: PairContract;
 };
 
-export type TxPairContractDetailsPrivate = {
+export type TxPairContractDetailsPkSender = {
   pkSender: PrivateKey;
   scPair: PairContract;
 };
