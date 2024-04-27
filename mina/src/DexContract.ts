@@ -35,6 +35,10 @@ const Height = 6;
 export class MyMerkleWitness extends MerkleWitness(Height) {}
 
 export class Dex extends SmartContract {
+  events = {
+    "created-pool": Field,
+    "deleted-pool": Field,
+  };
   @state(PublicKey) admin = State<PublicKey>();
   @state(Field) root = State<Field>();
   @state(UInt64) poolsTotal = State<UInt64>();
@@ -79,9 +83,11 @@ export class Dex extends SmartContract {
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
-    const rootAfter: Field = keyWitness.calculateRoot(balance.hash());
+    const balanceHash: Field = balance.hash();
+    const rootAfter: Field = keyWitness.calculateRoot(balanceHash);
     this.root.set(rootAfter);
     this.poolsTotal.set(poolsTotal.add(1));
+    this.emitEvent("created-pool", balanceHash);
   }
 
   @method deletePool(
@@ -99,13 +105,16 @@ export class Dex extends SmartContract {
 
     const initialRoot: Field = this.root.getAndRequireEquals();
     const key: Field = keyWitness.calculateIndex();
-    const rootBefore: Field = keyWitness.calculateRoot(balance.hash());
+
+    const balanceHash: Field = balance.hash();
+    const rootBefore: Field = keyWitness.calculateRoot(balanceHash);
     rootBefore.assertEquals(initialRoot);
     key.assertEquals(balance.id);
 
     const rootAfter: Field = keyWitness.calculateRoot(Field(0));
     this.root.set(rootAfter);
     this.poolsTotal.set(poolsTotal.sub(1));
+    this.emitEvent("deleted-pool", balanceHash);
   }
 
   checkUserSignature() {

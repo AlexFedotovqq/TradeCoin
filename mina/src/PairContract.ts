@@ -24,6 +24,8 @@ import { PairMintContract } from "./PairContractMint.js";
 export class PairContract extends SmartContract {
   events = {
     "created-balance": Field,
+    "initialised-token-X": PublicKey,
+    "initialised-token-Y": PublicKey,
     "updated-balance": Field,
     "updated-root": Field,
   };
@@ -54,7 +56,7 @@ export class PairContract extends SmartContract {
     this.admin.set(sender);
   }
 
-  @method initContract(_tokenX: PublicKey, _tokenY: PublicKey): boolean {
+  @method initContract(_tokenX: PublicKey, _tokenY: PublicKey): Bool {
     this.checkAdminSignature();
 
     const tokenX: PublicKey = this.tokenX.getAndRequireEquals();
@@ -68,7 +70,9 @@ export class PairContract extends SmartContract {
 
     this.tokenX.set(_tokenX);
     this.tokenY.set(_tokenY);
-    return true;
+    this.emitEvent("initialised-token-X", _tokenX);
+    this.emitEvent("initialised-token-Y", _tokenY);
+    return Bool(true);
   }
 
   @method createPersonalBalance(
