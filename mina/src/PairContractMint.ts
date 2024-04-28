@@ -23,6 +23,7 @@ export class PairMintContract extends TokenContract {
     "supplied-token-y": UInt64,
     "swapped-x-for-y": UInt64,
     "swapped-y-for-x": UInt64,
+    "updated-fee": UInt64,
     "withdrawn-token-x": UInt64,
     "withdrawn-token-y": UInt64,
   };
@@ -32,6 +33,7 @@ export class PairMintContract extends TokenContract {
   @state(UInt64) reservesLPX = State<UInt64>();
   @state(UInt64) reservesLPY = State<UInt64>();
   @state(UInt64) totalSupplyLP = State<UInt64>();
+  @state(UInt64) fee = State<UInt64>();
 
   deploy(args?: DeployArgs) {
     super.deploy(args);
@@ -52,6 +54,20 @@ export class PairMintContract extends TokenContract {
     this.reservesY.set(UInt64.zero);
     const sender: PublicKey = this.checkUserSignature();
     this.admin.set(sender);
+  }
+
+  @method public setFee(newFeeAmount: UInt64): Bool {
+    const admin: PublicKey = this.admin.getAndRequireEquals();
+    const sender: PublicKey = this.sender;
+    const isAdmin: Bool = sender.equals(admin);
+    isAdmin.assertTrue("sender: not an admin");
+    const senderUpdate: AccountUpdate = AccountUpdate.create(admin);
+    senderUpdate.requireSignature();
+
+    this.fee.getAndRequireEquals();
+    this.fee.set(newFeeAmount);
+    this.emitEvent("updated-fee", newFeeAmount);
+    return Bool(true);
   }
 
   @method mintLiquidityToken(
