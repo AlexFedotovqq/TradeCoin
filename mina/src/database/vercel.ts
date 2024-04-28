@@ -43,7 +43,7 @@ export async function getVercelTokenMetadata(
   client: VercelKV
 ) {
   const key: string = `token: ${tokenName}`;
-  const result = await client.get(key);
+  const result = await client.hgetall(key);
   return result;
 }
 
