@@ -40,7 +40,7 @@
     "lint": "npx eslint src/* --fix"
   },
   "dependencies": {
-    "@vercel/kv": "^1.0.1",
+    "@vercel/kv": "^2.0.0",
     "dotenv": "16.4.5",
     "o1js": "0.17"
   },
