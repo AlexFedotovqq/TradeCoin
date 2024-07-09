@@ -3,8 +3,12 @@ import { motion } from "framer-motion";
 
 export function Hero() {
   const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 1.5 } },
+    hidden: { opacity: 0, y: -50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1.5, type: "spring", stiffness: 50 },
+    },
   };
   return (
     <div className="relative overflow-hidden bg-no-repeat bg-cover bg-center bg-[url('/bg3.jpg')]">
