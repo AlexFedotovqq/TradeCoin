@@ -160,7 +160,22 @@ export const WalletButton = () => {
                                           as="div"
                                           className="prose prose-sm pb-6"
                                         >
-                                          <div className="rounded-2xl mt-1 p-2">
+                                          <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                            <Dialog.Title
+                                              as="h3"
+                                              className="text-lg font-medium leading-6 text-gray-900"
+                                            >
+                                              Settings
+                                            </Dialog.Title>
+                                            <div className="mt-2">
+                                              <p className="text-sm text-gray-500">
+                                                You can copy your wallet address
+                                                to clipboard or hide it for
+                                                privacy.
+                                              </p>
+                                            </div>
+                                          </div>
+                                          <div className="rounded-2xl mt-5 p-2">
                                             {showSettings && (
                                               <div
                                                 style={{
