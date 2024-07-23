@@ -4,31 +4,43 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 const LOCAL_STORAGE_KEY = "MINA";
+const FULL_ADDRESS_KEY = "FULL_ADDRESS";
 
-async function connectWallet(updateDisplayAddress) {
+async function connectWallet(updateDisplayAddress, updateFullAddress) {
   try {
     const accounts = await window.mina.requestAccounts();
-    const displayAddress = `${accounts[0].slice(0, 6)}...${accounts[0].slice(
-      -4
-    )}`;
+    const fullAddress = accounts[0];
+    const displayAddress = `${fullAddress.slice(0, 6)}...${fullAddress.slice(-4)}`;
     window.localStorage.setItem(
       LOCAL_STORAGE_KEY,
       JSON.stringify(displayAddress)
     );
+    window.localStorage.setItem(FULL_ADDRESS_KEY, JSON.stringify(fullAddress));
     updateDisplayAddress(displayAddress);
+    updateFullAddress(fullAddress);
   } catch (error) {
     throw new Error("Failed to connect wallet");
   }
 }
 
-function disconnectWallet(updateDisplayAddress) {
+function disconnectWallet(updateDisplayAddress, updateFullAddress) {
   localStorage.removeItem(LOCAL_STORAGE_KEY);
+  localStorage.removeItem(FULL_ADDRESS_KEY);
   updateDisplayAddress(null);
+  updateFullAddress(null);
 }
 
 function getWalletAddress() {
   if (typeof window !== "undefined") {
     const value = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (value === null) return;
+    return JSON.parse(value);
+  }
+}
+
+function getFullWalletAddress() {
+  if (typeof window !== "undefined") {
+    const value = localStorage.getItem(FULL_ADDRESS_KEY);
     if (value === null) return;
     return JSON.parse(value);
   }
@@ -40,12 +52,13 @@ export const WalletButton = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [displayedAddress, updateDisplayAddress] = useState(getWalletAddress());
+  const [fullAddress, updateFullAddress] = useState(getFullWalletAddress());
   const [showSettings, setShowSettings] = useState(false);
   const [isAddressHidden, setIsAddressHidden] = useState(false);
 
   const copyToClipboard = () => {
-    if (displayedAddress) {
-      navigator.clipboard.writeText(displayedAddress);
+    if (fullAddress) {
+      navigator.clipboard.writeText(fullAddress);
     }
   };
 
@@ -170,8 +183,8 @@ export const WalletButton = () => {
                                             <div className="mt-2">
                                               <p className="text-sm text-gray-500">
                                                 You can copy your wallet address
-                                                to clipboard or hide it for
-                                                privacy.
+                                                to the clipboard, hide it for
+                                                privacy purposes, or disable it.
                                               </p>
                                             </div>
                                           </div>
@@ -187,13 +200,13 @@ export const WalletButton = () => {
                                                 }}
                                               >
                                                 <button
+                                                  type="button"
+                                                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 sm:w-auto sm:text-sm"
                                                   onClick={copyToClipboard}
                                                   style={{
                                                     display: "flex",
                                                     alignItems: "center",
                                                     padding: "10px",
-                                                    backgroundColor: "#4F46E5",
-                                                    color: "#fff",
                                                     border: "none",
                                                     borderRadius: "5px",
                                                     cursor: "pointer",
@@ -218,6 +231,8 @@ export const WalletButton = () => {
                                                 </button>
 
                                                 <button
+                                                  type="button"
+                                                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 sm:w-auto sm:text-sm"
                                                   onClick={
                                                     toggleAddressVisibility
                                                   }
@@ -225,8 +240,6 @@ export const WalletButton = () => {
                                                     display: "flex",
                                                     alignItems: "center",
                                                     padding: "10px",
-                                                    backgroundColor: "#4F46E5",
-                                                    color: "#fff",
                                                     border: "none",
                                                     borderRadius: "5px",
                                                     cursor: "pointer",
@@ -276,17 +289,19 @@ export const WalletButton = () => {
                                                 </button>
 
                                                 <button
-                                                  onClick={() =>
+                                                  type="button"
+                                                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 sm:w-auto sm:text-sm"
+                                                  onClick={() => {
+                                                    setShowSettings(false);
                                                     disconnectWallet(
-                                                      updateDisplayAddress
-                                                    )
-                                                  }
+                                                      updateDisplayAddress,
+                                                      updateFullAddress
+                                                    );
+                                                  }}
                                                   style={{
                                                     display: "flex",
                                                     alignItems: "center",
                                                     padding: "10px",
-                                                    backgroundColor: "#e74c3c",
-                                                    color: "#fff",
                                                     border: "none",
                                                     borderRadius: "5px",
                                                     cursor: "pointer",
