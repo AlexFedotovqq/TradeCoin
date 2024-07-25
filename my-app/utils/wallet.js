@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Disclosure } from "@headlessui/react";
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import SuccessMessage from "@/components/WalletSettings/SuccessMessage";
 
 const LOCAL_STORAGE_KEY = "MINA";
 const FULL_ADDRESS_KEY = "FULL_ADDRESS";
@@ -55,11 +56,17 @@ export const WalletButton = () => {
   const [fullAddress, updateFullAddress] = useState(getFullWalletAddress());
   const [showSettings, setShowSettings] = useState(false);
   const [isAddressHidden, setIsAddressHidden] = useState(false);
+  const [SuccessCopy, setSuccessCopy] = useState(false);
 
   const copyToClipboard = () => {
     if (fullAddress) {
       navigator.clipboard.writeText(fullAddress);
     }
+    setSuccessCopy(true);
+
+    setTimeout(() => {
+      setSuccessCopy(false);
+    }, 5000);
   };
 
   const toggleAddressVisibility = () => {
@@ -158,6 +165,13 @@ export const WalletButton = () => {
 
                               <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                                 <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                                  <div className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
+                                    <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+                                      <SuccessMessage
+                                        SuccessCopy={SuccessCopy}
+                                      />
+                                    </div>
+                                  </div>
                                   <Transition.Child
                                     as={Fragment}
                                     enter="ease-out duration-300"
@@ -290,7 +304,7 @@ export const WalletButton = () => {
 
                                                 <button
                                                   type="button"
-                                                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 sm:w-auto sm:text-sm"
+                                                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700  sm:w-auto sm:text-sm"
                                                   onClick={() => {
                                                     setShowSettings(false);
                                                     disconnectWallet(
