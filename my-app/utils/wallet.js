@@ -3,6 +3,7 @@ import { Disclosure } from "@headlessui/react";
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import SuccessMessage from "@/components/WalletSettings/SuccessMessage";
+import ConfirmDisconnect from "@/components/WalletSettings/ConfirmDisconnect";
 
 const LOCAL_STORAGE_KEY = "MINA";
 const FULL_ADDRESS_KEY = "FULL_ADDRESS";
@@ -57,6 +58,7 @@ export const WalletButton = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [isAddressHidden, setIsAddressHidden] = useState(false);
   const [SuccessCopy, setSuccessCopy] = useState(false);
+  const [isDisconnectOpen, setIsDisconnectOpen] = useState(false);
 
   const copyToClipboard = () => {
     if (fullAddress) {
@@ -81,6 +83,11 @@ export const WalletButton = () => {
   const handleError = (errorMessage) => {
     setError(errorMessage);
     setTimeout(() => setError(null), 5000);
+  };
+
+  const confirmDisconnect = () => {
+    disconnectWallet(updateDisplayAddress, updateFullAddress);
+    setIsDisconnectOpen(false);
   };
 
   useEffect(() => {
@@ -306,11 +313,7 @@ export const WalletButton = () => {
                                                   type="button"
                                                   className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700  sm:w-auto sm:text-sm"
                                                   onClick={() => {
-                                                    setShowSettings(false);
-                                                    disconnectWallet(
-                                                      updateDisplayAddress,
-                                                      updateFullAddress
-                                                    );
+                                                    setIsDisconnectOpen(true);
                                                   }}
                                                   style={{
                                                     display: "flex",
@@ -338,6 +341,15 @@ export const WalletButton = () => {
 
                                                   <span>Disconnect</span>
                                                 </button>
+                                                <ConfirmDisconnect
+                                                  isOpen={isDisconnectOpen}
+                                                  closeModal={() =>
+                                                    setIsDisconnectOpen(false)
+                                                  }
+                                                  confirmDisconnect={
+                                                    confirmDisconnect
+                                                  }
+                                                />
                                               </div>
                                             )}
                                           </div>
